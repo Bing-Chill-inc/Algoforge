@@ -40,8 +40,8 @@ nouveau nom que nous pensons plus élégant et qui dureras dans le temps.
 - Esteban BACKES : ![**Eliossore**](https://github.com/Eliossore)
 - Jokin SUARES : ![**Feror-BotMaker**](https://github.com/Feror-BotMaker)
 - Maxime JACOB-SAUSSEREAU : ![**Fetnmax**](https://github.com/Fetnmax)
-- Fabien SPROCQ : ![Sprocq](https://github.com/Sprocq)
-- Samuel CURRAN : ![SamuelCURRAN0](https://github.com/SamuelCURRAN0)
+- Fabien SPROCQ : ![**Sprocq**](https://github.com/Sprocq)
+- Samuel CURRAN : ![**SamuelCURRAN0**](https://github.com/SamuelCURRAN0)
 
 ## Structure des dossier :
 
