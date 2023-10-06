@@ -48,7 +48,7 @@ nouveau nom que nous pensons plus élégant et qui dureras dans le temps.
 - Le dossier Spécification contient les Spécification externes du Problème Algorithmique
 - Le dossier Algorithme contient les Algorithmes ainsi que leurs dictionnaires de données
 - Le dossier src héberge le Code de l'algorithme
-- Le dossier docs contient la document Doxygen pour le code source
+- Le dossier docs contient la documentation Doxygen pour le code source
 - Le dossier Images contient les différentes images utilisé pour le repo
 
 ## Autres espaces de travail :
