@@ -35,6 +35,14 @@ mot avec Anne Hidalgo mais sachant qu’il ne fait en fait pas vraiment de sens 
 l’application et que cette boutade n’est intemporelle, nous avons opté pour ce
 nouveau nom que nous pensons plus élégant et qui dureras dans le temps.
 
+## Identité collaborateurs
+
+Esteban BACKES : ![**Eliossore**](https://github.com/Eliossore)
+Jokin SUARES : ![**Feror-BotMaker**](https://github.com/Feror-BotMaker)
+Maxime JACOB-SAUSSEREAU : ![**Fetnmax**](https://github.com/Fetnmax)
+Fabien SPROCQ : ![Sprocq](https://github.com/Sprocq)
+Samuel CURRAN : ![SamuelCURRAN0](https://github.com/SamuelCURRAN0)
+
 ## Structure des dossier :
 
 - Le dossier Spécification contient les Spécification externes du Problème Algorithmique
