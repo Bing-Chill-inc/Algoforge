@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,17 +7,66 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="espaceDeTravail" id="espace1">
+    <plan-travail id="espace1">
 
-    </div>
+    </plan-travail>
 </body>
 <script src="main.js"></script>
 <script>
+    // Set css variables
+    document.body.style.setProperty('--sizeModifier', 1);
+    document.body.style.setProperty('--transitionTime', "0.1s");
     // Test
-    let a = new StructureSwitch();
-    document.getElementById("espace1").appendChild(a);
-    a.afficher();
-    a.style.left = "300px";
-    a.style.top = "300px";
+    /*
+    let a = [
+        {
+            "typeElement":"Probleme",
+            "abscisse":"30vw",
+            "ordonnee":"15vw",
+            "libelle":"1",
+            "listeDonnes":[],
+            "listeResultats":[],
+            "enfants":[
+                {
+                    "typeElement":"StructureIterativeNonBornee",
+                    "abscisse":"43vw",
+                    "ordonnee":"30vw",
+                    "enfants":[
+                        {
+                            "typeElement":"Probleme",
+                            "abscisse":"15vw",
+                            "ordonnee":"45vw",
+                            "libelle":"x = 2",
+                            "listeDonnes":[{"nom":"val"}],
+                            "listeResultats":[],
+                            "enfants":[]
+                        },
+                        {
+                            "typeElement":"StructureSi",
+                            "abscisse":"45vw",
+                            "ordonnee":"45vw",
+                            "conditions":[
+                                {
+                                    "typeElement":"Condition",
+                                    "libelle":"i == 4",
+                                    "enfants":[
+                                        {
+                                            "typeElement":"ConditionSortie",
+                                            "abscisse":"48vw",
+                                            "ordonnee":"60vw"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+    espaceTravail = document.getElementById("espace1");
+    espaceTravail.chargerDepuisJSON(a);
+    */
 </script>
 </html>
