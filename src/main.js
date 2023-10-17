@@ -203,6 +203,25 @@ class ElementGraphique extends HTMLElement {
     getPosition() {
         return {abscisse: this.style.left, ordonnee: this.style.top};
     }
+
+    pointAnchrageHaut() {
+        // Renvoies les coordonnées du point d'anchrage en haut de l'élément (pour les lignes) en ratio de la largeur de l'écran * 100 (vw)
+        // Nous avons les attributs abscisse et ordonnee qui sont en ratio de la largeur de l'écran * 100 (vw)
+        // Nous avons la largeur de l'élément en pixel avec this.getBoundingClientRect().width, il faut donc la convertir en ratio de la largeur de l'écran * 100 (vw)
+        let rect = this.getBoundingClientRect();
+        let largeurEnVW = rect.width / window.innerWidth * 100;
+        return {x: this._abscisse + largeurEnVW / 2, y: this._ordonnee};
+    }
+
+    pointAnchrageBas() {
+        // Renvoies les coordonnées du point d'anchrage en haut de l'élément (pour les lignes) en ratio de la largeur de l'écran * 100 (vw)
+        // Nous avons les attributs abscisse et ordonnee qui sont en ratio de la largeur de l'écran * 100 (vw)
+        // Nous avons la largeur de l'élément en pixel avec this.getBoundingClientRect().width, il faut donc la convertir en ratio de la largeur de l'écran * 100 (vw)
+        // Nous avons la hauteur de l'
+        let rect = this.getBoundingClientRect();
+        let largeurEnVW = rect.width / window.innerWidth * 100;
+        return {x: this._abscisse + largeurEnVW / 2, y: this._ordonnee};
+    }
 }
 
 class Type {
@@ -312,7 +331,18 @@ class ElementParent {
     // METHODES
     lierEnfant(elementAAjouter) {
         elementAAjouter._parent = this;
-        this._listeElementsEnfants.push({element : elementAAjouter, ligne : new Ligne()});
+        this._listeElementsEnfants.push({element : elementAAjouter, lignes : []});
+        switch (this._proprietaire.constructor.name) {
+            case "Probleme":
+            case "Procedure":
+                // Pour les procédures et problèmes, il faut deux lignes pour partir de l'élément parent et arriver à l'enfant avec un angle droit.
+                break;
+            case "Condition":
+                break;
+            case "StructureIterativeNonBornee":
+            case "StructureIterativeBornee":
+                break;
+        }
     }
 
     delierEnfant(elementASupprimer) {

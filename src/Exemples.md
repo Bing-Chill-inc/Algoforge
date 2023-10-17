@@ -504,6 +504,7 @@ console.log(JSON.stringify(pb1.toJSON()));
     console.log(JSON.stringify(pb1.toJSON()));
 ```
 ```json
+[
 {
     "typeElement":"Probleme",
     "abscisse":"30vw",
@@ -548,6 +549,7 @@ console.log(JSON.stringify(pb1.toJSON()));
         }
     ]
 }
+]
 ```
 
 ## Exemple 9
