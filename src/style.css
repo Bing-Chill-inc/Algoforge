@@ -120,6 +120,7 @@ probleme-element {
         height: calc(var(--sizeModifier) * 1.5vw);
         border-left: calc(var(--sizeModifier) * 0.1vw) solid black;
         border-right: calc(var(--sizeModifier) * 0.1vw) solid black;
+        border-bottom: calc(var(--sizeModifier) * 0.1vw) solid black;;
     }
 
 procedure-element {
@@ -249,6 +250,7 @@ procedure-element {
         height: calc(var(--sizeModifier) * 1.5vw);
         border-left: calc(var(--sizeModifier) * 0.1vw) solid black;
         border-right: calc(var(--sizeModifier) * 0.1vw) solid black;
+        border-bottom: calc(var(--sizeModifier) * 0.1vw) solid black;;
     }
 
 structure-si-element {
@@ -504,5 +506,5 @@ ligne-element {
     transform-origin: 0% 50%;
     margin: 0;
     padding: 0;
-    border: calc(var(--sizeModifier) * 0.1vw) solid black;
+    border: calc(var(--sizeModifier) * 0.05vw) solid black;
 }

@@ -53,11 +53,11 @@ class PlanTravail extends HTMLElement {
                     for (let resultat of element.listeResultats) {
                         probleme._listeResultats.push(new Information(resultat.nom, resultat.type, resultat.signification));
                     }
+                    this.appendChild(probleme);
+                    probleme.afficher(); // Affichage avant l'ajout des enfants pour que la largeur soit calculée correctement
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         probleme._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(probleme);
-                    probleme.afficher();
                     probleme.setPosition();
                     listeElems.push(probleme);
                     break;
@@ -69,11 +69,11 @@ class PlanTravail extends HTMLElement {
                     for (let resultat of element.listeResultats) {
                         procedure._listeResultats.push(new Information(resultat.nom, resultat.type, resultat.signification));
                     }
+                    this.appendChild(procedure);
+                    procedure.afficher(); // Affichage avant l'ajout des enfants pour que la largeur soit calculée correctement
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         procedure._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(procedure);
-                    procedure.afficher();
                     procedure.setPosition();
                     listeElems.push(procedure);
                     break;
@@ -104,29 +104,29 @@ class PlanTravail extends HTMLElement {
                     break;
                 case "Condition":
                     let condition = new Condition(element.libelle);
+                    condition.afficher(); // Affichage avant l'ajout des enfants pour que la largeur soit calculée correctement
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         condition._elemParent.lierEnfant(enfant);
                     }
-                    condition.afficher();
                     listeElems.push(condition);
                     break;
                 case "StructureIterativeNonBornee":
                     let structureIterativeNonBornee = new StructureIterativeNonBornee(element.abscisse, element.ordonnee);
+                    this.appendChild(structureIterativeNonBornee);
+                    structureIterativeNonBornee.afficher(); // Affichage avant l'ajout des enfants pour que la largeur soit calculée correctement
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         structureIterativeNonBornee._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(structureIterativeNonBornee);
-                    structureIterativeNonBornee.afficher();
                     structureIterativeNonBornee.setPosition();
                     listeElems.push(structureIterativeNonBornee);
                     break;
                 case "StructureIterativeBornee":
                     let structureIterativeBornee = new StructureIterativeBornee(element.abscisse, element.ordonnee, element.variableAIterer, element.borneInferieure, element.borneSuperieure, element.pas);
+                    this.appendChild(structureIterativeBornee);
+                    structureIterativeBornee.afficher(); // Affichage avant l'ajout des enfants pour que la largeur soit calculée correctement
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         structureIterativeBornee._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(structureIterativeBornee);
-                    structureIterativeBornee.afficher();
                     structureIterativeBornee.setPosition();
                     listeElems.push(structureIterativeBornee);
                     break;
@@ -210,17 +210,18 @@ class ElementGraphique extends HTMLElement {
         // Nous avons la largeur de l'élément en pixel avec this.getBoundingClientRect().width, il faut donc la convertir en ratio de la largeur de l'écran * 100 (vw)
         let rect = this.getBoundingClientRect();
         let largeurEnVW = rect.width / window.innerWidth * 100;
-        return {x: this._abscisse + largeurEnVW / 2, y: this._ordonnee};
+        return {x: parseFloat(this._abscisse) + largeurEnVW / 2, y: parseFloat(this._ordonnee)};
     }
 
     pointAnchrageBas() {
         // Renvoies les coordonnées du point d'anchrage en haut de l'élément (pour les lignes) en ratio de la largeur de l'écran * 100 (vw)
         // Nous avons les attributs abscisse et ordonnee qui sont en ratio de la largeur de l'écran * 100 (vw)
         // Nous avons la largeur de l'élément en pixel avec this.getBoundingClientRect().width, il faut donc la convertir en ratio de la largeur de l'écran * 100 (vw)
-        // Nous avons la hauteur de l'
+        // Nous avons la hauteur de l'élément en pixel avec this.getBoundingClientRect().height, il faut donc la convertir en ratio de la largeur de l'écran * 100 (vw)
         let rect = this.getBoundingClientRect();
         let largeurEnVW = rect.width / window.innerWidth * 100;
-        return {x: this._abscisse + largeurEnVW / 2, y: this._ordonnee};
+        let hauteurEnVW = rect.height / window.innerWidth * 100;
+        return {x: parseFloat(this._abscisse) + largeurEnVW / 2, y: parseFloat(this._ordonnee) + hauteurEnVW};
     }
 }
 
@@ -336,6 +337,19 @@ class ElementParent {
             case "Probleme":
             case "Procedure":
                 // Pour les procédures et problèmes, il faut deux lignes pour partir de l'élément parent et arriver à l'enfant avec un angle droit.
+                // Pour commencer, on récupère les coordonnées du point d'anchrage en bas de l'élément parent.
+                let pointAnchrageBasParent = this._proprietaire.pointAnchrageBas();
+                // On récupère les coordonnées du point d'anchrage en haut de l'enfant.
+                let pointAnchrageHautEnfant = elementAAjouter.pointAnchrageHaut();
+                // On crée les deux lignes.
+                let ligne1 = new Ligne(pointAnchrageBasParent.x, pointAnchrageBasParent.y, pointAnchrageHautEnfant.x, pointAnchrageBasParent.y);
+                let ligne2 = new Ligne(pointAnchrageHautEnfant.x, pointAnchrageBasParent.y, pointAnchrageHautEnfant.x, pointAnchrageHautEnfant.y);
+                // On ajoute les lignes à la liste des enfants.
+                this._listeElementsEnfants[this._listeElementsEnfants.length - 1].lignes.push(ligne1);
+                this._listeElementsEnfants[this._listeElementsEnfants.length - 1].lignes.push(ligne2);
+                // On ajoute les lignes au plan de travail.
+                document.querySelector("plan-travail").appendChild(ligne1);
+                document.querySelector("plan-travail").appendChild(ligne2);
                 break;
             case "Condition":
                 break;
