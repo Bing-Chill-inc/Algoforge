@@ -150,7 +150,9 @@ class ElementGraphique extends HTMLElement {
     _abscisse; // Entier
     _ordonnee; // Entier
     _parent; // ElementParent
-
+    _couleurPrimaire = "black"; // Couleur premiere
+    _couleurSecondaire = "black"; // Couleur secondaire
+    _etat= "Defaut";
     // CONSTRUCTEUR
     constructor(abscisse = 0, ordonnee = 0, parent = null) {
         super();
@@ -202,6 +204,28 @@ class ElementGraphique extends HTMLElement {
 
     getPosition() {
         return {abscisse: this.style.left, ordonnee: this.style.top};
+    }
+    colorierElement()
+    {
+        console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire} CouleurSecondaire: ${this._couleurSecondaire}`)
+    }
+    signalerErreur()
+    {
+        this._etat = "Erreur"
+        this._couleurPrimaire = "red";
+        this.colorierElement();
+    }
+    signalerAvertissement()
+    {
+        this._etat = "Avertissement"
+        this._couleurPrimaire = "yellow";
+        this.colorierElement();
+    }
+    effacerSignalement()
+    {
+        this._etat = "Defaut"
+        this._couleurPrimaire = "black";
+        this.colorierElement();
     }
 }
 
@@ -451,7 +475,12 @@ class Probleme extends ElementGraphique {
         divDecomposition.className = "decomposition";
         this.appendChild(divDecomposition);
     }
-
+    colorierElement()
+    {
+        this.querySelector(".containerDPR").style.color = this._couleurPrimaire;
+        this.querySelector(".nom").style.color = this._couleurPrimaire;
+        console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire} CouleurSecondaire: ${this._couleurSecondaire}`)
+    }
     toJSON() {
         let lstDonnees = [];
         this._listeDonnes.forEach((donnee) => {
@@ -958,3 +987,13 @@ class Ligne extends HTMLElement {
         this.afficher();
     }
 } window.customElements.define("ligne-element", Ligne);
+
+
+//Main Programme principal de test
+document.getElementById('espace1') 
+
+let a = new Probleme
+
+document.getElementById('espace1').appendChild(a) 
+
+a.afficher() 
