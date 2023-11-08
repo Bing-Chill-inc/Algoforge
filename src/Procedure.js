@@ -12,4 +12,3 @@ class Procedure extends Probleme {
         super.afficher();
     }
 } window.customElements.define("procedure-element", Procedure);
-export default Procedure;

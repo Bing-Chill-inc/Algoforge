@@ -1,5 +1,3 @@
-import Procedure from './Procedure.js';
-
 class Probleme extends ElementGraphique {
     // ATTRIBUTS
     _libelle; // String
@@ -138,4 +136,3 @@ class Probleme extends ElementGraphique {
         };
     }
 } window.customElements.define("probleme-element", Probleme);
-export default Probleme;

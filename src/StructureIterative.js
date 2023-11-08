@@ -1,6 +1,3 @@
-import StructureIterativeBornee from './StructureIterativeBornee.js';
-import StructureIterativeNonBornee from './StructureIterativeNonBornee.js';
-
 class StructureIterative extends ElementGraphique {
     // ATTRIBUTS
     _elemParent; // ElementParent (liste des enfants)
@@ -24,5 +21,3 @@ class StructureIterative extends ElementGraphique {
         this.appendChild(imgBoucleSVG);
     }
 }
-
-export default StructureIterative;

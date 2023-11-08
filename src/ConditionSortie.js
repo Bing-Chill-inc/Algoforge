@@ -22,5 +22,3 @@ class ConditionSortie extends ElementGraphique {
         };
     }
 } window.customElements.define("condition-sortie-element", ConditionSortie);
-
-export default ConditionSortie;

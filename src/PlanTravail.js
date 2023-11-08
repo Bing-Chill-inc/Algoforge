@@ -1,4 +1,3 @@
-import ElementGraphique from '/ElementGraphique.js';
 class PlanTravail extends HTMLElement {
     // ATTRIBUTS -non-
 
@@ -146,4 +145,3 @@ class PlanTravail extends HTMLElement {
     }
 }
 window.customElements.define("plan-travail", PlanTravail);
-export default PlanTravail;

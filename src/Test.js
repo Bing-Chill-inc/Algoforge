@@ -1,4 +1,4 @@
-export default class Test
+class Test
 {
     constructor(name, age)
     {

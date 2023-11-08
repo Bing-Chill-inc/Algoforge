@@ -51,5 +51,3 @@ class ElementParent {
         return listeEnfants;
     }
 }
-
-export default ElementParent;

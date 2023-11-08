@@ -1,6 +1,3 @@
-import StructureSi from './StructureSi.js';
-import StructureSwitch from './StructureSwitch.js';
-
 class StructureAlternative extends ElementGraphique {
     // ATTRIBUTS 
     _listeConditions; // HTML Collection de Condition•s
@@ -41,4 +38,3 @@ class StructureAlternative extends ElementGraphique {
         this._listeConditions.removeChild(condition);
     }
 }
-export default StructureAlternative;

@@ -22,5 +22,3 @@ class StructureIterativeNonBornee extends StructureIterative {
         };
     }   
 } window.customElements.define("structure-iterative-non-bornee-element", StructureIterativeNonBornee);
-
-export default StructureIterativeNonBornee;

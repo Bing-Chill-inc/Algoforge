@@ -81,5 +81,3 @@ class Ligne extends HTMLElement {
         this.afficher();
     }
 } window.customElements.define("ligne-element", Ligne);
-
-export default Ligne;

@@ -1,9 +1,3 @@
-import Probleme from './Probleme.js';
-import StructureAlternative from './StructureAlternative.js';
-import StructureIterative from './StructureIterative.js';
-import ConditionSortie from './ConditionSortie.js';
-import ElementParent from './ElementParent.js';
-
 class ElementGraphique extends HTMLElement {
     // ATTRIBUTS
     _abscisse; // Entier
@@ -63,5 +57,3 @@ class ElementGraphique extends HTMLElement {
         return {abscisse: this.style.left, ordonnee: this.style.top};
     }
 }
-
-export default ElementGraphique;

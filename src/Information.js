@@ -45,5 +45,3 @@ class Information {
         };
     }
 }
-
-export default Information;
