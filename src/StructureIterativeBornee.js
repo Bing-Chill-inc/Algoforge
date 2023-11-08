@@ -70,4 +70,3 @@ class StructureIterativeBornee extends StructureIterative {
         };
     }
 } window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);
-export default StructureIterativeBornee;

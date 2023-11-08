@@ -42,4 +42,3 @@ class StructureSi extends StructureAlternative {
         };
     }
 } window.customElements.define("structure-si-element", StructureSi);
-export default StructureSi;

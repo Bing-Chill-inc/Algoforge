@@ -82,5 +82,3 @@ class Condition extends HTMLElement {
         };
     }
 } window.customElements.define("condition-element", Condition);
-
-export default Condition;

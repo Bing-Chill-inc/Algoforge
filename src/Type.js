@@ -25,4 +25,3 @@ class Type {
         this.estConforme = fonction;
     }
 }
-export default Type;

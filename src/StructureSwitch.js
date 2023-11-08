@@ -65,4 +65,3 @@ class StructureSwitch extends StructureAlternative {
         };
     }
 } window.customElements.define("structure-switch-element", StructureSwitch);
-export default StructureSwitch;
