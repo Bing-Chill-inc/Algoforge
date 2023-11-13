@@ -1,0 +1,8 @@
+probleme-element //OK
+procedure-element // OK
+condition-element
+structure-si-element // OK
+structure-switch-element // OK
+structure-iterative-non-bornee-element
+structure-iterative-bornee-element
+condition-sortie-element
