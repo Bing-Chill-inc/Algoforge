@@ -41,4 +41,14 @@ class StructureSi extends StructureAlternative {
             conditions: conditions
         };
     }
+
+    ErreurDoubleEgale(){
+        for (let i = 0; i < this._listeConditions.length; i++) {
+            let maChaine = this._listeConditions[i].libelle
+            console.log(maChaine)
+            if (maChaine.includes("==")){
+                console.log("Erreur détecter");
+            }
+        }
+    }
 } window.customElements.define("structure-si-element", StructureSi);
