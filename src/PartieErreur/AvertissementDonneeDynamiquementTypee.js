@@ -1,4 +1,4 @@
-class AvertissementStructureInoptimale extends AvertissementConceptuel
+class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
 {
     // ATTRIBUTS
     _nomVariable ; // String
