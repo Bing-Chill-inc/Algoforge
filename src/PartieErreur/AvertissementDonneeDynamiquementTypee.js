@@ -1,15 +1,15 @@
-class AvertissementStructureInoptimale extends AvertissementConceptuel
+class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
 {
     // ATTRIBUTS
     _nomVariable ; // String
-    _valeurs ; // array<String>
+    _typesUtilises ; // array<Type>
 
     // CONSTRUCTEUR
-    constructor( nomVariable = new String(), valeurs = new Array())
+    constructor( nomVariable = new String(), typesUtilises = new Array())
     {
         super();
         this._nomVariable = nomVariable;
-        this._valeurs = valeurs;
+        this._typesUtilises = typesUtilises;
     }
 
     // ENCAPSULATION
@@ -23,14 +23,14 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
         return this._nomVariable;
     }
 
-    set _valeurs(value)
+    set _typesUtilises(value)
     {
-        this._valeurs = value;
+        this._typesUtilises = value;
     }
 
-    get _valeurs()
+    get _typesUtilises()
     {
-        return this._valeurs;
+        return this._typesUtilises;
     }
     
     // METHODES
