@@ -22,6 +22,6 @@ class ErreurVariableMagique extends ErreurConceptuelle
     // METHODES
     toString()
     {
-    
+        return "La variable ", this._nomVariable," provient de nulle part.";
     }
 } 

@@ -14,6 +14,6 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
         // METHODES
         toString()
         {
-        
+            return "La boucle en surbrillance est bornée mais n'a pas de fin.";
         }
 }

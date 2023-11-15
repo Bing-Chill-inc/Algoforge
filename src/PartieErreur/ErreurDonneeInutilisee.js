@@ -22,6 +22,6 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
     // METHODES
     toString()
     {
-    
+        return "La donnée ", this._nomDonnee," n'est pas utilisée.";
     }
 } 

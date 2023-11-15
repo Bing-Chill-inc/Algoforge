@@ -22,7 +22,7 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel
     }
     // METHODES
        toString(){
-
+        return "Les éléments en surbrillances ne sont jamais exécutés.";
 
     }
 } 

@@ -22,6 +22,6 @@ class ErreurResultatInutilisee extends ErreurConceptuelle
     // METHODES
     toString()
     {
-        
+        return "Le résultat ", this._nomResultat," n'est pas utilisé.";
     }
 } 

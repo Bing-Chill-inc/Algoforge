@@ -14,6 +14,6 @@ class ErreurSyntaxeAssignation extends ErreurConceptuelle
         // METHODES
         toString()
         {
-        
+            return "L'assignation en surbrillance n'est pas syntaxiquement correcte.";
         }
 } 
