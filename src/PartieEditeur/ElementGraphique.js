@@ -4,6 +4,7 @@ class ElementGraphique extends HTMLElement {
     _ordonnee; // Entier
     _parent; // ElementParent
 
+
     // CONSTRUCTEUR
     constructor(abscisse = 0, ordonnee = 0, parent = null) {
         super();
@@ -61,5 +62,22 @@ class ElementGraphique extends HTMLElement {
     ExtraireVariables()
     {
         return [];
+    }
+
+    getEnfants()
+    {
+        return [];
+    }
+
+    getDescendants()
+    {
+        const listeDeMesEnfants = this.getEnfants();
+        let listeDeMesDescendants = listeDeMesEnfants;
+        for(let elem of listeDeMesEnfants)
+        {
+            console.log(elem)
+            listeDeMesDescendants.concat(elem.getDescendants())
+        }
+        return listeDeMesDescendants;
     }
 }
