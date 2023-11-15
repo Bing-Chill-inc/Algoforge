@@ -1,4 +1,4 @@
-class Condition 
+class AnomalieConceptuelle
 {
     // ATTRIBUTS
     _elementEmetteur; // Element Graphique
@@ -10,7 +10,7 @@ class Condition
     // ENCAPSULATION
     set _elementEmetteur(value)
     {
-
+        this._elementEmetteur = value;
     }
 
     get _elementEmetteur()
@@ -18,5 +18,8 @@ class Condition
         return this._elementEmetteur;
     }
     // METHODES
-    toString();
+    toString()
+    {
+        return "";
+    }
 } 
