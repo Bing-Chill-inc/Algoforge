@@ -14,6 +14,6 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle
         // METHODES
         toString()
         {
-        
+            return "La boucle en surbrillance n'a pas de sortie.";
         }
 } 

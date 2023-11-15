@@ -22,6 +22,6 @@ class ErreurDonneeMagique extends ErreurConceptuelle
     // METHODES
     toString()
     {
-
+        return "La donnée ", this._nomDonnee," ne provient de nulle part.";
     }
 }

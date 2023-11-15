@@ -22,6 +22,6 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
     // METHODES
     toString()
     {
-
+        return "La structure conditionnelle 'switch' en surbrillance contient des comparaisons.";
     }
 } 
