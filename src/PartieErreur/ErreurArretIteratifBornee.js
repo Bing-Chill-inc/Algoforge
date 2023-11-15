@@ -22,7 +22,7 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
     // METHODES
     toString()
     {
-
+        return "L'arrêt en surbrillance est dans une boucle itérative bornée.";
     }
     
 }

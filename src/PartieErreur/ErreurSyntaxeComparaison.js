@@ -14,6 +14,6 @@ class ErreurSyntaxeComparaison extends ErreurConceptuelle
         // METHODES
         toString()
         {
-        
+            return "La comparaison en surbrillance n'est pas syntaxiquement correcte.";
         }
 } 
