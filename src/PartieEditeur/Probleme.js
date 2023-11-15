@@ -150,4 +150,9 @@ class Probleme extends ElementGraphique {
         }
         return i;
     }
+    getEnfants()
+    {
+        return this. _elemParent._listeElementsEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }
+
 } window.customElements.define("probleme-element", Probleme);
