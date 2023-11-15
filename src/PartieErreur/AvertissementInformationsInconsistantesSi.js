@@ -22,7 +22,7 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
     }
     // METHODES
        toString(){
-
+        return "La structure conditionelle en surbrillance contient les variables suvantes qui ne sont paas consistantes : "+this._nomsVariablesConcernees+" .";
 
     }
 }

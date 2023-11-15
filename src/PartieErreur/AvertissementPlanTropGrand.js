@@ -1,6 +1,6 @@
 class AvertissementPlanTropGrand extends AvertissementConceptuel
 {
-    // ATTRIBUTS
+    // ATTRIBUTS -- Non --
 
     // CONSTRUCTEUR
     constructor()
@@ -8,11 +8,11 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
         super();
     }
 
-    // ENCAPSULATION
-
+    // ENCAPSULATION -- Non --
+ 
     // METHODES
        toString(){
-
+        return "Le plan est trop grand pour être affiché correctement.";
 
     }
 }

@@ -1,14 +1,14 @@
 class AvertissementConceptuel extends AnomalieConceptuelle
 {
-    // ATTRIBUTS
+    // ATTRIBUTS -- Non --
 
     // CONSTRUCTEUR 
     constructor()
     {
         super();
     }
-    // ENCAPSULATION
+    // ENCAPSULATION -- Non --
     
-    // METHODES
+    // METHODES -- Non --
 
 } 
