@@ -33,6 +33,6 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     // METHODES
     toString()
     {
-    
+        return "La variable ", this._nomVariable," est inconsistante";
     }
 } 

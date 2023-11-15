@@ -14,6 +14,6 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
         // METHODES
         toString()
         {
-        
+            return "L'arrêt en surbrillance est hors d'une boucle itérative.";
         }
 }

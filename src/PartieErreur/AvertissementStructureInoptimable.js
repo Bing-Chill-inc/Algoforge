@@ -35,6 +35,6 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
     
     // METHODES
        toString(){
-
+        return "La structure conditionnel en surbrillance est mal utilisée.";
     }
 }
