@@ -41,7 +41,7 @@ class Information
     }
 
     // METHODES
-    DetecteterLeType(unString)
+    DetecterLeType(unString)
     {
         const ascii0 = '0'.charCodeAt(0); // code ASCII de '0'
         const ascii9 = '9'.charCodeAt(0); // code ASCII de '9'

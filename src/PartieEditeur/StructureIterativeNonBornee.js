@@ -13,6 +13,14 @@ class StructureIterativeNonBornee extends StructureIterative {
         super.afficher(); // Affichage de la boucle seule
     }
 
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+        // On vérifie que la boucle contient une sortie
+        if(this.rechercherSortie() == false) {
+            listeAnomalies.push(new ErreurBoucleSansSortie());
+        }
+    }
+
     toJSON() {
         return {
             typeElement: this.constructor.name,
