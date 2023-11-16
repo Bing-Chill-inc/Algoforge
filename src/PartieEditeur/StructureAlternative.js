@@ -29,6 +29,18 @@ class StructureAlternative extends ElementGraphique {
             condition.afficher();
         });
     }
+    getEnfants()
+    {
+        let listeEnfants = [];
+        for(let condition of this._listeConditions)
+        {
+            for(let elem of condition._elemParent._listeElementsEnfants)
+            {
+                listeEnfants.appendChild(elem);
+            }
+        }
+        return listeEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }
 
     ajouterCondition(condition = new Condition()) {
         this._listeConditions.appendChild(condition);
