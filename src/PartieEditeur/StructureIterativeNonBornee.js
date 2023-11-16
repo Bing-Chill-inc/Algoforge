@@ -19,6 +19,21 @@ class StructureIterativeNonBornee extends StructureIterative {
         if(this.rechercherSortie() == false) {
             listeAnomalies.push(new ErreurBoucleSansSortie());
         }
+        // On vérifie que la boucle contient pas 7 sous-éléments ou plus
+        if(this.getEnfant().length >= 7) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this.getEnfant()));
+        }
+        return listeAnomalies;
+    }
+    
+    rechercherSortie() {
+        let listeDescandants = this.getDescendants(ConditionSortie)
+        for (let descendant of listeDescandants) {
+            if (descendant.getAntescendant(StructureIterativeNonBornee)[0] == this ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     toJSON() {

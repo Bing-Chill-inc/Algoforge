@@ -59,10 +59,11 @@ class StructureIterativeBornee extends StructureIterative {
 
     rechercherAnomalies() {
         let listeAnomalies = [];
-
+        // On vérifie que la boucle n'est pas infinie
         if(this.peutAtteindre() == false) {
             listeAnomalies.push(new ErreurBoucleBorneeSansFin());
         }
+        // On vérifie que la boucle contient pas 7 sous-éléments ou plus
         if(this.getEnfants().length >= 7) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this.getEnfants()));
         }
