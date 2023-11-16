@@ -28,8 +28,13 @@ class ElementParent {
 
     // METHODES
     lierEnfant(elementAAjouter) {
-        elementAAjouter._parent = this;
-        this._listeElementsEnfants.push({element : elementAAjouter, ligne : new Ligne()});
+        if(elementAAjouter instanceof ElementGraphique)
+        {
+            elementAAjouter._parent = this;
+            this._listeElementsEnfants.push({element : elementAAjouter, ligne : new Ligne()});
+            return true;
+        }
+        return false;
     }
 
     delierEnfant(elementASupprimer) {

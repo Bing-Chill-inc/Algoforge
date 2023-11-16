@@ -4,6 +4,7 @@ class ElementGraphique extends HTMLElement {
     _ordonnee; // Entier
     _parent; // ElementParent
 
+
     // CONSTRUCTEUR
     constructor(abscisse = 0, ordonnee = 0, parent = null) {
         super();
@@ -62,4 +63,39 @@ class ElementGraphique extends HTMLElement {
     {
         return [];
     }
+
+    getEnfants()
+    {
+        return [];
+    }
+
+    getDescendants()
+    {
+        const listeDeMesEnfants = this.getEnfants();
+        let listeDeMesDescendants = listeDeMesEnfants;
+        for(let elem of listeDeMesEnfants)
+        {
+            console.log(elem)
+            listeDeMesDescendants.concat(elem.getDescendants())
+        }
+        return listeDeMesDescendants;
+    }
+/*
+    rechercherSortie() {
+        let listeEnfants = this.getEnfants();
+        for (let enfant of listeEnfants) {
+            if (enfant.constructor.name == "ConditionSortie") {
+                return true;
+            }
+            if (enfant.constructor.name == "StructureIterativeNonBornee" || enfant.constructor.name == "StructureIterativeBornee") {
+                index = listeEnfants.indexOf(enfant);
+                listeEnfants.splice(index, 1);
+            }
+            else {
+                enfant.rechercherSortie();
+            }
+        }
+        return false;
+    }
+*/
 }
