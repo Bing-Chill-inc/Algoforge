@@ -102,4 +102,22 @@ class ElementGraphique extends HTMLElement {
         
     }
 
+/*
+    rechercherSortie() {
+        let listeEnfants = this.getEnfants();
+        for (let enfant of listeEnfants) {
+            if (enfant.constructor.name == "ConditionSortie") {
+                return true;
+            }
+            if (enfant.constructor.name == "StructureIterativeNonBornee" || enfant.constructor.name == "StructureIterativeBornee") {
+                index = listeEnfants.indexOf(enfant);
+                listeEnfants.splice(index, 1);
+            }
+            else {
+                enfant.rechercherSortie();
+            }
+        }
+        return false;
+    }
+*/
 }
