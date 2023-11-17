@@ -42,13 +42,27 @@ class StructureSi extends StructureAlternative {
         };
     }
 
-    ErreurDoubleEgale(){
-        for (let i = 0; i < this._listeConditions.length; i++) {
-            let maChaine = this._listeConditions[i].libelle
-            console.log(maChaine)
-            if (maChaine.includes("==")){
-                console.log("Erreur détecter");
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+
+        if(this.ErreurDoubleEgale() == true) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison());
+        }
+
+        return listeAnomalies;
+    }
+    
+
+    ErreurDoubleEgale() {
+        let texte;
+        for (let condition of this._listeConditions.children) {
+            texte = condition.querySelector('.libelle').textContent;
+            if (texte.includes("==")) {
+                return true;
             }
         }
     }
+   
+
+
 } window.customElements.define("structure-si-element", StructureSi);
