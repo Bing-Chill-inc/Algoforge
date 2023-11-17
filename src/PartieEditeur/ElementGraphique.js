@@ -64,20 +64,42 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
 
-    getEnfants()
+    getEnfants(typeRechercher = ElementGraphique)
     {
         return [];
     }
 
-    getDescendants()
+    getDescendants(typeRechercher = ElementGraphique)
     {
         const listeDeMesEnfants = this.getEnfants();
         let listeDeMesDescendants = listeDeMesEnfants;
-        for(let elem of listeDeMesEnfants)
+        for(let enfant of listeDeMesEnfants)
         {
-            console.log(elem)
-            listeDeMesDescendants.concat(elem.getDescendants())
+            listeDeMesDescendants = [...listeDeMesDescendants, ...enfant.getDescendants()];
         }
-        return listeDeMesDescendants;
+        return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
     }
+
+    getParent(typeRechercher = ElementGraphique)
+    {
+        if(this._parent)
+        {
+            return this._parent._proprietaire instanceof typeRechercher ? this._parent:null;
+        }
+        return null;
+    }
+
+    getAntescedants(typeRechercher = ElementGraphique)
+    {
+        const parent = this.getParent();
+        let listeDeMesAntescedants = [];
+        if(parent !== null)
+        {
+            listeDeMesAntescedants.push(parent._proprietaire);
+            listeDeMesAntescedants = [...listeDeMesAntescedants, ...parent._proprietaire.getAntescedants()];
+        }
+        return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
+        
+    }
+
 }
