@@ -3,9 +3,9 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
     // ATTRIBUTS -- Non --
 
     // CONSTRUCTEUR
-    constructor()
+    constructor(elementEmetteur)
     {
-        super();
+        super(elementEmetteur);
     }
 
     // ENCAPSULATION -- Non --

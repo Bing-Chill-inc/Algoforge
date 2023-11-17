@@ -5,9 +5,9 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
     _valeurs ; // array<String>
 
     // CONSTRUCTEUR
-    constructor( nomVariable = new String(), valeurs = new Array())
+    constructor(elementEmetteur, nomVariable = new String(), valeurs = new Array())
     {
-        super();
+        super(elementEmetteur);
         this._nomVariable = nomVariable;
         this._valeurs = valeurs;
     }

@@ -4,8 +4,8 @@ class ErreurResultatInutilisee extends ErreurConceptuelle
 
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
             
     // ENCAPSULATION

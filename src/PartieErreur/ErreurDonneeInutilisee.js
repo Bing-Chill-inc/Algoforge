@@ -4,8 +4,8 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
     _nomDonnee; // String
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
         
     // ENCAPSULATION
