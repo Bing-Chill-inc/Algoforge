@@ -6,7 +6,7 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
         // CONSTRUCTEUR
         constructor(elementEmetteur) 
         {
-            super();
+            super(elementEmetteur);
         }
             
         // ENCAPSULATION  -- Non --
