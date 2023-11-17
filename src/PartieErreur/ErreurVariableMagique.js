@@ -4,8 +4,8 @@ class ErreurVariableMagique extends ErreurConceptuelle
     _nomVariable; // String
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
         
     // ENCAPSULATION

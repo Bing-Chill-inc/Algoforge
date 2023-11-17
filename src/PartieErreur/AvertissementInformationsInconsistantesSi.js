@@ -4,9 +4,9 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
     _nomsVariablesConcernees ; // array<String>
 
     // CONSTRUCTEUR
-    constructor( nomsVariablesConcernees = new Array())
+    constructor(elementEmetteur, nomsVariablesConcernees = new Array())
     {
-        super();
+        super(elementEmetteur);
         this._nomsVariablesConcernees = nomsVariablesConcernees;
     }
 

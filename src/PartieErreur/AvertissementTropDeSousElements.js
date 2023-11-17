@@ -4,9 +4,9 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel
     _listeElementsConcernes ; // array<ElementGraphique>
 
     // CONSTRUCTEUR
-    constructor( listeElementsConcernes = new Array())
+    constructor(elementEmetteur, listeElementsConcernes = new Array())
     {
-        super();
+        super(elementEmetteur);
         this._listeElementsConcernes = listeElementsConcernes;
     }
 

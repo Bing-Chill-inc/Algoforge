@@ -4,7 +4,7 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
 
 
         // CONSTRUCTEUR
-        constructor() 
+        constructor(elementEmetteur) 
         {
             super();
         }

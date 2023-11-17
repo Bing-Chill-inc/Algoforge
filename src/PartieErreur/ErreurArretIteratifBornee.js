@@ -4,8 +4,8 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
     _structureIterative; // Structure Iterative 
 
     // CONSTRUCTEUR
-    constructor() {
-        super();        
+    constructor(elementEmetteur) {
+        super(elementEmetteur);        
     }
     
     // ENCAPSULATION

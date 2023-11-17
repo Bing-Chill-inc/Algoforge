@@ -3,8 +3,8 @@ class ErreurConceptuelle extends AnomalieConceptuelle
         // ATTRIBUTS  -- Non --
 
         // CONSTRUCTEUR
-        constructor() {
-            super();
+        constructor(elementEmetteur) {
+            super(elementEmetteur);
         }
         
         // ENCAPSULATION  -- Non --
