@@ -21,7 +21,27 @@ class ErreurDonneeMagique extends ErreurConceptuelle
 
     static DetecterAnomalie(unProbleme)
     {
-        console.log(unProbleme.extraireVariables());
+        const listeDentree = unProbleme.getVariableDonnee();
+        let listeEntree = listeDentree;
+        let listeVariableUtiliser = [unProbleme.extraireVariablesTexte()];
+        let childrens = unProbleme.getEnfants();
+        for(let children of childrens)
+        {
+            listeVariableUtiliser = [...listeVariableUtiliser ,...children.extraireVariables()];
+        }
+        for(let information of listeVariableUtiliser)
+        {
+            for(let InformationARegarder of listeDentree)
+            {
+                if(information._nom == InformationARegarder._nom)
+                {
+                    listeEntree.pop();
+                }
+            }
+        }
+        console.log(listeEntree);
+        console.log(unProbleme.extraireVariables()); 
+
         return true;
     }  
     // METHODES
