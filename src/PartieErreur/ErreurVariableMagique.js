@@ -18,7 +18,11 @@ class ErreurVariableMagique extends ErreurConceptuelle
     {
         return this._nomVariable;
     }
-        
+    static DetecterAnomalie(unProbleme)
+    {
+        console.log(unProbleme);
+        return true;
+    }   
     // METHODES
     toString()
     {

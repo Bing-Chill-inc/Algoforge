@@ -11,7 +11,8 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
     // ENCAPSULATION -- Non --
  
     // METHODES
-       toString(){
+    toString() 
+    {
         return "Le plan est trop grand pour être affiché correctement.";
 
     }

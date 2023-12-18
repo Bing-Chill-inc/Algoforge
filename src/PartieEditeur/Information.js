@@ -41,11 +41,12 @@ class Information
     }
 
     // METHODES
-    DetecterLeType(unString)
+    static DetecterLeType(unString)
     {
         const ascii0 = '0'.charCodeAt(0); // code ASCII de '0'
         const ascii9 = '9'.charCodeAt(0); // code ASCII de '9'
         const asciiSeparateur = '.'.charCodeAt(0); // code ASCII de '.' (Séparateur de décimale)
+        const asciiSigne = '-'.charCodeAt(0); // code ASCII de '-' (Signe du décimale)
 
         //Detection char
         if(unString[0] == '\'' && unString[unString.length-1] == '\'' && unString.length == 3)
@@ -60,35 +61,53 @@ class Information
         }
 
         //Dection Nombre
-        let isANumber = true;
+        let containUnPoint = false;
+        let isANombreEntier = true;
+        let isANombre = true;
         for(let i = 0; i < unString.length; i++)
         {
             const courantCodeAscii = unString.charCodeAt(i);
+            //Traitement Signe
+            if(courantCodeAscii == asciiSigne)
+            {
+                if(i!=0)
+                {
+                    isANombre = false;
+                }
+                isANombreEntier = false; 
+                continue;
+            }
+            //Traitement Séparateur
+            if(courantCodeAscii == asciiSeparateur)
+            {
+                if(containUnPoint)
+                {
+                    isANombreEntier = false;
+                    isANombre = false;
+                }
+                containUnPoint = true;
+                if(i==0)
+                {
+                    isANombreEntier = false;
+                    isANombre = false;
+                }
+                continue;
+            }
+            //Regarde si c'est le char n'est pas un nombre
             if(courantCodeAscii < ascii0 || courantCodeAscii > ascii9)
             {
-                isANumber = false;
+                isANombreEntier = false;
+                isANombre = false;
             }
         }
-        if(isANumber)
+        if(isANombreEntier)
         {
-            return "Number";
+            return "unsigned double";
         }
-
-        //Detection Decimal
-        let isADecimal = true;
-        for(let i = 0; i < unString.length; i++)
+        if(isANombre)
         {
-            const courantCodeAscii = unString.charCodeAt(i);
-            if((courantCodeAscii < ascii0 || courantCodeAscii > ascii9) && courantCodeAscii != asciiSeparateur)
-            {
-                isADecimal = false;
-            }
+            return "double";
         }
-        if(isADecimal)
-        {
-            return "Décimale";
-        }   
-
 
         return "Indéfini";
     }
