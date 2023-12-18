@@ -48,9 +48,9 @@ class StructureSi extends StructureAlternative {
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
-        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
-            
-        }
+        /*if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
+
+        }*/
         if(AvertissementTropDeSousElements.detecterAnomalie(this))
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
