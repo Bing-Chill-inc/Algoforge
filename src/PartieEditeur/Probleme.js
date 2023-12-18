@@ -161,9 +161,9 @@ class Probleme extends ElementGraphique {
     rechercherAnomalies() {
         let listeAnomalies = [];
         //1
-        if(ErreurDonneeMagique.DetecterAnomalie(this))
+        if(ErreurDonneeInutilisee.detecterAnomalie(this))
         {
-            listeAnomalies.push(new ErreurDonneeMagique(this));
+            listeAnomalies.push(new ErreurDonneeInutilisee(this));
         }
         // 9
         if(ErreurSyntaxeAssignation.DetecterAnomalie(this))
@@ -188,7 +188,7 @@ class Probleme extends ElementGraphique {
                 continue;
             }
             let i = new Information();
-            i._nom = Donnee;
+            i._nom = Donnee.trim();
             listeDonneeInformation.push(i);    
         }
         return listeDonneeInformation;
@@ -233,7 +233,10 @@ class Probleme extends ElementGraphique {
     // Retourne les variables 
     extraireVariables() {
         let listeInformation = [];
-        listeInformation.push(this.extraireVariablesTextes());
+        if(this.extraireVariablesTextes())
+        {
+            listeInformation.push(this.extraireVariablesTextes());
+        }
         listeInformation = [...listeInformation,  ...this.getVariableDonnee()]; 
         listeInformation = [...listeInformation, ...this.getVariableResultat()];
         return listeInformation;

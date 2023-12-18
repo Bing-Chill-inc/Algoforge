@@ -36,7 +36,7 @@ class StructureAlternative extends ElementGraphique {
         {
             for(let elem of condition._elemParent._listeElementsEnfants)
             {
-                listeEnfants.appendChild(elem.element);
+                listeEnfants.push(elem.element);
             }
         }
         listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);

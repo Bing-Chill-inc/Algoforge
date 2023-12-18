@@ -101,6 +101,10 @@ class ElementGraphique extends HTMLElement {
         return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
         
     }
+    extraireVariables()
+    {
+        return [];
+    }
 
 /*
     rechercherSortie() {
