@@ -18,9 +18,9 @@ class StructureSi extends StructureAlternative {
         divConditionContainer.className = "conditionContainer";
         this.appendChild(divConditionContainer);
 
-            for (let i = 0; i < this._listeConditions.length; i++) {
-                divConditionContainer.appendChild(this._listeConditions[i]);
-            }
+        for (let i = 0; i < this._listeConditions.length; i++) {
+            divConditionContainer.appendChild(this._listeConditions[i]);
+        }
         
         this._listeConditions = divConditionContainer
 

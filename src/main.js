@@ -5,6 +5,7 @@ let c = new Probleme('50vw','10vw');
 let d = new Probleme('0vw','20vw');
 let e = new StructureIterativeBornee('0vw', '30vw');
 let f = new Probleme('0vw', '40vw');
+let s = new StructureSi('80vw', '40vw');
 
 document.getElementById('espace1').appendChild(a); 
 document.getElementById('espace1').appendChild(b); 
@@ -12,6 +13,7 @@ document.getElementById('espace1').appendChild(c);
 document.getElementById('espace1').appendChild(d); 
 document.getElementById('espace1').appendChild(e);
 document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(s);
 
 
 
@@ -21,6 +23,7 @@ c.afficher();
 d.afficher();
 e.afficher();
 f.afficher();
+s.afficher();
 
 a._elemParent.lierEnfant(b);
 a._elemParent.lierEnfant(c);

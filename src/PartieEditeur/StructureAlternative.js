@@ -32,7 +32,7 @@ class StructureAlternative extends ElementGraphique {
     getEnfants(typeRechercher = ElementGraphique)
     {
         let listeEnfants = [];
-        for(let condition of this._listeConditions)
+        for(let condition of this._listeConditions.children)
         {
             for(let elem of condition._elemParent._listeElementsEnfants)
             {

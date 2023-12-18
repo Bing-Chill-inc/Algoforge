@@ -49,7 +49,19 @@ class Probleme extends ElementGraphique {
     set _elemParent(value) {
         this._elemParent = value;
     }
-
+    
+    // Retourne le contenu du probleme Texte Principale
+    getTexte() {
+        return this.querySelector(".nom").textContent;
+    }
+    // Retourne les données entrantes
+    getDonnee() {
+        return this.querySelector(".donneesEditable").textContent;
+    }
+    //Retourne les données sortantes
+    getResultat() {
+        return this.querySelector(".resultatEditable").textContent;
+    }
     // METHODES
     afficher() {
         let divContainerDPR = document.createElement("div");
@@ -136,20 +148,7 @@ class Probleme extends ElementGraphique {
         };
     }
 
-    // Retourne les variables 
-    extraireVariables() {
-        let i = new Information();
-        i._nom = "";
-        const contenue = this.getTexte(); //' aa -> " a a " ';
-        if(contenue.includes("<-"))
-        {
-            let nomDeVariable = contenue.split("<-")[0].trim();
-            let contenueVariable = contenue.split("<-")[1].trim();
-            i._nom = nomDeVariable;
-            i._type = Information.DetecterLeType(contenueVariable);
-        }
-        return i;
-    }
+    // Retournes les enfants par ordre
     getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
         for(let enfant of this._elemParent._listeElementsEnfants)
@@ -178,10 +177,67 @@ class Probleme extends ElementGraphique {
         }
         return listeAnomalies;
     }
-
-    //Retourne le contenu du probleme Texte Principale
-    getTexte() {
-        return this.querySelector(".nom").textContent;
+    //Retourne les Donnees sous Formes d'informations
+    getVariableDonnee() {
+        let listeDonnee = this.getDonnee().trim().split(",");
+        let listeDonneeInformation = [];
+        for(let Donnee of listeDonnee)
+        {
+            if(Donnee == "")
+            {
+                continue;
+            }
+            let i = new Information();
+            i._nom = Donnee;
+            listeDonneeInformation.push(i);    
+        }
+        return listeDonneeInformation;
     }
+    //Retourne les Resultat sous Formes d'informations
+    getVariableResultat() {
+        let listeDonnee = this.getResultat().trim().split(",");
+        let listeDonneeInformation = [];
+        for(let Donnee of listeDonnee)
+        {
+            if(Donnee == "")
+            {
+                continue;
+            }
+            let i = new Information();
+            i._nom = Donnee;
+            listeDonneeInformation.push(i);    
+        }
+        return listeDonneeInformation;
+    }
+    // Retourne les variables du textes
+    extraireVariablesTextes() {
+        let i = new Information();
+        i._nom = "";
+        const contenue = this.getTexte(); //' aa -> " a a " ';
+        if(contenue == "")
+        {
+            return null;
+        }
+        if(contenue.includes("<-"))
+        {
+            let nomDeVariable = contenue.split("<-")[0].trim();
+            let contenueVariable = contenue.split("<-")[1].trim();
+            i._nom = nomDeVariable;
+            i._type = Information.DetecterLeType(contenueVariable);
+        }else
+        {
+            i._nom= contenue.split(".")[0];
+        }
+        return i;
+    }
+    // Retourne les variables 
+    extraireVariables() {
+        let listeInformation = [];
+        listeInformation.push(this.extraireVariablesTextes());
+        listeInformation = [...listeInformation,  ...this.getVariableDonnee()]; 
+        listeInformation = [...listeInformation, ...this.getVariableResultat()];
+        return listeInformation;
+    }
+
 
 } window.customElements.define("probleme-element", Probleme);
