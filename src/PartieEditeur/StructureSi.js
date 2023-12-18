@@ -48,16 +48,16 @@ class StructureSi extends StructureAlternative {
         if(this.ErreurDoubleEgale() == true) {
             listeAnomalies.push(new ErreurSyntaxeComparaison());
         }
-
+        /*if(this.getEnfants().length >= 7) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this.getEnfants()));
+        }*/
         return listeAnomalies;
     }
     
 
     ErreurDoubleEgale() {
-        let texte;
         for (let condition of this._listeConditions.children) {
-            texte = condition.querySelector('.libelle').textContent;
-            if (texte.includes("==")) {
+                if (condition.querySelector('.libelle').textContent.includes("==")) {
                 return true;
             }
         }
