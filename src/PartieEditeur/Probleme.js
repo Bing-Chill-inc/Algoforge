@@ -136,23 +136,52 @@ class Probleme extends ElementGraphique {
         };
     }
 
-    ExtraireVariables()
-    {
+    // Retourne les variables 
+    extraireVariables() {
         let i = new Information();
         i._nom = "";
-        const contenue = this.querySelector(".nom").textContent; //' aa -> " a a " ';
-        if(contenue.includes("->"))
+        const contenue = this.getTexte(); //' aa -> " a a " ';
+        if(contenue.includes("<-"))
         {
-            let nomDeVariable = contenue.split("->")[0].trim();
-            let contenueVariable = contenue.split("->")[1].trim();
+            let nomDeVariable = contenue.split("<-")[0].trim();
+            let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
-            i._type = i.DetecteterLeType(contenueVariable);
+            i._type = Information.DetecterLeType(contenueVariable);
         }
         return i;
     }
-    getEnfants()
-    {
-        return this. _elemParent._listeElementsEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    getEnfants(typeRechercher = ElementGraphique) {
+        let listeDesEnfants = [];
+        for(let enfant of this._elemParent._listeElementsEnfants)
+        {
+            listeDesEnfants.push(enfant.element);
+        }
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+        //1
+        if(ErreurDonneeMagique.DetecterAnomalie(this))
+        {
+            listeAnomalies.push(new ErreurDonneeMagique(this));
+        }
+        // 9
+        if(ErreurSyntaxeAssignation.DetecterAnomalie(this))
+        {
+            listeAnomalies.push(new ErreurSyntaxeAssignation(this));
+        }
+        // 12
+        if(AvertissementTropDeSousElements.DetecterAnomalie(this))
+        {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        }
+        return listeAnomalies;
+    }
+
+    //Retourne le contenu du probleme Texte Principale
+    getTexte() {
+        return this.querySelector(".nom").textContent;
     }
 
 } window.customElements.define("probleme-element", Probleme);

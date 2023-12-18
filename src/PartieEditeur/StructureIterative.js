@@ -20,8 +20,14 @@ class StructureIterative extends ElementGraphique {
         imgBoucleSVG.src = "assets/boucle.svg";
         this.appendChild(imgBoucleSVG);
     }
-    getEnfants()
+    getEnfants(typeRechercher = ElementGraphique)
     {
-        return this. _elemParent._listeElementsEnfants.sort((a, b) => a._abscisse - b._abscisse);
+        let listeDesEnfants = [];
+        for(let enfant of this._elemParent._listeElementsEnfants)
+        {
+            listeDesEnfants.push(enfant.element);
+        }
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 }

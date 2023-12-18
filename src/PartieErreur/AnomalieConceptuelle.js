@@ -4,7 +4,8 @@ class AnomalieConceptuelle
     _elementEmetteur; // Element Graphique
 
     // CONSTRUCTEUR
-    constructor() {
+    constructor(elementEmetteur) {
+        this._elementEmetteur = elementEmetteur;
     }
 
     // ENCAPSULATION

@@ -5,9 +5,9 @@ class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
     _typesUtilises ; // array<Type>
 
     // CONSTRUCTEUR
-    constructor( nomVariable = new String(), typesUtilises = new Array())
+    constructor(elementEmetteur, nomVariable = new String(), typesUtilises = new Array())
     {
-        super();
+        super(elementEmetteur);
         this._nomVariable = nomVariable;
         this._typesUtilises = typesUtilises;
     }

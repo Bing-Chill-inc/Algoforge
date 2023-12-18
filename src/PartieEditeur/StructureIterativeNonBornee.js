@@ -17,11 +17,11 @@ class StructureIterativeNonBornee extends StructureIterative {
         let listeAnomalies = [];
         // On vérifie que la boucle contient une sortie
         if(this.rechercherSortie() == false) {
-            listeAnomalies.push(new ErreurBoucleSansSortie());
+            listeAnomalies.push(new ErreurBoucleSansSortie(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
-        if(this.getEnfants().length >= 7) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this.getEnfants()));
+        if(AvertissementTropDeSousElements.DetecterAnomalie(this)) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
         return listeAnomalies;
     }

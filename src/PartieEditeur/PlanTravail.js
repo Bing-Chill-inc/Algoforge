@@ -14,6 +14,20 @@ class PlanTravail extends HTMLElement {
     // ENCAPSULATION -non-
 
     // METHODES
+
+    static FiltrerElementsGraphique(listeElementGraphique, typeRechercher)
+    {
+        let nouvelleListe = [];
+        for(let element of listeElementGraphique)
+        {
+            if(element instanceof typeRechercher)
+            {
+                nouvelleListe.push(element);
+            }
+        }
+        return nouvelleListe;
+    }
+
     exporterEnJSON() {
         let listeElementsSansParents = [];
         for (let element of this.children) {

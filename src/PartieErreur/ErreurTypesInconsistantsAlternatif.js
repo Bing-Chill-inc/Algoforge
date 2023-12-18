@@ -5,8 +5,8 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     _typePris; // Array<Type>
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
         
     // ENCAPSULATION
