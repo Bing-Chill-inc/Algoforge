@@ -4,7 +4,7 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel
     _listeElementsConcernes ; // array<ElementGraphique>
 
     // CONSTRUCTEUR
-    constructor(_elementEmetteur, listeElementsConcernes = new Array())
+    constructor(elementEmetteur, listeElementsConcernes = new Array())
     {
         super(elementEmetteur);
         this._listeElementsConcernes = listeElementsConcernes;
@@ -24,5 +24,18 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel
        toString(){
         return "Les éléments en surbrillances ne sont jamais exécutés.";
 
+    }
+
+    static detecterAnomalie(unArret) {
+        const parent = unArret.getParent();
+        if (parent == null) {
+            return false;
+        }
+        const listeEnfantsDuParent = parent.getEnfants();
+        let tailleListe = listeEnfantsDuParent.length;
+        if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
+            return true;
+        }
+        return false;
     }
 } 

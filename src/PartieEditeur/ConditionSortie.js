@@ -14,6 +14,22 @@ class ConditionSortie extends ElementGraphique {
         return null;
     }
 
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+        if(ErreurArretHorsIteratif.detecterAnomalie(this)){
+            listeAnomalies.push(new ErreurArretHorsIteratif(this));
+        }
+        if(listeAnomalies.length == 0){
+            if(ErreurArretIteratifBornee.detecterAnomalie(this)){
+                listeAnomalies.push(new ErreurArretIteratifBornee(this));
+            }
+        }
+        if(AvertissementSProblemeJamaisExecute.detecterAnomalie(this)){
+            listeAnomalies.push(new AvertissementSProblemeJamaisExecute(this));
+        }
+        return listeAnomalies;
+    }
+
     toJSON() {
         return {
             typeElement: this.constructor.name,

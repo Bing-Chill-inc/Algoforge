@@ -15,13 +15,19 @@ class PlanTravail extends HTMLElement {
 
     // METHODES
 
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+        if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
+            listeAnomalies.push(new AvertissementPlanTropGrand(this));
+        }
+        return listeAnomalies;
+    }
+
     static FiltrerElementsGraphique(listeElementGraphique, typeRechercher)
     {
         let nouvelleListe = [];
-        for(let element of listeElementGraphique)
-        {
-            if(element instanceof typeRechercher)
-            {
+        for(let element of listeElementGraphique) {
+            if(element instanceof typeRechercher) {
                 nouvelleListe.push(element);
             }
         }

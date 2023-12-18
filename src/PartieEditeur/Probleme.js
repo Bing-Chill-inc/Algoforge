@@ -166,12 +166,12 @@ class Probleme extends ElementGraphique {
             listeAnomalies.push(new ErreurDonneeInutilisee(this));
         }
         // 9
-        if(ErreurSyntaxeAssignation.DetecterAnomalie(this))
+        if(ErreurSyntaxeAssignation.detecterAnomalie(this))
         {
             listeAnomalies.push(new ErreurSyntaxeAssignation(this));
         }
         // 12
-        if(AvertissementTropDeSousElements.DetecterAnomalie(this))
+        if(AvertissementTropDeSousElements.detecterAnomalie(this))
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
