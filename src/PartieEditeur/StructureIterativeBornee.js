@@ -60,7 +60,7 @@ class StructureIterativeBornee extends StructureIterative {
     rechercherAnomalies() {
         let listeAnomalies = [];
         // On vérifie que la boucle n'est pas infinie
-        if(this.peutAtteindre() == false) {
+        if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
@@ -68,27 +68,6 @@ class StructureIterativeBornee extends StructureIterative {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
         return listeAnomalies;
-    }
-
-    peutAtteindre() {
-        // On vérifie que la borne inférieure et supèrieur sont des nombres
-        if (isNaN(this._borneInferieure) || isNaN(this._borneSuperieure)) {
-            return true;
-        }  
-        else {
-            // convertion des bornes en nombre
-            borneInferieure = Number(this._borneInferieure);
-            borneSuperieure = Number(this._borneSuperieure);
-            pas = Number(this._pas);
-            let courant = borneInferieure;
-            while (courant <= borneSuperieure && pas != 0) {
-                if (courant >= borneSuperieure) {
-                    return true;
-                }
-                courant += pas;
-            }
-        }
-        return false;
     }
 
     toJSON() {

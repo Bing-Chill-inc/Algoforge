@@ -25,7 +25,8 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel
     {
         return "L'élément en surbrillance a trop de sous-éléments.";
     }
-    static DetecterAnomalie(unElementGraphique)
+    
+    static detecterAnomalie(unElementGraphique)
     {
         return unElementGraphique.getEnfants().length > 7;
     }
