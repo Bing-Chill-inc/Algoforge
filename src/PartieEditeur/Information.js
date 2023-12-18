@@ -108,7 +108,6 @@ class Information
         {
             return "double";
         }
-
         return "Indéfini";
     }
 
