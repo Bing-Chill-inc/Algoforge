@@ -45,24 +45,20 @@ class StructureSi extends StructureAlternative {
     rechercherAnomalies() {
         let listeAnomalies = [];
 
-        if(this.ErreurDoubleEgale() == true) {
-            listeAnomalies.push(new ErreurSyntaxeComparaison());
+        if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
-        /*if(this.getEnfants().length >= 7) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this.getEnfants()));
-        }*/
+        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
+            
+        }
+        if(AvertissementTropDeSousElements.detecterAnomalie(this))
+        {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+            console.log("Erreur");
+        }
         return listeAnomalies;
     }
-    
-
-    ErreurDoubleEgale() {
-        for (let condition of this._listeConditions.children) {
-                if (condition.querySelector('.libelle').textContent.includes("==")) {
-                return true;
-            }
-        }
-    }
-   
+     
 
 
 } window.customElements.define("structure-si-element", StructureSi);

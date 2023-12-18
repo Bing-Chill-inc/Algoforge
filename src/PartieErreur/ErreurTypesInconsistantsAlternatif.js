@@ -35,4 +35,12 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     {
         return "La variable ", this._nomVariable," est inconsistante";
     }
+
+    static detecterAnomalie(StructureAlternative){
+        for (let condition of StructureAlternative._listeConditions.children) {
+            if (condition.querySelector('.libelle').textContent.includes(_nomVariable)) {
+                return true;
+            }
+        }
+    }
 } 

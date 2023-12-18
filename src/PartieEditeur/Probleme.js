@@ -162,17 +162,17 @@ class Probleme extends ElementGraphique {
     rechercherAnomalies() {
         let listeAnomalies = [];
         //1
-        if(ErreurDonneeMagique.DetecterAnomalie(this))
+        if(ErreurDonneeMagique.detecterAnomalie(this))
         {
             listeAnomalies.push(new ErreurDonneeMagique(this));
         }
         // 9
-        if(ErreurSyntaxeAssignation.DetecterAnomalie(this))
+        if(ErreurSyntaxeAssignation.detecterAnomalie(this))
         {
             listeAnomalies.push(new ErreurSyntaxeAssignation(this));
         }
         // 12
-        if(AvertissementTropDeSousElements.DetecterAnomalie(this))
+        if(AvertissementTropDeSousElements.detecterAnomalie(this))
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
