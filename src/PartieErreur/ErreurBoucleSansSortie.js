@@ -16,4 +16,15 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle
         {
             return "La boucle en surbrillance n'a pas de sortie.";
         }
+        
+        // Vérifie si la boucle non bornée a une sortie
+        static detecterAnomalie(uneBoucleNonBornee) {
+            let listeDescandants = uneBoucleNonBornee.getDescendants(ConditionSortie)
+            for (let descendant of listeDescandants) {
+                if (descendant.getAntescendant(StructureIterativeNonBornee)[0] == uneBoucleNonBornee ) {
+                    return false;
+                }
+            }
+            return true;
+        }
 } 

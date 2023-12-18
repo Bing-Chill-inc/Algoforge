@@ -16,7 +16,7 @@ class StructureIterativeNonBornee extends StructureIterative {
     rechercherAnomalies() {
         let listeAnomalies = [];
         // On vérifie que la boucle contient une sortie
-        if(this.rechercherSortie() == false) {
+        if(ErreurBoucleSansSortie.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleSansSortie(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
@@ -24,16 +24,6 @@ class StructureIterativeNonBornee extends StructureIterative {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
         return listeAnomalies;
-    }
-    
-    rechercherSortie() {
-        let listeDescandants = this.getDescendants(ConditionSortie)
-        for (let descendant of listeDescandants) {
-            if (descendant.getAntescendant(StructureIterativeNonBornee)[0] == this ) {
-                return true;
-            }
-        }
-        return false;
     }
 
     toJSON() {
