@@ -24,5 +24,13 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
     {
         return "L'arrêt en surbrillance est dans une boucle itérative bornée.";
     }
+
+    static detecterAnomalie(unArret) {
+        let listeAntescedants = unArret.getAntescedants(StructureIterativeBornee);
+            if(listeAntescedants.length > 0){
+                return true;
+            }
+            return false;
+    }
     
 }

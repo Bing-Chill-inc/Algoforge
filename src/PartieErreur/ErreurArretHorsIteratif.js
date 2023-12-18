@@ -16,4 +16,12 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
         {
             return "L'arrêt en surbrillance est hors d'une boucle itérative.";
         }
+
+        static detecterAnomalie(unArret) {
+            let listeAntescedants = unArret.getAntescedants(StructureIterativeNonBornee);
+            if(listeAntescedants.length > 0){
+                return false;
+            }
+            return true;
+        }
 }

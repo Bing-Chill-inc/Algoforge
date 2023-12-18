@@ -41,4 +41,24 @@ class StructureSi extends StructureAlternative {
             conditions: conditions
         };
     }
+
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+
+        if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
+        }
+        /*if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
+
+        }*/
+        if(AvertissementTropDeSousElements.detecterAnomalie(this))
+        {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+            console.log("Erreur");
+        }
+        return listeAnomalies;
+    }
+     
+
+
 } window.customElements.define("structure-si-element", StructureSi);
