@@ -1,6 +1,6 @@
 class PlanTravail extends HTMLElement {
     // ATTRIBUTS -non-
-
+    leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
     // CONSTRUCTEUR
     constructor() {
         super();
@@ -157,5 +157,15 @@ class PlanTravail extends HTMLElement {
         }
         return listeElems;
     }
+
+    // Effectue le dictionnaire des données
+    effectuerDictionnaireDesDonnee()
+    {
+        for(let courantObjetGraphique of this.children)
+        {
+            console.log(courantObjetGraphique.getParent());
+        }
+    }
+
 }
 window.customElements.define("plan-travail", PlanTravail);
