@@ -38,7 +38,7 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
 
     static detecterAnomalie(StructureAlternative){
         for (let condition of StructureAlternative._listeConditions.children) {
-            if (condition.querySelector('.libelle').textContent.includes(_nomVariable)) {
+            if (!(condition.querySelector('.libelle').textContent.includes(_nomVariable))) {
                 return true;
             }
         }
