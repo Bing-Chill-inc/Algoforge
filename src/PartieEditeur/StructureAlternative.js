@@ -29,16 +29,17 @@ class StructureAlternative extends ElementGraphique {
             condition.afficher();
         });
     }
-    getEnfants()
+    getEnfants(typeRechercher = ElementGraphique)
     {
         let listeEnfants = [];
         for(let condition of this._listeConditions)
         {
             for(let elem of condition._elemParent._listeElementsEnfants)
             {
-                listeEnfants.appendChild(elem);
+                listeEnfants.appendChild(elem.element);
             }
         }
+        listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);
         return listeEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 

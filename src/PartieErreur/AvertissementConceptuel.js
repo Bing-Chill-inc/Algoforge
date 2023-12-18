@@ -3,9 +3,9 @@ class AvertissementConceptuel extends AnomalieConceptuelle
     // ATTRIBUTS -- Non --
 
     // CONSTRUCTEUR 
-    constructor()
+    constructor(elementEmetteur)
     {
-        super();
+        super(elementEmetteur);
     }
     // ENCAPSULATION -- Non --
     

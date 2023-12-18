@@ -4,8 +4,8 @@ class ErreurDonneeMagique extends ErreurConceptuelle
     _nomDonnee; // String
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
     
     // ENCAPSULATION
@@ -19,6 +19,11 @@ class ErreurDonneeMagique extends ErreurConceptuelle
         return this._nomDonnee;
     }
 
+    static DetecterAnomalie(unProbleme)
+    {
+        console.log(unProbleme.extraireVariables());
+        return true;
+    }  
     // METHODES
     toString()
     {

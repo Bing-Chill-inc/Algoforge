@@ -4,9 +4,9 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel
     _listeElementsConcernes ; // array<ElementGraphique>
 
     // CONSTRUCTEUR
-    constructor( listeElementsConcernes = new Array())
+    constructor(elementEmetteur, listeElementsConcernes = new Array())
     {
-        super();
+        super(elementEmetteur);
         this._listeElementsConcernes = listeElementsConcernes;
     }
 
@@ -21,7 +21,12 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel
         return this._listeElementsConcernes;
     }
     // METHODES
-       toString(){
+    toString()
+    {
         return "L'élément en surbrillance a trop de sous-éléments.";
+    }
+    static DetecterAnomalie(unElementGraphique)
+    {
+        return unElementGraphique.getEnfants().length > 7;
     }
 }

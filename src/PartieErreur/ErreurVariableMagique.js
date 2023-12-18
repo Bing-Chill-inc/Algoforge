@@ -4,8 +4,8 @@ class ErreurVariableMagique extends ErreurConceptuelle
     _nomVariable; // String
 
     // CONSTRUCTEUR
-    constructor() {
-        super();
+    constructor(elementEmetteur) {
+        super(elementEmetteur);
     }
         
     // ENCAPSULATION
@@ -18,7 +18,11 @@ class ErreurVariableMagique extends ErreurConceptuelle
     {
         return this._nomVariable;
     }
-        
+    static DetecterAnomalie(unProbleme)
+    {
+        console.log(unProbleme);
+        return true;
+    }   
     // METHODES
     toString()
     {
