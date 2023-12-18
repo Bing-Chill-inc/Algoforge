@@ -26,6 +26,7 @@ class StructureSwitch extends StructureAlternative {
         let divExpressionATester = document.createElement("div");
         divExpressionATester.className = "expressionATester";
         divExpressionATester.contentEditable = "true";
+        divExpressionATester.innerText = this._expressionATester;
         this.appendChild(divExpressionATester);
 
         let hrDiviseurGauche = document.createElement("hr");
@@ -68,4 +69,32 @@ class StructureSwitch extends StructureAlternative {
             conditions: conditions
         };
     }
+
+    rechercherAnomalies() {
+        let listeAnomalies = [];
+
+        if(this.ErreurEgale() == true) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison());
+        }
+
+        return listeAnomalies;
+    }
+    /*
+    ErreurEgale() {
+        if (.includes("=")){
+            console.log("nooooo");
+        }
+        else{
+            console.log("yes")
+        }
+        for (let condition of this._listeConditions.children) {
+            if (condition.querySelector('.libelle').textContent.includes("=")) {
+                console.log("nooooo");
+            }
+            else{
+                console.log("yes")
+            }
+        }
+        
+    }*/
 } window.customElements.define("structure-switch-element", StructureSwitch);
