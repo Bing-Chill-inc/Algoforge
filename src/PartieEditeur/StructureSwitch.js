@@ -72,29 +72,20 @@ class StructureSwitch extends StructureAlternative {
 
     rechercherAnomalies() {
         let listeAnomalies = [];
-
-        if(this.ErreurEgale() == true) {
-            listeAnomalies.push(new ErreurSyntaxeComparaison());
+        //8
+        if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
-
+        //12
+        if(AvertissementTropDeSousElements.detecterAnomalie(this))
+        {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        }
+        //16
+        if(ErreurComparaisonSwitch.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
+        }
         return listeAnomalies;
     }
-    /*
-    ErreurEgale() {
-        if (.includes("=")){
-            console.log("nooooo");
-        }
-        else{
-            console.log("yes")
-        }
-        for (let condition of this._listeConditions.children) {
-            if (condition.querySelector('.libelle').textContent.includes("=")) {
-                console.log("nooooo");
-            }
-            else{
-                console.log("yes")
-            }
-        }
-        
-    }*/
+
 } window.customElements.define("structure-switch-element", StructureSwitch);
