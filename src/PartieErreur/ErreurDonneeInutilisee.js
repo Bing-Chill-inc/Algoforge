@@ -24,11 +24,9 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
         // A changer reperer juste si il y'a le texte
         const listeDentree = unProbleme.getInformationDonnee(); 
         let listeEntree = listeDentree;
-        let listeVariableUtiliser = [];
 
         for(let InformationARegarder of listeDentree)
         {
-            //console.log(InformationARegarder);
             if(unProbleme.getTexte().includes(InformationARegarder._nom))
             {
                 listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
@@ -36,7 +34,8 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
             }
             for(let children of unProbleme.getDescendants())
             {
-                if(children.include(InformationARegarder))
+                console.log(children.include + InformationARegarder._nom+ "->"+ children.include(InformationARegarder._nom));
+                if(children.include(InformationARegarder._nom))
                 {
                     listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
                     continue;
