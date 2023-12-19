@@ -1,6 +1,6 @@
 class ElementParent {
     // ATTRIBUTS
-    _listeElementsEnfants; // Liste de dictionnaires ElementGraphique, Ligne
+    _listeElementsEnfants; // Liste contient les ElementGraphiques et les Lignes
     _proprietaire; // ElementGraphique
 
     // CONSTRUCTEUR
