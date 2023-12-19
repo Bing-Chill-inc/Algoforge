@@ -23,8 +23,7 @@ class PlanTravail extends HTMLElement {
         return listeAnomalies;
     }
 
-    static FiltrerElementsGraphique(listeElementGraphique, typeRechercher)
-    {
+    static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
         let nouvelleListe = [];
         for(let element of listeElementGraphique) {
             if(element instanceof typeRechercher) {
@@ -165,8 +164,7 @@ class PlanTravail extends HTMLElement {
     }
 
     // Effectue le dictionnaire des données
-    effectuerDictionnaireDesDonnee()
-    {
+    effectuerDictionnaireDesDonnee() {
         // Suppression de toutes les Informations ayant comme type undefined
         this.leDictionnaireDesDonnees.suppressionDonneeInutiliser()
 

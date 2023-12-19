@@ -161,6 +161,11 @@ class Probleme extends ElementGraphique {
     rechercherAnomalies() {
         let listeAnomalies = [];
         //1
+        /*
+        if(ErreurDonneeMagique.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurDonneeMagique(this));
+        }*/
+        
         if(ErreurDonneeInutilisee.detecterAnomalie(this))
         {
             listeAnomalies.push(new ErreurDonneeInutilisee(this));
@@ -175,11 +180,7 @@ class Probleme extends ElementGraphique {
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
-        // 18
-        if(AvertissementDonneDynamiquementTypee.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementDonneDynamiquementTypee(this));
-        }
+        
         return listeAnomalies;
     }
     //Retourne les Donnees sous Formes d'informations
