@@ -24,4 +24,11 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
     {
         return "La structure conditionnelle 'switch' en surbrillance contient des comparaisons.";
     }
+    static detecterAnomalie(StructureSwitch){
+        for (let condition of StructureSwitch._listeConditions.children) {
+            if (condition.querySelector('.libelle').textContent.includes(StructureSwitch._expressionATester + "=")) {
+                return true;
+            }
+        }
+    }
 } 
