@@ -167,10 +167,16 @@ class PlanTravail extends HTMLElement {
     // Effectue le dictionnaire des données
     effectuerDictionnaireDesDonnee()
     {
+        let lesInformations = [];
         for(let courantObjetGraphique of this.children)
         {
-            console.log(courantObjetGraphique.getParent());
+            lesInformations = [...lesInformations, ...courantObjetGraphique.extraireVariables()];
         }
+        for(let uneInformation of lesInformations)
+        {
+            this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
+        }
+        console.log(this.leDictionnaireDesDonnees);
     }
 
 }

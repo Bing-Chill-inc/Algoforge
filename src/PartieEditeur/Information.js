@@ -108,7 +108,7 @@ class Information
         {
             return "double";
         }
-        return "Indéfini";
+        return undefined;
     }
 
     toJSON() {
