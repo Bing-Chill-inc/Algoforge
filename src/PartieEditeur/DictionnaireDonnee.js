@@ -1,7 +1,7 @@
 class DictionnaireDonnee
 {    // ATTRIBUTS
     _mesInformations; // Liste de toutes les variables
-    _dictionnaireDesConvertionTypes = {"Char":"String", "unsigned double":"double"} 
+    _dictionnaireDesConvertionTypes = {"Char":"String", "int":"double", "unsigned int":"int"} 
     // CONSTRUCTEUR
     constructor(listeVariable = [])
     {
