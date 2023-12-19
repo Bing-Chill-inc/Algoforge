@@ -34,7 +34,11 @@ class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
     }
     
     // METHODES
-       toString(){
+    static detecterAnomalie(unProbleme) {
+        console.log(unProbleme.extraireInformationTextes());
+        const typeUn = unProbleme.extraireInformationTextes(); 
+    }
+    toString() {
         return "La variable "+this._nomVariable+" est utilisée avec les types suivants : "+this._typesUtilises;
     }
 }

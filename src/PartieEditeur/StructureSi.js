@@ -22,7 +22,7 @@ class StructureSi extends StructureAlternative {
             divConditionContainer.appendChild(this._listeConditions[i]);
         }
         
-        this._listeConditions = divConditionContainer
+        this._listeConditions = divConditionContainer;
 
         let divTriangleDroit = document.createElement("div");
         divTriangleDroit.className = "triangleDroit";
@@ -55,12 +55,16 @@ class StructureSi extends StructureAlternative {
         }
         //15
         if(AvertissementInformationsInconsistantesSi.detecterAnomalie(this)){
-            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this))
+            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this));
         }
         //17
         if(AvertissementStructureInoptimale.detecterAnomalie(this)){
-            listeAnomalies.push(new AvertissementStructureInoptimale(this))
+            listeAnomalies.push(new AvertissementStructureInoptimale(this));
         }
+        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
+            listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
+        }
+        
         return listeAnomalies;
     }
      

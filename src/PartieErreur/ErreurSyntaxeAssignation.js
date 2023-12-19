@@ -13,9 +13,8 @@ class ErreurSyntaxeAssignation extends ErreurConceptuelle
     // ENCAPSULATION  -- Non --
 
     // METHODES
-    static DetecterAnomalie(unProbleme)
+    static detecterAnomalie(unProbleme)
     {
-        //console.log(unProbleme);
         return unProbleme.getTexte().includes('=');
     }
     toString()

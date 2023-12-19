@@ -80,5 +80,5 @@ class Condition extends HTMLElement {
             libelle: this._libelle,
             enfants: this._elemParent.toJSON()
         };
-    }
+    }  
 } window.customElements.define("condition-element", Condition);
