@@ -85,6 +85,9 @@ class StructureSwitch extends StructureAlternative {
         if(ErreurComparaisonSwitch.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
+        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
+        }
         return listeAnomalies;
     }
 

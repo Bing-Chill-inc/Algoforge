@@ -37,12 +37,21 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     }
 
     static detecterAnomalie(uneStructureAlternative){
-        let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(uneStructureAlternative._listeConditions[0]._libelle));
-        console.log(typePremier);
-        for (let condition of uneStructureAlternative._listeConditions) {
+        if(uneStructureAlternative instanceof StructureSi) {
+            let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(uneStructureAlternative._listeConditions.children[0]._libelle));
+            for (let condition of uneStructureAlternative._listeConditions.children) {
 
-            if ((ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle))) != typePremier) {
-                return true;
+                if ((ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle))) != typePremier) {
+                    return true;
+                }
+            }
+        }
+        else {
+            let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(uneStructureAlternative._listeConditions.children[0]._libelle);
+            for (let condition of uneStructureAlternative._listeConditions.children) {
+                if (ErreurTypesInconsistantsAlternatif.determinerType(condition._libelle) != typePremier) {
+                    return true;
+                }
             }
         }
         return false;
