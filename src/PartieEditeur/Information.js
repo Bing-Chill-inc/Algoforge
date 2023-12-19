@@ -62,8 +62,9 @@ class Information
 
         //Dection Nombre
         let containUnPoint = false;
-        let isANombreEntier = true;
+        let isUnsigned = true;
         let isANombre = true;
+
         for(let i = 0; i < unString.length; i++)
         {
             const courantCodeAscii = unString.charCodeAt(i);
@@ -74,7 +75,7 @@ class Information
                 {
                     isANombre = false;
                 }
-                isANombreEntier = false; 
+                isUnsigned = false; 
                 continue;
             }
             //Traitement Séparateur
@@ -82,13 +83,13 @@ class Information
             {
                 if(containUnPoint)
                 {
-                    isANombreEntier = false;
+                    // Contient 2 point donc pas un nombre
                     isANombre = false;
                 }
                 containUnPoint = true;
                 if(i==0)
                 {
-                    isANombreEntier = false;
+                    // Le point se situ au début pas un nombre
                     isANombre = false;
                 }
                 continue;
@@ -96,19 +97,23 @@ class Information
             //Regarde si c'est le char n'est pas un nombre
             if(courantCodeAscii < ascii0 || courantCodeAscii > ascii9)
             {
-                isANombreEntier = false;
                 isANombre = false;
             }
         }
-        if(isANombreEntier)
-        {
-            return "unsigned double";
-        }
         if(isANombre)
         {
-            return "double";
+            if(containUnPoint)
+            {
+                return "double";
+            }
+            if(isUnsigned)
+            {
+                return "unsigned int";
+            }
+            return "int";
+            
         }
-        return "Indéfini";
+        return undefined;
     }
 
     toJSON() {

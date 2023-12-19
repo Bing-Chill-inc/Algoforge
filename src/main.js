@@ -11,22 +11,12 @@ let i = new Probleme('300vw','10vw');
 document.getElementById('espace1').appendChild(a);
 document.getElementById('espace1').appendChild(b);
 document.getElementById('espace1').appendChild(c);
-document.getElementById('espace1').appendChild(d);
-document.getElementById('espace1').appendChild(e);
-document.getElementById('espace1').appendChild(f);
-document.getElementById('espace1').appendChild(g);
-document.getElementById('espace1').appendChild(h);
-document.getElementById('espace1').appendChild(i);
+
 
 a.afficher();
 b.afficher();
 c.afficher();
-d.afficher();
-e.afficher();
-f.afficher();
-g.afficher();
-h.afficher();
-i.afficher();
+
 
 a._listeConditions.children[0]._elemParent.lierEnfant(b)
 a._listeConditions.children[1]._elemParent.lierEnfant(c);

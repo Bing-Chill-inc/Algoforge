@@ -59,7 +59,7 @@ class ElementGraphique extends HTMLElement {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
-    ExtraireVariables()
+    extraireVariables()
     {
         return [];
     }

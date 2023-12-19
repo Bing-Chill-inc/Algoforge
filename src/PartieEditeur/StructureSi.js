@@ -46,16 +46,22 @@ class StructureSi extends StructureAlternative {
         let listeAnomalies = [];
 
         /*if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+        //8
+        if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
-        }*/
-        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
-            listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
         }
-        /*
+        //12
         if(AvertissementTropDeSousElements.detecterAnomalie(this))
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
-            console.log("Erreur");
+        }
+        //15
+        if(AvertissementInformationsInconsistantesSi.detecterAnomalie(this)){
+            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this))
+        }
+        //17
+        if(AvertissementStructureInoptimale.detecterAnomalie(this)){
+            listeAnomalies.push(new AvertissementStructureInoptimale(this))
         }
         */
         return listeAnomalies;
