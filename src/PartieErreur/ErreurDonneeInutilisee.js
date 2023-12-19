@@ -21,29 +21,29 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
     
     static detecterAnomalie(unProbleme)
     {
-        const listeDentree = unProbleme.getVariableDonnee();
+        // A changer reperer juste si il y'a le texte
+        const listeDentree = unProbleme.getInformationDonnee(); 
         let listeEntree = listeDentree;
         let listeVariableUtiliser = [];
-        if(unProbleme.extraireVariablesTextes())
+
+        for(let InformationARegarder of listeDentree)
         {
-            listeVariableUtiliser.push(unProbleme.extraireVariablesTextes());
-        }
-        let childrens = unProbleme.getDescendants();
-        for(let children of childrens)
-        {
-            listeVariableUtiliser = [...listeVariableUtiliser ,...children.extraireVariables()];
-        }
-        
-        for(let information of listeVariableUtiliser)
-        {
-            for(let InformationARegarder of listeDentree)
+            //console.log(InformationARegarder);
+            if(unProbleme.getTexte().includes(InformationARegarder._nom))
             {
-                if(information._nom == InformationARegarder._nom)
+                listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
+                continue;
+            }
+            for(let children of unProbleme.getDescendants())
+            {
+                if(children.include(InformationARegarder))
                 {
                     listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
+                    continue;
                 }
             }
         }
+        
 
         return listeEntree.length > 0 ;
     }  
