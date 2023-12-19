@@ -172,7 +172,7 @@ class PlanTravail extends HTMLElement {
         let lesInformations = [];
         for(let courantObjetGraphique of this.children)
         {
-            lesInformations = [...lesInformations, ...courantObjetGraphique.extraireVariables()];
+            lesInformations = [...lesInformations, ...courantObjetGraphique.extraireInformation()];
         }
         for(let uneInformation of lesInformations)
         {
