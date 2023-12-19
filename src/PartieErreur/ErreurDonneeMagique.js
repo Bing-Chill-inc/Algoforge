@@ -24,4 +24,10 @@ class ErreurDonneeMagique extends ErreurConceptuelle
     {
         return "La donnée ", this._nomDonnee," ne provient de nulle part.";
     }
+
+    static detecterAnomalie(unProbleme){
+        let donnees = unProbleme.getDonnee();
+        donnees = donnees.split(',');
+        
+    }
 }

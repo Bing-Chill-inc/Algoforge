@@ -1,6 +1,6 @@
 class ElementGraphique extends HTMLElement {
     // ATTRIBUTS
-    _abscisse; // Entier
+    _abscisse; // Entier 
     _ordonnee; // Entier
     _parent; // ElementParent
 
@@ -59,8 +59,9 @@ class ElementGraphique extends HTMLElement {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
-    extraireVariables()
+    extraireInformation()
     {
+        console.log("J'ai pas été initialisé je suis " + this);
         return [];
     }
 
@@ -101,8 +102,10 @@ class ElementGraphique extends HTMLElement {
         return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
         
     }
-    extraireVariables()
+
+    include(nameInformation)
     {
-        return [];
+        console.log("J'ai pas été initialisé je suis " + this.enfant);
+        return false;
     }
 }

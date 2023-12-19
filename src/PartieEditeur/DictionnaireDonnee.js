@@ -1,6 +1,6 @@
 class DictionnaireDonnee
 {    // ATTRIBUTS
-    _mesInformations; // Liste de toutes les variables
+    _mesInformations; // Liste<Information> Liste de toutes les variables
     _dictionnaireDesConvertionTypes = {"Char":"String", "int":"double", "unsigned int":"int"} 
     // CONSTRUCTEUR
     constructor(listeVariable = [])
@@ -149,12 +149,5 @@ class DictionnaireDonnee
         this._mesInformations = this._mesInformations.filter(element => {
             return element._type != undefined || (element._signification != undefined && element._signification != "");
         });
-        /*this._mesInformations.forEach(element => {
-            if(element._type == undefined && element._signification)
-            {
-                // Supprimer element de mesInformations
-            }
-            }
-        );*/
     }
 }
