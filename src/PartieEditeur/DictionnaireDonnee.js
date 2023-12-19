@@ -143,4 +143,18 @@ class DictionnaireDonnee
         );
         return resultat;
     }
+
+    suppressionDonneeInutiliser()
+    {
+        this._mesInformations = this._mesInformations.filter(element => {
+            return element._type != undefined || (element._signification != undefined && element._signification != "");
+        });
+        /*this._mesInformations.forEach(element => {
+            if(element._type == undefined && element._signification)
+            {
+                // Supprimer element de mesInformations
+            }
+            }
+        );*/
+    }
 }

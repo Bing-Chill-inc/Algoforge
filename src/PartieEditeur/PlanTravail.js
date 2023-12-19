@@ -167,6 +167,10 @@ class PlanTravail extends HTMLElement {
     // Effectue le dictionnaire des données
     effectuerDictionnaireDesDonnee()
     {
+        // Suppression de toutes les Informations ayant comme type undefined
+        this.leDictionnaireDesDonnees.suppressionDonneeInutiliser()
+
+        //Ajout des Informations
         let lesInformations = [];
         for(let courantObjetGraphique of this.children)
         {
