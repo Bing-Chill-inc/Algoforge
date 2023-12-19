@@ -183,7 +183,7 @@ class Probleme extends ElementGraphique {
         return listeAnomalies;
     }
     //Retourne les Donnees sous Formes d'informations
-    getVariableDonnee() {
+    getInformationDonnee() {
         let listeDonnee = this.getDonnee().trim().split(",");
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
@@ -199,7 +199,7 @@ class Probleme extends ElementGraphique {
         return listeDonneeInformation;
     }
     //Retourne les Resultat sous Formes d'informations
-    getVariableResultat() {
+    getInformationResultat() {
         let listeDonnee = this.getResultat().trim().split(",");
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
@@ -215,7 +215,7 @@ class Probleme extends ElementGraphique {
         return listeDonneeInformation;
     }
     // Retourne les variables du textes
-    extraireVariablesTextes() {
+    extraireInformationTextes() {
         let i = new Information();
         i._nom = "";
         const contenue = this.getTexte(); //' aa -> " a a " ';
@@ -236,15 +236,19 @@ class Probleme extends ElementGraphique {
         return i;
     }
     // Retourne les variables 
-    extraireVariables() {
+    extraireInformation() {
         let listeInformation = [];
-        if(this.extraireVariablesTextes())
+        if(this.extraireInformationTextes())
         {
-            listeInformation.push(this.extraireVariablesTextes());
+            listeInformation.push(this.extraireInformationTextes());
         }
-        listeInformation = [...listeInformation,  ...this.getVariableDonnee()]; 
-        listeInformation = [...listeInformation, ...this.getVariableResultat()];
+        listeInformation = [...listeInformation,  ...this.getInformationDonnee()]; 
+        listeInformation = [...listeInformation, ...this.getInformationResultat()];
         return listeInformation;
+    }
+    include(nameInformation)
+    {
+        return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
     }
 
 
