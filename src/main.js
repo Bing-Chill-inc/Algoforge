@@ -35,7 +35,7 @@ a._listeConditions.children[3]._elemParent.lierEnfant(e);
 a._listeConditions.children[4]._elemParent.lierEnfant(f);
 a._listeConditions.children[5]._elemParent.lierEnfant(g);
 a._listeConditions.children[6]._elemParent.lierEnfant(h);
-a._listeConditions.children[7]._elemParent.lierEnfant(i);*/
+a._listeConditions.children[7]._elemParent.lierEnfant(i);
 
 document.getElementById('espace1'); 
 let a = new Probleme;
@@ -69,3 +69,8 @@ a._elemParent.lierEnfant(c);
 b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
+*/
+
+document.getElementById('espace1');
+
+let a = new StructureSi("20vw", "20vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a   = 8")]);
