@@ -32,16 +32,23 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
         const premierLibelle = conditions[0].querySelector('.libelle').textContent;
         const caracteresAvantEgal = premierLibelle.match(regex);
     
-        // Vérifier si ces caractères sont présents dans tous les autres libellés
+        let nbCondition = 0;
         for (let condition of StructureAlternative._listeConditions.children) {
             let libelle = condition.querySelector('.libelle').textContent;
             const match = libelle.match(regex);
             if(libelle =="sinon"){
-                return;
+                if(nbCondition == StructureAlternative._listeConditions.children.length - 1){
+                    return;
+                }
+                else{
+                    return true;
+                }
             }
+        
             if (!match[1].trim().startsWith(caracteresAvantEgal[1])) {
-                return true; // Les caractères ne sont pas présents dans tous les autres libellés
+                return true; 
             }
+            nbCondition=nbCondition+1;
         }
     
         return;
