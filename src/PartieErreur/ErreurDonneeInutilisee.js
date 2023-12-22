@@ -34,7 +34,6 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle
             }
             for(let children of unProbleme.getDescendants())
             {
-                console.log(children.include + InformationARegarder._nom+ "->"+ children.include(InformationARegarder._nom));
                 if(children.include(InformationARegarder._nom))
                 {
                     listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
