@@ -24,4 +24,8 @@ class ErreurResultatInutilisee extends ErreurConceptuelle
     {
         return "Le résultat ", this._nomResultat," n'est pas utilisé.";
     }
+    static detecterAnomalie(unProbleme)
+    {
+        console.log("pas encore fait");
+    }
 } 
