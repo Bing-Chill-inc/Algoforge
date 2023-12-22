@@ -61,7 +61,7 @@ class ElementGraphique extends HTMLElement {
     
     extraireInformation()
     {
-        console.log("J'ai pas été initialisé je suis " + this);
+        console.log("Extraire J'ai pas été initialisé je suis " + this);
         return [];
     }
 
@@ -85,7 +85,7 @@ class ElementGraphique extends HTMLElement {
     {
         if(this._parent)
         {
-            return this._parent._proprietaire instanceof typeRechercher ? this._parent:null;
+            return this._parent._proprietaire instanceof typeRechercher ? this._parent._proprietaire:null;
         }
         return null;
     }
@@ -96,8 +96,8 @@ class ElementGraphique extends HTMLElement {
         let listeDeMesAntescedants = [];
         if(parent !== null)
         {
-            listeDeMesAntescedants.push(parent._proprietaire);
-            listeDeMesAntescedants = [...listeDeMesAntescedants, ...parent._proprietaire.getAntescedants()];
+            listeDeMesAntescedants.push(parent);
+            listeDeMesAntescedants = [...listeDeMesAntescedants, ...parent.getAntescedants()];
         }
         return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
         
@@ -105,7 +105,16 @@ class ElementGraphique extends HTMLElement {
 
     include(nameInformation)
     {
-        console.log("J'ai pas été initialisé je suis " + this.enfant);
+        console.log("Include J'ai pas été initialisé je suis " + this.enfant);
         return false;
     }
+    getInformationResultat() {
+        console.log("get Information Resultat non défini dans ma classe je suis " +this.ElementGraphique)
+        return [];
+    }
+    getInformationDonnee() {
+        console.log("get Information Donnée non défini dans ma classe je suis " +this.ElementGraphique)
+        return [];
+    }
+    
 }
