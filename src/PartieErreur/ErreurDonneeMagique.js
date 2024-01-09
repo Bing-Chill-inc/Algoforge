@@ -4,8 +4,9 @@ class ErreurDonneeMagique extends ErreurConceptuelle
     _nomDonnee; // String
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) {
+    constructor(elementEmetteur, nomDonnee = new String()) {
         super(elementEmetteur);
+        this._nomDonnee = nomDonnee;
     }
     
     // ENCAPSULATION
@@ -76,7 +77,12 @@ class ErreurDonneeMagique extends ErreurConceptuelle
                 }
             }
         }
-        return informationEnDonnee.length != 0;
+        if(informationEnDonnee.length != 0) {
+            return [true, informationEnDonnee._nom];
+        }
+        else {
+            return false;
+        }
         
     }
 }

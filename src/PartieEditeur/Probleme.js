@@ -161,8 +161,9 @@ class Probleme extends ElementGraphique {
     rechercherAnomalies() {
         let listeAnomalies = [];
         // 1
-        if(ErreurDonneeMagique.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurDonneeMagique(this));
+        let donneeMagique = ErreurDonneeMagique.detecterAnomalie(this)
+        if(donneeMagique[0]) {
+            listeAnomalies.push(new ErreurDonneeMagique(this, donneeMagique[1]));
         }
         // 2
         if(ErreurDonneeInutilisee.detecterAnomalie(this))
