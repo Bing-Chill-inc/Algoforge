@@ -25,43 +25,58 @@ class ErreurDonneeMagique extends ErreurConceptuelle
         return "La donnée ", this._nomDonnee," ne provient de nulle part.";
     }
 
-    static detecterAnomalie(unProbleme) {
-        let donnees = unProbleme.getInformationDonnee();
-        if(donnees.length == 0) {
+    static detecterAnomalie(unProbleme)
+    {
+        // Etapes 
+        // 1 - Regarder si il la un parent sinon y'a pas d'erreur
+        // 2 - Regarder si les antescedents contient pas en donnée val
+        // 3 - Regarder si les éléments précédents du probleme courant ne contient pas val 
+        
+        // Etape 1:
+        if(!unProbleme.getParent())
+        {
             return false;
         }
-        let i = 0;
-        let parent = unProbleme.getParent();
-        if (parent == null) {
-            return false;
+
+        // Etape 2:
+        let antescedents = unProbleme.getAntescedants();
+        let informationEnDonnee = unProbleme.getInformationDonnee();
+        let informationDesAntescedants = [];
+        for(let parents of antescedents)
+        {
+            informationDesAntescedants = [...informationDesAntescedants, ...parents.getInformationDonnee()];
         }
-        let listeEnfantsParent = parent._listeElementsEnfants;
-        while(unProbleme != listeEnfantsParent[i].element) {
-            if(listeEnfantsParent[i] instanceof Probleme || listeEnfantsParent[i] instanceof Procedure){
-                for(let donnee of donnees){
-                    if(listeEnfantsParent[i].getInformationDonnee().includes(donnee)){
-                        return false;
-                    }
-                    else if(listeEnfantsParent[i].getInformationResultat().includes(donnee)){
-                        return false;
+        for(let uneInfomationEnDonnee of informationEnDonnee)
+        {
+            for(let informationAntescedants of informationDesAntescedants)
+            {
+                if(informationAntescedants._nom == uneInfomationEnDonnee._nom)
+                {
+                    informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
+                }
+            }
+        }
+
+        // Etape 3
+        for(let enfants of unProbleme.getParent().getEnfants())
+        {
+            if(enfants == unProbleme)
+            {
+                break;
+            
+            }
+            for(let uneInfomationEnDonnee of informationEnDonnee)
+            {
+                for(let informationEnfant of enfants.getInformationResultat())
+                {  
+                    if(informationEnfant._nom == uneInfomationEnDonnee._nom)
+                    {
+                        informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
                     }
                 }
             }
-            i++;
         }
-        for(let probleme of unProbleme.getAntescedants()) {
-            if(probleme instanceof Probleme || probleme instanceof Procedure) {
-                for(let donnee of donnees){
-                    if(probleme.getInformationDonnee().includes(donnee)) {
-                        return false;   
-                    }
-                    else if(probleme.getInformationResultat().includes(donnee)) {
-                        return false;
-                    }
-                }             
-            }
-            
-        }
-        return true;
+        return informationEnDonnee.length != 0;
+        
     }
 }

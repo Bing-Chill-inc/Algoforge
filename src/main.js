@@ -64,6 +64,7 @@ e._elemParent.lierEnfant(f);
 /*
 document.getElementById('espace1');
 
+let a = new StructureSi("20vw", "20vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a   = 8")]);
 let a = new StructureSwitch("20vw", "20vw", [new Condition("a"),new Condition("t")]);
 let b = new Probleme;
 
