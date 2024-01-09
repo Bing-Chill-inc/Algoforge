@@ -193,12 +193,12 @@ class Probleme extends ElementGraphique {
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
         {
-            if(Donnee == "")
+            let i = new Information();
+            i._nom = Donnee.trim();
+            if(i._nom == "")
             {
                 continue;
             }
-            let i = new Information();
-            i._nom = Donnee.trim();
             listeDonneeInformation.push(i);    
         }
         return listeDonneeInformation;
@@ -209,12 +209,12 @@ class Probleme extends ElementGraphique {
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
         {
-            if(Donnee == "")
+            let i = new Information();
+            i._nom = Donnee.trim();
+            if(i._nom == "")
             {
                 continue;
             }
-            let i = new Information();
-            i._nom = Donnee;
             listeDonneeInformation.push(i);    
         }
         return listeDonneeInformation;
