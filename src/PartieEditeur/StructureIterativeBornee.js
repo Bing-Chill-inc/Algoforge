@@ -6,7 +6,7 @@ class StructureIterativeBornee extends StructureIterative {
     _pas; // String
 
     // CONSTRUCTEUR
-    constructor(abscisse, ordonnee, variableAIterer = new Information(), borneInferieure = "BORNE_INF", borneSuperieure = "BORNE_SUP", pas = "1") {
+    constructor(abscisse, ordonnee, variableAIterer = "", borneInferieure = "BORNE_INF", borneSuperieure = "BORNE_SUP", pas = "1") {
         super(abscisse, ordonnee);
         this._variableAIterer = variableAIterer;
         this._borneInferieure = borneInferieure;
@@ -47,6 +47,25 @@ class StructureIterativeBornee extends StructureIterative {
         this._pas = value;
     }
 
+    extraireInformation()
+    {
+        let i = new Information();
+        i._nom = this._variableAIterer;
+        i._type = "int";
+        if(i._nom == "")
+        {
+            return [];
+        }
+        return [i];
+    }
+    getInformationDonnee() 
+    {
+        return this.extraireInformation();
+    }
+    getInformationResultat() 
+    {
+        return [];
+    }
     // METHODES
     afficher() {
         super.afficher(); // Affichage de la boucle
@@ -64,7 +83,7 @@ class StructureIterativeBornee extends StructureIterative {
             listeAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
-        if(AvertissementTropDeSousElements.DetecterAnomalie(this)) {
+        if(AvertissementTropDeSousElements.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
         return listeAnomalies;

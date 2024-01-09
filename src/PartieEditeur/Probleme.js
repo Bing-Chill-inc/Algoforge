@@ -184,7 +184,11 @@ class Probleme extends ElementGraphique {
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
-        
+        // 18 début
+        if(AvertissementDonneDynamiquementTypee.detecterAnomalie(this))
+        {
+            listeAnomalies.push(new AvertissementDonneDynamiquementTypee(this));
+        }
         return listeAnomalies;
     }
     //Retourne les Donnees sous Formes d'informations
