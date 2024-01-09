@@ -40,11 +40,14 @@ class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
         let lesInformationsPasTypeCorrectement = lesInformations;
         for(let information of lesInformations)
         {
-            const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
-            const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
-            if(informationBienType)
+            if(document.getElementById('espace1').leDictionnaireDesDonnees.containInformation(information._nom))
             {
-                lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom)
+                const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
+                const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
+                if(informationBienType)
+                {
+                    lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom)
+                }
             }
         }
         return lesInformationsPasTypeCorrectement.length != 0;
