@@ -178,7 +178,15 @@ class PlanTravail extends HTMLElement {
         {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
-        console.log(this.leDictionnaireDesDonnees);
+    }
+    rechercherAnomalies()
+    {
+        let listeAnomalies = [];
+        for(let unEnfant of this.children)
+        {
+            listeAnomalies = [...listeAnomalies, ...unEnfant.rechercherAnomalies()];
+        }
+        console.log(listeAnomalies);
     }
 
 }

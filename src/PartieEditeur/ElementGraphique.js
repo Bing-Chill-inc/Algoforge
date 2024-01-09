@@ -61,7 +61,7 @@ class ElementGraphique extends HTMLElement {
     
     extraireInformation()
     {
-        console.log("Extraire J'ai pas été initialisé je suis " + this);
+        console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
         return [];
     }
 
@@ -105,15 +105,15 @@ class ElementGraphique extends HTMLElement {
 
     include(nameInformation)
     {
-        console.log("Include J'ai pas été initialisé je suis " + this.enfant);
+        console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
     getInformationResultat() {
-        console.log("get Information Resultat non défini dans ma classe je suis " +this.ElementGraphique)
+        console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
     getInformationDonnee() {
-        console.log("get Information Donnée non défini dans ma classe je suis " +this.ElementGraphique)
+        console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
     

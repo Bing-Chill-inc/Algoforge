@@ -45,6 +45,7 @@ class DictionnaireDonnee
         // Char
         // unsigned double
         // double
+        // boolean
         const type1 = informationUne;
         const type2 = InformationDeux;
 
@@ -65,6 +66,44 @@ class DictionnaireDonnee
 
         // Si aucun des deux cas alors type1 est renvoyer
         return this.getTypeLePlusBasEnCommun(type1, type2);
+    }
+
+    TypeCompatible(type1, type2)
+    {
+        if(type1 == undefined || type2 == undefined)
+        {
+            return true;
+        }
+        let courant = type1;
+        while(true)
+        {
+            if(!courant)
+            {
+                break;
+            }
+            if(type2 == courant)
+            {
+                return true;
+            }
+            courant = this._dictionnaireDesConvertionTypes[courant];
+        }
+
+        courant = type2;
+        while(true)
+        {
+            if(!courant)
+            {
+                break;
+            }
+            if(type1 == courant)
+            {
+                return true;
+            }
+            courant = this._dictionnaireDesConvertionTypes[courant];
+        }
+
+        return false;
+        
     }
 
     getTypeLePlusBasEnCommun(type1, type2)
