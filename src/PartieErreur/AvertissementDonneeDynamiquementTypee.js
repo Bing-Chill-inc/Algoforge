@@ -34,9 +34,20 @@ class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
     }
     
     // METHODES
-    static detecterAnomalie(unProbleme) {
-        console.log(unProbleme.extraireInformationTextes());
-        const typeUn = unProbleme.extraireInformationTextes(); 
+    static detecterAnomalie(unProbleme) 
+    {
+        const lesInformations = unProbleme.extraireInformation();
+        let lesInformationsPasTypeCorrectement = lesInformations;
+        for(let information of lesInformations)
+        {
+            const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
+            const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
+            if(informationBienType)
+            {
+                lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom)
+            }
+        }
+        return lesInformationsPasTypeCorrectement.length != 0;
     }
     toString() {
         return "La variable "+this._nomVariable+" est utilisée avec les types suivants : "+this._typesUtilises;
