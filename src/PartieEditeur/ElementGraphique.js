@@ -1,3 +1,10 @@
+/**
+ * La classe ElementGraphique est la base de tous les éléments de l'éditeur d'algorithmes 
+ *
+ * @class ElementGraphique
+ * @typedef {ElementGraphique}
+ * @extends {HTMLElement}
+ */
 class ElementGraphique extends HTMLElement {
     // ATTRIBUTS
     _abscisse; // Entier 
@@ -6,6 +13,16 @@ class ElementGraphique extends HTMLElement {
 
 
     // CONSTRUCTEUR
+    /**
+     * Crée une instance de ElementGraphique.
+     * 
+     * Par défaut la position à la création de l'instance est à (0,0)
+     *
+     * @constructor
+     * @param {number} [abscisse=0]
+     * @param {number} [ordonnee=0]
+     * @param {*} [parent=null]
+     */
     constructor(abscisse = 0, ordonnee = 0, parent = null) {
         super();
         this._abscisse = abscisse;
@@ -15,31 +32,64 @@ class ElementGraphique extends HTMLElement {
     }
 
     // ENCAPSULATION
+    /**
+     * Renvoie la valeur de l'abscisse de l'ElementGraphique
+     *
+     * @type {number}
+     */
     get _abscisse() {
         return this._abscisse;
     }
 
+    /**
+     * Définit la valeur de l'abscisse de l'ElementGraphique
+     */
     set _abscisse(value) {
         this._abscisse = value;
     }
 
+    /**
+     * Renvoie la valeur de l'ordonnée de l'ElementGraphique
+     *
+     * @type {number}
+     */
     get _ordonnee() {
         return this._ordonnee;
     }
 
+    /**
+     * Définit la valeur de l'ordonnée de l'ElementGraphique
+     */
     set _ordonnee(value) {
         this._ordonnee = value;
     }
 
+    /**
+     * Renvoie le parent de l'ElementGraphique
+     *
+     * @type {*}
+     */
     get _parent() {
         return this._parent;
     }
 
+    /**
+     * Définit le parent de l'ElementGraphique
+     */
     set _parent(value) {
         this._parent = value;
     }
 
     // ENCAPSULATION
+
+    /**
+     * Définit la positon de l'ElementGraphique
+     * 
+     * Si aucune valeur n'est définit la position ne change pas. Sinon la nouvelle valeur est donné à l'ElementGraphique
+     *
+     * @param {number} [abscisse=-1]
+     * @param {number} [ordonnee=-1]
+     */
     setPosition(abscisse = -1, ordonnee = -1) {
         if (abscisse == -1 && ordonnee == -1) {
             this.style.left = "calc(var(--sizeModifier) * " + this._abscisse + ")";
@@ -50,11 +100,19 @@ class ElementGraphique extends HTMLElement {
         }
     }
 
+    /**
+     * Renvoie la position de l'ElementGraphique sous forme de dictionnaire
+     *
+     * @returns {{ abscisse: any; ordonnee: any; }}
+     */
     getPosition() {
         return {abscisse: this.style.left, ordonnee: this.style.top};
     }
 
     // METHODES
+    /**
+     * Affiche dans la console la position de l'ElementGraphique
+     */
     afficher() {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
@@ -65,6 +123,12 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
 
+    /**
+     * Comportement naïf de la méthode getEnfants ne renvoie rien
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {{}}
+     */
     getEnfants(typeRechercher = ElementGraphique)
     {
         return [];
