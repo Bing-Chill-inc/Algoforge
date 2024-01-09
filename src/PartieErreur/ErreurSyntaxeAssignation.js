@@ -1,24 +1,21 @@
-class ErreurSyntaxeAssignation extends ErreurConceptuelle
-{
+class ErreurSyntaxeAssignation extends ErreurConceptuelle {
     // Pas un égal pour l’assignation mais une flèche   
     // ATTRIBUTS  -- Non --
 
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) 
-    {
+    constructor(elementEmetteur) {
         super(elementEmetteur);
     }
         
     // ENCAPSULATION  -- Non --
 
     // METHODES
-    static detecterAnomalie(unProbleme)
-    {
+    static detecterAnomalie(unProbleme) {
         return unProbleme.getTexte().includes('=');
     }
-    toString()
-    {
+    
+    toString() {
         return "L'assignation en surbrillance n'est pas syntaxiquement correcte.";
     }
 } 

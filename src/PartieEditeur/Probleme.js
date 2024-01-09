@@ -158,48 +158,54 @@ class Probleme extends ElementGraphique {
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
+
     rechercherAnomalies() {
         let listeAnomalies = [];
         // 1
-        let donneeMagique = ErreurDonneeMagique.detecterAnomalie(this)
-        if(donneeMagique[0]) {
-            listeAnomalies.push(new ErreurDonneeMagique(this, donneeMagique[1]));
-        }
-        // 2
-        if(ErreurDonneeInutilisee.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new ErreurDonneeInutilisee(this));
-        }
-        // 3
-        if(ErreurResultatInutilisee.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new ErreurResultatInutilisee(this));
-        }
-        // 9
-        if(ErreurSyntaxeAssignation.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new ErreurSyntaxeAssignation(this));
-        }
-        // 12
-        if(AvertissementTropDeSousElements.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
+        if(donneesMagiques[0]) {
+            listeAnomalies.push(new ErreurDonneeMagique(this, donneesMagiques[1]));
         }
         
+        // 2
+        let donneesInutilisees = ErreurDonneeInutilisee.detecterAnomalie(this);
+        if(donneesInutilisees[0]) {
+            listeAnomalies.push(new ErreurDonneeInutilisee(this, donneesInutilisees[1]));
+        }
+        
+        // 3
+        let resultatsInutilisees = ErreurResultatInutilisee.detecterAnomalie(this);
+        if(resultatsInutilisees[0]) {
+            listeAnomalies.push(new ErreurResultatInutilisee(this, resultatsInutilisees[1]));
+        }
+        
+        // 9
+        if(ErreurSyntaxeAssignation.detecterAnomalie(this)) {
+            listeAnomalies.push(new ErreurSyntaxeAssignation(this));
+        }
+    
+        // 12
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0])
+        {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+        }
+    
         return listeAnomalies;
     }
+
     //Retourne les Donnees sous Formes d'informations
     getInformationDonnee() {
         let listeDonnee = this.getDonnee().trim().split(",");
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
         {
-            let i = new Information();
-            i._nom = Donnee.trim();
-            if(i._nom == "")
+            if(Donnee == "")
             {
                 continue;
             }
+            let i = new Information();
+            i._nom = Donnee.trim();
             listeDonneeInformation.push(i);    
         }
         return listeDonneeInformation;
@@ -210,12 +216,12 @@ class Probleme extends ElementGraphique {
         let listeDonneeInformation = [];
         for(let Donnee of listeDonnee)
         {
-            let i = new Information();
-            i._nom = Donnee.trim();
-            if(i._nom == "")
+            if(Donnee == "")
             {
                 continue;
             }
+            let i = new Information();
+            i._nom = Donnee;
             listeDonneeInformation.push(i);    
         }
         return listeDonneeInformation;

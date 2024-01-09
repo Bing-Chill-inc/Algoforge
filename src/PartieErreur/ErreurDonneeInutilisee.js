@@ -1,54 +1,67 @@
-class ErreurDonneeInutilisee extends ErreurConceptuelle
-{
+class ErreurDonneeInutilisee extends ErreurConceptuelle {
     // ATTRIBUTS
-    _nomDonnee; // String
+    _nomsDonnees; // Array<String>
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) {
+    constructor(elementEmetteur, nomsDonnees = new Array()) {
         super(elementEmetteur);
+        this._nomsDonnees = nomsDonnees;
     }
         
     // ENCAPSULATION
-    set _nomDonnee(value)
-    {
-        this._nomDonnee = value;
+    set _nomsDonnees(value) {
+        this._nomsDonnees = value;
     }
         
-    get _nomDonnee()
-    {
-        return this._nomDonnee;
+    get _nomsDonnees() {
+        return this._nomsDonnees;
     }
     
-    static detecterAnomalie(unProbleme)
-    {
+    static detecterAnomalie(unProbleme) {
         // A changer reperer juste si il y'a le texte
         const listeDentree = unProbleme.getInformationDonnee(); 
         let listeEntree = listeDentree;
 
-        for(let InformationARegarder of listeDentree)
-        {
-            if(unProbleme.getTexte().includes(InformationARegarder._nom))
-            {
+        for(let InformationARegarder of listeDentree) {
+            if(unProbleme.getTexte().includes(InformationARegarder._nom)) {
                 listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
                 continue;
             }
-            for(let children of unProbleme.getDescendants())
-            {
-                if(children.include(InformationARegarder._nom))
-                {
+            for(let children of unProbleme.getDescendants()) {
+                if(children.include(InformationARegarder._nom)) {
                     listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
                     continue;
                 }
             }
         }
-        
-
-        return listeEntree.length > 0 ;
+        if(listeEntree.length > 0) {
+            let donneesInutilisees = [];
+            for(let donnee of listeEntree) {
+                donneesInutilisees.push(donnee._nom);
+            }
+            return [true, donneesInutilisees];
+        }
+        else {
+            return [false];
+        }
     }  
 
     // METHODES
-    toString()
-    {
-        return "La donnée ", this._nomDonnee," n'est pas utilisée.";
+    toString() {
+        if(this._nomsDonnees.length == 1) {
+            return "La donnée " + this._nomsDonnees[0] + " n'est pas utilisée.";
+        }
+        else {
+            let chaine = "";
+            for (let i = 0; i < this._nomsDonnees.length; i++) {
+                if(i == this._nomsDonnees.length - 1) {
+                    chaine += this._nomsDonnees[i];
+                }
+                else {
+                    chaine += this._nomsDonnees[i] + ", ";
+                }
+            }
+            return "Les donnée " + chaine + " ne sont pas utilisées.";
+        }
     }
 } 

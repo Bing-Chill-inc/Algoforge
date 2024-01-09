@@ -16,9 +16,13 @@ class ConditionSortie extends ElementGraphique {
 
     rechercherAnomalies() {
         let listeAnomalies = [];
-        if(ErreurArretHorsIteratif.detecterAnomalie(this)){
+
+        //5
+        if(ErreurArretHorsIteratif.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurArretHorsIteratif(this));
         }
+
+        /*
         if(listeAnomalies.length == 0){
             if(ErreurArretIteratifBornee.detecterAnomalie(this)){
                 listeAnomalies.push(new ErreurArretIteratifBornee(this));
@@ -27,6 +31,7 @@ class ConditionSortie extends ElementGraphique {
         if(AvertissementSProblemeJamaisExecute.detecterAnomalie(this)){
             listeAnomalies.push(new AvertissementSProblemeJamaisExecute(this));
         }
+        */
         return listeAnomalies;
     }
 
