@@ -160,14 +160,19 @@ class Probleme extends ElementGraphique {
     }
     rechercherAnomalies() {
         let listeAnomalies = [];
-        //1
+        // 1
         if(ErreurDonneeMagique.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurDonneeMagique(this));
         }
-        /*
+        // 2
         if(ErreurDonneeInutilisee.detecterAnomalie(this))
         {
             listeAnomalies.push(new ErreurDonneeInutilisee(this));
+        }
+        // 3
+        if(ErreurResultatInutilisee.detecterAnomalie(this))
+        {
+            listeAnomalies.push(new ErreurResultatInutilisee(this));
         }
         // 9
         if(ErreurSyntaxeAssignation.detecterAnomalie(this))
@@ -179,7 +184,7 @@ class Probleme extends ElementGraphique {
         {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
         }
-        */
+        
         return listeAnomalies;
     }
     //Retourne les Donnees sous Formes d'informations
