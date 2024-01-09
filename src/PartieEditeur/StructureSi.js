@@ -41,9 +41,14 @@ class StructureSi extends StructureAlternative {
             conditions: conditions
         };
     }
-
+    extraireInformation()
+    {
+        // A faire condition doit pouvoir dire la variable ou le type
+        return [];
+    }
     rechercherAnomalies() {
         let listeAnomalies = [];
+        /*
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
@@ -64,7 +69,7 @@ class StructureSi extends StructureAlternative {
         if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
             listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
         }
-        
+        */
         return listeAnomalies;
     }
      
