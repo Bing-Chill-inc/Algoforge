@@ -12,7 +12,7 @@ class ErreurSyntaxeAssignation extends ErreurConceptuelle {
 
     // METHODES
     static detecterAnomalie(unProbleme) {
-        return unProbleme.getTexte().includes('=');
+        return unProbleme.getTexte().includes('=') || unProbleme.getTexte().includes('->');
     }
     
     toString() {
