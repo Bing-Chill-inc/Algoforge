@@ -47,25 +47,6 @@ class StructureIterativeBornee extends StructureIterative {
         this._pas = value;
     }
 
-    extraireInformation()
-    {
-        let i = new Information();
-        i._nom = this._variableAIterer;
-        i._type = "int";
-        if(i._nom == "")
-        {
-            return [];
-        }
-        return [i];
-    }
-    getInformationDonnee() 
-    {
-        return this.extraireInformation();
-    }
-    getInformationResultat() 
-    {
-        return [];
-    }
     // METHODES
     afficher() {
         super.afficher(); // Affichage de la boucle
@@ -101,4 +82,29 @@ class StructureIterativeBornee extends StructureIterative {
             enfants: this._elemParent.toJSON()
         };
     }
+
+    extraireInformation()
+    {
+        let i = new Information();
+        i._nom = this._variableAIterer;
+        i._type = "int";
+        if(i._nom == "")
+        {
+            return [];
+        }
+        return [i];
+    }
+    getInformationDonnee() 
+    {
+        return this.extraireInformation();
+    }
+    getInformationResultat() 
+    {
+        return [];
+    }
+    include(nameInformation)
+    {
+        return this._variableAIterer.includes(nameInformation) || this._pas.includes(nameInformation) || this._borneInferieure.includes(nameInformation) || this._borneSuperieure.includes(nameInformation);
+    }
+
 } window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);
