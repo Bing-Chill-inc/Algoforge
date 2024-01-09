@@ -47,6 +47,11 @@ class Information
         const ascii9 = '9'.charCodeAt(0); // code ASCII de '9'
         const asciiSeparateur = '.'.charCodeAt(0); // code ASCII de '.' (Séparateur de décimale)
         const asciiSigne = '-'.charCodeAt(0); // code ASCII de '-' (Signe du décimale)
+        //Detection boolean
+        if(unString.toLowerCase() == "true" || unString.toLowerCase() == "false" || unString.toLowerCase() == "vrai" || unString.toLowerCase() == "faux")
+        {
+            return "Boolean";
+        }
 
         //Detection char
         if(unString[0] == '\'' && unString[unString.length-1] == '\'' && unString.length == 3)
