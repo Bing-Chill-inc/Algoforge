@@ -1,54 +1,60 @@
-class ErreurDonneeMagique extends ErreurConceptuelle 
-{
+class ErreurDonneeMagique extends ErreurConceptuelle {
     // ATTRIBUTS
-    _nomDonnee; // String
+    _nomsDonnees; // Array<String>
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur, nomDonnee = new String()) {
+    constructor(elementEmetteur, nomsDonnees = new Array) {
         super(elementEmetteur);
-        this._nomDonnee = nomDonnee;
+        this._nomsDonnees = nomsDonnees;
     }
     
     // ENCAPSULATION
-    set _nomDonnee(value)
-    {
-        this._nomDonnee = value;
+    set _nomsDonnees(value) {
+        this._nomsDonnees = value;
     }
     
-    get _nomDonnee()
-    {
-        return this._nomDonnee;
+    get _nomsDonnees() {
+        return this._nomsDonnees;
     }
 
     // METHODES
-    toString()
-    {
-        return "La donnée ", this._nomDonnee," ne provient de nulle part.";
+    toString() {
+        if(this._nomsDonnees.length == 1) {
+            return "La donnée " + this._nomsDonnees[0] + " ne provient de nulle part.";
+        }
+        else {
+            let chaine = "";
+            for (let i = 0; i < this._nomsDonnees.length; i++) {
+                if(i == this._nomsDonnees.length - 1) {
+                    chaine += this._nomsDonnees[i];
+                }
+                else {
+                    chaine += this._nomsDonnees[i] + ", ";
+                }
+            }
+            return "Les donnée " + chaine + " ne provient de nulle part.";
+        }
     }
 
-    static detecterAnomalie(unProbleme)
-    {
+    static detecterAnomalie(unProbleme) {
         // Etapes 
         // 1 - Regarder si il la un parent sinon y'a pas d'erreur
         // 2 - Regarder si les antescedents contient pas en donnée val
         // 3 - Regarder si les éléments précédents du probleme courant ne contient pas val 
         
         // Etape 1:
-        if(!unProbleme.getParent())
-        {
-            return false;
+        if(!unProbleme.getParent()) {
+            return [false];
         }
 
         // Etape 2:
         let antescedents = unProbleme.getAntescedants();
         let informationEnDonnee = unProbleme.getInformationDonnee();
         let informationDesAntescedants = [];
-        for(let parents of antescedents)
-        {
+        for(let parents of antescedents) {
             informationDesAntescedants = [...informationDesAntescedants, ...parents.getInformationDonnee()];
         }
-        for(let uneInfomationEnDonnee of informationEnDonnee)
-        {
+        for(let uneInfomationEnDonnee of informationEnDonnee) {
             for(let informationAntescedants of informationDesAntescedants)
             {
                 if(informationAntescedants._nom == uneInfomationEnDonnee._nom)
@@ -59,8 +65,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle
         }
 
         // Etape 3
-        for(let enfants of unProbleme.getParent().getEnfants())
-        {
+        for(let enfants of unProbleme.getParent().getEnfants()) {
             if(enfants == unProbleme)
             {
                 break;
@@ -78,10 +83,15 @@ class ErreurDonneeMagique extends ErreurConceptuelle
             }
         }
         if(informationEnDonnee.length != 0) {
-            return [true, informationEnDonnee._nom];
+            let donneesMagiques = [];
+            for(let information of informationEnDonnee)
+            {
+                donneesMagiques.push(information._nom);
+            }
+            return [true, donneesMagiques];
         }
         else {
-            return false;
+            return [false];
         }
         
     }

@@ -1,31 +1,42 @@
-class ErreurResultatInutilisee extends ErreurConceptuelle
-{
+class ErreurResultatInutilisee extends ErreurConceptuelle {
     // ATTRIBUTS
-
+    _nomsResultats; // Array<String>
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) {
+    constructor(elementEmetteur, nomsResultats = new Array()) {
         super(elementEmetteur);
+        this._nomsResultats = nomsResultats;
     }
             
     // ENCAPSULATION
-    set _nomResultat(value)
-    {
-        this._nomResultat = value;
+    set _nomsResultats(value) {
+        this._nomsResultats = value;
     }
             
-    get _nomResultat()
-    {
-        return this._nomResultat;
+    get _nomsResultats() {
+        return this._nomsResultats;
     }
             
     // METHODES
-    toString()
-    {
-        return "Le résultat ", this._nomResultat," n'est pas utilisé.";
+    toString() {
+        if(this._nomsResultats.length == 1) {
+            return "Le résultat "+this._nomsResultats[0]+" n'est pas utilisé";
+        }
+        else {
+            let chaine = "";
+            for (let i = 0; i < this._nomsResultats.length; i++) {
+                if(i == this._nomsResultats.length - 1) {
+                    chaine += this._nomsResultats[i];
+                }
+                else {
+                    chaine += this._nomsResultats[i] + ", ";
+                }
+            }
+            return "Les résultats "+chaine+" ne sont pas utilisés";
+        }
     }
-    static detecterAnomalie(unProbleme)
-    {
+
+    static detecterAnomalie(unProbleme) {
         const parent = unProbleme.getParent();
         if(parent == null)
         {
@@ -59,6 +70,15 @@ class ErreurResultatInutilisee extends ErreurConceptuelle
             }
         }
         
-        return resultatProbleme.length != 0;
+        if(resultatProbleme.length != 0) {
+            let resultatsInutilisees = [];
+            for(let resultat of resultatProbleme) {
+                resultatsInutilisees.push(resultat._nom);
+            }
+            return [true, resultatsInutilisees];
+        }
+        else {
+            return [false];
+        }
     }
 } 
