@@ -59,19 +59,16 @@ class ElementGraphique extends HTMLElement {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
-    extraireInformation()
-    {
+    extraireInformation() {
         console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
         return [];
     }
 
-    getEnfants(typeRechercher = ElementGraphique)
-    {
+    getEnfants(typeRechercher = ElementGraphique) {
         return [];
     }
 
-    getDescendants(typeRechercher = ElementGraphique)
-    {
+    getDescendants(typeRechercher = ElementGraphique) {
         const listeDeMesEnfants = this.getEnfants();
         let listeDeMesDescendants = listeDeMesEnfants;
         for(let enfant of listeDeMesEnfants)
@@ -81,8 +78,7 @@ class ElementGraphique extends HTMLElement {
         return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
     }
 
-    getParent(typeRechercher = ElementGraphique)
-    {
+    getParent(typeRechercher = ElementGraphique) {
         if(this._parent)
         {
             return this._parent._proprietaire instanceof typeRechercher ? this._parent._proprietaire:null;
@@ -90,8 +86,7 @@ class ElementGraphique extends HTMLElement {
         return null;
     }
 
-    getAntescedants(typeRechercher = ElementGraphique)
-    {
+    getAntescedants(typeRechercher = ElementGraphique) {
         const parent = this.getParent();
         let listeDeMesAntescedants = [];
         if(parent !== null)
@@ -103,8 +98,7 @@ class ElementGraphique extends HTMLElement {
         
     }
 
-    include(nameInformation)
-    {
+    include(nameInformation) {
         console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
