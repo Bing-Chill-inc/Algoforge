@@ -117,6 +117,11 @@ class ElementGraphique extends HTMLElement {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
+    /**
+     * Donne les information contenu dans l'ElementGraphique lorsque qu'il na pas été initialisé correctement
+     *
+     * @returns {{}}
+     */
     extraireInformation()
     {
         console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
@@ -134,6 +139,12 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
 
+    /**
+     * Renvoie l'arbre des descendants contenant les descendants des descendants
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getDescendants(typeRechercher = ElementGraphique)
     {
         const listeDeMesEnfants = this.getEnfants();
@@ -145,6 +156,12 @@ class ElementGraphique extends HTMLElement {
         return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
     }
 
+    /**
+     * Renvoie le parent de l'ElementGraphique
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getParent(typeRechercher = ElementGraphique)
     {
         if(this._parent)
@@ -154,6 +171,12 @@ class ElementGraphique extends HTMLElement {
         return null;
     }
 
+    /**
+     * Renvoie la liste des antécédant d'ElementGraphique
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getAntescedants(typeRechercher = ElementGraphique)
     {
         const parent = this.getParent();
