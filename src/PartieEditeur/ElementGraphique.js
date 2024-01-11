@@ -118,7 +118,9 @@ class ElementGraphique extends HTMLElement {
     }
     
     /**
-     * Donne les information contenu dans l'ElementGraphique lorsque qu'il na pas été initialisé correctement
+     * Comportement natif de getEnfants(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
      *
      * @returns {{}}
      */
@@ -129,7 +131,9 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Comportement naïf de la méthode getEnfants ne renvoie rien
+     * Comportement natif de getEnfants(), ne renvoie rien
+     * 
+     * Est étendu dans les sous classes
      *
      * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
      * @returns {{}}
@@ -190,15 +194,39 @@ class ElementGraphique extends HTMLElement {
         
     }
 
+    /**
+     * Comportement natif de include(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @param {*} nameInformation
+     * @returns {boolean}
+     */
     include(nameInformation)
     {
         console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
+    
+    /**
+     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @returns {{}}
+     */
     getInformationResultat() {
         console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
+
+    /**
+     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @returns {{}}
+     */
     getInformationDonnee() {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
