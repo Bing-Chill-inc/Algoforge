@@ -20,6 +20,12 @@ class PlanTravail extends HTMLElement {
         if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementPlanTropGrand(this));
         }
+        
+        for(let unEnfant of this.children)
+        {
+            listeAnomalies = [...listeAnomalies, ...unEnfant.rechercherAnomalies()];
+        }
+        console.log(listeAnomalies);
         return listeAnomalies;
     }
 
@@ -178,16 +184,7 @@ class PlanTravail extends HTMLElement {
         {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
-    }
-    rechercherAnomalies()
-    {
-        let listeAnomalies = [];
-        for(let unEnfant of this.children)
-        {
-            listeAnomalies = [...listeAnomalies, ...unEnfant.rechercherAnomalies()];
-        }
-        console.log(listeAnomalies);
-    }
+    }        
 
 }
 window.customElements.define("plan-travail", PlanTravail);
