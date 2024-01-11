@@ -22,16 +22,16 @@ class ConditionSortie extends ElementGraphique {
             listeAnomalies.push(new ErreurArretHorsIteratif(this));
         }
 
-        /*
         if(listeAnomalies.length == 0){
             if(ErreurArretIteratifBornee.detecterAnomalie(this)){
                 listeAnomalies.push(new ErreurArretIteratifBornee(this));
             }
         }
-        if(AvertissementSProblemeJamaisExecute.detecterAnomalie(this)){
-            listeAnomalies.push(new AvertissementSProblemeJamaisExecute(this));
+        let problemeJamaisExecute = AvertissementSProblemeJamaisExecute.detecterAnomalie(this);
+        if(problemeJamaisExecute[0]){
+            listeAnomalies.push(new AvertissementSProblemeJamaisExecute(this, problemeJamaisExecute[1]));
         }
-        */
+        
         return listeAnomalies;
     }
 

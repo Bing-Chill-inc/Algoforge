@@ -20,8 +20,9 @@ class StructureIterativeNonBornee extends StructureIterative {
             listeAnomalies.push(new ErreurBoucleSansSortie(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
-        if(AvertissementTropDeSousElements.detecterAnomalie(this)) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0]) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         return listeAnomalies;
     }
