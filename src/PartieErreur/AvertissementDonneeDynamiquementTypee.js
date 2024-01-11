@@ -1,41 +1,25 @@
-class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
+class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
 {
     // ATTRIBUTS
-    _nomVariable ; // String
-    _typesUtilises ; // array<Type>
+    _nomsVariables; // array<String>
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur, nomVariable = new String(), typesUtilises = new Array())
-    {
+    constructor(elementEmetteur, nomsVariables = new Array()) {
         super(elementEmetteur);
-        this._nomVariable = nomVariable;
-        this._typesUtilises = typesUtilises;
+        this._nomsVariables = nomsVariables;
     }
 
     // ENCAPSULATION
-    set _nomVariable(value)
-    {
-        this._nomVariable = value;
+    set _nomsVariables(value) {
+        this._nomsVariables = value;
     }
 
-    get _nomVariable()
-    {
-        return this._nomVariable;
-    }
-
-    set _typesUtilises(value)
-    {
-        this._typesUtilises = value;
-    }
-
-    get _typesUtilises()
-    {
-        return this._typesUtilises;
+    get _nomsVariables() {
+        return this._nomsVariables;
     }
     
     // METHODES
-    static detecterAnomalie(unProbleme) 
-    {
+    static detecterAnomalie(unProbleme) {
         const lesInformations = unProbleme.extraireInformation();
         let lesInformationsPasTypeCorrectement = lesInformations;
         for(let information of lesInformations)
@@ -50,9 +34,37 @@ class AvertissementDonneDynamiquementTypee extends AvertissementConceptuel
                 }
             }
         }
-        return lesInformationsPasTypeCorrectement.length != 0;
+        if(lesInformationsPasTypeCorrectement.length != 0) {
+            let pasTypeCorrectement = [];
+            for(let information of lesInformationsPasTypeCorrectement)
+            {
+                console.log(information._nom);
+                pasTypeCorrectement.push(information._nom);
+            }
+            return [true, pasTypeCorrectement];
+        }
+        else {
+            return [false];
+        }
     }
+
     toString() {
-        return "La variable "+this._nomVariable+" est utilisée avec les types suivants : "+this._typesUtilises;
+        if(this._nomsVariables.length == 1)
+        {
+            return "La variable " + this._nomsVariables[0] + " est dynamiquement typée.";
+        }
+        else {
+            let chaine = "Les variables ";
+            for(let i = 0; i < this._nomsVariables.length; i++) {
+                if(i == this._nomsVariables.length - 1) {
+                    chaine += this._nomsVariables[i] + " ";
+                }
+                else {
+                    chaine += this._nomsVariables[i] + ", ";
+                }
+            }
+            chaine += "sont dynamiquement typées.";
+            return chaine;
+        }
     }
 }

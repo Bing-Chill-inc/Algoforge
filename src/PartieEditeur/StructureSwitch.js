@@ -77,9 +77,9 @@ class StructureSwitch extends StructureAlternative {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
-        if(AvertissementTropDeSousElements.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0]) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //16
         if(ErreurComparaisonSwitch.detecterAnomalie(this)) {

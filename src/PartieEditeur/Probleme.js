@@ -186,16 +186,16 @@ class Probleme extends ElementGraphique {
     
         // 12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0])
-        {
+        if(tropDeSousElements[0]) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
     
         // 18
-        if(AvertissementDonneDynamiquementTypee.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementDonneDynamiquementTypee(this));
+        let donneesDynamiqumentTypee = AvertissementDonneeDynamiquementTypee.detecterAnomalie(this);
+        if(donneesDynamiqumentTypee[0]) {
+            listeAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
+
         return listeAnomalies;
     }
 
