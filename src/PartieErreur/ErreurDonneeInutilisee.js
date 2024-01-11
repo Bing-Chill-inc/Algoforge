@@ -24,12 +24,12 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
 
         for(let InformationARegarder of listeDentree) {
             if(unProbleme.getTexte().includes(InformationARegarder._nom)) {
-                listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
+                listeEntree = listeEntree.filter((uneEntree) => uneEntree._nom != InformationARegarder._nom);
                 continue;
             }
             for(let children of unProbleme.getDescendants()) {
                 if(children.include(InformationARegarder._nom)) {
-                    listeEntree.splice(listeEntree.indexOf(InformationARegarder),1);
+                    listeEntree = listeEntree.filter((uneEntree) => uneEntree._nom != InformationARegarder._nom);
                     continue;
                 }
             }

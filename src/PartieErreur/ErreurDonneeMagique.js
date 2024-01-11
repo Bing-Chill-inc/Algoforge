@@ -59,7 +59,8 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
             {
                 if(informationAntescedants._nom == uneInfomationEnDonnee._nom)
                 {
-                    informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
+                    informationEnDonnee = informationEnDonnee.filter((uneInfo) => uneInfo._nom != informationAntescedants._nom);
+                    // A supprimer apres teste informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
                 }
             }
         }
@@ -77,7 +78,8 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
                 {  
                     if(informationEnfant._nom == uneInfomationEnDonnee._nom)
                     {
-                        informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
+                        informationEnDonnee = informationEnDonnee.filter((uneInfo) => uneInfo._nom != informationEnfant._nom);
+                        // A supprimer apres teste informationEnDonnee.splice(informationEnDonnee.indexOf(uneInfomationEnDonnee),1);
                     }
                 }
             }
