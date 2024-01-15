@@ -10,6 +10,7 @@ class ElementGraphique extends HTMLElement {
     _abscisse; // Entier 
     _ordonnee; // Entier
     _parent; // ElementParent
+    _listeAnomalie; //List<AnomalieConceptuelle>
     //_couleurPrimaire = "black"; // Couleur premiere
     //_etat= "Defaut"; // Etat de l'element graphique
 
@@ -234,6 +235,7 @@ class ElementGraphique extends HTMLElement {
             enfant.rechercherAnomalies(listeAnomaliesPrecedent);
         }
     }
+    /* Partie Affichage */
     colorierElement() {
         console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
     }
@@ -252,5 +254,40 @@ class ElementGraphique extends HTMLElement {
         this._couleurPrimaire = "black";
         this.colorierElement();
     }
-    
+    afficherErreur() {
+        this.effacerErreur();
+        if(this._listeAnomalie) {
+            if(this._listeAnomalie.length > 0) {
+                let EstUneErreur = false;
+                /*let divListeErreur = document.createElement("div");
+                divListeErreur.className = "divErreur";
+                this.appendChild(divListeErreur);
+
+                let listeErreur = document.createElement("ul");
+                divListeErreur.appendChild(listeErreur);*/
+                for(let probleme of this._listeAnomalie) {
+                    if(probleme instanceof ErreurConceptuelle) {
+                        EstUneErreur = true;
+                    }
+                    /*
+                    let erreur = document.createElement("li");
+                    erreur.textContent = probleme;
+                    listeErreur.appendChild(erreur);*/
+                }
+                if(EstUneErreur) {
+                    this.signalerErreur();
+                }
+                else {
+                    this.signalerAvertissement();
+                }
+            }
+        }
+    }
+    effacerErreur() {
+        this.effacerSignalement();
+        const divErreur = this.querySelector(".divErreur");
+        if (divErreur) {
+            divErreur.remove();
+        }
+    }
 }
