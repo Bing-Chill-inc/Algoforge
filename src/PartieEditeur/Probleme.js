@@ -254,43 +254,46 @@ class Probleme extends ElementGraphique {
      * @returns {{}}
      */
     rechercherAnomalies(listeAnomaliesPrecedent = []) {
-        let listeAnomalies = listeAnomaliesPrecedent;
+        let mesAnomalies = [];
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
         if(donneesMagiques[0]) {
-            listeAnomalies.push(new ErreurDonneeMagique(this, donneesMagiques[1]));
+            mesAnomalies.push(new ErreurDonneeMagique(this, donneesMagiques[1]));
         }
         
         // 2
         let donneesInutilisees = ErreurDonneeInutilisee.detecterAnomalie(this);
         if(donneesInutilisees[0]) {
-            listeAnomalies.push(new ErreurDonneeInutilisee(this, donneesInutilisees[1]));
+            mesAnomalies.push(new ErreurDonneeInutilisee(this, donneesInutilisees[1]));
         }
         
         // 3
         let resultatsInutilisees = ErreurResultatInutilisee.detecterAnomalie(this);
         if(resultatsInutilisees[0]) {
-            listeAnomalies.push(new ErreurResultatInutilisee(this, resultatsInutilisees[1]));
+            mesAnomalies.push(new ErreurResultatInutilisee(this, resultatsInutilisees[1]));
         }
         
         // 9
         if(ErreurSyntaxeAssignation.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurSyntaxeAssignation(this));
+            mesAnomalies.push(new ErreurSyntaxeAssignation(this));
         }
     
         // 12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
     
         // 18
         let donneesDynamiqumentTypee = AvertissementDonneeDynamiquementTypee.detecterAnomalie(this);
         if(donneesDynamiqumentTypee[0]) {
-            listeAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
+            mesAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
-        super.rechercherAnomalies(listeAnomalies);
-        return listeAnomalies;
+        this._listeAnomalie = mesAnomalies;
+
+        super.rechercherAnomalies([...mesAnomalies, ...listeAnomaliesPrecedent]);
+        this.afficherErreur();
+        return mesAnomalies;
     }
 
     /**
