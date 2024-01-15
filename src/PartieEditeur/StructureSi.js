@@ -58,15 +58,20 @@ class StructureSi extends StructureAlternative {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //15
-        if(AvertissementInformationsInconsistantesSi.detecterAnomalie(this)){
-            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this));
+        let informationsInconsistantesSi = AvertissementInformationsInconsistantesSi.detecterAnomalie(this);
+        if(informationsInconsistantesSi[0]){
+            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this, informationsInconsistantesSi[1]));
         }
         //17
-        if(AvertissementStructureInoptimale.detecterAnomalie(this)){
-            listeAnomalies.push(new AvertissementStructureInoptimale(this));
+        let structureInoptimale = AvertissementStructureInoptimale.detecterAnomalie(this);
+        if(structureInoptimale[0]){
+            listeAnomalies.push(new AvertissementStructureInoptimale(this, structureInoptimale[1], structureInoptimale[2]));
         }
-        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
-            listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
+        if(!informationsInconsistantesSi[0]){
+            let typesInconsistantsAlternatif = ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+            if(typesInconsistantsAlternatif[0]){
+                listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
+            }
         }
         return listeAnomalies;
     }

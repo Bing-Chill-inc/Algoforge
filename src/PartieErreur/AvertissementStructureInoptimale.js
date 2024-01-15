@@ -42,17 +42,21 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
         const conditions = StructureAlternative._listeConditions.children;
 
         // Récupérer les caractères avant "=" dans la première condition
-        const premierLibelle = conditions[0].querySelector('.libelle').textContent;
-        const caracteresAvantEgal = premierLibelle.split('=')[0].trim();
+        let  libelle = conditions[0].querySelector('.libelle').textContent;
+        const premierCaracteresAvantEgal = libelle.split('=')[0].trim();
+        let variable = premierCaracteresAvantEgal;
+        let valeurs = [libelle.split('=')[1].trim()];
     
         // Vérifier si ces caractères sont présents dans tous les autres libellés
         for (let condition of StructureAlternative._listeConditions.children) {
-            let libelle = condition.querySelector('.libelle').textContent;
-            if (!libelle.startsWith(caracteresAvantEgal)) {
-                return; // Les caractères ne sont pas présents dans tous les autres libellés
+            libelle = condition.querySelector('.libelle').textContent;
+            let caracteresAvantEgal = libelle.split('=')[0].trim();
+            if (premierCaracteresAvantEgal !== caracteresAvantEgal) {
+                return [false]; // Les caractères ne sont pas présents dans tous les autres libellés
             }
+            valeurs.push(libelle.split('=')[1].trim());
         }
     
-        return true;
+        return [true, variable, valeurs];
     }
 }
