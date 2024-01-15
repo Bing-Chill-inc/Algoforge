@@ -35,7 +35,7 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
         this._nomsDonnees = value;
     }
     /**
-     * Définit la valeur de _nomsDonnees d'ErreurDonneInutilisee
+     * Renvoie la valeur de _nomsDonnees d'ErreurDonneInutilisee
      */
     get _nomsDonnees() {
         return this._nomsDonnees;

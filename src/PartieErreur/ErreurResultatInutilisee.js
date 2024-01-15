@@ -35,7 +35,7 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
     }
             
     /**
-     * return la valeur de _nomsResultats d'ErreurResultatInutilisee
+     * Renvoie la valeur de _nomsResultats d'ErreurResultatInutilisee
      */
     get _nomsResultats() {
         return this._nomsResultats;
