@@ -38,7 +38,6 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
             let pasTypeCorrectement = [];
             for(let information of lesInformationsPasTypeCorrectement)
             {
-                console.log(information._nom);
                 pasTypeCorrectement.push(information._nom);
             }
             return [true, pasTypeCorrectement];

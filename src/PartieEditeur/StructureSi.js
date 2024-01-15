@@ -46,8 +46,8 @@ class StructureSi extends StructureAlternative {
         // A faire condition doit pouvoir dire la variable ou le type
         return [];
     }
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
@@ -73,6 +73,7 @@ class StructureSi extends StructureAlternative {
                 listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
             }
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
      
