@@ -252,6 +252,13 @@ class Probleme extends ElementGraphique {
         }
         return i;
     }
+
+    colorierElement() {
+        this.querySelector(".donnees").style.color = this._couleurPrimaire;
+        this.querySelector(".resultat").style.color = this._couleurPrimaire;
+        this.querySelector(".nom").style.borderColor = this._couleurPrimaire;
+    }
+
     // Retourne les variables 
     extraireInformation() {
         let listeInformation = [];
@@ -263,8 +270,7 @@ class Probleme extends ElementGraphique {
         listeInformation = [...listeInformation, ...this.getInformationResultat()];
         return listeInformation;
     }
-    include(nameInformation)
-    {
+    include(nameInformation) {
         return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
     }
 

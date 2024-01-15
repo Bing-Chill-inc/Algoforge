@@ -10,7 +10,8 @@ class ElementGraphique extends HTMLElement {
     _abscisse; // Entier 
     _ordonnee; // Entier
     _parent; // ElementParent
-
+    //_couleurPrimaire = "black"; // Couleur premiere
+    //_etat= "Defaut"; // Etat de l'element graphique
 
     // CONSTRUCTEUR
     /**
@@ -181,6 +182,24 @@ class ElementGraphique extends HTMLElement {
         {
             enfant.rechercherAnomalies(listeAnomaliesPrecedent);
         }
+    }
+    colorierElement() {
+        console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+    }
+    signalerErreur() {
+        this._etat = "Erreur"
+        this._couleurPrimaire = "red";
+        this.colorierElement();
+    }
+    signalerAvertissement() {
+        this._etat = "Avertissement"
+        this._couleurPrimaire = "yellow";
+        this.colorierElement();
+    }
+    effacerSignalement() {
+        this._etat = "Defaut"
+        this._couleurPrimaire = "black";
+        this.colorierElement();
     }
     
 }
