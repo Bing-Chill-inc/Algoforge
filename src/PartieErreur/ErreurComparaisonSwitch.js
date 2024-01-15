@@ -4,8 +4,9 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
     _nomDonnee; // String
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) {
+    constructor(elementEmetteur, nomDonnee = new String()) {
         super(elementEmetteur);
+        this._nomDonnee = nomDonnee;
     }
     
     // ENCAPSULATION
@@ -26,9 +27,10 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
     }
     static detecterAnomalie(StructureSwitch){
         for (let condition of StructureSwitch._listeConditions.children) {
-            if (condition.querySelector('.libelle').textContent.includes(StructureSwitch._expressionATester + "=")) {
-                return true;
+            if (condition.querySelector('.libelle').textContent.includes("=")) {
+                return [true, StructureSwitch._expressionATester];
             }
         }
+        return [false];
     }
 } 
