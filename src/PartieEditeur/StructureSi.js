@@ -46,17 +46,16 @@ class StructureSi extends StructureAlternative {
         // A faire condition doit pouvoir dire la variable ou le type
         return [];
     }
-    rechercherAnomalies() {
-        let listeAnomalies = [];
-        /*
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
-        if(AvertissementTropDeSousElements.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0]) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //15
         if(AvertissementInformationsInconsistantesSi.detecterAnomalie(this)){
@@ -69,7 +68,7 @@ class StructureSi extends StructureAlternative {
         if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)){
             listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
         }
-        */
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
      

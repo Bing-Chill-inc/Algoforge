@@ -14,12 +14,16 @@ class PlanTravail extends HTMLElement {
     // ENCAPSULATION -non-
 
     // METHODES
-
+    getProblemePrincipal() {
+        return this.children[0];
+    }
     rechercherAnomalies() {
         let listeAnomalies = [];
         if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementPlanTropGrand(this));
         }
+        listeAnomalies = [...listeAnomalies, ...this.getProblemePrincipal().rechercherAnomalies()];
+        console.log(listeAnomalies);
         return listeAnomalies;
     }
 
@@ -178,16 +182,7 @@ class PlanTravail extends HTMLElement {
         {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
-    }
-    rechercherAnomalies()
-    {
-        let listeAnomalies = [];
-        for(let unEnfant of this.children)
-        {
-            listeAnomalies = [...listeAnomalies, ...unEnfant.rechercherAnomalies()];
-        }
-        console.log(listeAnomalies);
-    }
+    }        
 
 }
 window.customElements.define("plan-travail", PlanTravail);

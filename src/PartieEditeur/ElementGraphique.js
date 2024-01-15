@@ -124,8 +124,7 @@ class ElementGraphique extends HTMLElement {
      *
      * @returns {{}}
      */
-    extraireInformation()
-    {
+    extraireInformation() {
         console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
         return [];
     }
@@ -149,8 +148,7 @@ class ElementGraphique extends HTMLElement {
      * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
      * @returns {*}
      */
-    getDescendants(typeRechercher = ElementGraphique)
-    {
+    getDescendants(typeRechercher = ElementGraphique) {
         const listeDeMesEnfants = this.getEnfants();
         let listeDeMesDescendants = listeDeMesEnfants;
         for(let enfant of listeDeMesEnfants)
@@ -166,8 +164,7 @@ class ElementGraphique extends HTMLElement {
      * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
      * @returns {*}
      */
-    getParent(typeRechercher = ElementGraphique)
-    {
+    getParent(typeRechercher = ElementGraphique) {
         if(this._parent)
         {
             return this._parent._proprietaire instanceof typeRechercher ? this._parent._proprietaire:null;
@@ -181,8 +178,7 @@ class ElementGraphique extends HTMLElement {
      * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
      * @returns {*}
      */
-    getAntescedants(typeRechercher = ElementGraphique)
-    {
+    getAntescedants(typeRechercher = ElementGraphique) {
         const parent = this.getParent();
         let listeDeMesAntescedants = [];
         if(parent !== null)
@@ -202,8 +198,7 @@ class ElementGraphique extends HTMLElement {
      * @param {*} nameInformation
      * @returns {boolean}
      */
-    include(nameInformation)
-    {
+    include(nameInformation) {
         console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
@@ -230,6 +225,13 @@ class ElementGraphique extends HTMLElement {
     getInformationDonnee() {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
+    }
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let enfants = this.getEnfants();
+        for(let enfant of enfants)
+        {
+            enfant.rechercherAnomalies(listeAnomaliesPrecedent);
+        }
     }
     
 }

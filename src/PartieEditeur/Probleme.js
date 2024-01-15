@@ -250,11 +250,11 @@ class Probleme extends ElementGraphique {
      * 9 : Pas un égal pour l’assignation mais une flèche
      * 12 : Plus de sept actions à la suite
      * 18 : Variable dynamique
-     *
+     * @param {*} listeAnomaliesPrecedent
      * @returns {{}}
      */
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
         if(donneesMagiques[0]) {
@@ -280,16 +280,16 @@ class Probleme extends ElementGraphique {
     
         // 12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0])
-        {
+        if(tropDeSousElements[0]) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
     
         // 18
-        if(AvertissementDonneDynamiquementTypee.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementDonneDynamiquementTypee(this));
+        let donneesDynamiqumentTypee = AvertissementDonneeDynamiquementTypee.detecterAnomalie(this);
+        if(donneesDynamiqumentTypee[0]) {
+            listeAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 
@@ -353,7 +353,7 @@ class Probleme extends ElementGraphique {
             let nomDeVariable = contenue.split("<-")[0].trim();
             let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
-            i._type = Information.DetecterLeType(contenueVariable);
+            i._type = Type.DetecterLeType(contenueVariable);
         }else
         {
             i._nom= contenue.split(".")[0];

@@ -31,6 +31,7 @@ a._listeConditions.children[7]._elemParent.lierEnfant(i);
 document.getElementById('espace1'); 
 let a = new Probleme;
 let b = new Probleme('0vw','10vw');
+let r = new ConditionSortie('25vw','10vw');
 let c = new Probleme('50vw','10vw');
 let d = new Probleme('0vw','20vw');
 let e = new StructureIterativeBornee('0vw', '30vw', "p");
@@ -44,6 +45,7 @@ document.getElementById('espace1').appendChild(d);
 document.getElementById('espace1').appendChild(e);
 document.getElementById('espace1').appendChild(f);
 document.getElementById('espace1').appendChild(s);
+document.getElementById('espace1').appendChild(r);
 
 
 
@@ -54,8 +56,10 @@ d.afficher();
 e.afficher();
 f.afficher();
 s.afficher();
+r.afficher();
 
 a._elemParent.lierEnfant(b);
+c._elemParent.lierEnfant(r);
 a._elemParent.lierEnfant(c);
 b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
@@ -70,9 +74,10 @@ function maFonction()
     setTimeout("maFonction();", 10000);
 }
 
-maFonction();
 
+maFonction();
 /*
+
 document.getElementById('espace1');
 
 let a = new StructureSi("20vw", "20vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a   = 8")]);
