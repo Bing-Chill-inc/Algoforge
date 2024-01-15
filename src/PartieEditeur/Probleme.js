@@ -1,5 +1,5 @@
 /**
- * Classe Probleme, Définit les
+ * Classe Probleme
  *
  * @class Probleme
  * @typedef {Probleme}
