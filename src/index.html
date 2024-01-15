@@ -7,9 +7,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav id='menu'>
+        <ul>
+        <li><img src="aucune"></li>
+        <li><p contenteditable="true">Cliquez ici pour nommer votre fichier.</p></li>
+        <button onclick="toggleDropdown('dropdown1')">Fichier</button>
+        <div id="dropdown1" class="dropdown-content">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+        </div>
+        <button onclick="toggleDropdown('dropdown2')">Édition</button>
+        <div id="dropdown2" class="dropdown-content">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+        </div>
+        <button onclick="toggleDropdown('dropdown3')">Aide</button>
+        <div id="dropdown3" class="dropdown-content">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+        </div>
+        </ul>
+    </nav>
     <plan-travail id="espace1">
 
     </plan-travail>
+    <script>
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        }
+    </script>
 </body>
 
 <script src="PartieEditeur/Type.js"></script>
