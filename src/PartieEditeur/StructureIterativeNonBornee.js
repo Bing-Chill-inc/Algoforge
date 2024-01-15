@@ -13,8 +13,8 @@ class StructureIterativeNonBornee extends StructureIterative {
         super.afficher(); // Affichage de la boucle seule
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         // On vérifie que la boucle contient une sortie
         if(ErreurBoucleSansSortie.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleSansSortie(this));
@@ -24,6 +24,7 @@ class StructureIterativeNonBornee extends StructureIterative {
         if(tropDeSousElements[0]) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 

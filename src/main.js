@@ -74,9 +74,9 @@ function maFonction()
     setTimeout("maFonction();", 10000);
 }
 
-/*
-maFonction();
 
+maFonction();
+/*
 
 document.getElementById('espace1');
 

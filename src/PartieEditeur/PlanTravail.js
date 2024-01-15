@@ -14,17 +14,15 @@ class PlanTravail extends HTMLElement {
     // ENCAPSULATION -non-
 
     // METHODES
-
+    getProblemePrincipal() {
+        return this.children[0];
+    }
     rechercherAnomalies() {
         let listeAnomalies = [];
         if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementPlanTropGrand(this));
         }
-        
-        for(let unEnfant of this.children)
-        {
-            listeAnomalies = [...listeAnomalies, ...unEnfant.rechercherAnomalies()];
-        }
+        listeAnomalies = [...listeAnomalies, ...this.getProblemePrincipal().rechercherAnomalies()];
         console.log(listeAnomalies);
         return listeAnomalies;
     }

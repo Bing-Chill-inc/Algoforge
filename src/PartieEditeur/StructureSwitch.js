@@ -70,8 +70,8 @@ class StructureSwitch extends StructureAlternative {
         };
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
@@ -92,6 +92,7 @@ class StructureSwitch extends StructureAlternative {
                 listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
             }
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 
