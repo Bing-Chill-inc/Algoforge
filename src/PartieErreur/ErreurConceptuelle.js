@@ -13,7 +13,7 @@ class ErreurConceptuelle extends AnomalieConceptuelle
         // CONSTRUCTEUR
         
         /**
-         * Crée une instance de ErreurConceptuelle.
+         * Crée une instance d'ErreurConceptuelle.
          *
          * @constructor
          * @param {ElementGraphique} elementEmetteur

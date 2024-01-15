@@ -1,23 +1,51 @@
+/**
+ * La Classe ErreurDonneeMagique stock s'il y a des données magiques dans l'algorithme
+ *
+ * @class ErreurDonneeMagique
+ * @typedef {ErreurDonneeMagique}
+ * @extends {ErreurConceptuelle}
+ */
 class ErreurDonneeMagique extends ErreurConceptuelle {
     // ATTRIBUTS
     _nomsDonnees; // Array<String>
-
+    
     // CONSTRUCTEUR
+    /**
+     * Crée une instance d'ErreurDonneMagique
+     * 
+     * @param {ElementGraphique} elementEmetteur 
+     * @param {Array<String>} nomsDonnees 
+     */
     constructor(elementEmetteur, nomsDonnees = new Array) {
         super(elementEmetteur);
         this._nomsDonnees = nomsDonnees;
     }
     
     // ENCAPSULATION
+    /**
+     * Définit la valeur de _nomsDonnees d'AnomalieConceptuelle
+     *
+     * @type {String}
+     */
     set _nomsDonnees(value) {
         this._nomsDonnees = value;
     }
     
+    
+    /**
+     * Renvoie la valeur de _nomsDonnees d'AnomalieConceptuelle
+     */
     get _nomsDonnees() {
         return this._nomsDonnees;
     }
 
     // METHODES
+    
+    /**
+     * Cette méthode renvoi un message qui nous donne les données magiques présentes dans l'algorithme.
+     *
+     * @returns {string}
+     */
     toString() {
         if(this._nomsDonnees.length == 1) {
             return "La donnée " + this._nomsDonnees[0] + " ne provient de nulle part.";
@@ -35,7 +63,14 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
             return "Les donnée " + chaine + " ne provient de nulle part.";
         }
     }
-
+    
+    /**
+     * La méthode detecterAnomalie cherche à ce qu'aucune donnée de l'algorithme ne soit une donnée magique.
+     *
+     * @static
+     * @param {Probleme} unProbleme
+     * @returns {{}}
+     */
     static detecterAnomalie(unProbleme) {
         // Etapes 
         // 1 - Regarder si il la un parent sinon y'a pas d'erreur
