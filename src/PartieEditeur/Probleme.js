@@ -159,8 +159,8 @@ class Probleme extends ElementGraphique {
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
         if(donneesMagiques[0]) {
@@ -195,7 +195,7 @@ class Probleme extends ElementGraphique {
         if(donneesDynamiqumentTypee[0]) {
             listeAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
-
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 
@@ -245,7 +245,7 @@ class Probleme extends ElementGraphique {
             let nomDeVariable = contenue.split("<-")[0].trim();
             let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
-            i._type = Information.DetecterLeType(contenueVariable);
+            i._type = Type.DetecterLeType(contenueVariable);
         }else
         {
             i._nom= contenue.split(".")[0];

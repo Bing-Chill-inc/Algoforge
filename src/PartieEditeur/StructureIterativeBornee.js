@@ -57,8 +57,8 @@ class StructureIterativeBornee extends StructureIterative {
         this.appendChild(divInformationsBornes);
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         // On vérifie que la boucle n'est pas infinie
         if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleBorneeSansFin(this));
@@ -68,6 +68,7 @@ class StructureIterativeBornee extends StructureIterative {
         if(tropDeSousElements[0]) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 
