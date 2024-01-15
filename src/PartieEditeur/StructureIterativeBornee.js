@@ -57,16 +57,18 @@ class StructureIterativeBornee extends StructureIterative {
         this.appendChild(divInformationsBornes);
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         // On vérifie que la boucle n'est pas infinie
         if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
-        if(AvertissementTropDeSousElements.detecterAnomalie(this)) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0]) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 

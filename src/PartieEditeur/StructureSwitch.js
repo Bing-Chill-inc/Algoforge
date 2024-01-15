@@ -70,16 +70,16 @@ class StructureSwitch extends StructureAlternative {
         };
     }
 
-    rechercherAnomalies() {
-        let listeAnomalies = [];
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let listeAnomalies = listeAnomaliesPrecedent;
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
-        if(AvertissementTropDeSousElements.detecterAnomalie(this))
-        {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, this.getEnfants()));
+        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+        if(tropDeSousElements[0]) {
+            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //16
         if(ErreurComparaisonSwitch.detecterAnomalie(this)) {
@@ -88,6 +88,7 @@ class StructureSwitch extends StructureAlternative {
         if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
         }
+        super.rechercherAnomalies(listeAnomalies);
         return listeAnomalies;
     }
 
