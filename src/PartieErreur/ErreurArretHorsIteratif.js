@@ -11,6 +11,12 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
 
 
     // CONSTRUCTEUR
+    /**
+     * Crée une instance de ErreurArretHorsIteratif.
+     *
+     * @constructor
+     * @param {ConditionSortie} elementEmetteur
+     */
     constructor(elementEmetteur) {
         super(elementEmetteur);
     }
