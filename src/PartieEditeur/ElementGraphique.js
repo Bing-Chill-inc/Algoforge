@@ -175,5 +175,12 @@ class ElementGraphique extends HTMLElement {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
+    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+        let enfants = this.getEnfants();
+        for(let enfant of enfants)
+        {
+            enfant.rechercherAnomalies(listeAnomaliesPrecedent);
+        }
+    }
     
 }
