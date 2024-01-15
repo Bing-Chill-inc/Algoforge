@@ -27,31 +27,36 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
     }
     static detecterAnomalie(StructureAlternative){
         const conditions = StructureAlternative._listeConditions.children;
+        let variables = [];
 
         const regex = /^(.*?)\s*([=!<>]=?)\s*(.*?)$/;
         const premierLibelle = conditions[0].querySelector('.libelle').textContent;
         const caracteresAvantEgal = premierLibelle.match(regex);
+        variables.push(caracteresAvantEgal[1]);
     
         let nbCondition = 0;
         for (let condition of StructureAlternative._listeConditions.children) {
             let libelle = condition.querySelector('.libelle').textContent;
             const match = libelle.match(regex);
+            if(!match[1].includes(variables)){
+                variables.push(match[1]);
+            }
             if(libelle =="sinon"){
                 if(nbCondition == StructureAlternative._listeConditions.children.length - 1){
-                    return;
+                    return [false];
                 }
                 else{
-                    return true;
+                    return [true];
                 }
             }
         
             if (!match[1].trim().startsWith(caracteresAvantEgal[1])) {
-                return true; 
+                return [true, variables]; 
             }
             nbCondition=nbCondition+1;
         }
     
-        return;
+        return [false];
         
     }
 }

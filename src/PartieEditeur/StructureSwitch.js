@@ -82,11 +82,15 @@ class StructureSwitch extends StructureAlternative {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //16
-        if(ErreurComparaisonSwitch.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
+        let comparaisonSwitch = ErreurComparaisonSwitch.detecterAnomalie(this);
+        if(comparaisonSwitch[0]) {
+            listeAnomalies.push(new ErreurComparaisonSwitch(this, comparaisonSwitch[1]));
         }
-        if(ErreurTypesInconsistantsAlternatif.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this));
+        if(!comparaisonSwitch[0]) {
+            let typesInconsistantsAlternatif = ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+            if(typesInconsistantsAlternatif[0]) {
+                listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
+            }
         }
         return listeAnomalies;
     }

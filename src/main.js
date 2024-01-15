@@ -36,7 +36,7 @@ let c = new Probleme('50vw','10vw');
 let d = new Probleme('0vw','20vw');
 let e = new StructureIterativeBornee('0vw', '30vw', "p");
 let f = new Probleme('0vw', '40vw');
-let s = new StructureSi('80vw', '40vw',  [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a = 8")]);
+let s = new StructureSwitch('80vw', '40vw',  [new Condition("a"),new Condition("2"),new Condition("3"),new Condition("4"),new Condition("5"),new Condition("6"),new Condition("7"),new Condition("8")], "p");
 
 document.getElementById('espace1').appendChild(a); 
 document.getElementById('espace1').appendChild(b); 
