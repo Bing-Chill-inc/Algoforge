@@ -360,6 +360,13 @@ class Probleme extends ElementGraphique {
         }
         return i;
     }
+
+    colorierElement() {
+        this.querySelector(".donnees").style.color = this._couleurPrimaire;
+        this.querySelector(".resultat").style.color = this._couleurPrimaire;
+        this.querySelector(".nom").style.borderColor = this._couleurPrimaire;
+    }
+
     // Retourne les variables 
     /**
      * Retourne les variables sous forme de liste
