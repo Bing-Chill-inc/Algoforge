@@ -1,23 +1,51 @@
+/**
+ * La Classe ErreurResultatInutilisee stock s'il y a des résultats qui ne sont pas réutilisés dans la suite de l'algorithme.
+ *
+ * @class ErreurResultatInutilisee
+ * @typedef {ErreurResultatInutilisee}
+ * @extends {ErreurConceptuelle}
+ */
 class ErreurResultatInutilisee extends ErreurConceptuelle {
     // ATTRIBUTS
     _nomsResultats; // Array<String>
 
     // CONSTRUCTEUR
+    /**
+     * Crée une instance de ErreurResultatInutilisee.
+     * 
+     * Par défaut la liste des résultats à la création de l'instance est vide.
+     *
+     * @constructor
+     * @param {ElementGraphique} elementEmetteur
+     * @param {Array<String>} [nomsResultats=new Array()]
+     */
     constructor(elementEmetteur, nomsResultats = new Array()) {
         super(elementEmetteur);
         this._nomsResultats = nomsResultats;
     }
             
     // ENCAPSULATION
+    /**
+     * Définit la valeur de _nomsResultats d'ErreurResultatInutilisee
+     *
+     * @type {String}
+     */
     set _nomsResultats(value) {
         this._nomsResultats = value;
     }
             
+    /**
+     * return la valeur de _nomsResultats d'ErreurResultatInutilisee
+     */
     get _nomsResultats() {
         return this._nomsResultats;
-    }
-            
+    }     
     // METHODES
+    /**
+     * Cette méthode renvoi un message qui nous donne les résultats inutilisés présents dans l'algorithme.
+     *
+     * @returns {string}
+     */
     toString() {
         if(this._nomsResultats.length == 1) {
             return "Le résultat "+this._nomsResultats[0]+" n'est pas utilisé";
@@ -36,6 +64,13 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
         }
     }
 
+    /**
+     * La méthode detecterAnomalie cherche à ce qu'aucun résultat de l'algorithme ne soit un résultat inutilisé et retourne une liste de résultat inutiliser trouver.
+     *
+     * @static
+     * @param {Probleme} unProbleme
+     * @returns {{}}
+     */
     static detecterAnomalie(unProbleme) {
         const parent = unProbleme.getParent();
         if(parent == null)

@@ -13,6 +13,8 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
     /**
      * Crée une instance d'ErreurDonneMagique
      * 
+     * Par défaut la liste des données à la création de l'instance est vide.
+     * 
      * @param {ElementGraphique} elementEmetteur 
      * @param {Array<String>} nomsDonnees 
      */
@@ -23,7 +25,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
     
     // ENCAPSULATION
     /**
-     * Définit la valeur de _nomsDonnees d'AnomalieConceptuelle
+     * Définit la valeur de _nomsDonnees d'ErreurDonneeMagique
      *
      * @type {String}
      */
@@ -31,16 +33,13 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
         this._nomsDonnees = value;
     }
     
-    
     /**
-     * Renvoie la valeur de _nomsDonnees d'AnomalieConceptuelle
+     * Renvoie la valeur de _nomsDonnees d'ErreurDonneeMagique
      */
     get _nomsDonnees() {
         return this._nomsDonnees;
     }
-
     // METHODES
-    
     /**
      * Cette méthode renvoi un message qui nous donne les données magiques présentes dans l'algorithme.
      *
@@ -65,7 +64,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
     }
     
     /**
-     * La méthode detecterAnomalie cherche à ce qu'aucune donnée de l'algorithme ne soit une donnée magique.
+     * La méthode detecterAnomalie cherche à ce qu'aucune donnée de l'algorithme ne soit une donnée magique et retourne une liste qui contient les données magiques trouver.
      *
      * @static
      * @param {Probleme} unProbleme
