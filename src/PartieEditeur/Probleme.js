@@ -1,3 +1,10 @@
+/**
+ * Classe Probleme, Définit les
+ *
+ * @class Probleme
+ * @typedef {Probleme}
+ * @extends {ElementGraphique}
+ */
 class Probleme extends ElementGraphique {
     // ATTRIBUTS
     _libelle; // String
@@ -6,6 +13,17 @@ class Probleme extends ElementGraphique {
     _elemParent; // ElementParent (liste des enfants)
 
     // CONSTRUCTEUR
+    /**
+     * Crée une instance de Probleme.
+     *
+     * @constructor
+     * @param {number} [abscisse=0]
+     * @param {number} [ordonnee=0]
+     * @param {string} [libelle=""]
+     * @param {{}} [listeDonnes=[]]
+     * @param {{}} [listeResultats=[]]
+     * @param {*} [elemParent=new ElementParent()]
+     */
     constructor(abscisse = 0, ordonnee = 0, libelle = "", listeDonnes = [], listeResultats = [], elemParent = new ElementParent()) {
         super(abscisse, ordonnee);
         this._libelle = libelle;
@@ -18,51 +36,102 @@ class Probleme extends ElementGraphique {
     }
 
     // ENCAPSULATION
+    /**
+     * Renvoie la valeur de la variable _libelle
+     *
+     * @type {string}
+     */
     get _libelle() {
         return this._libelle;
     }
 
+    /**
+     * Définie la valeur de la variable _libelle par la valeur donné
+     */
     set _libelle(value) {
         this._libelle = value;
     }
 
+    /**
+     * Renvoie la valeur de la variable _listeDonnes
+     *
+     * @type {{}}
+     */
     get _listeDonnes() {
         return this._listeDonnes;
     }
 
+    /**
+     * Définie la valeur de la variable _listeDonnes par la valeur donné
+     */
     set _listeDonnes(value) {
         this._listeDonnes = value;
     }
 
+    /**
+     * Renvoie la valeur de la variable _listeResultats
+     *
+     * @type {{}}
+     */
     get _listeResultats() {
         return this._listeResultats;
     }
 
+    /**
+     * Définie la valeur de la variable _listeResultats par la valeur donné
+     */
     set _listeResultats(value) {
         this._listeResultats = value;
     }
 
+    /**
+     * Renvoie la valeur de la variable _elemParent
+     *
+     * @type {*}
+     */
     get _elemParent() {
         return this._elemParent;
     }
 
+    /**
+     * Définie la valeur de la variable _libelle par la valeur donné
+     */
     set _elemParent(value) {
         this._elemParent = value;
     }
     
-    // Retourne le contenu du probleme Texte Principale
+    /**
+     * Retourne le contenu du probleme Texte Principale
+     *
+     * @returns {string}
+     */
     getTexte() {
         return this.querySelector(".nom").textContent;
     }
-    // Retourne les données entrantes
+
+    /**
+     * Retourne les données du Problème
+     *
+     * @returns {string}
+     */
     getDonnee() {
         return this.querySelector(".donneesEditable").textContent;
     }
-    //Retourne les données sortantes
+
+    /**
+     * Retourne les résultats
+     *
+     * @returns {string}
+     */
     getResultat() {
         return this.querySelector(".resultatEditable").textContent;
     }
+
     // METHODES
+    
+    /**
+     * Affiche le Problème à l'écran
+     */
     afficher() {
         let divContainerDPR = document.createElement("div");
         divContainerDPR.className = "containerDPR";
@@ -127,6 +196,11 @@ class Probleme extends ElementGraphique {
         this.appendChild(divDecomposition);
     }
 
+    /**
+     * Renvoie les informations de l'instance du Probleme sous forme JSON
+     *
+     * @returns {{ typeElement: any; abscisse: any; ordonnee: any; libelle: string; listeDonnes: {}; listeResultats: {}; enfants: any; }}
+     */
     toJSON() {
         let lstDonnees = [];
         this._listeDonnes.forEach((donnee) => {
@@ -149,6 +223,12 @@ class Probleme extends ElementGraphique {
     }
 
     // Retournes les enfants par ordre
+    /**
+     * Renvoie l'arbres des enfants du Probleme
+     *
+     * @param {*} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
         for(let enfant of this._elemParent._listeElementsEnfants)
@@ -159,6 +239,20 @@ class Probleme extends ElementGraphique {
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 
+    /**
+     * Méthodes principales qui recherchent les erreurs dans l'instance de Problème
+     * 
+     * Liste des Erreurs :
+     * 
+     * 1 : Sous-problème avec données magique 
+     * 2 : Données uniquement sur les problèmes 
+     * 3 : Résultat non utilisé dans la suite de l’algorithme
+     * 9 : Pas un égal pour l’assignation mais une flèche
+     * 12 : Plus de sept actions à la suite
+     * 18 : Variable dynamique
+     * @param {*} listeAnomaliesPrecedent
+     * @returns {{}}
+     */
     rechercherAnomalies(listeAnomaliesPrecedent = []) {
         let listeAnomalies = listeAnomaliesPrecedent;
         // 1
@@ -199,7 +293,11 @@ class Probleme extends ElementGraphique {
         return listeAnomalies;
     }
 
-    //Retourne les Donnees sous Formes d'informations
+    /**
+     * Retourne les Donnees sous Formes d'informations
+     *
+     * @returns {{}}
+     */
     getInformationDonnee() {
         let listeDonnee = this.getDonnee().trim().split(",");
         let listeDonneeInformation = [];
@@ -215,7 +313,12 @@ class Probleme extends ElementGraphique {
         }
         return listeDonneeInformation;
     }
-    //Retourne les Resultat sous Formes d'informations
+
+    /**
+     * Retourne les Resultat sous Formes d'informations
+     *
+     * @returns {{}}
+     */
     getInformationResultat() {
         let listeDonnee = this.getResultat().trim().split(",");
         let listeDonneeInformation = [];
@@ -231,7 +334,12 @@ class Probleme extends ElementGraphique {
         }
         return listeDonneeInformation;
     }
-    // Retourne les variables du textes
+
+    /**
+     * Retourne les variables du textes sous forme de string
+     *
+     * @returns {string}
+     */
     extraireInformationTextes() {
         let i = new Information();
         i._nom = "";
@@ -253,6 +361,11 @@ class Probleme extends ElementGraphique {
         return i;
     }
     // Retourne les variables 
+    /**
+     * Retourne les variables sous forme de liste
+     *
+     * @returns {{}}
+     */
     extraireInformation() {
         let listeInformation = [];
         if(this.extraireInformationTextes())
@@ -263,6 +376,12 @@ class Probleme extends ElementGraphique {
         listeInformation = [...listeInformation, ...this.getInformationResultat()];
         return listeInformation;
     }
+    /**
+     * Description placeholder
+     *
+     * @param {string} nameInformation
+     * @returns {boolean}
+     */
     include(nameInformation)
     {
         return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
