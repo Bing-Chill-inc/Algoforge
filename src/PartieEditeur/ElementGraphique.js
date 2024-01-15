@@ -117,13 +117,22 @@ class ElementGraphique extends HTMLElement {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
+    /**
+     * Comportement natif de getEnfants(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @returns {{}}
+     */
     extraireInformation() {
         console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
         return [];
     }
 
     /**
-     * Comportement naïf de la méthode getEnfants ne renvoie rien
+     * Comportement natif de getEnfants(), ne renvoie rien
+     * 
+     * Est étendu dans les sous classes
      *
      * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
      * @returns {{}}
@@ -133,6 +142,12 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
 
+    /**
+     * Renvoie l'arbre des descendants contenant les descendants des descendants
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getDescendants(typeRechercher = ElementGraphique) {
         const listeDeMesEnfants = this.getEnfants();
         let listeDeMesDescendants = listeDeMesEnfants;
@@ -143,6 +158,12 @@ class ElementGraphique extends HTMLElement {
         return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
     }
 
+    /**
+     * Renvoie le parent de l'ElementGraphique
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getParent(typeRechercher = ElementGraphique) {
         if(this._parent)
         {
@@ -151,6 +172,12 @@ class ElementGraphique extends HTMLElement {
         return null;
     }
 
+    /**
+     * Renvoie la liste des antécédant d'ElementGraphique
+     *
+     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
+     * @returns {*}
+     */
     getAntescedants(typeRechercher = ElementGraphique) {
         const parent = this.getParent();
         let listeDeMesAntescedants = [];
@@ -163,14 +190,38 @@ class ElementGraphique extends HTMLElement {
         
     }
 
+    /**
+     * Comportement natif de include(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @param {*} nameInformation
+     * @returns {boolean}
+     */
     include(nameInformation) {
         console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
+    
+    /**
+     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @returns {{}}
+     */
     getInformationResultat() {
         console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
+
+    /**
+     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * 
+     * Est étendu dans les sous classes
+     *
+     * @returns {{}}
+     */
     getInformationDonnee() {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];

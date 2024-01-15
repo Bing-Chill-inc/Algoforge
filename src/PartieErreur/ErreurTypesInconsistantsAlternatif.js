@@ -5,8 +5,10 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     _typePris; // Array<Type>
 
     // CONSTRUCTEUR
-    constructor(elementEmetteur) {
+    constructor(elementEmetteur, nomVariable = new String(), typePris = new Array()) {
         super(elementEmetteur);
+        this._nomVariable = nomVariable;
+        this._typePris = typePris;
     }
         
     // ENCAPSULATION
@@ -37,24 +39,35 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
     }
 
     static detecterAnomalie(uneStructureAlternative){
+        let types = [];
+        let variable = null;
         if(uneStructureAlternative instanceof StructureSi) {
+            const regex = /^(.*?)\s*([=!<>]=?)\s*(.*?)$/;
+            const premierLibelle = uneStructureAlternative._listeConditions.children[0]._libelle;
+            variable = premierLibelle.match(regex)[1];
             let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(uneStructureAlternative._listeConditions.children[0]._libelle));
-            for (let condition of uneStructureAlternative._listeConditions.children) {
-
-                if ((ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle))) != typePremier) {
-                    return true;
-                }
+            types.push(typePremier);
+            for (let condition of uneStructureAlternative._listeConditions.children) { 
+                let type = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle));
+                types.push(type);
             }
+
         }
         else {
-            let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(uneStructureAlternative._listeConditions.children[0]._libelle);
+            variable = uneStructureAlternative._expressionATester;
             for (let condition of uneStructureAlternative._listeConditions.children) {
-                if (ErreurTypesInconsistantsAlternatif.determinerType(condition._libelle) != typePremier) {
-                    return true;
+                let type = ErreurTypesInconsistantsAlternatif.determinerType(condition._libelle);
+                types.push(type);
+            }
+        }
+        if (types.length > 1) {
+            for (let i = 0; i < types.length - 1; i++) {
+                if (types[i] != types[i + 1]) {
+                    return [true, variable, types];
                 }
             }
         }
-        return false;
+        return [false];
     }
 
     static extraireValeurComparaison(comparaison) {
@@ -62,7 +75,7 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
         
         const resultat = regex.exec(comparaison); // Utilisation de la regex pour récupérer les correspondances
         if (resultat && resultat[1]) {
-            return resultat[1]; // Renvoie la deuxième partie de la comparaison
+                return resultat[1]; // Renvoie la deuxième partie de la comparaison
         } else {
             return null; // Si aucune correspondance trouvée ou si la correspondance est invalide
         }
