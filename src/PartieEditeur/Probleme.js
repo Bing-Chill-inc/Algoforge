@@ -245,7 +245,7 @@ class Probleme extends ElementGraphique {
             let nomDeVariable = contenue.split("<-")[0].trim();
             let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
-            i._type = Information.DetecterLeType(contenueVariable);
+            i._type = Type.DetecterLeType(contenueVariable);
         }else
         {
             i._nom= contenue.split(".")[0];
