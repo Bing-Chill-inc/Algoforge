@@ -1,7 +1,19 @@
+/**
+ * Classe PlanTravail
+ *
+ * @class PlanTravail
+ * @typedef {PlanTravail}
+ * @extends {HTMLElement}
+ */
 class PlanTravail extends HTMLElement {
     // ATTRIBUTS -non-
     leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
     // CONSTRUCTEUR
+    /**
+     * Crée une instance de PlanTravail.
+     *
+     * @constructor
+     */
     constructor() {
         super();
         this.addEventListener("paste", (event) => {
@@ -14,9 +26,24 @@ class PlanTravail extends HTMLElement {
     // ENCAPSULATION -non-
 
     // METHODES
+    /**
+     * Retourne le premier Problème du plant de travail
+     *
+     * @returns {*}
+     */
     getProblemePrincipal() {
         return this.children[0];
     }
+    
+    /**
+     * Recherche les erreurs dans le plan de travail
+     * 
+     * Liste des erreurs :
+     * 
+     * 13 : Algorithme trop grand 
+     *
+     * @returns {{}}
+     */
     rechercherAnomalies() {
         let listeAnomalies = [];
         if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
@@ -27,6 +54,14 @@ class PlanTravail extends HTMLElement {
         return listeAnomalies;
     }
 
+    /**
+     * Renvoie une liste contenant les éléments ElementGraphique du type donné
+     *
+     * @static
+     * @param {*} listeElementGraphique
+     * @param {*} typeRechercher
+     * @returns {{}}
+     */
     static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
         let nouvelleListe = [];
         for(let element of listeElementGraphique) {
@@ -37,6 +72,11 @@ class PlanTravail extends HTMLElement {
         return nouvelleListe;
     }
 
+    /**
+     * Renvoie les informations de l'instance du PlanTravail sous forme JSON
+     *
+     * @returns {{}}
+     */
     exporterEnJSON() {
         let listeElementsSansParents = [];
         for (let element of this.children) {
@@ -52,6 +92,11 @@ class PlanTravail extends HTMLElement {
         return corpsJSON;
     }
 
+    /**
+     * Lis un fichier json et le charge en mémoire. Vérifi également si le fichier est bien un JSON
+     *
+     * @param {*} fichier
+     */
     chargerFichier(fichier) {
         try {
             var parsedData = JSON.parse(fichier)
@@ -61,6 +106,12 @@ class PlanTravail extends HTMLElement {
         }
     }
 
+    /**
+     * Charge le corpsJSON donnée pour charger l'algorithme contenu à l'intérieur sur le plan de travail
+     *
+     * @param {*} corpsJSON
+     * @returns {*}
+     */
     chargerDepuisJSON(corpsJSON) {
         if (corpsJSON == undefined) {
             return [];
@@ -168,6 +219,9 @@ class PlanTravail extends HTMLElement {
     }
 
     // Effectue le dictionnaire des données
+    /**
+     * Recherche toutes les variables à l'intérieur du PlanTravail et les donne au dictionnaire de donnée
+     */
     effectuerDictionnaireDesDonnee() {
         // Suppression de toutes les Informations ayant comme type undefined
         this.leDictionnaireDesDonnees.suppressionDonneeInutiliser()
