@@ -13,7 +13,7 @@ class AvertissementConceptuel extends AnomalieConceptuelle
     // CONSTRUCTEUR
      
     /**
-     * Crée une instance de AvertissementConceptuel.
+     * Crée une instance d'AvertissementConceptuel.
      *
      * @constructor
      * @param {ElementGraphique} elementEmetteur

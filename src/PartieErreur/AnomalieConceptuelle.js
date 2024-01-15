@@ -1,5 +1,5 @@
 /**
- * La classe AnomalieConceptuelle est la base de tous les classes d'erreur de l'éditeur d'algorithmes
+ * La classe AnomalieConceptuelle est la base de tous les classes d'anomalie de l'éditeur d'algorithmes
  *
  * @class AnomalieConceptuelle
  * @typedef {AnomalieConceptuelle}
@@ -10,9 +10,8 @@ class AnomalieConceptuelle
     _elementEmetteur; // Element Graphique
 
     // CONSTRUCTEUR
-    
     /**
-     * Crée une instance de AnomalieConceptuelle.
+     * Crée une instance d'AnomalieConceptuelle.
      *
      * @constructor
      * @param {ElementGraphique} elementEmetteur
@@ -23,7 +22,7 @@ class AnomalieConceptuelle
 
     // ENCAPSULATION
     /**
-     * Définit la valeur de _elementEmetteur de AnomalieConceptuelle
+     * Définit la valeur de _elementEmetteur d'AnomalieConceptuelle
      *
      * @type {ElementGraphique}
      */
@@ -32,7 +31,7 @@ class AnomalieConceptuelle
         this._elementEmetteur = value;
     }
     /**
-     * Renvoie la valeur de _elementEmetteur de AnomalieConceptuelle
+     * Renvoie la valeur de _elementEmetteur d'AnomalieConceptuelle
      */
     get _elementEmetteur()
     {
