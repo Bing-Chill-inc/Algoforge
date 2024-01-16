@@ -544,6 +544,7 @@ table {
     width: 80%;
     border: 2px solid #000; /* Ajoute une bordure solide de 2px autour de la table */
     margin: 40px;
+    background-color: #ffffff;
   }
 
   td, th {

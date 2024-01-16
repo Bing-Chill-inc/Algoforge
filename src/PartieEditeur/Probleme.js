@@ -122,6 +122,9 @@ class Probleme extends ElementGraphique {
     getDonnee() {
         return this.querySelector(".donneesEditable").textContent;
     }
+    setDonnee(value) {
+        this.querySelector(".donneesEditable").textContent = value;
+    }
     replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
         this.querySelector(".donneesEditable").textContent = this.querySelector(".donneesEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
@@ -132,6 +135,9 @@ class Probleme extends ElementGraphique {
      */
     getResultat() {
         return this.querySelector(".resultatEditable").textContent;
+    }
+    setResultat(value) {
+       this.querySelector(".resultatEditable").textContent = value;
     }
     replaceTexteResultat(chaineAChercher, chaineARemplacer) {
         this.querySelector(".resultatEditable").textContent = this.querySelector(".resultatEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
@@ -161,7 +167,11 @@ class Probleme extends ElementGraphique {
                 divDonneesEditable.contentEditable = "true";
                 let donneesAAjouter = "";
                 this._listeDonnes.forEach((donnee) => {
-                    donneesAAjouter += donnee._nom + "<br>";
+                    if(!donneesAAjouter == "")
+                    {
+                        donneesAAjouter += ","
+                    }
+                    donneesAAjouter += donnee;
                 });
                 divDonneesEditable.innerHTML = donneesAAjouter;
                 divDonnees.appendChild(divDonneesEditable);
@@ -191,7 +201,11 @@ class Probleme extends ElementGraphique {
                 divResultatsEditable.contentEditable = "true";
                 let resultatsAAjouter = "";
                 this._listeResultats.forEach((resultat) => {
-                    resultatsAAjouter += resultat._nom + "<br>";
+                    if(!resultatsAAjouter == "")
+                    {
+                        resultatsAAjouter += ","
+                    }
+                    resultatsAAjouter += resultat;
                 });
                 divResultatsEditable.innerHTML = resultatsAAjouter;
                 divResultat.appendChild(divResultatsEditable);
