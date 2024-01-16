@@ -105,8 +105,13 @@ class Probleme extends ElementGraphique {
      *
      * @returns {string}
      */
+    
     getTexte() {
         return this.querySelector(".nom").textContent;
+    }
+
+    replaceTexte(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".nom").textContent = this.querySelector(".nom").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
 
     /**
@@ -117,7 +122,9 @@ class Probleme extends ElementGraphique {
     getDonnee() {
         return this.querySelector(".donneesEditable").textContent;
     }
-
+    replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".donneesEditable").textContent = this.querySelector(".donneesEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
+    }
     /**
      * Retourne les résultats
      *
@@ -125,6 +132,9 @@ class Probleme extends ElementGraphique {
      */
     getResultat() {
         return this.querySelector(".resultatEditable").textContent;
+    }
+    replaceTexteResultat(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".resultatEditable").textContent = this.querySelector(".resultatEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
 
     // METHODES
@@ -253,7 +263,7 @@ class Probleme extends ElementGraphique {
      * @param {*} listeAnomaliesPrecedent
      * @returns {{}}
      */
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+    rechercherAnomalies() {
         let mesAnomalies = [];
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
@@ -393,6 +403,11 @@ class Probleme extends ElementGraphique {
     {
         return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
     }
-
+    renameInformation(ancienNom, nouveauNom)
+    {
+        this.replaceTexte(ancienNom, nouveauNom);
+        this.replaceTexteDonnee(ancienNom, nouveauNom);
+        this.replaceTexteResultat(ancienNom, nouveauNom);
+    }
 
 } window.customElements.define("probleme-element", Probleme);

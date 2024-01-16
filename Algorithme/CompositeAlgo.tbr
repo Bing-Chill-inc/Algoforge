@@ -2,19 +2,19 @@
 <!DOCTYPE Tabula_Rasa>
 <Algorithme>
   <nom>Algorithme</nom>
-  <date_creation>15/1/2024 17:01</date_creation>
+  <date_creation>16/1/2024 11:05</date_creation>
   <Elements>
     <Action>
-      <Position>506;100</Position>
+      <Position>681;104</Position>
       <StyleLien>2</StyleLien>
-      <PreAssertion>[listeAnomaliePrecedents]</PreAssertion>
+      <PreAssertion>?</PreAssertion>
       <PostAssertion>listeAnomalie</PostAssertion>
       <Titre>RechercherAnomalie</Titre>
       <DetailsVisible>1</DetailsVisible>
-      <DetailsVideVisible>1</DetailsVideVisible>
+      <DetailsVideVisible>0</DetailsVideVisible>
       <Enfants>
         <Action>
-          <Position>116;249</Position>
+          <Position>205;269</Position>
           <StyleLien>2</StyleLien>
           <PreAssertion>?</PreAssertion>
           <PostAssertion>enfants</PostAssertion>
@@ -23,7 +23,7 @@
           <DetailsVideVisible>0</DetailsVideVisible>
           <Enfants>
             <Action>
-              <Position>93;387</Position>
+              <Position>189;386</Position>
               <StyleLien>1</StyleLien>
               <PreAssertion>∅</PreAssertion>
               <PostAssertion>∅</PostAssertion>
@@ -53,7 +53,7 @@
           </Enfants>
         </Iteration>
         <Action>
-          <Position>456;283</Position>
+          <Position>509;272</Position>
           <StyleLien>1</StyleLien>
           <PreAssertion>?</PreAssertion>
           <PostAssertion>[mesAnomalies]</PostAssertion>
@@ -63,7 +63,7 @@
           <Enfants/>
         </Action>
         <Action>
-          <Position>1147;275</Position>
+          <Position>1092;298</Position>
           <StyleLien>1</StyleLien>
           <PreAssertion>∅</PreAssertion>
           <PostAssertion>∅</PostAssertion>

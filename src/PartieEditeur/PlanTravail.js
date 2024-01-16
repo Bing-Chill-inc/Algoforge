@@ -236,7 +236,17 @@ class PlanTravail extends HTMLElement {
         {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
-    }        
-
+    }    
+    trouverToutLesElementsGraphiques()
+    {
+        return this.children;
+    }    
+    renameInformation(ancienNom, nouveauNom)
+    {
+        for(let enfantGraphique of this.trouverToutLesElementsGraphiques())
+        {
+            enfantGraphique.renameInformation(ancienNom, nouveauNom);
+        }
+    }
 }
 window.customElements.define("plan-travail", PlanTravail);
