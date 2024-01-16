@@ -228,16 +228,21 @@ class ElementGraphique extends HTMLElement {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+    rechercherAnomalies(mesAnomalies) {
+        this._listeAnomalie = mesAnomalies;
+        let anomalieDeMesEnfantsEtLesMiennes = [];
         let enfants = this.getEnfants();
         for(let enfant of enfants)
         {
-            enfant.rechercherAnomalies(listeAnomaliesPrecedent);
+            anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes,...enfant.rechercherAnomalies()];
         }
+        anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
+        this.afficherErreur();
+        return anomalieDeMesEnfantsEtLesMiennes;
     }
     /* Partie Affichage */
     colorierElement() {
-        console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+        //console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
     }
     signalerErreur() {
         this._etat = "Erreur"
@@ -265,8 +270,8 @@ class ElementGraphique extends HTMLElement {
 
                 let listeErreur = document.createElement("ul");
                 divListeErreur.appendChild(listeErreur);*/
-                for(let probleme of this._listeAnomalie) {
-                    if(probleme instanceof ErreurConceptuelle) {
+                for(let anomalie of this._listeAnomalie) {
+                    if(anomalie instanceof ErreurConceptuelle) {
                         EstUneErreur = true;
                     }
                     /*
