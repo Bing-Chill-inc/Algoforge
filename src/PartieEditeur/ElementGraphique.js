@@ -295,4 +295,9 @@ class ElementGraphique extends HTMLElement {
             divErreur.remove();
         }
     }
+
+    renameInformation(ancienNom, nouveauNom)
+    {
+        
+    }
 }

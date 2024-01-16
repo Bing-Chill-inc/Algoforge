@@ -19,8 +19,10 @@ class StructureIterativeBornee extends StructureIterative {
         return this._variableAIterer;
     }
 
-    set _variableAIterer(value) {
+    setVariableAIterer(value)
+    {
         this._variableAIterer = value;
+        this.querySelector(".informationsBornes").innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`;
     }
 
     get _borneInferieure() {
@@ -56,6 +58,8 @@ class StructureIterativeBornee extends StructureIterative {
         divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
         this.appendChild(divInformationsBornes);
     }
+
+
 
     rechercherAnomalies() {
         let mesAnomalies = [];
@@ -107,5 +111,11 @@ class StructureIterativeBornee extends StructureIterative {
     {
         return this._variableAIterer.includes(nameInformation) || this._pas.includes(nameInformation) || this._borneInferieure.includes(nameInformation) || this._borneSuperieure.includes(nameInformation);
     }
-
+    renameInformation(ancienNom, nouveauNom)
+    {
+        if(this._variableAIterer == ancienNom)
+        {
+            this.setVariableAIterer(nouveauNom);
+        }
+    }
 } window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);

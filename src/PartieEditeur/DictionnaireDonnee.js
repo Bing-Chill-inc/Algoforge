@@ -33,7 +33,14 @@ class DictionnaireDonnee
             tdNom.textContent = info._nom;
             tdNom.setAttribute('contenteditable', 'true');
             trContent.append(tdNom);
-
+            tdNom.addEventListener('input', () => {
+                this._mesInformations.forEach(element => {
+                    if (element._nom == info._nom) {
+                        document.getElementById('espace1').renameInformation(element._nom, tdNom.innerText);
+                        element._nom = tdNom.innerText;
+                    }
+                });
+            });
             let tdType = document.createElement("td");
             tdType.textContent = info._type;
             trContent.append(tdType);
