@@ -1,9 +1,8 @@
 /**
- * La Classe ErreurResultatInutilisee stock s'il y a des conditions de sortie qui n'est pas dans une boucle itérative.
- *
  * @class ErreurArretHorsIteratif
- * @typedef {ErreurArretHorsIteratif}
  * @extends {ErreurConceptuelle}
+ * @classdesc La Classe ErreurArretHorsIteratif signale si une condition de sortie est en dehors d'une boucle itérative.
+ * @description Crée une instance de ErreurArretHorsIteratif.
  */
 class ErreurArretHorsIteratif extends ErreurConceptuelle
 {
@@ -12,10 +11,9 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
 
     // CONSTRUCTEUR
     /**
-     * Crée une instance de ErreurArretHorsIteratif.
-     *
      * @constructor
-     * @param {ConditionSortie} elementEmetteur
+     * @param {ConditionSortie} elementEmetteur - La condition de sortie émettrice de l'erreur.
+     * @type {ConditionSortie}
      */
     constructor(elementEmetteur) {
         super(elementEmetteur);
@@ -25,20 +23,18 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
 
     // METHODES
     /**
-     * Cette méthode renvoi un message qui nous donne la condition de sortie qui est hors d'une boucle itérative.
-     *
-     * @returns {string}
+     * @returns {string} - Renvoie une chaine de caractères.
+     * @description Renvoie un message indiquant que la condition de sortie est en dehors d'une boucle itérative.
      */
     toString() {            
         return "L'arrêt en surbrillance est hors d'une boucle itérative.";
     }
-
     /**
-     * La méthode detecterAnomalie cherche s'il y a une condition de sortie hors d'une boucle et renvoi false s'il est dans une boucle sinon false.
-     *
      * @static
-     * @param {ConditionSortie} unArret
-     * @returns {boolean}
+     * @param {ConditionSortie} unArret - Instance de la classe ConditionSortie.
+     * @type {ConditionSortie}
+     * @returns {boolean} - Renvoi true ou false.
+     * @description La méthode detecterAnomalie vérifie si une condition de sortie est en dehors d'une boucle itérative et renvoie true si c'est le cas, sinon false.
      */
     static detecterAnomalie(unArret) {
         let listeAntescedants = unArret.getAntescedants(StructureIterativeNonBornee);

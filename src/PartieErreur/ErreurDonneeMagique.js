@@ -1,22 +1,19 @@
 /**
- * La Classe ErreurDonneeMagique stock s'il y a des données magiques dans l'algorithme
- *
  * @class ErreurDonneeMagique
- * @typedef {ErreurDonneeMagique}
  * @extends {ErreurConceptuelle}
+ * @classdesc La classe ErreurDonneeMagique représente une anomalie signalant la présence de données magiques dans l'algorithme.
+ * @description Crée une instance d'ErreurDonneMagique
  */
 class ErreurDonneeMagique extends ErreurConceptuelle {
     // ATTRIBUTS
     _nomsDonnees; // Array<String>
     
     // CONSTRUCTEUR
-    /**
-     * Crée une instance d'ErreurDonneMagique
-     * 
-     * Par défaut la liste des données à la création de l'instance est vide.
-     * 
-     * @param {ElementGraphique} elementEmetteur 
-     * @param {Array<String>} nomsDonnees 
+    /** 
+     * @constructor
+     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'erreur.
+     * @type {ElementGraphique} 
+     * @param {Array<String>} [nomsDonnees=[]] - Liste des noms de données associées à l'erreur (par défaut, la liste est vide).
      */
     constructor(elementEmetteur, nomsDonnees = new Array) {
         super(elementEmetteur);
@@ -25,25 +22,24 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
     
     // ENCAPSULATION
     /**
-     * Définit la valeur de _nomsDonnees d'ErreurDonneeMagique
-     *
-     * @type {String}
+     * @param {Array<String>} value - Nouvelle liste de noms de données associées à l'erreur.
+     * @description Définit la valeur de _nomsDonnees d'ErreurDonneeMagique.
      */
     set _nomsDonnees(value) {
         this._nomsDonnees = value;
     }
-    
     /**
-     * Renvoie la valeur de _nomsDonnees d'ErreurDonneeMagique
+     * @returns {Array<String>} - Renvoi une liste de noms de données.
+     * @description Renvoie la liste des noms de données associées à l'erreur.
      */
     get _nomsDonnees() {
         return this._nomsDonnees;
     }
+
     // METHODES
     /**
-     * Cette méthode renvoi un message qui nous donne les données magiques présentes dans l'algorithme.
-     *
-     * @returns {string}
+     * @returns {string} - Renvoi une chaine de caractères contenant les données inutilisées.
+     * @description Renvoie un message indiquant les données magiques présentes dans l'algorithme.
      */
     toString() {
         if(this._nomsDonnees.length == 1) {
@@ -64,11 +60,11 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
     }
     
     /**
-     * La méthode detecterAnomalie cherche à ce qu'aucune donnée de l'algorithme ne soit une donnée magique et retourne une liste qui contient les données magiques trouver.
-     *
      * @static
-     * @param {Probleme} unProbleme
-     * @returns {{}}
+     * @param {Probleme} unProbleme - Instance de la classe Probleme.
+     * @type {Probleme}
+     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données magiques.
+     * @description La méthode detecterAnomalie cherche les données magiques dans l'algorithme et retourne une liste contenant les noms des données magiques trouvées.
      */
     static detecterAnomalie(unProbleme) {
         // Etapes 

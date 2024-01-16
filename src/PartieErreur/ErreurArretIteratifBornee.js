@@ -1,9 +1,7 @@
 /**
- * La Classe ErreurArretIteratifBornee stock s'il y a des conditions de sortie qui n'est pas dans une boucle itérative Bornée.
- *
  * @class ErreurArretIteratifBornee
- * @typedef {ErreurArretIteratifBornee}
  * @extends {ErreurConceptuelle}
+ * @classdesc La Classe ErreurArretIteratifBornee signale si une condition de sortie n'est pas située dans une boucle itérative bornée.
  */
 class ErreurArretIteratifBornee extends ErreurConceptuelle
 {
@@ -12,10 +10,9 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
 
     // CONSTRUCTEUR
     /**
-     * Crée une instance de ErreurArretIteratifBornee.
-     *
      * @constructor
-     * @param {ConditionSortie} elementEmetteur
+     * @param {ConditionSortie} elementEmetteur - La condition de sortie émettrice de l'erreur.
+     * @type {ConditionSortie}
      */
     constructor(elementEmetteur) {
         super(elementEmetteur);        
@@ -23,16 +20,17 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
     
     // ENCAPSULATION
     /**
-     * Définit la valeur de _structureIterative de ErreurArretIteratifBornee
-     *
+     * @param {StructureIterative} value - Nouvelle valeur de la structure itérative associée à l'erreur.
      * @type {StructureIterative}
+     * @description Définit la valeur de _structureIterative de ErreurArretIteratifBornee.
      */
     set _structureIterative(value)
     {
         this._structureIterative = value;
     }
     /**
-     * retourne la valeur de _structureIterative de ErreurArretIteratifBornee
+     * @returns {StructureIterative} - Renvoi une StructureIterative.
+     * @description Retourne la valeur de _structureIterative de ErreurArretIteratifBornee.
      */
     get _structureIterative()
     {
@@ -41,21 +39,19 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle
     
     // METHODES
     /**
-     * Cette méthode renvoi un message qui nous donne la condition de sortie qui est dans une boucle itérative bornée.
-     *
-     * @returns {string}
+     * @returns {string} - Renvoie une chaine de caractères.
+     * @description Renvoie un message indiquant que la condition de sortie est située dans une boucle itérative bornée.
      */
     toString()
     {
         return "L'arrêt en surbrillance est dans une boucle itérative bornée.";
     }
-
     /**
-     * La méthode detecterAnomalie cherche s'il y a une condition de sortie dans une boucle itérative bornée et renvoi false s'il est dans une boucle sinon false.
-     *
      * @static
-     * @param {ConditionSortie} unArret
-     * @returns {boolean}
+     * @param {ConditionSortie} unArret - Instance de la classe ConditionSortie.
+     * @type {ConditionSortie}
+     * @returns {boolean} - Renvoi true ou false.
+     * @description La méthode detecterAnomalie vérifie si une condition de sortie est située dans une boucle itérative bornée et renvoie true si c'est le cas, sinon false.
      */
     static detecterAnomalie(unArret) {
         let listeAntescedants = unArret.getAntescedants(StructureIterativeBornee);

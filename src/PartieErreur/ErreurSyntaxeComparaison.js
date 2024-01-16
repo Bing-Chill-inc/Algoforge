@@ -1,10 +1,9 @@
 /**
- * La class ErreurSyntaxeComparaison vérifie que la syntaxe lors d'une comparaison soit correcte
- *
  * @class ErreurSyntaxeComparaison
- * @typedef {ErreurSyntaxeComparaison}
  * @extends {ErreurConceptuelle}
- */
+ * @classdesc La classe ErreurSyntaxeComparaison vérifie que la syntaxe lors d'une comparaison est correcte.
+ * @description Crée une instance de ErreurSyntaxeComparaison. 
+*/
 class ErreurSyntaxeComparaison extends ErreurConceptuelle
 {
     // ATTRIBUTS  -- Non --
@@ -12,10 +11,9 @@ class ErreurSyntaxeComparaison extends ErreurConceptuelle
 
     // CONSTRUCTEUR
     /**
-     * Crée une instance de ErreurSyntaxeComparaison.
-     *
      * @constructor
-     * @param {StructureAlternative} elementEmetteur
+     * @param {StructureAlternative} elementEmetteur - La structure alternative émettrice de l'erreur.
+     * @type {StructureAlternative}
      */
     constructor(elementEmetteur) 
     {
@@ -26,9 +24,8 @@ class ErreurSyntaxeComparaison extends ErreurConceptuelle
 
     // METHODES
     /**
-     * Cette méthode renvoi un message qui nous dit qu'une comparaison a une erreur de syntaxe.
-     *
-     * @returns {string}
+     * @returns {string} - Renvoie une chaine de caractères.
+     * @description Renvoie un message indiquant qu'une comparaison en surbrillance n'est pas syntaxiquement correcte.
      */
     toString()
     {
@@ -36,11 +33,11 @@ class ErreurSyntaxeComparaison extends ErreurConceptuelle
     }
 
     /**
-     * Cette méthode vérifie que chaque condition d'une StructureAlternative ne possède pas de double égale si une condition possède un double égale il renvoie true.
-     *
      * @static
-     * @param {StructureAlternative} StructureAlternative
-     * @returns {boolean}
+     * @param {StructureAlternative} structureAlternative - Instance de la classe StructureAlternative.
+     * @type {StructureAlternative}
+     * @returns {boolean} - Renvoi true ou false.
+     * @description Cette méthode vérifie que chaque condition d'une StructureAlternative ne possède pas de double égal. Si une condition possède un double égal, elle renvoie true.
      */
     static detecterAnomalie(StructureAlternative){
         for (let condition of StructureAlternative._listeConditions.children) {
