@@ -27,7 +27,7 @@ a._listeConditions.children[5]._elemParent.lierEnfant(g);
 a._listeConditions.children[6]._elemParent.lierEnfant(h);
 a._listeConditions.children[7]._elemParent.lierEnfant(i);
 */
-
+/*
 document.getElementById('espace1'); 
 let a = new Probleme;
 let b = new Probleme('0vw','10vw');
@@ -64,6 +64,45 @@ a._elemParent.lierEnfant(c);
 b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
+*/
+// Couche 1
+let a = new Probleme('60vw','0vw', "Algorithme", ["Entree"]);
+// Couche 2
+let b = new Probleme('30vw','10vw', "Manipulation", ["Entree"], ["a", "b"]);
+let c = new Probleme('120vw','10vw', "Afficher le resultat");
+// Couche 3
+let d = new Probleme('0vw','20vw', 'b <- "bndh"');
+let e = new Probleme('30vw','20vw', 'a <- 3');
+let f = new Probleme('60vw','20vw', 'a <- b');
+
+let g = new Probleme('120vw','20vw', 'afficher a', ["a", "b"]);
+
+document.getElementById('espace1').appendChild(a);
+document.getElementById('espace1').appendChild(b);
+document.getElementById('espace1').appendChild(c);
+document.getElementById('espace1').appendChild(d);
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(g);
+
+a.afficher(); 
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+g.afficher();
+
+//Couche 1
+a._elemParent.lierEnfant(b);
+a._elemParent.lierEnfant(c);
+//Couche 2
+b._elemParent.lierEnfant(d);
+b._elemParent.lierEnfant(e);
+b._elemParent.lierEnfant(f);
+
+c._elemParent.lierEnfant(g);
+
 
 function maFonction()
 {
