@@ -18,7 +18,7 @@ class DictionnaireDonnee
         const table = document.getElementById("tableDictionnaireDonnee");
          // Obtenez toutes les lignes de la table
         let rows = table.getElementsByTagName('tr');
-
+        
         // Effacer lancien contenu 
         for (let i = rows.length - 1; i > 0; i--) {
             // Supprimez chaque ligne sauf la première
@@ -31,6 +31,7 @@ class DictionnaireDonnee
 
             let tdNom = document.createElement("td");
             tdNom.textContent = info._nom;
+            tdNom.setAttribute('contenteditable', 'true');
             trContent.append(tdNom);
 
             let tdType = document.createElement("td");
@@ -39,7 +40,15 @@ class DictionnaireDonnee
 
             let tdSignification = document.createElement("td");
             tdSignification.textContent = info._signification;
+            tdSignification.setAttribute('contenteditable', 'true');
             trContent.append(tdSignification);
+            tdSignification.addEventListener('input', () => {
+                this._mesInformations.forEach(element => {
+                    if (element._nom == info._nom) {
+                        element._signification = tdSignification.innerText;
+                    }
+                });
+            });
         }
     }
 
@@ -75,35 +84,6 @@ class DictionnaireDonnee
         return true;
     }
 
-    convertionVariable(informationUne, InformationDeux)
-    {
-        // undefined
-        // String
-        // Char
-        // unsigned double
-        // double
-        // boolean
-        const type1 = informationUne;
-        const type2 = InformationDeux;
-
-        //Si Undefined
-        if(type1== undefined)
-        {
-            return type2;
-        }
-        if(type2 == undefined)
-        {
-            return type1;
-        }
-
-        // Si les deux types sont identiques non nécéssaire
-        if (type1 === type2) {
-            return type1;
-        }
-
-        // Si aucun des deux cas alors type1 est renvoyer
-        return this.getTypeLePlusBasEnCommun(type1, type2);
-    }
 
     TypeCompatible(type1, type2)
     {
@@ -143,6 +123,35 @@ class DictionnaireDonnee
         
     }
 
+    convertionVariable(informationUne, InformationDeux)
+    {
+        // undefined
+        // String
+        // Char
+        // unsigned double
+        // double
+        // boolean
+        const type1 = informationUne;
+        const type2 = InformationDeux;
+
+        //Si Undefined
+        if(type1== undefined)
+        {
+            return type2;
+        }
+        if(type2 == undefined)
+        {
+            return type1;
+        }
+
+        // Si les deux types sont identiques non nécéssaire
+        if (type1 === type2) {
+            return type1;
+        }
+
+        // Si aucun des deux cas alors type1 est renvoyer
+        return this.getTypeLePlusBasEnCommun(type1, type2);
+    }
     getTypeLePlusBasEnCommun(type1, type2)
     {
         let courant = type1;
@@ -204,7 +213,21 @@ class DictionnaireDonnee
                 }
             });
         }
-        return false;
+        return resultat;
+    }
+    changeSignification(nameVariable, nouvelleSignification)
+    {
+        let resultat = false;
+        this._mesInformations.forEach(element => {
+            if(element._nom == nameVariable)
+            {
+                element._signification = nouvelleSignification;
+                this.AfficherDictionnaire();
+                resultat = true;
+                
+            }
+        });
+        return resultat;
     }
     changeType(nameVariable, newType)
     {

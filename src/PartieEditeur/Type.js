@@ -24,6 +24,7 @@ class Type {
 
     // METHODES
     static DetecterLeType(unString) {
+        unString = unString.trim();
         const ascii0 = '0'.charCodeAt(0); // code ASCII de '0'
         const ascii9 = '9'.charCodeAt(0); // code ASCII de '9'
         const asciiSeparateur = '.'.charCodeAt(0); // code ASCII de '.' (Séparateur de décimale)
@@ -98,6 +99,45 @@ class Type {
             }
             return Type.int;
             
+        }
+        // Regarde si le dictionnaire contient
+        let dictionnaireDeDonnee = document.getElementById('espace1').leDictionnaireDesDonnees;
+        if(dictionnaireDeDonnee.containInformation(unString))
+        {
+            return dictionnaireDeDonnee.getInformation(unString)._type;
+        }
+        let courantType = Type.undefined;
+        if(unString.includes("+"))
+        {
+            const dernierIndex = unString.lastIndexOf('+');
+            let type1 = Type.DetecterLeType(unString.substring(0, dernierIndex));
+            let type2 = Type.DetecterLeType(unString.substring(dernierIndex+1));
+            courantType= dictionnaireDeDonnee.convertionVariable(type1, type2);
+            return courantType;
+        }
+        if(unString.includes("-"))
+        {
+            const dernierIndex = unString.lastIndexOf('-');
+            let type1 = Type.DetecterLeType(unString.substring(0, dernierIndex));
+            let type2 = Type.DetecterLeType(unString.substring(dernierIndex+1));
+            courantType= dictionnaireDeDonnee.convertionVariable(type1, type2);
+            return courantType;
+        }
+        if(unString.includes("*"))
+        {
+            const dernierIndex = unString.lastIndexOf('*');
+            let type1 = Type.DetecterLeType(unString.substring(0, dernierIndex));
+            let type2 = Type.DetecterLeType(unString.substring(dernierIndex+1));
+            courantType= dictionnaireDeDonnee.convertionVariable(type1, type2);
+            return courantType;
+        }
+        if(unString.includes("/"))
+        {
+            const dernierIndex = unString.lastIndexOf('/');
+            let type1 = Type.DetecterLeType(unString.substring(0, dernierIndex));
+            let type2 = Type.DetecterLeType(unString.substring(dernierIndex+1));
+            courantType= dictionnaireDeDonnee.convertionVariable(type1, type2);
+            return courantType;
         }
         return Type.undefined;
     }

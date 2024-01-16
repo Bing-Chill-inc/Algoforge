@@ -67,11 +67,11 @@ e._elemParent.lierEnfant(f);
 
 function maFonction()
 {
-    console.log("Effectuer le dictionnaire de donnée");
-    document.getElementById('espace1').effectuerDictionnaireDesDonnee();
-    console.log("Detection Erreur");
-    document.getElementById('espace1').rechercherAnomalies(); 
-    setTimeout("maFonction();", 10000);
+    if (!document.getElementById('espace1').classList.contains("cacher")) {
+        document.getElementById('espace1').effectuerDictionnaireDesDonnee();
+        document.getElementById('espace1').rechercherAnomalies(); 
+    }
+    setTimeout("maFonction();", 1000);
 }
 
 

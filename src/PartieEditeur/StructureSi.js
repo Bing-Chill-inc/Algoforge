@@ -46,35 +46,34 @@ class StructureSi extends StructureAlternative {
         // A faire condition doit pouvoir dire la variable ou le type
         return [];
     }
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
-        let listeAnomalies = listeAnomaliesPrecedent;
+    rechercherAnomalies() {
+        let mesAnomalies = [];
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
+            mesAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //15
         let informationsInconsistantesSi = AvertissementInformationsInconsistantesSi.detecterAnomalie(this);
         if(informationsInconsistantesSi[0]){
-            listeAnomalies.push(new AvertissementInformationsInconsistantesSi(this, informationsInconsistantesSi[1]));
+            mesAnomalies.push(new AvertissementInformationsInconsistantesSi(this, informationsInconsistantesSi[1]));
         }
         //17
         let structureInoptimale = AvertissementStructureInoptimale.detecterAnomalie(this);
         if(structureInoptimale[0]){
-            listeAnomalies.push(new AvertissementStructureInoptimale(this, structureInoptimale[1], structureInoptimale[2]));
+            mesAnomalies.push(new AvertissementStructureInoptimale(this, structureInoptimale[1], structureInoptimale[2]));
         }
         if(!informationsInconsistantesSi[0]){
             let typesInconsistantsAlternatif = ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
             if(typesInconsistantsAlternatif[0]){
-                listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
+                mesAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
             }
         }
-        super.rechercherAnomalies(listeAnomalies);
-        return listeAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
      
 

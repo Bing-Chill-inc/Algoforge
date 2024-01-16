@@ -289,11 +289,8 @@ class Probleme extends ElementGraphique {
         if(donneesDynamiqumentTypee[0]) {
             mesAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
-        this._listeAnomalie = mesAnomalies;
 
-        super.rechercherAnomalies([...mesAnomalies, ...listeAnomaliesPrecedent]);
-        this.afficherErreur();
-        return mesAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
 
     /**

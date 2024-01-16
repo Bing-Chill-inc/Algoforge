@@ -55,6 +55,8 @@ class StructureSwitch extends StructureAlternative {
     {
         let nameVariable = this.querySelector(".expressionATester").textContent;
         let premiereCondition = this.querySelector(".conditionContainer");
+
+        return [];
     }
     toJSON() {
         let conditions = [];
@@ -70,30 +72,36 @@ class StructureSwitch extends StructureAlternative {
         };
     }
 
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
-        let listeAnomalies = listeAnomaliesPrecedent;
+    rechercherAnomalies() {
+        let mesAnomalies = [];
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurSyntaxeComparaison(this));
+            mesAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         //16
         let comparaisonSwitch = ErreurComparaisonSwitch.detecterAnomalie(this);
         if(comparaisonSwitch[0]) {
-            listeAnomalies.push(new ErreurComparaisonSwitch(this, comparaisonSwitch[1]));
+            mesAnomalies.push(new ErreurComparaisonSwitch(this, comparaisonSwitch[1]));
         }
         if(!comparaisonSwitch[0]) {
             let typesInconsistantsAlternatif = ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
             if(typesInconsistantsAlternatif[0]) {
-                listeAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
+                mesAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
             }
         }
-        super.rechercherAnomalies(listeAnomalies);
-        return listeAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
+    extraireInformation() {
+        if(this._expressionATester.trim() == "")
+        {
+            return [new Information(this._expressionATester, Type.undefined)]
+        }
+        return [];
 
+    }
 } window.customElements.define("structure-switch-element", StructureSwitch);
