@@ -1,29 +1,25 @@
-
 /**
- * La classe AnomalieConceptuelle est la base de tous les classes Avertissement de l'éditeur d'algorithmes
- *
  * @class AvertissementConceptuel
- * @typedef {AvertissementConceptuel}
  * @extends {AnomalieConceptuelle}
+ * @classdesc La classe AvertissementConceptuel est une sous-classe d'AnomalieConceptuelle, servant de base à tous les avertissements de l'éditeur d'algorithmes.
+ * @description Crée une instance d'AvertissementConceptuel.
  */
 class AvertissementConceptuel extends AnomalieConceptuelle
 {
-    // ATTRIBUTS -- Non --
+    // ATTRIBUTS -- Aucun --
 
     // CONSTRUCTEUR
-     
     /**
-     * Crée une instance d'AvertissementConceptuel.
-     *
      * @constructor
-     * @param {ElementGraphique} elementEmetteur
+     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'avertissement.
+     * @type {ElementGraphique} 
      */
     constructor(elementEmetteur)
     {
         super(elementEmetteur);
     }
-    // ENCAPSULATION -- Non --
-    
-    // METHODES -- Non --
 
-} 
+    // ENCAPSULATION -- Aucune --
+
+    // METHODES -- Aucune --
+}

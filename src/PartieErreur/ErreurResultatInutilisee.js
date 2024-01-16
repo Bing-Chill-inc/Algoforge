@@ -1,9 +1,8 @@
 /**
- * La Classe ErreurResultatInutilisee stock s'il y a des résultats qui ne sont pas réutilisés dans la suite de l'algorithme.
- *
  * @class ErreurResultatInutilisee
- * @typedef {ErreurResultatInutilisee}
  * @extends {ErreurConceptuelle}
+ * @classdesc La Classe ErreurResultatInutilisee stocke si des résultats ne sont pas réutilisés dans la suite de l'algorithme.
+ * @description Crée une instance de ErreurResultatInutilisee.
  */
 class ErreurResultatInutilisee extends ErreurConceptuelle {
     // ATTRIBUTS
@@ -11,13 +10,10 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
 
     // CONSTRUCTEUR
     /**
-     * Crée une instance de ErreurResultatInutilisee.
-     * 
-     * Par défaut la liste des résultats à la création de l'instance est vide.
-     *
      * @constructor
-     * @param {ElementGraphique} elementEmetteur
-     * @param {Array<String>} [nomsResultats=new Array()]
+     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'erreur.
+     * @type {ElementGraphique}
+     * @param {Array<String>} [nomsResultats=[]] - Liste des noms de résultats associés à l'erreur (par défaut, la liste est vide).
      */
     constructor(elementEmetteur, nomsResultats = new Array()) {
         super(elementEmetteur);
@@ -26,25 +22,24 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
             
     // ENCAPSULATION
     /**
-     * Définit la valeur de _nomsResultats d'ErreurResultatInutilisee
-     *
-     * @type {String}
+     * @param {Array<String>} value - Nouvelle liste de noms de résultats associés à l'erreur.
+     * @description Définit la valeur de _nomsResultats d'ErreurResultatInutilisee.
      */
     set _nomsResultats(value) {
         this._nomsResultats = value;
-    }
-            
+    }    
     /**
-     * Renvoie la valeur de _nomsResultats d'ErreurResultatInutilisee
+     * @returns {Array<String>} - Renvoi une liste de noms de résultat.
+     * @description Renvoie la liste des noms de résultats associés à l'erreur.
      */
     get _nomsResultats() {
         return this._nomsResultats;
-    }     
+    }    
+
     // METHODES
     /**
-     * Cette méthode renvoi un message qui nous donne les résultats inutilisés présents dans l'algorithme.
-     *
-     * @returns {string}
+     * @returns {string} - Renvoi une chaine de caractères contenant les résultats inutilisés.
+     * @description Renvoie un message indiquant les résultats inutilisés dans l'algorithme.
      */
     toString() {
         if(this._nomsResultats.length == 1) {
@@ -63,13 +58,12 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
             return "Les résultats "+chaine+" ne sont pas utilisés";
         }
     }
-
     /**
-     * La méthode detecterAnomalie cherche à ce qu'aucun résultat de l'algorithme ne soit un résultat inutilisé et retourne une liste de résultat inutiliser trouver.
-     *
      * @static
-     * @param {Probleme} unProbleme
-     * @returns {{}}
+     * @param {Probleme} unProbleme - Instance de la classe Probleme.
+     * @type {Probleme}
+     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
+     * @description La méthode detecterAnomalie cherche les résultats inutilisés dans l'algorithme et retourne une liste contenant les noms des résultats inutilisés trouvés.
      */
     static detecterAnomalie(unProbleme) {
         const parent = unProbleme.getParent();
