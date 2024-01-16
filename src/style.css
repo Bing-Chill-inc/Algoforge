@@ -506,3 +506,18 @@ ligne-element {
     padding: 0;
     border: calc(var(--sizeModifier) * 0.1vw) solid black;
 }
+
+/*
+    Partie affichage des erreurs
+*/
+.divErreur div
+{
+    position: fixed;
+}
+.divErreur ul
+{
+    padding: 5px;
+    padding-left: 20px;
+    list-style-type: none;
+    border: calc(var(--sizeModifier) * 0.1vw) solid black ;
+}
