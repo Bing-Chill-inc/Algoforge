@@ -7,11 +7,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <button id="btnMode">Afficher Dictionnaire</button>
+    </header>
     <plan-travail id="espace1">
 
     </plan-travail>
+    <dictionnaire-Donnee class ="dictionnaire-Donnee" id="dictionnaire1">
+        <table id="tableDictionnaireDonnee">
+            <tr>
+              <td>Nom</td>
+              <td>Type</td>
+              <td>Signification</td>
+            </tr>
+            <tr>
+              <td>Row 2, Col 1</td>
+              <td>Row 2, Col 2</td>
+              <td>Row 2, Col 3</td>
+            </tr>
+            <tr>
+              <td>Row 3, Col 1</td>
+              <td>Row 3, Col 2</td>
+              <td>Row 3, Col 3</td>
+            </tr>
+        </table>
+    </dictionnaire-Donnee>
 </body>
+<script>
+    function changerMode() {
+      // Your logic for the button click goes here
+      document.getElementById('espace1').classList.toggle('cacher');
+      document.getElementById('dictionnaire1').classList.toggle('cacher');
+    }
 
+    // Attach a click event listener to the button
+    document.getElementById('btnMode').addEventListener('click', changerMode);
+    document.getElementById('dictionnaire1').classList.toggle('cacher');
+</script>
 <script src="PartieEditeur/Type.js"></script>
 <script src="PartieEditeur/Information.js"></script>
 <script src="PartieEditeur/DictionnaireDonnee.js"></script>

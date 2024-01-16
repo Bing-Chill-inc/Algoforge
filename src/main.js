@@ -34,7 +34,7 @@ let b = new Probleme('0vw','10vw');
 let r = new ConditionSortie('25vw','10vw');
 let c = new Probleme('50vw','10vw');
 let d = new Probleme('0vw','20vw');
-let e = new StructureIterativeBornee('0vw', '30vw', "p");
+let e = new StructureIterativeBornee('0vw', '30vw', "CompteurIncrementale");
 let f = new Probleme('0vw', '40vw');
 let s = new StructureSwitch('80vw', '40vw',  [new Condition("a"),new Condition("2"),new Condition("3"),new Condition("4"),new Condition("5"),new Condition("6"),new Condition("7"),new Condition("8")], "p");
 
