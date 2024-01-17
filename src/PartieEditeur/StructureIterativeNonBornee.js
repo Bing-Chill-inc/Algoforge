@@ -24,8 +24,7 @@ class StructureIterativeNonBornee extends StructureIterative {
         if(tropDeSousElements[0]) {
             listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
-        super.rechercherAnomalies(listeAnomalies);
-        return listeAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
 
     toJSON() {

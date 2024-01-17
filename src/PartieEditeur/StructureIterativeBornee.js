@@ -19,8 +19,10 @@ class StructureIterativeBornee extends StructureIterative {
         return this._variableAIterer;
     }
 
-    set _variableAIterer(value) {
+    setVariableAIterer(value)
+    {
         this._variableAIterer = value;
+        this.querySelector(".informationsBornes").innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`;
     }
 
     get _borneInferieure() {
@@ -53,23 +55,24 @@ class StructureIterativeBornee extends StructureIterative {
         // Et des informations sur notre boucle bornée.
         let divInformationsBornes = document.createElement("div");
         divInformationsBornes.className = "informationsBornes";
-        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer._nom} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
+        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
         this.appendChild(divInformationsBornes);
     }
 
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
-        let listeAnomalies = listeAnomaliesPrecedent;
+
+
+    rechercherAnomalies() {
+        let mesAnomalies = [];
         // On vérifie que la boucle n'est pas infinie
         if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurBoucleBorneeSansFin(this));
+            mesAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
-        super.rechercherAnomalies(listeAnomalies);
-        return listeAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
 
     toJSON() {
@@ -108,5 +111,11 @@ class StructureIterativeBornee extends StructureIterative {
     {
         return this._variableAIterer.includes(nameInformation) || this._pas.includes(nameInformation) || this._borneInferieure.includes(nameInformation) || this._borneSuperieure.includes(nameInformation);
     }
-
+    renameInformation(ancienNom, nouveauNom)
+    {
+        if(this._variableAIterer == ancienNom)
+        {
+            this.setVariableAIterer(nouveauNom);
+        }
+    }
 } window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);
