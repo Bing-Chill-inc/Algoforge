@@ -378,9 +378,6 @@ class Probleme extends ElementGraphique {
             let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
             i._type = Type.DetecterLeType(contenueVariable);
-        }else
-        {
-            i._nom= contenue.split(".")[0];
         }
         return i;
     }

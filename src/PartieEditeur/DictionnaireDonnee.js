@@ -64,22 +64,21 @@ class DictionnaireDonnee
     {
         let reussis = false;
         const nameInformation = uneInformation._nom;
-        if(uneInformation instanceof Information)
-        {
-            if(this.containInformation(nameInformation))
-            {
-                const ancienType = this.getInformation(nameInformation)._type;
-                const nouveauType = uneInformation._type;
-                const resultType = this.convertionVariable(nouveauType, ancienType);
-                if(this.getInformation(nameInformation)._type != resultType)
-                {
-                    this.changeType(uneInformation._nom, resultType);
+        if(uneInformation instanceof Information) {
+            if(this.nomCorrecte(nameInformation)) {
+                if(this.containInformation(nameInformation)) {
+                    const ancienType = this.getInformation(nameInformation)._type;
+                    const nouveauType = uneInformation._type;
+                    const resultType = this.convertionVariable(nouveauType, ancienType);
+                    if(this.getInformation(nameInformation)._type != resultType) {
+                        this.changeType(uneInformation._nom, resultType);
+                    }
                 }
-            }
-            else{
-                this._mesInformations.push(uneInformation);
-                this.AfficherDictionnaire();
-                reussis = true;
+                else {
+                    this._mesInformations.push(uneInformation);
+                    this.AfficherDictionnaire();
+                    reussis = true;
+                }
             }
         }
         return reussis;
@@ -94,29 +93,23 @@ class DictionnaireDonnee
 
     TypeCompatible(type1, type2)
     {
-        if(type1 == undefined || type2 == undefined)
-        {
+        if(type1 == undefined || type2 == undefined) {
             return true;
         }
         let courant = type1;
-        while(true)
-        {
-            if(!courant)
-            {
+        while(true) {
+            if(!courant) {
                 break;
             }
-            if(type2 == courant)
-            {
+            if(type2 == courant) {
                 return true;
             }
             courant = this._dictionnaireDesConvertionTypes[courant];
         }
 
         courant = type2;
-        while(true)
-        {
-            if(!courant)
-            {
+        while(true) {
+            if(!courant) {
                 break;
             }
             if(type1 == courant)
@@ -130,8 +123,7 @@ class DictionnaireDonnee
         
     }
 
-    convertionVariable(informationUne, InformationDeux)
-    {
+    convertionVariable(informationUne, InformationDeux) {
         // undefined
         // String
         // Char
@@ -159,8 +151,7 @@ class DictionnaireDonnee
         // Si aucun des deux cas alors type1 est renvoyer
         return this.getTypeLePlusBasEnCommun(type1, type2);
     }
-    getTypeLePlusBasEnCommun(type1, type2)
-    {
+    getTypeLePlusBasEnCommun(type1, type2) {
         let courant = type1;
         while(true)
         {
@@ -189,8 +180,7 @@ class DictionnaireDonnee
         }
         return type1;
     }
-    containInformation(nameInformation)
-    {
+    containInformation(nameInformation) {
         let trouver = false;
         this._mesInformations.forEach(element => {
             if(element._nom == nameInformation)
@@ -200,30 +190,33 @@ class DictionnaireDonnee
         });
         return trouver;
     }   
-    getInformation(nameInformation)
-    {
+    getInformation(nameInformation) {
         const foundElement = this._mesInformations.find(element => element._nom === nameInformation);
         return foundElement;
     }
-    renameInformation(nameVariable, newName)
-    {
+    renameInformation(nameVariable, newName) {
         let resultat = false;
-        if(!this.containInformation(newName))
+        if(newName == "")
         {
-            this._mesInformations.forEach(element => {
-                if(element._nom == nameVariable)
-                {
-                    element._nom = newName;
-                    this.AfficherDictionnaire();
-                    resultat = true;
-                    
-                }
-            });
+            resultat = retirerUneInformation(nameVariable);
+        }
+        else if(!this.containInformation(newName))
+        {
+            if(this.nomCorrecte(newName))
+            {
+                this._mesInformations.forEach(element => {
+                    if(element._nom == nameVariable)
+                    {
+                        element._nom = newName;
+                        this.AfficherDictionnaire();
+                        resultat = true;
+                    }
+                });
+            }
         }
         return resultat;
     }
-    changeSignification(nameVariable, nouvelleSignification)
-    {
+    changeSignification(nameVariable, nouvelleSignification) {
         let resultat = false;
         this._mesInformations.forEach(element => {
             if(element._nom == nameVariable)
@@ -236,8 +229,7 @@ class DictionnaireDonnee
         });
         return resultat;
     }
-    changeType(nameVariable, newType)
-    {
+    changeType(nameVariable, newType) {
         let resultat = false;
         this._mesInformations.forEach(element => {
             if(element._nom == nameVariable)
@@ -251,8 +243,24 @@ class DictionnaireDonnee
         return resultat;
     }
 
-    suppressionDonneeInutiliser()
-    {
+    nomCorrecte(nameVariable) {
+        let resultat = true;
+        if(nameVariable.trim() == "")
+        {
+            resultat = false;
+        }
+        for(let char of nameVariable)
+        {
+            if (!(char >= 'a' && char <= 'z') && !(char >= 'A' && char <= 'Z') && char !== '_')
+            {
+                resultat = false;
+            }
+        }
+        console.log(nameVariable + " " + resultat?"Vrai":"Faux" )
+        return resultat;
+    }
+
+    suppressionDonneeInutiliser() {
         this._mesInformations = this._mesInformations.filter(element => {
             return element._type != undefined || (element._signification != undefined && element._signification != "");
         });
