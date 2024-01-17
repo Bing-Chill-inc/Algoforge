@@ -171,7 +171,7 @@ class Probleme extends ElementGraphique {
                     {
                         donneesAAjouter += ","
                     }
-                    donneesAAjouter += donnee;
+                    donneesAAjouter += donnee._nom;
                 });
                 divDonneesEditable.innerHTML = donneesAAjouter;
                 divDonnees.appendChild(divDonneesEditable);
@@ -205,7 +205,7 @@ class Probleme extends ElementGraphique {
                     {
                         resultatsAAjouter += ","
                     }
-                    resultatsAAjouter += resultat;
+                    resultatsAAjouter += resultat._nom;
                 });
                 divResultatsEditable.innerHTML = resultatsAAjouter;
                 divResultat.appendChild(divResultatsEditable);

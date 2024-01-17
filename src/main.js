@@ -66,16 +66,16 @@ d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
 */
 // Couche 1
-let a = new Probleme('60vw','0vw', "Algorithme", ["Entree"]);
+let a = new Probleme('60vw','0vw', "Algorithme", [new Information("Entree")]);
 // Couche 2
-let b = new Probleme('30vw','10vw', "Manipulation", ["Entree"], ["a", "b"]);
+let b = new Probleme('30vw','10vw', "Manipulation", [new Information("Entree")], [new Information("a"),new Information("b")]);
 let c = new Probleme('120vw','10vw', "Afficher le resultat");
 // Couche 3
 let d = new Probleme('0vw','20vw', 'b <- "bndh"');
 let e = new Probleme('30vw','20vw', 'a <- 3');
 let f = new Probleme('60vw','20vw', 'a <- b');
 
-let g = new Probleme('120vw','20vw', 'afficher a', ["a", "b"]);
+let g = new Probleme('120vw','20vw', 'afficher a', [new Information("a"), new Information("b")]);
 
 document.getElementById('espace1').appendChild(a);
 document.getElementById('espace1').appendChild(b);
