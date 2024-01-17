@@ -1,3 +1,9 @@
+/**
+ * @class Ligne
+ * @classdesc La classe Ligne fait la liaison graphique entre chaque ElementGraphique
+ * @description Crée une instance de ligne
+ * @extends {HTMLElement}
+ */
 class Ligne extends HTMLElement {
     // ATTRIBUTS
     _abscisse1; // Float
@@ -8,6 +14,13 @@ class Ligne extends HTMLElement {
     _ordonneeMilieu; // Float
 
     // CONSTRUCTEUR
+    /**
+     * @constructor
+     * @param {string|number} abscisse1 abscisse du point 1
+     * @param {string|number} ordonnee1 ordonnée du point 1
+     * @param {string|number} abscisse2 abscisse du point 2
+     * @param {string|number} ordonnee2 ordonnée du point 2
+     */
     constructor(abscisse1, ordonnee1, abscisse2, ordonnee2) {
         super();
         this._abscisse1 = parseFloat(abscisse1);
@@ -18,39 +31,69 @@ class Ligne extends HTMLElement {
     }
 
     // ENCAPSULATION
+    /**
+     * @description Renvoie la valeur de l'abscisse du point 1
+     * @returns {string|number} La valeur de l'abscisse
+     */
     get _abscisse1() {
         return this._abscisse1;
     }
-
+    /**
+     * @description Définit la valeur de l'abscisse du point 1
+     * @param {string|number} value la nouvelle valeur de l'abscisse
+     */
     set _abscisse1(value) {
         this._abscisse1 = value;
     }
-
+    
+    /**
+     * @description Renvoie la valeur de l'ordonnée du point 1
+     * @returns {string|number} La valeur de l'abscisse
+     */
     get _ordonnee1() {
         return this._ordonnee1;
     }
 
+    /**
+     * @description Définit la valeur de l'ordonnée du point 1
+     * @param {string|number} value la nouvelle valeur de l'abscisse
+     */
     set _ordonnee1(value) {
         this._ordonnee1 = value;
     }
-
+    /**
+     * @description Renvoie la valeur de l'abscisse du point 2
+     * @returns {string|number} La valeur de l'abscisse
+     */
     get _abscisse2() {
         return this._abscisse2;
     }
-
+    /**
+     * @description Définit la valeur de l'abscisse du point 2
+     * @param {string|number} value la nouvelle valeur de l'abscisse
+     */
     set _abscisse2(value) {
         this._abscisse2 = value;
     }
-
+    /**
+     * @description Renvoie la valeur de l'ordonnée du point 2
+     * @returns {string|number} La valeur de l'abscisse
+     */
     get _ordonnee2() {
         return this._ordonnee2;
     }
-
+    /**
+     * @description Définit la valeur de l'ordonnée du point 2
+     * @param {string|number} value la nouvelle valeur de l'abscisse
+     */
     set _ordonnee2(value) {
         this._ordonnee2 = value;
     }
 
     // METHODES
+    /**
+     * @description Affiche la ligne sur le plan de travail
+     */
     afficher() {
         if (this._abscisse1 < this._abscisse2) {
             this._abscisseMilieu = (this._abscisse1 + this._abscisse2) / 2;
@@ -69,12 +112,24 @@ class Ligne extends HTMLElement {
         }
     }
 
+    /**
+     * @description Définit la position du premier point
+     * 
+     * @param {number|string} abscisse l'abscisse
+     * @param {number|string} ordonnee l'ordonnée
+     */
     setDebut(abscisse, ordonnee) {
         this._abscisse1 = parseFloat(abscisse);
         this._ordonnee1 = parseFloat(ordonnee);
         this.afficher();
     }
 
+    /**
+     * @description Définit la position du deuxième point
+     * 
+     * @param {number|string} abscisse l'abscisse
+     * @param {number|string} ordonnee l'ordonnée
+     */
     setFin(abscisse, ordonnee) {
         this._abscisse2 = parseFloat(abscisse);
         this._ordonnee2 = parseFloat(ordonnee);
