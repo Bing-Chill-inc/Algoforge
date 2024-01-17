@@ -256,7 +256,6 @@ class DictionnaireDonnee
                 resultat = false;
             }
         }
-        console.log(nameVariable + " " + resultat?"Vrai":"Faux" )
         return resultat;
     }
 
