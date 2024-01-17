@@ -131,7 +131,7 @@ a.afficher();
 b.afficher();
 
 a._listeConditions.children[0]._elemParent.lierEnfant(b)*/
-
+/*
 let a = new Probleme('80vw','0vw', "Création de la chaine modifiée", [], [new Information("chaineOrig"),new Information("chaineModif")]);
 let b = new Probleme('80vw','10vw', "Générer le captcha", [], [new Information("chaineOrig"),new Information("chaineModif")]);
 let c = new Probleme('0vw','20vw', "generer la chaine de nombre", [], [new Information("chaineOrig")]);
@@ -190,4 +190,4 @@ f._elemParent.lierEnfant(n)
 g._elemParent.lierEnfant(h)
 g._elemParent.lierEnfant(i)
 j._elemParent.lierEnfant(k)
-k._elemParent.lierEnfant(l)
+k._elemParent.lierEnfant(l)*/

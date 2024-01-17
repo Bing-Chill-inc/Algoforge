@@ -87,7 +87,9 @@ class PlanTravail extends HTMLElement {
 
         let corpsJSON = [];
         listeElementsSansParents.forEach((element) => {
-            corpsJSON.push(element.toJSON());
+            if(typeof element.toJSON === 'function') {
+                corpsJSON.push(element.toJSON());
+            }
         });
         return corpsJSON;
     }
