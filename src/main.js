@@ -144,8 +144,8 @@ let i = new Probleme('80vw','40vw', "effet2 = rand() % 10",[], [new Information(
 let j = new Probleme('110vw','30vw', "récupération des images des caractères présents dans la chaine",[new Information("chaineOrig"), new Information("baseImage")], [new Information("tabImage")])
 let k = new StructureIterativeBornee('120vw', '40vw', "i", 0, 4);
 let l = new Probleme('110vw','50vw', "tabImage[i] = baseImage[chaineOrig[i]]",[new Information("baseImage"), new Information("chaineOrig")], [new Information("tabImage")])
-let m = new Probleme('150vw','20vw', "fusion des images",[new Information("tabImag"), new Information("imagOrig")], [new Information("tabImage")])
-let n = new Probleme('180vw','20vw', "application des effets",[new Information("imageOrig"), new Information("effet1"), new Information("effet2")], [new Information("chaineModif")])
+let m = new Probleme('150vw','30vw', "fusion des images",[new Information("tabImag"), new Information("imagOrig")], [new Information("tabImage")])
+let n = new Probleme('180vw','30vw', "application des effets",[new Information("imageOrig"), new Information("effet1"), new Information("effet2")], [new Information("chaineModif")])
 
 
 document.getElementById('espace1').appendChild(a);
