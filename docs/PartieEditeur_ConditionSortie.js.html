@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: PartieErreur/AvertissementConceptuel.js</title>
+    <title>JSDoc: Source: PartieEditeur/ConditionSortie.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: PartieErreur/AvertissementConceptuel.js</h1>
+    <h1 class="page-title">Source: PartieEditeur/ConditionSortie.js</h1>
 
     
 
@@ -27,30 +27,86 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class AvertissementConceptuel
- * @extends {AnomalieConceptuelle}
- * @classdesc La classe AvertissementConceptuel est une sous-classe d'AnomalieConceptuelle, servant de base à tous les avertissements de l'éditeur d'algorithmes.
- * @description Crée une instance d'AvertissementConceptuel.
+ * @class ConditionSortie
+ * @classdesc L'ElementGraphique qui permet la sortie d'une structure itérative non bornée
+ * @description Crée une instance de ConditionSortie
+ * @extends {ElementGraphique}
  */
-class AvertissementConceptuel extends AnomalieConceptuelle
-{
-    // ATTRIBUTS -- Aucun --
+class ConditionSortie extends ElementGraphique {
+    // ATTRIBUTS -non-
 
     // CONSTRUCTEUR
     /**
      * @constructor
-     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'avertissement.
-     * @type {ElementGraphique} 
+     * @param {string|number} abscisse l'abscisse
+     * @param {string|number} ordonnee l'ordonnée
      */
-    constructor(elementEmetteur)
-    {
-        super(elementEmetteur);
+    constructor(abscisse = 0, ordonnee = 0) {
+        super(abscisse, ordonnee);
     }
 
-    // ENCAPSULATION -- Aucune --
+    // ENCAPSULATION -non-
 
-    // METHODES -- Aucune --
-}
+    // METHODES
+    /**
+     * @deprecated
+     * @returns {}
+     */
+    afficher() {
+        // Inutile car géré par le CSS, mais présent pour la cohérence
+        return null;
+    }
+
+    /**
+     * @description Recherche les anomalies dans la conditions de sortie&lt;br>
+     * Liste des Erreurs:&lt;br>
+     * 
+     * 5 : Conditions d’arrêt hors d’une structure itérative 
+     * @returns {Array&lt;AnomalieConceptuelle>} La listes des anomalies trouvées
+     */
+    rechercherAnomalies() {
+        let mesAnomalies = [];
+
+        //5
+        if(ErreurArretHorsIteratif.detecterAnomalie(this)) {
+            mesAnomalies.push(new ErreurArretHorsIteratif(this));
+        }
+
+        if(mesAnomalies.length == 0){
+            if(ErreurArretIteratifBornee.detecterAnomalie(this)){
+                mesAnomalies.push(new ErreurArretIteratifBornee(this));
+            }
+        }
+        let problemeJamaisExecute = AvertissementSProblemeJamaisExecute.detecterAnomalie(this);
+        if(problemeJamaisExecute[0]){
+            mesAnomalies.push(new AvertissementSProblemeJamaisExecute(this, problemeJamaisExecute[1]));
+        }
+        return super.rechercherAnomalies(mesAnomalies);
+    }
+
+    /**
+     * @deprecated
+     * @returns {Array}
+     */
+    extraireInformation() {
+        return [];
+    }
+
+    /**
+     * 
+     * @returns {JSON} Le corp JSON de la condition de sortie
+     * @property {ElementGraphique} typeElement Le type d'ElementGraphique de condition de sortie
+     * @property {string|number} abscisse l'abscisse
+     * @property {string|number} ordonnee l'ordonnée
+     */
+    toJSON() {
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee
+        };
+    }
+} window.customElements.define("condition-sortie-element", ConditionSortie);
 </code></pre>
         </article>
     </section>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: PartieErreur/AvertissementConceptuel.js</title>
+    <title>JSDoc: Source: PartieEditeur/Condition.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: PartieErreur/AvertissementConceptuel.js</h1>
+    <h1 class="page-title">Source: PartieEditeur/Condition.js</h1>
 
     
 
@@ -27,31 +27,95 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class AvertissementConceptuel
- * @extends {AnomalieConceptuelle}
- * @classdesc La classe AvertissementConceptuel est une sous-classe d'AnomalieConceptuelle, servant de base à tous les avertissements de l'éditeur d'algorithmes.
- * @description Crée une instance d'AvertissementConceptuel.
+ * @class Condition
+ * @classdesc Element qui est comparé
+ * @description Crée une instance de Condition
+ * @extends {HTMLElement}
  */
-class AvertissementConceptuel extends AnomalieConceptuelle
-{
-    // ATTRIBUTS -- Aucun --
+class Condition extends HTMLElement {
+    // ATTRIBUTS
+    _libelle; // String
+    _elemParent; // ElementParent (liste des enfants)
+    _structure; // StructureAlternative qui contient cette condition
 
     // CONSTRUCTEUR
-    /**
-     * @constructor
-     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'avertissement.
-     * @type {ElementGraphique} 
-     */
-    constructor(elementEmetteur)
-    {
-        super(elementEmetteur);
+    constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
+        super();
+        this._libelle = libelle;
+        this._elemParent = elemParent;
+        this._structure = structure;
+        if (this._elemParent != null) {
+            elemParent._proprietaire = this;
+        }
+        this.afficher();
     }
 
-    // ENCAPSULATION -- Aucune --
+    // ENCAPSULATION
+    get _libelle() {
+        return this._libelle;
+    }
 
-    // METHODES -- Aucune --
-}
-</code></pre>
+    set _libelle(value) {
+        this._libelle = value;
+    }
+
+    get _elemParent() {
+        return this._elemParent;
+    }
+
+    set _elemParent(value) {
+        this._elemParent = value;
+    }
+
+    get _structure() {
+        return this._structure;
+    }
+
+    set _structure(value) {
+        this._structure = value;
+    }
+
+    // METHODES
+    afficher() {
+        let buttonSupprimer = document.createElement("button");
+        buttonSupprimer.className = "supprimer";
+        buttonSupprimer.innerHTML = "-"
+        buttonSupprimer.style.display = "none";
+        this.appendChild(buttonSupprimer);
+
+        let divLibelle = document.createElement("div");
+        divLibelle.className = "libelle";
+        divLibelle.innerHTML = this._libelle;
+        divLibelle.contentEditable = "true";
+        this.appendChild(divLibelle);
+
+        let divDragHandle = document.createElement("div");
+        divDragHandle.className = "dragHandle";
+        divDragHandle.innerHTML = "• • •&lt;br>• • •"
+        this.appendChild(divDragHandle);
+    }
+
+    afficherBoutonSupp() {
+        this.querySelector("button.supprimer").style.display = "block";
+    }
+
+    cacherBoutonSupp() {
+        this.querySelector("button.supprimer").style.display = "none";
+    }
+
+    supprimer() {
+        this._structure.supprimerCondition(this);
+        delete this;
+    }
+
+    toJSON() {
+        return {
+            typeElement: this.constructor.name,
+            libelle: this._libelle,
+            enfants: this._elemParent.toJSON()
+        };
+    }  
+} window.customElements.define("condition-element", Condition);</code></pre>
         </article>
     </section>
 

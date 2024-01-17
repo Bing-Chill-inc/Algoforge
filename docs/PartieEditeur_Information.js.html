@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: PartieErreur/AvertissementConceptuel.js</title>
+    <title>JSDoc: Source: PartieEditeur/Information.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: PartieErreur/AvertissementConceptuel.js</h1>
+    <h1 class="page-title">Source: PartieEditeur/Information.js</h1>
 
     
 
@@ -27,29 +27,97 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @class AvertissementConceptuel
- * @extends {AnomalieConceptuelle}
- * @classdesc La classe AvertissementConceptuel est une sous-classe d'AnomalieConceptuelle, servant de base à tous les avertissements de l'éditeur d'algorithmes.
- * @description Crée une instance d'AvertissementConceptuel.
+ * @class Information
+ * @classdesc Une classe qui gère les différentes informations contenu dans les ElementGraphique information = Variable
+ * @description instanciable par d'autre classe
  */
-class AvertissementConceptuel extends AnomalieConceptuelle
+class Information 
 {
-    // ATTRIBUTS -- Aucun --
+    // ATTRIBUTS
+    _nom; // String
+    _type; // Type
+    _signification; // String
 
     // CONSTRUCTEUR
     /**
-     * @constructor
-     * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'avertissement.
-     * @type {ElementGraphique} 
+     * 
+     * @param {string|number} _nom 
+     * @type {Type}
+     * @param {Type} _type 
+     * @param {string} _signification 
      */
-    constructor(elementEmetteur)
-    {
-        super(elementEmetteur);
+    constructor(_nom, _type, _signification) {
+        this._nom = _nom;
+        this._type = _type;
+        this._signification = _signification;
     }
 
-    // ENCAPSULATION -- Aucune --
+    // ENCAPSULATION
+    /**
+     * @description Renvoie le nom de la variable 
+     * @returns {string} Le nom
+     */
+    get _nom() {
+        return this._nom;
+    }
 
-    // METHODES -- Aucune --
+    /**
+     * @description Définit le nom de la variable
+     * @param {string} value Le nouveau nom
+     */
+    set _nom(value) {
+        this._nom = value;
+    }
+    /**
+     * @description Renvoie le type de variable
+     * @returns {Type} Le type de la variable
+     */
+    get _type() {
+        return this._type;
+    }
+
+    /**
+     * @description Définit le type de variable
+     * @param {Type} value Le nouveau type de la variable
+     */
+    set _type(value) {
+        this._type = value;
+
+    }
+
+    /**
+     * @description Renvoie la description de la variable
+     * @returns {string} La description
+     */
+    get _signification() {
+        return this._signification;
+    }
+
+    /**
+     * @description Définit la description de la variables
+     * @param {string} value la nouvelle description
+     */
+    set _signification(value) {
+        this._signification = value;
+    }
+
+    // METHODES
+
+    /**
+     * 
+     * @returns {JSON} Le corp JSON de classe Information
+     * @property {string} nom Le nom de l'information
+     * @property {Type} type le type de la variable
+     * @property {string} signification la description de la variable
+     */
+    toJSON() {
+        return {
+            nom: this._nom,
+            type: this._type,
+            signification: this._signification
+        };
+    }
+    
 }
 </code></pre>
         </article>
