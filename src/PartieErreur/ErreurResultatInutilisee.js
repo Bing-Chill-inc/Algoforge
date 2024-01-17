@@ -62,7 +62,7 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
      * @static
      * @param {Probleme} unProbleme - Instance de la classe Probleme.
      * @type {Probleme}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
      * @description La méthode detecterAnomalie cherche les résultats inutilisés dans l'algorithme et retourne une liste contenant les noms des résultats inutilisés trouvés.
      */
     static detecterAnomalie(unProbleme) {

@@ -2,6 +2,7 @@
  * @class AvertissementSProblemeJamaisExecute
  * @extends {AvertissementConceptuel}
  * @classdesc La Classe AvertissementSProblemeJamaisExecute stocke les éléments graphiques qui sont après une condition de sortie et qui ne sont donc pas exécutés.
+ * @description Crée une instance de ErreurBoucleSansSortie.
  */
 class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
     // ATTRIBUTS

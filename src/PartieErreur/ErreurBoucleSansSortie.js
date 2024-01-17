@@ -24,7 +24,7 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle
 
     // METHODES
     /**
-     * @returns {string}
+     * @returns {string} - Renvoi une chaine de caractères.
      * @description Cette méthode renvoie un message indiquant qu'une boucle non bornée en surbrillance n'a pas de condition de sortie.
      */
     toString()
