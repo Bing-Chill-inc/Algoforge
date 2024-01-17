@@ -1,3 +1,4 @@
+
 /*let a = new StructureSi("20vw", "20vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a = 8")]);
 let b = new Probleme;
 let c = new Probleme('0vw','10vw');
@@ -191,3 +192,11 @@ g._elemParent.lierEnfant(h)
 g._elemParent.lierEnfant(i)
 j._elemParent.lierEnfant(k)
 k._elemParent.lierEnfant(l)
+
+document.getElementById('espace1') 
+
+let a = new Probleme
+
+document.getElementById('espace1').appendChild(a) 
+
+a.afficher() 
