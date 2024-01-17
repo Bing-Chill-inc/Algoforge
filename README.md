@@ -42,6 +42,7 @@ nouveau nom que nous pensons plus élégant et qui dureras dans le temps.
 - Maxime JACOB-SAUSSEREAU : ![**Fetnmax**](https://github.com/Fetnmax)
 - Fabien SPROCQ : ![**Sprocq**](https://github.com/Sprocq)
 - Samuel CURRAN : ![**SamuelCURRAN0**](https://github.com/SamuelCURRAN0)
+**N.B** : Samuel CURRAN n'a pas associé son compte github lors de ces commit donc il n'apparaisse pas sur github mais existe dans le log
 
 ## Structure des dossier :
 
