@@ -169,7 +169,8 @@ class Probleme extends ElementGraphique {
                 this._listeDonnes.forEach((donnee) => {
                     if(!donneesAAjouter == "")
                     {
-                        donneesAAjouter += ","
+                        donneesAAjouter += ",";
+                        donneesAAjouter += "</br>";
                     }
                     donneesAAjouter += donnee._nom;
                 });
@@ -203,7 +204,8 @@ class Probleme extends ElementGraphique {
                 this._listeResultats.forEach((resultat) => {
                     if(!resultatsAAjouter == "")
                     {
-                        resultatsAAjouter += ","
+                        resultatsAAjouter += ",";
+                        resultatsAAjouter += "</br>";
                     }
                     resultatsAAjouter += resultat._nom;
                 });
@@ -394,6 +396,13 @@ class Probleme extends ElementGraphique {
      *
      * @returns {{}}
      */
+    getTailleAbscisse()
+    {
+        return 30;
+    }
+    getTailleOrdonnee() {
+        return 5;
+    }
     extraireInformation() {
         let listeInformation = [];
         if(this.extraireInformationTextes())
