@@ -15,7 +15,6 @@ class Condition extends HTMLElement {
         }
         this.afficher();
     }
-
     // ENCAPSULATION
     get _libelle() {
         return this._libelle;
@@ -40,7 +39,25 @@ class Condition extends HTMLElement {
     set _structure(value) {
         this._structure = value;
     }
+    get _abscisse() 
+    {
+        let absolutePosX = this.getBoundingClientRect().left + window.pageXOffset;
 
+        // Calculate the X-coordinate in viewport units (vw)
+        let posXInVw = (absolutePosX / window.innerWidth) * 100;
+    
+        return posXInVw;
+    }
+    get _ordonnee() 
+    {   
+        let absolutePosY = this.getBoundingClientRect().top + window.pageYOffset;
+        return absolutePosY;
+        // Calculate the Y-coordinate in viewport units (vh) without referring to _abscisse
+        let posYInVh = (absolutePosY / window.innerHeight) * 100;
+    
+        return posYInVh;
+   
+    }
     // METHODES
     afficher() {
         let buttonSupprimer = document.createElement("button");
@@ -72,6 +89,13 @@ class Condition extends HTMLElement {
     supprimer() {
         this._structure.supprimerCondition(this);
         delete this;
+    }
+    getTailleAbscisse()
+    {
+        return 0;
+    }
+    getTailleOrdonnee() {
+        return 0;
     }
 
     toJSON() {

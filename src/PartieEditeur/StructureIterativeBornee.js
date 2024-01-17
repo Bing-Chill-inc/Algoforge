@@ -64,14 +64,14 @@ class StructureIterativeBornee extends StructureIterative {
     rechercherAnomalies() {
         let mesAnomalies = [];
         // On vérifie que la boucle n'est pas infinie
-        /*if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
+        if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // On vérifie que la boucle contient pas 7 sous-éléments ou plus
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
             mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
-        }*/
+        }
         return super.rechercherAnomalies(mesAnomalies);
     }
 

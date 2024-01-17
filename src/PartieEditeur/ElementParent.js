@@ -31,13 +31,15 @@ class ElementParent {
         if(elementAAjouter instanceof ElementGraphique)
         {
             elementAAjouter._parent = this;
-            let abscisse1 = parseFloat(this._proprietaire._abscisse) + (this._proprietaire.getTailleAbscisse()/2);
+            console.log(this._proprietaire._ordonnee)
+            let abscisse1 = parseFloat(this._proprietaire._abscisse) + (this._proprietaire.getTailleAbscisse() / 2);
             let ordonnee1 = parseFloat(this._proprietaire._ordonnee) + (this._proprietaire.getTailleOrdonnee());
-            let abscisse2 = parseFloat(elementAAjouter._abscisse) + (elementAAjouter.getTailleAbscisse()/2);
-            let ordonnee2 = elementAAjouter._ordonnee;
+            let abscisse2 = parseFloat(elementAAjouter._abscisse) + (elementAAjouter.getTailleAbscisse()) / 2;
+            let ordonnee2 = parseFloat(elementAAjouter._ordonnee);
             abscisse1 = abscisse1.toString() + "vw";
-            ordonnee1 = ordonnee1.toString() + "vw";
-
+            abscisse2 = abscisse2.toString() + "vw"
+            ordonnee1 = ordonnee1.toString() + "vh";
+            ordonnee2 = ordonnee2.toString() + "vh";
             let uneLigne = new Ligne(abscisse1, ordonnee1, abscisse2, ordonnee2);
             this._listeElementsEnfants.push({element : elementAAjouter, ligne : uneLigne});
             document.getElementById('espace1').appendChild(uneLigne);

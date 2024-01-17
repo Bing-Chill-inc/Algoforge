@@ -87,16 +87,13 @@ class ElementGraphique extends HTMLElement {
     getTailleAbscisse()
     {
         let rect = this.getBoundingClientRect();
-
-        // Calculez la largeur en unité vw
         let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
         return largeurEnVw;
     }
     getTailleOrdonnee() {
         let rect = this.getBoundingClientRect();
-    
-        // Calculez la hauteur en unité vh
-        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight * 100);
+        // Je ne sais pas pourquoi innerWidth mais je crois que cela viens de probleme height exprimer en vw
+        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerWidth * 100);
         return hauteurEnVh;
     }
     /**
@@ -267,7 +264,7 @@ class ElementGraphique extends HTMLElement {
     }
     signalerAvertissement() {
         this._etat = "Avertissement"
-        this._couleurPrimaire = "yellow";
+        this._couleurPrimaire = "rgb(255, 200, 0)";
         this.colorierElement();
     }
     effacerSignalement() {

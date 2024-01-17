@@ -396,13 +396,13 @@ class Probleme extends ElementGraphique {
      *
      * @returns {{}}
      */
-    getTailleAbscisse()
+    /*getTailleAbscisse()
     {
         return 30;
     }
     getTailleOrdonnee() {
         return 5;
-    }
+    }*/
     extraireInformation() {
         let listeInformation = [];
         if(this.extraireInformationTextes())

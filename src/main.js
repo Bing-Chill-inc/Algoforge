@@ -75,8 +75,9 @@ let c = new Probleme('120vw','10vw', "Afficher le resultat");
 let d = new Probleme('0vw','20vw', 'b <- "bndh"');
 let e = new Probleme('30vw','20vw', 'a <- 3');
 let f = new Probleme('60vw','20vw', 'a <- b');
-
 let g = new Probleme('120vw','20vw', 'afficher a', [new Information("a"), new Information("b")]);
+let h =new StructureSi("20vw", "35vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a = 8")]);;
+let i = new Probleme('20vw','45vw', 'Test', [new Information("a"), new Information("b")]);
 
 document.getElementById('espace1').appendChild(a);
 document.getElementById('espace1').appendChild(b);
@@ -85,6 +86,8 @@ document.getElementById('espace1').appendChild(d);
 document.getElementById('espace1').appendChild(e);
 document.getElementById('espace1').appendChild(f);
 document.getElementById('espace1').appendChild(g);
+document.getElementById('espace1').appendChild(h);
+document.getElementById('espace1').appendChild(i);
 
 a.afficher(); 
 b.afficher();
@@ -93,16 +96,23 @@ d.afficher();
 e.afficher();
 f.afficher();
 g.afficher();
+h.afficher();
+i.afficher();
+function maFonction()
+{
+    //Couche 1
+    a._elemParent.lierEnfant(b);
+    a._elemParent.lierEnfant(c);
+    //Couche 2
+    b._elemParent.lierEnfant(d);
+    b._elemParent.lierEnfant(e);
+    b._elemParent.lierEnfant(f);
 
-//Couche 1
-a._elemParent.lierEnfant(b);
-a._elemParent.lierEnfant(c);
-//Couche 2
-b._elemParent.lierEnfant(d);
-b._elemParent.lierEnfant(e);
-b._elemParent.lierEnfant(f);
-
-c._elemParent.lierEnfant(g);
+    c._elemParent.lierEnfant(g);
+    e._elemParent.lierEnfant(h);
+    h._listeConditions.children[0]._elemParent.lierEnfant(i)
+}
+setTimeout("maFonction();", 1000);
 
 /*function maFonction()
 {
