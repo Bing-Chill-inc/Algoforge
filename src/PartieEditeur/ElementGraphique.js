@@ -81,6 +81,21 @@ class ElementGraphique extends HTMLElement {
 
     // ENCAPSULATION
 
+    getTailleAbscisse()
+    {
+        let rect = this.getBoundingClientRect();
+
+        // Calculez la largeur en unité vw
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        return largeurEnVw;
+    }
+    getTailleOrdonnee() {
+        let rect = this.getBoundingClientRect();
+    
+        // Calculez la hauteur en unité vh
+        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight * 100);
+        return hauteurEnVh;
+    }
     /**
      * @description Définit la positon de l'ElementGraphique<br>
      * Si aucune valeur n'est définit la position ne change pas. Sinon la nouvelle valeur est donné à l'ElementGraphique
@@ -225,16 +240,21 @@ class ElementGraphique extends HTMLElement {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+    rechercherAnomalies(mesAnomalies) {
+        this._listeAnomalie = mesAnomalies;
+        let anomalieDeMesEnfantsEtLesMiennes = [];
         let enfants = this.getEnfants();
         for(let enfant of enfants)
         {
-            enfant.rechercherAnomalies(listeAnomaliesPrecedent);
+            anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes,...enfant.rechercherAnomalies()];
         }
+        anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
+        this.afficherErreur();
+        return anomalieDeMesEnfantsEtLesMiennes;
     }
     /* Partie Affichage */
     colorierElement() {
-        console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+        //console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
     }
     signalerErreur() {
         this._etat = "Erreur"
@@ -262,8 +282,8 @@ class ElementGraphique extends HTMLElement {
 
                 let listeErreur = document.createElement("ul");
                 divListeErreur.appendChild(listeErreur);*/
-                for(let probleme of this._listeAnomalie) {
-                    if(probleme instanceof ErreurConceptuelle) {
+                for(let anomalie of this._listeAnomalie) {
+                    if(anomalie instanceof ErreurConceptuelle) {
                         EstUneErreur = true;
                     }
                     /*
@@ -286,5 +306,10 @@ class ElementGraphique extends HTMLElement {
         if (divErreur) {
             divErreur.remove();
         }
+    }
+
+    renameInformation(ancienNom, nouveauNom)
+    {
+        
     }
 }

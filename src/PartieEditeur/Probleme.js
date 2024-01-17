@@ -108,8 +108,13 @@ class Probleme extends ElementGraphique {
      *
      * @returns {string} Les information de la boîte
      */
+    
     getTexte() {
         return this.querySelector(".nom").textContent;
+    }
+
+    replaceTexte(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".nom").textContent = this.querySelector(".nom").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
 
     /**
@@ -120,7 +125,12 @@ class Probleme extends ElementGraphique {
     getDonnee() {
         return this.querySelector(".donneesEditable").textContent;
     }
-
+    setDonnee(value) {
+        this.querySelector(".donneesEditable").textContent = value;
+    }
+    replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".donneesEditable").textContent = this.querySelector(".donneesEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
+    }
     /**
      * @description Retourne les résultats du Probleme
      *
@@ -128,6 +138,12 @@ class Probleme extends ElementGraphique {
      */
     getResultat() {
         return this.querySelector(".resultatEditable").textContent;
+    }
+    setResultat(value) {
+       this.querySelector(".resultatEditable").textContent = value;
+    }
+    replaceTexteResultat(chaineAChercher, chaineARemplacer) {
+        this.querySelector(".resultatEditable").textContent = this.querySelector(".resultatEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
 
     // METHODES
@@ -154,7 +170,12 @@ class Probleme extends ElementGraphique {
                 divDonneesEditable.contentEditable = "true";
                 let donneesAAjouter = "";
                 this._listeDonnes.forEach((donnee) => {
-                    donneesAAjouter += donnee._nom + "<br>";
+                    if(!donneesAAjouter == "")
+                    {
+                        donneesAAjouter += ",";
+                        donneesAAjouter += "</br>";
+                    }
+                    donneesAAjouter += donnee._nom;
                 });
                 divDonneesEditable.innerHTML = donneesAAjouter;
                 divDonnees.appendChild(divDonneesEditable);
@@ -184,7 +205,12 @@ class Probleme extends ElementGraphique {
                 divResultatsEditable.contentEditable = "true";
                 let resultatsAAjouter = "";
                 this._listeResultats.forEach((resultat) => {
-                    resultatsAAjouter += resultat._nom + "<br>";
+                    if(!resultatsAAjouter == "")
+                    {
+                        resultatsAAjouter += ",";
+                        resultatsAAjouter += "</br>";
+                    }
+                    resultatsAAjouter += resultat._nom;
                 });
                 divResultatsEditable.innerHTML = resultatsAAjouter;
                 divResultat.appendChild(divResultatsEditable);
@@ -253,7 +279,7 @@ class Probleme extends ElementGraphique {
      * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies présent dans les ElementGraphique précédant
      * @returns {Array<AnomalieConceptuelle>} La liste précédante en rajoutant ce du Probleme actuelle
      */
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
+    rechercherAnomalies() {
         let mesAnomalies = [];
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
@@ -289,11 +315,8 @@ class Probleme extends ElementGraphique {
         if(donneesDynamiqumentTypee[0]) {
             mesAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
         }
-        this._listeAnomalie = mesAnomalies;
 
-        super.rechercherAnomalies([...mesAnomalies, ...listeAnomaliesPrecedent]);
-        this.afficherErreur();
-        return mesAnomalies;
+        return super.rechercherAnomalies(mesAnomalies);
     }
 
     /**
@@ -359,9 +382,6 @@ class Probleme extends ElementGraphique {
             let contenueVariable = contenue.split("<-")[1].trim();
             i._nom = nomDeVariable;
             i._type = Type.DetecterLeType(contenueVariable);
-        }else
-        {
-            i._nom= contenue.split(".")[0];
         }
         return i;
     }
@@ -378,6 +398,13 @@ class Probleme extends ElementGraphique {
      *
      * @returns {Array} liste des variables
      */
+    getTailleAbscisse()
+    {
+        return 30;
+    }
+    getTailleOrdonnee() {
+        return 5;
+    }
     extraireInformation() {
         let listeInformation = [];
         if(this.extraireInformationTextes())
@@ -398,6 +425,11 @@ class Probleme extends ElementGraphique {
     {
         return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
     }
-
+    renameInformation(ancienNom, nouveauNom)
+    {
+        this.replaceTexte(ancienNom, nouveauNom);
+        this.replaceTexteDonnee(ancienNom, nouveauNom);
+        this.replaceTexteResultat(ancienNom, nouveauNom);
+    }
 
 } window.customElements.define("probleme-element", Probleme);
