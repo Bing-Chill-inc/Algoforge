@@ -1,8 +1,7 @@
 /**
- * Classe PlanTravail
- *
+ * @classdesc Le plan de travail pour éditer les algorithmes
+ * @description Crée une instance de PlanTravail.
  * @class PlanTravail
- * @typedef {PlanTravail}
  * @extends {HTMLElement}
  */
 class PlanTravail extends HTMLElement {
@@ -10,8 +9,6 @@ class PlanTravail extends HTMLElement {
     leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
     // CONSTRUCTEUR
     /**
-     * Crée une instance de PlanTravail.
-     *
      * @constructor
      */
     constructor() {
@@ -27,22 +24,23 @@ class PlanTravail extends HTMLElement {
 
     // METHODES
     /**
-     * Retourne le premier Problème du plant de travail
+     * @description Retourne le premier Problème du plant de travail
      *
-     * @returns {*}
+     * @type {Probleme}
+     * @returns {Probleme} Le premier problème du plan de travail
      */
     getProblemePrincipal() {
         return this.children[0];
     }
     
     /**
-     * Recherche les erreurs dans le plan de travail
+     * Recherche les erreurs dans le plan de travail<br>
      * 
-     * Liste des erreurs :
+     * Liste des erreurs :<br>
      * 
      * 13 : Algorithme trop grand 
      *
-     * @returns {{}}
+     * @returns {Array<AnomalieConceptuelle>} La liste des problèmes de plan de travail (actuellement qu'une erreur)
      */
     rechercherAnomalies() {
         let listeAnomalies = [];
@@ -55,12 +53,12 @@ class PlanTravail extends HTMLElement {
     }
 
     /**
-     * Renvoie une liste contenant les éléments ElementGraphique du type donné
+     * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
      *
      * @static
-     * @param {*} listeElementGraphique
-     * @param {*} typeRechercher
-     * @returns {{}}
+     * @param {Array<ElementGraphique>} listeElementGraphique La listes de tous les ElementsGraphiques
+     * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
+     * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
      */
     static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
         let nouvelleListe = [];
@@ -73,7 +71,7 @@ class PlanTravail extends HTMLElement {
     }
 
     /**
-     * Renvoie les informations de l'instance du PlanTravail sous forme JSON
+     * @description Renvoie les informations de l'instance du PlanTravail sous forme JSON
      *
      * @returns {{}}
      */
@@ -93,9 +91,9 @@ class PlanTravail extends HTMLElement {
     }
 
     /**
-     * Lis un fichier json et le charge en mémoire. Vérifi également si le fichier est bien un JSON
+     * @description Lis un fichier json et le charge en mémoire. Vérifi également si le fichier est bien un JSON
      *
-     * @param {*} fichier
+     * @param {string} fichier Le fichier json à charger en mémoire
      */
     chargerFichier(fichier) {
         try {
@@ -107,10 +105,10 @@ class PlanTravail extends HTMLElement {
     }
 
     /**
-     * Charge le corpsJSON donnée pour charger l'algorithme contenu à l'intérieur sur le plan de travail
+     * @description Charge le corpsJSON donnée pour charger l'algorithme contenu à l'intérieur sur le plan de travail
      *
-     * @param {*} corpsJSON
-     * @returns {*}
+     * @param {JSON} corpsJSON le corps JSON à charger sur le plan de travail
+     * @returns {Array<ElementGraphique>} La liste des ElementGraphique chargés
      */
     chargerDepuisJSON(corpsJSON) {
         if (corpsJSON == undefined) {
@@ -220,7 +218,7 @@ class PlanTravail extends HTMLElement {
 
     // Effectue le dictionnaire des données
     /**
-     * Recherche toutes les variables à l'intérieur du PlanTravail et les donne au dictionnaire de donnée
+     * @description Recherche toutes les variables à l'intérieur du PlanTravail et les donne au dictionnaire de donnée
      */
     effectuerDictionnaireDesDonnee() {
         // Suppression de toutes les Informations ayant comme type undefined
