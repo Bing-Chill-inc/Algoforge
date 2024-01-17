@@ -1,3 +1,8 @@
+/**
+ * @class Type
+ * @classdesc Une classe type qui permet de définir le type des information (variables)
+ * @description Est utilisé dans les autres méthodes
+ */
 class Type {
     // Enum type
     static Boolean = 'Boolean';
@@ -9,20 +14,36 @@ class Type {
     static undefined = undefined;
 
     // CONSTRUCTEUR
+    /**
+     * @param {string} nom le nom
+     */
     constructor(nom) {
         this._nom = nom;
     }
 
     // ENCAPSULATION
+    /**
+     * @description Renvoie le nom du type
+     * @returns {string} Le nom du type
+     */
     get _nom() {
         return this._nom;
     }
 
+    /**
+     * @description Définit le nom du type
+     * @param {string} value Le nouveau nom
+     */
     set _nom(value) {
         this._nom = value;
     }
 
     // METHODES
+    /**
+     * @description Détecte le type de la chaine donnée en entrée
+     * @param {string} unString la valeur de l'information indéterminer
+     * @returns {string} Le type détecter
+     */
     static DetecterLeType(unString) {
         unString = unString.trim();
         const ascii0 = '0'.charCodeAt(0); // code ASCII de '0'
@@ -142,6 +163,10 @@ class Type {
         return Type.undefined;
     }
 
+    /**
+     * @description Ajoute une fonction de conformite
+     * @param {boolean} fonction fonction de conformite
+     */
     ajouterFonctionDeConformite(fonction) {
         this.estConforme = fonction;
     }

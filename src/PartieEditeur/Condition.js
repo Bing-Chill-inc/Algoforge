@@ -1,3 +1,9 @@
+/**
+ * @class Condition
+ * @classdesc Element qui est comparé
+ * @description Crée une instance de Condition
+ * @extends {HTMLElement}
+ */
 class Condition extends HTMLElement {
     // ATTRIBUTS
     _libelle; // String
