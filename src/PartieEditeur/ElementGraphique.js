@@ -1,8 +1,8 @@
 /**
- * La classe ElementGraphique est la base de tous les éléments de l'éditeur d'algorithmes 
- *
  * @class ElementGraphique
- * @typedef {ElementGraphique}
+ * @classdesc La classe ElementGraphique est la base de tous les éléments de l'éditeur d'algorithmes . <br>Chaque Element Descent de ElementGraphique Lorsque la valeur par défaut est ElementGraphique chacun des types héritant de celui-ci peuvent être utilisé
+ * @description Crée une instance de ElementGraphique.<br>
+ * Par défaut la position à la création de l'instance est à (0,0)
  * @extends {HTMLElement}
  */
 class ElementGraphique extends HTMLElement {
@@ -16,14 +16,10 @@ class ElementGraphique extends HTMLElement {
 
     // CONSTRUCTEUR
     /**
-     * Crée une instance de ElementGraphique.
-     * 
-     * Par défaut la position à la création de l'instance est à (0,0)
-     *
      * @constructor
-     * @param {number} [abscisse=0]
-     * @param {number} [ordonnee=0]
-     * @param {*} [parent=null]
+     * @param {number} [abscisse=0] l'abscisse de l'ElementGraphique
+     * @param {number} [ordonnee=0] l'ordonnée de l'ElementGraphique
+     * @param {ElementParent} [parent=null] le père de l'Elementgraphique par défaut n'a pas de père
      */
     constructor(abscisse = 0, ordonnee = 0, parent = null) {
         super();
@@ -35,48 +31,49 @@ class ElementGraphique extends HTMLElement {
 
     // ENCAPSULATION
     /**
-     * Renvoie la valeur de l'abscisse de l'ElementGraphique
+     * @description Renvoie la valeur de l'abscisse de l'ElementGraphique
      *
-     * @type {number}
+     * @returns {number} l'abscisse
      */
     get _abscisse() {
         return this._abscisse;
     }
 
     /**
-     * Définit la valeur de l'abscisse de l'ElementGraphique
+     * @description Définit la valeur de l'abscisse de l'ElementGraphique
      */
     set _abscisse(value) {
         this._abscisse = value;
     }
 
     /**
-     * Renvoie la valeur de l'ordonnée de l'ElementGraphique
+     * @description Renvoie la valeur de l'ordonnée de l'ElementGraphique
      *
-     * @type {number}
+     * @returns {number} l'ordonnée
      */
     get _ordonnee() {
         return this._ordonnee;
     }
 
     /**
-     * Définit la valeur de l'ordonnée de l'ElementGraphique
+     * @description Définit la valeur de l'ordonnée de l'ElementGraphique
      */
     set _ordonnee(value) {
         this._ordonnee = value;
     }
 
     /**
-     * Renvoie le parent de l'ElementGraphique
+     * @description Renvoie le parent de l'ElementGraphique
      *
-     * @type {*}
+     * @type {ElementGraphique}
+     * @returns {ElementGraphique} Le père de l'ElementGraphique
      */
     get _parent() {
         return this._parent;
     }
 
     /**
-     * Définit le parent de l'ElementGraphique
+     * @description Définit le parent de l'ElementGraphique
      */
     set _parent(value) {
         this._parent = value;
@@ -85,12 +82,10 @@ class ElementGraphique extends HTMLElement {
     // ENCAPSULATION
 
     /**
-     * Définit la positon de l'ElementGraphique
-     * 
+     * @description Définit la positon de l'ElementGraphique<br>
      * Si aucune valeur n'est définit la position ne change pas. Sinon la nouvelle valeur est donné à l'ElementGraphique
-     *
-     * @param {number} [abscisse=-1]
-     * @param {number} [ordonnee=-1]
+     * @param {number} [abscisse=-1] l'abscisse
+     * @param {number} [ordonnee=-1] l'ordonnée
      */
     setPosition(abscisse = -1, ordonnee = -1) {
         if (abscisse == -1 && ordonnee == -1) {
@@ -103,9 +98,11 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Renvoie la position de l'ElementGraphique sous forme de dictionnaire
+     * @description Renvoie la position de l'ElementGraphique sous forme de dictionnaire
      *
-     * @returns {{ abscisse: any; ordonnee: any; }}
+     * @returns {message} Un message contenant l'abscisse et l'ordonnée de l'ElementGraphique
+     * @property {number|string} abscisse l'abscisse
+     * @property {number|string} ordonee l'ordonnée
      */
     getPosition() {
         return {abscisse: this.style.left, ordonnee: this.style.top};
@@ -113,18 +110,17 @@ class ElementGraphique extends HTMLElement {
 
     // METHODES
     /**
-     * Affiche dans la console la position de l'ElementGraphique
+     * @description Affiche dans la console la position de l'ElementGraphique
      */
     afficher() {
         console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
     }
     
     /**
-     * Comportement natif de getEnfants(), affiche dans la console une erreur d'initialisement et ça position
-     * 
-     * Est étendu dans les sous classes
+     * @description Comportement natif de getEnfants(), affiche dans la console une erreur d'initialisement et ça position<br>
+     * <br>Est étendu dans les sous classes
      *
-     * @returns {{}}
+     * @returns {Array<Information>} Une liste de classe Informations
      */
     extraireInformation() {
         console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
@@ -132,12 +128,11 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Comportement natif de getEnfants(), ne renvoie rien
-     * 
-     * Est étendu dans les sous classes
-     *
-     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
-     * @returns {{}}
+     * @description Comportement natif de getEnfants(), ne renvoie rien<br>
+     * <br>Est étendu dans les sous classes
+     * @type {ElementGraphique}
+     * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le type demandé
+     * @returns {typeRechercher} La liste des enfants du type rechercher
      */
     getEnfants(typeRechercher = ElementGraphique)
     {
@@ -145,10 +140,11 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Renvoie l'arbre des descendants contenant les descendants des descendants
+     * @description Renvoie l'arbre des descendants contenant les descendants des descendants
      *
-     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
-     * @returns {*}
+     * @type {ElementGraphique}
+     * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le type rechercher
+     * @returns {Array<ElementGraphique>} L'arbre des déscendants de l'ElementGraphique
      */
     getDescendants(typeRechercher = ElementGraphique) {
         const listeDeMesEnfants = this.getEnfants();
@@ -161,10 +157,11 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Renvoie le parent de l'ElementGraphique
+     * @description Renvoie le parent de l'ElementGraphique du type rechercher
      *
-     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
-     * @returns {*}
+     * @type {ElementGraphique}
+     * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le parent de l'ElementGraphique du type rechercher
+     * @returns {ElementGraphique} le parent
      */
     getParent(typeRechercher = ElementGraphique) {
         if(this._parent)
@@ -175,10 +172,10 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Renvoie la liste des antécédant d'ElementGraphique
+     * @description Renvoie la liste des antécédant d'ElementGraphique en fonction du type rechercher
      *
-     * @param {typeof ElementGraphique} [typeRechercher=ElementGraphique]
-     * @returns {*}
+     * @param {ElementGraphique} [typeRechercher=ElementGraphique] La type rechercher
+     * @returns {Array<typeRechercher>} L'arbre des antécédants de l'élément graphique
      */
     getAntescedants(typeRechercher = ElementGraphique) {
         const parent = this.getParent();
@@ -193,12 +190,12 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Comportement natif de include(), affiche dans la console une erreur d'initialisement et ça position
+     * @description Comportement natif de include(), affiche dans la console une erreur d'initialisement et ça position
      * 
-     * Est étendu dans les sous classes
+     * <br>Est étendu dans les sous classes
      *
-     * @param {*} nameInformation
-     * @returns {boolean}
+     * @param {string} nameInformation Les information rechercher
+     * @returns {boolean} Renvoie false par défaut 
      */
     include(nameInformation) {
         console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
@@ -206,11 +203,11 @@ class ElementGraphique extends HTMLElement {
     }
     
     /**
-     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
      * 
-     * Est étendu dans les sous classes
+     * <br>Est étendu dans les sous classes
      *
-     * @returns {{}}
+     * @returns {Array<Information>} Les information contenu dans résultat défini, dans Probleme
      */
     getInformationResultat() {
         console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
@@ -218,11 +215,11 @@ class ElementGraphique extends HTMLElement {
     }
 
     /**
-     * Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
      * 
-     * Est étendu dans les sous classes
+     * <br>Est étendu dans les sous classes
      *
-     * @returns {{}}
+     * @returns {Array<Information>} Les informations contenu dans données défini, dans Probleme
      */
     getInformationDonnee() {
         console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
