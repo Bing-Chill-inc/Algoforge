@@ -84,6 +84,21 @@ class ElementGraphique extends HTMLElement {
 
     // ENCAPSULATION
 
+    getTailleAbscisse()
+    {
+        let rect = this.getBoundingClientRect();
+
+        // Calculez la largeur en unité vw
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        return largeurEnVw;
+    }
+    getTailleOrdonnee() {
+        let rect = this.getBoundingClientRect();
+    
+        // Calculez la hauteur en unité vh
+        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight * 100);
+        return hauteurEnVh;
+    }
     /**
      * Définit la positon de l'ElementGraphique
      * 

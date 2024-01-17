@@ -130,5 +130,64 @@ document.getElementById('espace1').appendChild(b);
 a.afficher();
 b.afficher();
 
-a._listeConditions.children[0]._elemParent.lierEnfant(b)
-*/
+a._listeConditions.children[0]._elemParent.lierEnfant(b)*/
+
+let a = new Probleme('80vw','0vw', "Création de la chaine modifiée", [], [new Information("chaineOrig"),new Information("chaineModif")]);
+let b = new Probleme('80vw','10vw', "Générer le captcha", [], [new Information("chaineOrig"),new Information("chaineModif")]);
+let c = new Probleme('0vw','20vw', "generer la chaine de nombre", [], [new Information("chaineOrig")]);
+let d = new StructureIterativeBornee('10vw', '30vw', "x", 0, 4);
+let e = new Probleme('0vw','40vw', "chaineOrig[i] = rand() % 9", [], [new Information("chaineOrig")]);
+let f = new Probleme('80vw','20vw', "altération de la chaine", [new Information("chaineOrig"), new Information("baseImage")], [new Information("chaineModif")]);
+let g = new Probleme('50vw','30vw', "choix aléatoire de 2 effets de distortion d'image",[], [new Information("effet1"), new Information("effet2")]);
+let h = new Probleme('50vw','40vw', "effet1 = rand() % 10",[], [new Information("effet1")])
+let i = new Probleme('80vw','40vw', "effet2 = rand() % 10",[], [new Information("effet2")])
+let j = new Probleme('110vw','30vw', "récupération des images des caractères présents dans la chaine",[new Information("chaineOrig"), new Information("baseImage")], [new Information("tabImage")])
+let k = new StructureIterativeBornee('120vw', '40vw', "i", 0, 4);
+let l = new Probleme('110vw','50vw', "tabImage[i] = baseImage[chaineOrig[i]]",[new Information("baseImage"), new Information("chaineOrig")], [new Information("tabImage")])
+let m = new Probleme('150vw','20vw', "fusion des images",[new Information("tabImag"), new Information("imagOrig")], [new Information("tabImage")])
+let n = new Probleme('180vw','20vw', "application des effets",[new Information("imageOrig"), new Information("effet1"), new Information("effet2")], [new Information("chaineModif")])
+
+
+document.getElementById('espace1').appendChild(a);
+document.getElementById('espace1').appendChild(b);
+document.getElementById('espace1').appendChild(c);
+document.getElementById('espace1').appendChild(d);
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(g);
+document.getElementById('espace1').appendChild(h);
+document.getElementById('espace1').appendChild(i);
+document.getElementById('espace1').appendChild(j);
+document.getElementById('espace1').appendChild(k);
+document.getElementById('espace1').appendChild(l);
+document.getElementById('espace1').appendChild(m);
+document.getElementById('espace1').appendChild(n);
+
+a.afficher(); 
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+g.afficher();
+h.afficher();
+i.afficher();
+j.afficher();
+k.afficher();
+l.afficher();
+m.afficher();
+n.afficher();
+
+a._elemParent.lierEnfant(b)
+b._elemParent.lierEnfant(c)
+b._elemParent.lierEnfant(f)
+c._elemParent.lierEnfant(d)
+d._elemParent.lierEnfant(e)
+f._elemParent.lierEnfant(g)
+f._elemParent.lierEnfant(j)
+f._elemParent.lierEnfant(m)
+f._elemParent.lierEnfant(n)
+g._elemParent.lierEnfant(h)
+g._elemParent.lierEnfant(i)
+j._elemParent.lierEnfant(k)
+k._elemParent.lierEnfant(l)
