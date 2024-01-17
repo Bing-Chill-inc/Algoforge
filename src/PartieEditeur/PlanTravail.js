@@ -40,7 +40,7 @@ class PlanTravail extends HTMLElement {
      * 
      * 13 : Algorithme trop grand 
      *
-     * @returns {Array} La liste des problèmes de plan de travail (actuellement qu'une erreur)
+     * @returns {Array<AnomalieConceptuelle>} La liste des problèmes de plan de travail (actuellement qu'une erreur)
      */
     rechercherAnomalies() {
         let listeAnomalies = [];

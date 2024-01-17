@@ -250,8 +250,8 @@ class Probleme extends ElementGraphique {
      * 9 : Pas un égal pour l’assignation mais une flèche<br>
      * 12 : Plus de sept actions à la suite<br>
      * 18 : Variable dynamique<br>
-     * @param {*} listeAnomaliesPrecedent la liste des anomalies présent dans les ElementGraphique précédant
-     * @returns {{}} La liste précédante en rajoutant ce du Probleme actuelle
+     * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies présent dans les ElementGraphique précédant
+     * @returns {Array<AnomalieConceptuelle>} La liste précédante en rajoutant ce du Probleme actuelle
      */
     rechercherAnomalies(listeAnomaliesPrecedent = []) {
         let mesAnomalies = [];

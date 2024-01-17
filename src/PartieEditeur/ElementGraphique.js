@@ -1,7 +1,7 @@
 /**
  * @class ElementGraphique
  * @classdesc La classe ElementGraphique est la base de tous les éléments de l'éditeur d'algorithmes . <br>Chaque Element Descent de ElementGraphique Lorsque la valeur par défaut est ElementGraphique chacun des types héritant de celui-ci peuvent être utilisé
- * @description Crée une instance de ElementGraphique.<br>
+ * @description Est utilisé pour instancier les héritier de la classe ElementGraphique.<br>
  * Par défaut la position à la création de l'instance est à (0,0)
  * @extends {HTMLElement}
  */

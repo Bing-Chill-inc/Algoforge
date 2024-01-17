@@ -63,7 +63,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
      * @static
      * @param {Probleme} unProbleme - Instance de la classe Probleme.
      * @type {Probleme}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données magiques.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données magiques.
      * @description La méthode detecterAnomalie cherche les données magiques dans l'algorithme et retourne une liste contenant les noms des données magiques trouvées.
      */
     static detecterAnomalie(unProbleme) {

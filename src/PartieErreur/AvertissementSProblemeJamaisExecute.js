@@ -50,7 +50,7 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
      * @static
      * @param {ConditionSortie} unArret - Instance de la classe ConditionSortie.
      * @type {ConditionSortie}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
      * @description La méthode detecterAnomalie cherche si le parent de la condition d'arrêt a des enfants qui sont après la condition d'arrêt. Si oui, la méthode renvoie un tableau avec le premier élément à exécuter après la condition d'arrêt, sinon renvoie un tableau vide.
      */
     static detecterAnomalie(unArret) {
