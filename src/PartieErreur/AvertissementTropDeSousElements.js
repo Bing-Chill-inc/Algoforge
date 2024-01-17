@@ -48,7 +48,7 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel {
      * @static
      * @param {ElementGraphique} unElementGraphique - Instance de la classe ConditionSortie.
      * @type {ElementGraphique}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
      * @description La méthode detecterAnomalie regarde si un ElementGraphique posède plus de 7 enfants.
      */
     static detecterAnomalie(unElementGraphique) {

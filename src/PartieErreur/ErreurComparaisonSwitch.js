@@ -52,7 +52,7 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
      * @static
      * @param {StructureSwitch} StructureSwitch - Instance de la classe StructureSwitch.
      * @type {StructureSwitch}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est l'expression a tester de la StructureSwitch.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est l'expression a tester de la StructureSwitch.
      * @description La méthode detecterAnomalie cherche si dans une StructureSwitch il y a des comparaisons.
      */
     static detecterAnomalie(StructureSwitch){

@@ -1,7 +1,20 @@
+/**
+ * @class StructureSi
+ * @classdesc La StructureSi qui permet de vérifier une ou plusieurs conditions donnée
+ * @description Crée une instance de StructureSi
+ * @extends {StructureAlternative}
+ */
 class StructureSi extends StructureAlternative {
     // ATTRIBUTS -non-
 
     // CONSTRUCTEUR
+    /**
+     * 
+     * @constructor
+     * @param {string|number} abscisse 
+     * @param {string|number} ordonnee 
+     * @param {Array<Condition>} listeConditions 
+     */
     constructor(abscisse, ordonnee, listeConditions = []) {
         super(abscisse, ordonnee, listeConditions);
     }
@@ -9,6 +22,9 @@ class StructureSi extends StructureAlternative {
     // ENCAPSULATION -non-
 
     // METHODES
+    /**
+     * @description Affiche la StructureSi sur le plan de travail
+     */
     afficher() {
         let divTriangleGauche = document.createElement("div");
         divTriangleGauche.className = "triangleGauche";
@@ -29,6 +45,15 @@ class StructureSi extends StructureAlternative {
         this.appendChild(divTriangleDroit);
     }
 
+    /**
+     * @description Renvoie le corp JSON des information contenu dans la StructureSi
+     * 
+     * @returns {JSON} le corps json de la StructureSi
+     * @property {ElementGraphique} typeElement Le type de la StructureSi (qui est StructureSwitch)
+     * @property {string|number} abscisse l'abscisse
+     * @property {string|number} ordonee l'ordonnée
+     * @property {Array<Condition>} conditions la liste des conditions actuelle dans la StructureSi
+     */
     toJSON() {
         let conditions = [];
         for (let condition of this._listeConditions.children) {
@@ -41,11 +66,26 @@ class StructureSi extends StructureAlternative {
             conditions: conditions
         };
     }
+    /**
+     * @deprecated
+     * @returns {}
+     */
     extraireInformation()
     {
         // A faire condition doit pouvoir dire la variable ou le type
         return [];
     }
+    /**
+     * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci<br>
+     * Liste des Erreurs :<br>
+     * 8 : Pas double égal dans une condition mais un égal <br>
+     * 12 : Plus de sept actions à la suite <br>
+     * 15 : Informations dans une condition non consistante avec les autres conditions de la structure<br>
+     * 17 : Utilisation à mauvais escient d’une structure conditionnel
+     * 
+     * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent La liste des anomalies déjà présentes
+     * @returns {Array<AnomalieConceptuelle>} La liste des anomalies déjà présentes + celle ajouté par la StructureSi
+     */
     rechercherAnomalies(listeAnomaliesPrecedent = []) {
         let listeAnomalies = listeAnomaliesPrecedent;
         //8

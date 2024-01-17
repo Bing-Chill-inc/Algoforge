@@ -74,7 +74,7 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
      * @static
      * @param {StructureAlternative} uneStructureAlternative - Instance de la classe StructureAlternative.
      * @type {StructureAlternative}
-     * @returns {[Array]} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est la variable inconsistant et le troisème élement est une liste des types que la variable prend.
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est la variable inconsistant et le troisème élement est une liste des types que la variable prend.
      * @description La méthode detecterAnomalie cherche si dans une StructureAlternative une variable a un tipé inconsistant.
      */
     static detecterAnomalie(uneStructureAlternative){
