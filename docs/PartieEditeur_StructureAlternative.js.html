@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/StructureAlternative.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/StructureAlternative.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class StructureAlternative
+ * @classdesc Représente les différentes structure de contrôle
+ * @description Est utilisé par les différentes structure de contrôle pour les instancier
+ * @extends {ElementGraphique}
+ */
+class StructureAlternative extends ElementGraphique {
+    // ATTRIBUTS 
+    _listeConditions; // HTML Collection de Condition•s
+
+    // CONSTRUCTEUR
+    /**
+     * @constructor
+     * @param {string|number} abscisse l'abscisse
+     * @param {string|number} ordonnee 
+     * @param {Array&lt;Condition>} listeConditions 
+     */
+    constructor(abscisse, ordonnee, listeConditions = []) {
+        super(abscisse, ordonnee);
+        this._listeConditions = listeConditions;
+        if (this._listeConditions.length == 0) {
+            this._listeConditions.push(new Condition());
+            this._listeConditions[0]._structure = this;
+        }
+    }
+
+    // ENCAPSULATION
+    /**
+     * @description Renvoie la liste des conditions
+     * @returns {Array&lt;Condition>} La liste des conditions
+     */
+    get _listeConditions() {
+        return this._listeConditions;
+    }
+
+    /**
+     * @description Définie la liste de conditions
+     * @param {Array&lt;Condition>} value La liste des conditions
+     */
+    set _listeConditions(value) {
+        this._listeConditions = value;
+    }
+
+    // METHODES
+    /**
+     * @description affiche la structure alternative
+     */
+    afficher() {
+        console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
+        console.log("Conditions :");
+        this._listeConditions.forEach((condition) => {
+            condition.afficher();
+        });
+    }
+    /**
+     * @description récupère les enfant de la structure alternative
+     * 
+     * @param {ElementGraphique} typeRechercher Le type d'ElementGraphique rechercher
+     * @returns {Array&lt;ElementGraphique>} la liste des ElementGraphique correspondant au type rechercher
+     */
+    getEnfants(typeRechercher = ElementGraphique)
+    {
+        let listeEnfants = [];
+        for(let condition of this._listeConditions.children)
+        {
+            for(let elem of condition._elemParent._listeElementsEnfants)
+            {
+                listeEnfants.push(elem.element);
+            }
+        }
+        listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);
+        return listeEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }
+
+    /**
+     * @description Ajoute une condition à la structure alternative
+     * 
+     * @param {Condition} condition la condition ajouter
+     */
+    ajouterCondition(condition = new Condition()) {
+        this._listeConditions.appendChild(condition);
+    }
+
+    /**
+     * @description Retire une condition de la structure alternative
+     * 
+     * @param {Condition} condition 
+     */
+    supprimerCondition(condition) {
+        this._listeConditions.removeChild(condition);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jan 17 2024 14:14:21 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

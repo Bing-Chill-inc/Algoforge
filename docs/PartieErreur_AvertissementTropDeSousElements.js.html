@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieErreur/AvertissementTropDeSousElements.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieErreur/AvertissementTropDeSousElements.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class AvertissementTropDeSousElements
+ * @extends {AvertissementConceptuel}
+ * @classdesc La Classe AvertissementTropDeSousElements stocke les ElementGraphique qui ont trop d'enfants.
+ * @description Crée une instance de AvertissementTropDeSousElements
+ */
+class AvertissementTropDeSousElements extends AvertissementConceptuel {
+    // ATTRIBUTS
+    _listeElementsConcernes ; // array&lt;ElementGraphique>
+
+    // CONSTRUCTEUR
+    /**
+     * @constructor
+     * @param {ElementGraphique} elementEmetteur - L'ElementGraphique émettrice de l'avertissement.
+     * @type {ElementGraphique}
+     * @param {Array&lt;ElementGraphique>} [listeElementsConcernes=[]] - Liste des sous-éléments (par défaut, la liste est vide).
+     */
+    constructor(elementEmetteur, listeElementsConcernes = new Array()) {
+        super(elementEmetteur);
+        this._listeElementsConcernes = listeElementsConcernes;
+    }
+
+    // ENCAPSULATION
+    /**
+     * @param {Array&lt;ElementGraphique>} value - Nouvelle liste des éléments concernés par l'avertissement.
+     * @type {Array&lt;ElementGraphique>}
+     * @description Définit la valeur de _listeElementsConcernes de AvertissementSProblemeJamaisExecute.
+     */
+    set _listeElementsConcernes(value) {
+        this._listeElementsConcernes = value;
+    }
+    /**
+     * @returns {Array&lt;ElementGraphique>} - Renvoi une liste d'ElementGraphique.
+     * @description Renvoie la liste des éléments concernés par l'avertissement.
+     */
+    get _listeElementsConcernes() {
+        return this._listeElementsConcernes;
+    }
+    // METHODES
+    /**
+     * @returns {string} - Renvoie une chaine de caractères.
+     * @description Renvoie un message indiquant qu'il y a trop de sous-éléments.
+     */
+    toString() {
+        return "L'élément en surbrillance a trop de sous-éléments.";
+    }
+    /**
+     * @static
+     * @param {ElementGraphique} unElementGraphique - Instance de la classe ConditionSortie.
+     * @type {ElementGraphique}
+     * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
+     * @description La méthode detecterAnomalie regarde si un ElementGraphique posède plus de 7 enfants.
+     */
+    static detecterAnomalie(unElementGraphique) {
+        if(unElementGraphique.getEnfants().length > 7){
+            return [true, unElementGraphique.getEnfants()];
+        }
+        else{
+            return [false];
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jan 17 2024 14:14:21 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
