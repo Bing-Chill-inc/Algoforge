@@ -9,6 +9,8 @@
 <body>
     <header>
         <button id="btnMode">Afficher Dictionnaire</button>
+        <button id="btnDictionnaire">EffectuerDictionnaire</button>
+        <button id="btnRechercherAnomalie">Rechercher Anomalie</button>
     </header>
     <plan-travail id="espace1">
 
@@ -24,6 +26,14 @@
     </dictionnaire-Donnee>
 </body>
 <script>
+    function rechercherAnomalie()
+    {
+        document.getElementById('espace1').rechercherAnomalies(); 
+    }
+    function effectuerDictionnaire()
+    {
+        document.getElementById('espace1').effectuerDictionnaireDesDonnee();
+    }
     function changerMode() {
       // Your logic for the button click goes here
       document.getElementById('espace1').classList.toggle('cacher');
@@ -32,6 +42,8 @@
 
     // Attach a click event listener to the button
     document.getElementById('btnMode').addEventListener('click', changerMode);
+    document.getElementById('btnDictionnaire').addEventListener('click', effectuerDictionnaire);
+    document.getElementById('btnRechercherAnomalie').addEventListener('click', rechercherAnomalie);
     document.getElementById('dictionnaire1').classList.toggle('cacher');
 </script>
 <script src="PartieEditeur/Type.js"></script>

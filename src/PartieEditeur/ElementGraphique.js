@@ -244,6 +244,7 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
     rechercherAnomalies(mesAnomalies) {
+        console.log("t")
         this._listeAnomalie = mesAnomalies;
         let anomalieDeMesEnfantsEtLesMiennes = [];
         let enfants = this.getEnfants();

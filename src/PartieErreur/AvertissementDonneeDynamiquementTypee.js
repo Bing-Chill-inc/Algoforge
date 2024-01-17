@@ -21,6 +21,7 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
     // METHODES
     static detecterAnomalie(unProbleme) {
         const lesInformations = unProbleme.extraireInformation();
+        console.log(unProbleme.extraireInformation());
         let lesInformationsPasTypeCorrectement = lesInformations;
         for(let information of lesInformations)
         {
@@ -32,6 +33,10 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
                 {
                     lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom);
                 }
+            }
+            else
+            {
+                lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom);
             }
         }
         if(lesInformationsPasTypeCorrectement.length != 0) {

@@ -65,7 +65,7 @@ b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
 */
-/*
+
 // Couche 1
 let a = new Probleme('60vw','0vw', "Algorithme", [new Information("Entree")]);
 // Couche 2
@@ -103,7 +103,6 @@ b._elemParent.lierEnfant(e);
 b._elemParent.lierEnfant(f);
 
 c._elemParent.lierEnfant(g);
-*/
 
 /*function maFonction()
 {

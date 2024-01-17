@@ -32,7 +32,16 @@ class PlanTravail extends HTMLElement {
      * @returns {*}
      */
     getProblemePrincipal() {
-        return this.children[0];
+        let listeElementGraphique =  PlanTravail.FiltrerElementsGraphique(this.children, ElementGraphique)
+        let probleme = listeElementGraphique[0];
+        for(let unProbleme of listeElementGraphique)
+        {
+            if(unProbleme._ordonnee <= probleme._ordonnee)
+            {
+                probleme = unProbleme;
+            }
+        }
+        return probleme;
     }
     
     /**
@@ -230,7 +239,7 @@ class PlanTravail extends HTMLElement {
 
         //Ajout des Informations
         let lesInformations = [];
-        for(let courantObjetGraphique of this.children)
+        for(let courantObjetGraphique of PlanTravail.FiltrerElementsGraphique(this.children, ElementGraphique))
         {
             lesInformations = [...lesInformations, ...courantObjetGraphique.extraireInformation()];
         }
