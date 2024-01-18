@@ -53,7 +53,7 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
         }
         // Regarder si le resultat est utiliser dans les enfants apres le probleme dans les données 
         let precedeProbleme = true;
-        for(let enfant of parent.getEnfants())
+        for(let enfant of parent.getDescendants())
         {
             if(enfant == unProbleme)
             {

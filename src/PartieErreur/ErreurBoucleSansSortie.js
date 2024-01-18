@@ -1,12 +1,13 @@
 class ErreurBoucleSansSortie extends ErreurConceptuelle
 {
-        // ATTRIBUTS  -- Non --
-
+        // ATTRIBUTS
+        _boucleSansSortie; // StructureIterativeBornee
 
         // CONSTRUCTEUR
-        constructor(elementEmetteur) 
+        constructor(elementEmetteur, boucleSansSortie = new String()) 
         {
             super(elementEmetteur);
+            this._boucleSansSortie = boucleSansSortie;
         }
             
         // ENCAPSULATION  -- Non --
@@ -21,10 +22,11 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle
         static detecterAnomalie(uneBoucleNonBornee) {
             let listeDescandants = uneBoucleNonBornee.getDescendants(ConditionSortie)
             for (let descendant of listeDescandants) {
-                if (descendant.getAntescendant(StructureIterativeNonBornee)[0] == uneBoucleNonBornee ) {
-                    return false;
+                if (descendant.getAntescedants(StructureIterativeNonBornee)[0] == uneBoucleNonBornee ) {
+                    return [false];
                 }
             }
-            return true;
+            return [true, uneBoucleNonBornee];
         }
+
 } 

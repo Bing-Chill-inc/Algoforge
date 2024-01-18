@@ -55,7 +55,7 @@ class StructureIterativeBornee extends StructureIterative {
         // Et des informations sur notre boucle bornée.
         let divInformationsBornes = document.createElement("div");
         divInformationsBornes.className = "informationsBornes";
-        divInformationsBornes.innerHTML = `Pour ' ${this._variableAIterer}' allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
+        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer}' allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
         this.appendChild(divInformationsBornes);
     }
 

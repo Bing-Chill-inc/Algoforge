@@ -1,11 +1,11 @@
 class ElementParent {
     // ATTRIBUTS
     _listeElementsEnfants; // Liste contient les ElementGraphiques et les Lignes
-    _proprietaire; // ElementGraphique
+    _leProprietaire; // ElementGraphique
 
     // CONSTRUCTEUR
     constructor(proprietaire, listeElementsEnfants = []) {
-        this._proprietaire = proprietaire;
+        this._leProprietaire = proprietaire;
         this._listeElementsEnfants = listeElementsEnfants;
     }
 
@@ -19,11 +19,15 @@ class ElementParent {
     }
 
     get _proprietaire() {
-        return this._proprietaire;
+        if(this._leProprietaire)
+        {
+            return this._leProprietaire._objet;
+        }
+        return this._leProprietaire;
     }
 
     set _proprietaire(value) {
-        this._proprietaire = value;
+        this._leProprietaire = value;
     }
 
     // METHODES
@@ -31,8 +35,8 @@ class ElementParent {
         if(elementAAjouter instanceof ElementGraphique)
         {
             elementAAjouter._parent = this;
-            let abscisse1 = parseFloat(this._proprietaire._abscisse) + (this._proprietaire.getTailleAbscisse() / 2);
-            let ordonnee1 = parseFloat(this._proprietaire._ordonnee) + (this._proprietaire.getTailleOrdonnee());
+            let abscisse1 = parseFloat(this._leProprietaire._abscisse) + (this._leProprietaire.getTailleAbscisse() / 2);
+            let ordonnee1 = parseFloat(this._leProprietaire._ordonnee) + (this._leProprietaire.getTailleOrdonnee());
             let abscisse2 = parseFloat(elementAAjouter._abscisse) + (elementAAjouter.getTailleAbscisse()) / 2;
             let ordonnee2 = parseFloat(elementAAjouter._ordonnee);
             abscisse1 = abscisse1.toString() + "vw";

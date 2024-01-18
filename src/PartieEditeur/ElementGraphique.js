@@ -42,7 +42,7 @@ class ElementGraphique extends HTMLElement {
     get _abscisse() {
         return this._abscisse;
     }
-
+    
     /**
      * Définit la valeur de l'abscisse de l'ElementGraphique
      */
@@ -80,6 +80,10 @@ class ElementGraphique extends HTMLElement {
      */
     set _parent(value) {
         this._parent = value;
+    }
+
+    get _objet() {
+        return this;
     }
 
     // ENCAPSULATION
@@ -225,7 +229,7 @@ class ElementGraphique extends HTMLElement {
      * @returns {{}}
      */
     getInformationResultat() {
-        console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
+        //console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
 
@@ -237,7 +241,7 @@ class ElementGraphique extends HTMLElement {
      * @returns {{}}
      */
     getInformationDonnee() {
-        console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
+        //console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
         return [];
     }
     rechercherAnomalies(mesAnomalies) {

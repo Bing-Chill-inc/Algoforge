@@ -7,7 +7,7 @@ class StructureIterative extends ElementGraphique {
         super(abscisse, ordonnee);
         this._elemParent = elemParent;
         if (this._elemParent != null) {
-            elemParent._proprietaire = this;
+            elemParent._leProprietaire = this;
         }
     }
 
@@ -29,5 +29,29 @@ class StructureIterative extends ElementGraphique {
         }
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }  
+
+    getInformationResultat() {
+        let listeDonnee = [];
+        return listeDonnee;
+    }
+    getInformationDonnee() {
+        let listeDonnee = [];
+        if(this.getParent())
+        {
+            listeDonnee = [...listeDonnee, ...this.getParent().getInformationDonnee()];
+            for(let enfant of this.getParent().getEnfants())
+            {
+                if(enfant === this)
+                {
+                    break;
+                }
+                listeDonnee = [...listeDonnee, ...enfant.getInformationResultat()];
+            }
+        }
+        else{
+            console.log("Boucle sans parents")
+        }
+        return listeDonnee;
     }
 }

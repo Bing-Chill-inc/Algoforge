@@ -75,6 +75,14 @@ class StructureSi extends StructureAlternative {
         }*/
         return super.rechercherAnomalies(mesAnomalies);
     }
+    include(nameInformation) {
+        let resultat = false;
+        for(let condition of this._listeConditions.children)
+        {
+            condition.querySelector(".libelle").textContent.includes(nameInformation);
+        }
+        return resultat;
+    }
      
 
 

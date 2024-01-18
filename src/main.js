@@ -188,6 +188,7 @@ g._elemParent.lierEnfant(h)
 g._elemParent.lierEnfant(i)
 j._elemParent.lierEnfant(k)
 k._elemParent.lierEnfant(l)*/
+/*
 let a = new Probleme('45vw','0vw', "Parcours complet avec traitement conditionné", [new Information("tab"), new Information("NB_CASES")], [new Information("moyenne")]);
 let b = new Probleme('0vw','10vw', "Initialisation de la somme", [], [new Information("somme")]);
 let c = new Probleme('0vw','20vw', "somme <- 0");
@@ -251,20 +252,17 @@ function maFonction()
 
     //h._listeConditions.children[0]._elemParent.lierEnfant(i)
 }
-setTimeout("maFonction();", 1000);
-/*
-let a = new Probleme('45vw','0vw', "Parcours complet avec traitement conditionné", [new Information("tab"), new Information("NB_CASES")], [new Information("moyenne")]);
-let b = new Probleme('0vw','10vw', "Initialisation de la somme", [], [new Information("somme")]);
-let c = new Probleme('0vw','20vw', "somme <- 0");
-let d = new Probleme('30vw','10vw', "Faire la somme" , [new Information("somme"), new Information('tab'), new Information('NB_CASES')], [new Information('somme')]);
-let e = new StructureIterativeBornee("40vw", "20vw", "i" , "0", "10","1")
-let f = new StructureSi("35vw", "30vw", [new Condition("tab[i] => 0"),new Condition("Sinon")]);
-let g = new Probleme('30vw','40vw', "somme <- somme + tab[i]");
-let h = new Probleme('60vw','40vw', "somme <- somme + 1");
-let i = new Probleme('90vw','10vw', "faire la moyenne", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
-let j =  new Probleme('90vw','20vw', "moyenne <- somme / NB_CASES", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
-
-
+setTimeout("maFonction();", 1000);*/
+let a = new Probleme('30vw','0vw', "Saisir nbre inférieur à MAX");
+let b = new Probleme('0vw','10vw', "MAX <- 100");
+let c = new StructureIterativeNonBornee('43vw', '10vw')
+let d = new Probleme('0vw','20vw', "Saisir",[], [new Information("nbre")]);
+let e = new Probleme('30vw','20vw', "Verifier nbre est inf a MAX" , [new Information("nbre"), new Information('MAX')]);
+let condition = new Condition("nbre < MAX")
+let f = new StructureSi("40vw", "30vw", [condition]);
+condition._structure = f;
+let g =  new ConditionSortie('43vw','40vw');
+let h = new Probleme('60vw','20vw', "Afficher \"erreur\"" );
 document.getElementById('espace1').appendChild(a);
 document.getElementById('espace1').appendChild(b);
 document.getElementById('espace1').appendChild(c);
@@ -273,8 +271,6 @@ document.getElementById('espace1').appendChild(e);
 document.getElementById('espace1').appendChild(f);
 document.getElementById('espace1').appendChild(g);
 document.getElementById('espace1').appendChild(h);
-document.getElementById('espace1').appendChild(i);
-document.getElementById('espace1').appendChild(j);
 
 a.afficher(); 
 b.afficher();
@@ -284,33 +280,25 @@ e.afficher();
 f.afficher();
 g.afficher();
 h.afficher();
-i.afficher();
-j.afficher();
 
 function maFonction()
 {
     //Couche 1
     a._elemParent.lierEnfant(b);
-    a._elemParent.lierEnfant(d);
-    a._elemParent.lierEnfant(i);
+    a._elemParent.lierEnfant(c);
+
     //Couche 2
-    b._elemParent.lierEnfant(c);
-    d._elemParent.lierEnfant(e);
-    i._elemParent.lierEnfant(j)
+    c._elemParent.lierEnfant(d);
+    c._elemParent.lierEnfant(e);
+    c._elemParent.lierEnfant(h);
 
     //Couche 3
     e._elemParent.lierEnfant(f);
 
     //Couche 4
     f._listeConditions.children[0]._elemParent.lierEnfant(g);
-    let ligneUne = new Ligne("40vw", "33vw", "45vw", "40vw")
+    let ligneUne = new Ligne("45vw", "32vw", "45vw", "40vw")
     document.getElementById('espace1').appendChild(ligneUne);
     ligneUne.afficher()
-    let ligneDeux = new Ligne("45vw", "33vw", "75vw", "40vw")
-    document.getElementById('espace1').appendChild(ligneDeux);
-    ligneDeux.afficher()
-    f._listeConditions.children[1]._elemParent.lierEnfant(h)
-
-    //h._listeConditions.children[0]._elemParent.lierEnfant(i)
 }
-setTimeout("maFonction();", 1000);*/
+setTimeout("maFonction();", 1000);

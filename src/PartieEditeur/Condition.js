@@ -5,15 +5,18 @@ class Condition extends HTMLElement {
     _structure; // StructureAlternative qui contient cette condition
 
     // CONSTRUCTEUR
-    constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
+    constructor(libelle = "", structure = null, elemParent = new ElementParent()) {
         super();
         this._libelle = libelle;
         this._elemParent = elemParent;
         this._structure = structure;
         if (this._elemParent != null) {
-            elemParent._proprietaire = this;
+            elemParent._leProprietaire = this;
         }
         this.afficher();
+    }
+    get _objet() {
+        return this._structure;
     }
     // ENCAPSULATION
     get _libelle() {
