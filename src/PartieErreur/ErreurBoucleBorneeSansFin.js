@@ -24,16 +24,23 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
                 return false;
             }  
             else {
-                // convertion des bornes en nombre
-                borneInferieure = Number(uneBoucleBornee._borneInferieure);
-                borneSuperieure = Number(uneBoucleBornee._borneSuperieure);
-                pas = Number(uneBoucleBornee._pas);
-                let courant = borneInferieure;
-                while (courant <= borneSuperieure && pas != 0) {
-                    if (courant >= borneSuperieure) {
-                        return false;
+                    // convertion des bornes en nombre
+                    let borneInferieure = Number(uneBoucleBornee._borneInferieure);
+                    let borneSuperieure = Number(uneBoucleBornee._borneSuperieure);
+                    let pas = Number(uneBoucleBornee._pas);
+                    let courant = borneInferieure;
+                    if(borneInferieure && borneSuperieure && pas)
+                    {
+                    if(borneSuperieure - borneInferieure > 0)
+                    {
+                        // Le pas doit etre positif
+                        return pas > 0;
                     }
-                    courant += pas;
+                    else
+                    {
+                        // Le pas doit etre négatig
+                        return pas < 0;
+                    }
                 }
             }
             return true;

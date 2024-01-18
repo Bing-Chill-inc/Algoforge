@@ -41,7 +41,7 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
             if(!match[1].includes(variables)){
                 variables.push(match[1]);
             }
-            if(libelle =="sinon"){
+            if(libelle.toLowerCase() =="sinon"){
                 if(nbCondition == StructureAlternative._listeConditions.children.length - 1){
                     return [false];
                 }

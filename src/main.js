@@ -65,19 +65,19 @@ b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
 */
-
+/*
 // Couche 1
-let a = new Probleme('60vw','0vw', "Algorithme", [new Information("Entree")]);
+let a = new Probleme('60vw','0vw', "Algorithme", []);
 // Couche 2
-let b = new Probleme('30vw','10vw', "Manipulation", [new Information("Entree")], [new Information("a"),new Information("b")]);
-let c = new Probleme('120vw','10vw', "Afficher le resultat");
+let b = new Probleme('30vw','10vw', "Manipulation", [new Information("Entree")], [new Information("a")]);
+let c = new Probleme('120vw','10vw', "Afficher le resultat", [new Information("a")]);
 // Couche 3
 let d = new Probleme('0vw','20vw', 'b <- "bndh"');
-let e = new Probleme('30vw','20vw', 'a <- 3');
+let e = new Probleme('30vw','20vw', 'a <- Entree');
 let f = new Probleme('60vw','20vw', 'a <- b');
-let g = new Probleme('120vw','20vw', 'afficher a', [new Information("a"), new Information("b")]);
-let h =new StructureSi("20vw", "35vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("a = 8")]);;
-let i = new Probleme('20vw','45vw', 'Test', [new Information("a"), new Information("b")]);
+let g = new Probleme('120vw','20vw', 'afficher a', [new Information("a")]);
+let h =new StructureSi("20vw", "35vw", [new Condition("a = 1"),new Condition("a = 2"),new Condition("a = 3"),new Condition("a = 4"),new Condition("a = 5"),new Condition("a = 6"),new Condition("a = 7"),new Condition("Sinon")]);;
+//let i = new Probleme('20vw','45vw', 'Test', [new Information("a")]);
 
 document.getElementById('espace1').appendChild(a);
 document.getElementById('espace1').appendChild(b);
@@ -87,7 +87,7 @@ document.getElementById('espace1').appendChild(e);
 document.getElementById('espace1').appendChild(f);
 document.getElementById('espace1').appendChild(g);
 document.getElementById('espace1').appendChild(h);
-document.getElementById('espace1').appendChild(i);
+//document.getElementById('espace1').appendChild(i);
 
 a.afficher(); 
 b.afficher();
@@ -97,7 +97,7 @@ e.afficher();
 f.afficher();
 g.afficher();
 h.afficher();
-i.afficher();
+//i.afficher();
 function maFonction()
 {
     //Couche 1
@@ -110,22 +110,10 @@ function maFonction()
 
     c._elemParent.lierEnfant(g);
     e._elemParent.lierEnfant(h);
-    h._listeConditions.children[0]._elemParent.lierEnfant(i)
+    //h._listeConditions.children[0]._elemParent.lierEnfant(i)
 }
 setTimeout("maFonction();", 1000);
 
-/*function maFonction()
-{
-    if (!document.getElementById('espace1').classList.contains("cacher")) {
-        document.getElementById('espace1').effectuerDictionnaireDesDonnee();
-        document.getElementById('espace1').rechercherAnomalies(); 
-    }
-    setTimeout("maFonction();", 1000);
-}
-
-
-maFonction();*/
-/*
 
 document.getElementById('espace1');
 
@@ -200,3 +188,129 @@ g._elemParent.lierEnfant(h)
 g._elemParent.lierEnfant(i)
 j._elemParent.lierEnfant(k)
 k._elemParent.lierEnfant(l)*/
+let a = new Probleme('45vw','0vw', "Parcours complet avec traitement conditionné", [new Information("tab"), new Information("NB_CASES")], [new Information("moyenne")]);
+let b = new Probleme('0vw','10vw', "Initialisation de la somme", [], [new Information("somme")]);
+let c = new Probleme('0vw','20vw', "somme <- 0");
+let d = new Probleme('30vw','10vw', "Faire la somme" , [new Information("somme"), new Information('tab'), new Information('NB_CASES')], [new Information('somme')]);
+let e = new StructureIterativeBornee("40vw", "20vw", "i" , "0", "NB_CASES-1","1")
+let f = new StructureSi("35vw", "30vw", [new Condition("tab[i] => 0"),new Condition("Sinon")]);
+let g = new Probleme('30vw','40vw', "somme <- somme + tab[i]");
+let h = new Probleme('60vw','40vw', "somme <- somme + 1");
+let i = new Probleme('90vw','10vw', "faire la moyenne", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
+let j =  new Probleme('90vw','20vw', "moyenne <- somme / NB_CASES", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
+let k =  new ConditionSortie('80vw','40vw');
+
+
+document.getElementById('espace1').appendChild(a);
+document.getElementById('espace1').appendChild(b);
+document.getElementById('espace1').appendChild(c);
+document.getElementById('espace1').appendChild(d);
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(g);
+document.getElementById('espace1').appendChild(h);
+document.getElementById('espace1').appendChild(i);
+document.getElementById('espace1').appendChild(j);
+document.getElementById('espace1').appendChild(k);
+
+a.afficher(); 
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+g.afficher();
+h.afficher();
+i.afficher();
+j.afficher();
+k.afficher();
+
+function maFonction()
+{
+    //Couche 1
+    a._elemParent.lierEnfant(b);
+    a._elemParent.lierEnfant(d);
+    a._elemParent.lierEnfant(i);
+    //Couche 2
+    b._elemParent.lierEnfant(c);
+    d._elemParent.lierEnfant(e);
+    i._elemParent.lierEnfant(j)
+
+    //Couche 3
+    e._elemParent.lierEnfant(f);
+
+    //Couche 4
+    f._listeConditions.children[0]._elemParent.lierEnfant(g);
+    let ligneUne = new Ligne("40vw", "33vw", "45vw", "40vw")
+    document.getElementById('espace1').appendChild(ligneUne);
+    ligneUne.afficher()
+    let ligneDeux = new Ligne("45vw", "33vw", "75vw", "40vw")
+    document.getElementById('espace1').appendChild(ligneDeux);
+    ligneDeux.afficher()
+    f._listeConditions.children[1]._elemParent.lierEnfant(h)
+
+    //h._listeConditions.children[0]._elemParent.lierEnfant(i)
+}
+setTimeout("maFonction();", 1000);
+/*
+let a = new Probleme('45vw','0vw', "Parcours complet avec traitement conditionné", [new Information("tab"), new Information("NB_CASES")], [new Information("moyenne")]);
+let b = new Probleme('0vw','10vw', "Initialisation de la somme", [], [new Information("somme")]);
+let c = new Probleme('0vw','20vw', "somme <- 0");
+let d = new Probleme('30vw','10vw', "Faire la somme" , [new Information("somme"), new Information('tab'), new Information('NB_CASES')], [new Information('somme')]);
+let e = new StructureIterativeBornee("40vw", "20vw", "i" , "0", "10","1")
+let f = new StructureSi("35vw", "30vw", [new Condition("tab[i] => 0"),new Condition("Sinon")]);
+let g = new Probleme('30vw','40vw', "somme <- somme + tab[i]");
+let h = new Probleme('60vw','40vw', "somme <- somme + 1");
+let i = new Probleme('90vw','10vw', "faire la moyenne", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
+let j =  new Probleme('90vw','20vw', "moyenne <- somme / NB_CASES", [new Information("somme"), new Information("NB_CASES")], [new Information("moyenne")]);
+
+
+document.getElementById('espace1').appendChild(a);
+document.getElementById('espace1').appendChild(b);
+document.getElementById('espace1').appendChild(c);
+document.getElementById('espace1').appendChild(d);
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(g);
+document.getElementById('espace1').appendChild(h);
+document.getElementById('espace1').appendChild(i);
+document.getElementById('espace1').appendChild(j);
+
+a.afficher(); 
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+g.afficher();
+h.afficher();
+i.afficher();
+j.afficher();
+
+function maFonction()
+{
+    //Couche 1
+    a._elemParent.lierEnfant(b);
+    a._elemParent.lierEnfant(d);
+    a._elemParent.lierEnfant(i);
+    //Couche 2
+    b._elemParent.lierEnfant(c);
+    d._elemParent.lierEnfant(e);
+    i._elemParent.lierEnfant(j)
+
+    //Couche 3
+    e._elemParent.lierEnfant(f);
+
+    //Couche 4
+    f._listeConditions.children[0]._elemParent.lierEnfant(g);
+    let ligneUne = new Ligne("40vw", "33vw", "45vw", "40vw")
+    document.getElementById('espace1').appendChild(ligneUne);
+    ligneUne.afficher()
+    let ligneDeux = new Ligne("45vw", "33vw", "75vw", "40vw")
+    document.getElementById('espace1').appendChild(ligneDeux);
+    ligneDeux.afficher()
+    f._listeConditions.children[1]._elemParent.lierEnfant(h)
+
+    //h._listeConditions.children[0]._elemParent.lierEnfant(i)
+}
+setTimeout("maFonction();", 1000);*/

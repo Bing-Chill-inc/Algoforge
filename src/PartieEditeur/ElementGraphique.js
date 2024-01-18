@@ -139,7 +139,7 @@ class ElementGraphique extends HTMLElement {
      * @returns {{}}
      */
     extraireInformation() {
-        console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
+        //console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
         return [];
     }
 
@@ -213,7 +213,7 @@ class ElementGraphique extends HTMLElement {
      * @returns {boolean}
      */
     include(nameInformation) {
-        console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
+        //console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
         return false;
     }
     
@@ -241,7 +241,6 @@ class ElementGraphique extends HTMLElement {
         return [];
     }
     rechercherAnomalies(mesAnomalies) {
-        console.log("t")
         this._listeAnomalie = mesAnomalies;
         let anomalieDeMesEnfantsEtLesMiennes = [];
         let enfants = this.getEnfants();

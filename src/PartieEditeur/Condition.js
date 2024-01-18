@@ -50,6 +50,7 @@ class Condition extends HTMLElement {
     }
     get _ordonnee() 
     {   
+        return null;
         let absolutePosY = this.getBoundingClientRect().top + window.pageYOffset;
         return absolutePosY;
         // Calculate the Y-coordinate in viewport units (vh) without referring to _abscisse

@@ -21,7 +21,6 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
     // METHODES
     static detecterAnomalie(unProbleme) {
         const lesInformations = unProbleme.extraireInformation();
-        console.log(unProbleme.extraireInformation());
         let lesInformationsPasTypeCorrectement = lesInformations;
         for(let information of lesInformations)
         {

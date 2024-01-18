@@ -55,7 +55,7 @@ class StructureIterativeBornee extends StructureIterative {
         // Et des informations sur notre boucle bornée.
         let divInformationsBornes = document.createElement("div");
         divInformationsBornes.className = "informationsBornes";
-        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
+        divInformationsBornes.innerHTML = `Pour ' ${this._variableAIterer}' allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
         this.appendChild(divInformationsBornes);
     }
 
@@ -63,6 +63,7 @@ class StructureIterativeBornee extends StructureIterative {
 
     rechercherAnomalies() {
         let mesAnomalies = [];
+        /*
         // On vérifie que la boucle n'est pas infinie
         if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurBoucleBorneeSansFin(this));
@@ -71,7 +72,7 @@ class StructureIterativeBornee extends StructureIterative {
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
             mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
-        }
+        }*/
         return super.rechercherAnomalies(mesAnomalies);
     }
 
@@ -109,7 +110,6 @@ class StructureIterativeBornee extends StructureIterative {
     }
     include(nameInformation)
     {
-        console.log(this._borneInferieure)
         return this._variableAIterer.includes(nameInformation) || this._pas.includes(nameInformation) || this._borneInferieure.toString().includes(nameInformation) || this._borneSuperieure.toString().includes(nameInformation);
     }
     renameInformation(ancienNom, nouveauNom)

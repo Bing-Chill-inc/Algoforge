@@ -47,7 +47,7 @@ class StructureSi extends StructureAlternative {
         return [];
     }
     rechercherAnomalies() {
-        let mesAnomalies = [];
+        let mesAnomalies = [];/*
         //8
         if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurSyntaxeComparaison(this));
@@ -72,7 +72,7 @@ class StructureSi extends StructureAlternative {
             if(typesInconsistantsAlternatif[0]){
                 mesAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
             }
-        }
+        }*/
         return super.rechercherAnomalies(mesAnomalies);
     }
      

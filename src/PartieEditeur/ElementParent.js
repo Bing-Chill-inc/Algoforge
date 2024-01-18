@@ -31,7 +31,6 @@ class ElementParent {
         if(elementAAjouter instanceof ElementGraphique)
         {
             elementAAjouter._parent = this;
-            console.log(this._proprietaire._ordonnee)
             let abscisse1 = parseFloat(this._proprietaire._abscisse) + (this._proprietaire.getTailleAbscisse() / 2);
             let ordonnee1 = parseFloat(this._proprietaire._ordonnee) + (this._proprietaire.getTailleOrdonnee());
             let abscisse2 = parseFloat(elementAAjouter._abscisse) + (elementAAjouter.getTailleAbscisse()) / 2;
