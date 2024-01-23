@@ -1,4 +1,5 @@
 class ConditionSortie extends ElementGraphique {
+
     // ATTRIBUTS -non-
 
     // CONSTRUCTEUR
