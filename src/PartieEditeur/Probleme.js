@@ -219,10 +219,6 @@ class Probleme extends ElementGraphique {
                 labelAccoladesDResultats.className = "accolades";
                 labelAccoladesDResultats.innerHTML = "}";
                 divResultat.appendChild(labelAccoladesDResultats);
-
-        let divDecomposition = document.createElement("div");
-        divDecomposition.className = "decomposition";
-        this.appendChild(divDecomposition);
     }
 
     /**

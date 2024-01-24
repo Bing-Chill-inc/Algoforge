@@ -27,7 +27,7 @@ class Ligne extends HTMLElement {
         this._ordonnee1 = parseFloat(ordonnee1);
         this._abscisse2 = parseFloat(abscisse2);
         this._ordonnee2 = parseFloat(ordonnee2);
-        this.afficher();
+        this.update();
     }
 
     // ENCAPSULATION
@@ -94,7 +94,7 @@ class Ligne extends HTMLElement {
     /**
      * @description Affiche la ligne sur le plan de travail
      */
-    afficher() {
+    update() {
         if (this._abscisse1 < this._abscisse2) {
             this._abscisseMilieu = (this._abscisse1 + this._abscisse2) / 2;
             this._ordonneeMilieu = (this._ordonnee1 + this._ordonnee2) / 2;
@@ -121,7 +121,7 @@ class Ligne extends HTMLElement {
     setDebut(abscisse, ordonnee) {
         this._abscisse1 = parseFloat(abscisse);
         this._ordonnee1 = parseFloat(ordonnee);
-        this.afficher();
+        this.update();
     }
 
     /**
@@ -133,6 +133,6 @@ class Ligne extends HTMLElement {
     setFin(abscisse, ordonnee) {
         this._abscisse2 = parseFloat(abscisse);
         this._ordonnee2 = parseFloat(ordonnee);
-        this.afficher();
+        this.update();
     }
 } window.customElements.define("ligne-element", Ligne);

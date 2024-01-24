@@ -114,13 +114,6 @@ probleme-element {
                 word-wrap: break-word;
                 overflow: hidden;
             }
-    
-    probleme-element > div.decomposition {
-        width: 3%;
-        height: calc(var(--sizeModifier) * 1.5vw);
-        border-left: calc(var(--sizeModifier) * 0.1vw) solid black;
-        border-right: calc(var(--sizeModifier) * 0.1vw) solid black;
-    }
 
 procedure-element {
     display: flex;
@@ -243,13 +236,16 @@ procedure-element {
                 word-wrap: break-word;
                 overflow: hidden;
             }
-    
-    procedure-element > div.decomposition {
-        width: 3%;
-        height: calc(var(--sizeModifier) * 1.5vw);
-        border-left: calc(var(--sizeModifier) * 0.1vw) solid black;
-        border-right: calc(var(--sizeModifier) * 0.1vw) solid black;
-    }
+
+symbole-decomposition-element {
+    position: absolute;
+    transition: all var(--transitionTime) ease;
+    width: calc(var(--sizeModifier) * 1vw);
+    height: calc(var(--sizeModifier) * 1.5vw);
+    border-left: calc(var(--sizeModifier) * 0.1vw) solid black;
+    border-right: calc(var(--sizeModifier) * 0.1vw) solid black;
+    border-bottom: calc(var(--sizeModifier) * 0.1vw) solid black;
+}
 
 structure-si-element {
     display: grid;
@@ -343,7 +339,7 @@ structure-switch-element {
     }
 
     structure-switch-element > div.expressionATester {
-        width: calc(var(--sizeModifier) * 10vw);
+        width: 100%;
         height: 100%;
         grid-column: 2;
         grid-row: 1;
@@ -504,7 +500,7 @@ ligne-element {
     transform-origin: 0% 50%;
     margin: 0;
     padding: 0;
-    border: calc(var(--sizeModifier) * 0.1vw) solid black;
+    border: calc(var(--sizeModifier) * 0.05vw) solid black;
 }
 
 .cacher 

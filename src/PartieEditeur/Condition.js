@@ -41,6 +41,10 @@ class Condition extends HTMLElement {
         this._structure = value;
     }
 
+    get espaceTravail() {
+        return this._structure.parentNode;
+    }
+
     // METHODES
     afficher() {
         let buttonSupprimer = document.createElement("button");
@@ -80,5 +84,26 @@ class Condition extends HTMLElement {
             libelle: this._libelle,
             enfants: this._elemParent.toJSON()
         };
-    }  
+    }
+    
+    getTailleAbscisse() {
+        let rect = this.getBoundingClientRect();
+
+        // Calculez la largeur en unité vw
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        return largeurEnVw;
+    }
+
+    getAncreDecomposition() {
+        let abscisse = parseFloat(this._structure._abscisse);
+        for (let condition of this._structure._listeConditions.children) {
+            if (condition === this) {
+                break;
+            }
+            abscisse += condition.getTailleAbscisse();
+        }
+        abscisse += this.getTailleAbscisse() / 2;
+        let ordonnee = parseFloat(this._structure._ordonnee) + 5;
+        return {abscisse: abscisse, ordonnee: ordonnee - 0.7};
+    }
 } window.customElements.define("condition-element", Condition);

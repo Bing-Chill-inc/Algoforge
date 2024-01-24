@@ -45,4 +45,10 @@ class ConditionSortie extends ElementGraphique {
             ordonnee: this._ordonnee
         };
     }
+
+    getAncreComposition() {
+        let abscisse = parseFloat(this._abscisse) + 2;
+        let ordonnee = parseFloat(this._ordonnee);
+        return {abscisse: abscisse, ordonnee: ordonnee};
+    }
 } window.customElements.define("condition-sortie-element", ConditionSortie);
