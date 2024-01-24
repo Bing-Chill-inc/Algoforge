@@ -22,6 +22,15 @@ class StructureAlternative extends ElementGraphique {
             this._listeConditions.push(new Condition());
             this._listeConditions[0]._structure = this;
         }
+
+        this.addEventListener('mousemove', function(e) {
+            // update les liens vers les enfants
+            for (let condition of this._listeConditions.children) {
+                condition._elemParent._listeElementsEnfants.forEach((lien) => {
+                    lien.ligne.update();
+                });
+            }
+        });
     }
 
     // ENCAPSULATION
