@@ -79,6 +79,10 @@ class ElementGraphique extends HTMLElement {
         this._parent = value;
     }
 
+    get espaceTravail() {
+        return this.parentNode;
+    }
+
     // ENCAPSULATION
 
     getTailleAbscisse()
@@ -308,8 +312,19 @@ class ElementGraphique extends HTMLElement {
         }
     }
 
-    renameInformation(ancienNom, nouveauNom)
-    {
+    renameInformation(ancienNom, nouveauNom) {
         
+    }
+
+    getAncreDecomposition() {
+        let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+        let ordonnee = parseFloat(this._ordonnee) + this.getTailleOrdonnee();
+        return {abscisse: abscisse, ordonnee: ordonnee - 0.7};
+    }
+
+    getAncreComposition() {
+        let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+        let ordonnee = parseFloat(this._ordonnee);
+        return {abscisse: abscisse, ordonnee: ordonnee};
     }
 }

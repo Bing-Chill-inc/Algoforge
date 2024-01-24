@@ -62,6 +62,7 @@ class StructureSwitch extends StructureAlternative {
         this.appendChild(divConditionContainer);
 
             for (let i = 0; i < this._listeConditions.length; i++) {
+                this._listeConditions[i]._structure = this;
                 divConditionContainer.appendChild(this._listeConditions[i]);
             }
         

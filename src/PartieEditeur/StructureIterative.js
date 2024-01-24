@@ -41,8 +41,7 @@ class StructureIterative extends ElementGraphique {
      * @param {ElementGraphique} typeRechercher le type d'ElementGraphique rechercher
      * @returns {Array<ElementGraphique>} la liste des enfants du type donné
      */
-    getEnfants(typeRechercher = ElementGraphique)
-    {
+    getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
         for(let enfant of this._elemParent._listeElementsEnfants)
         {
@@ -50,5 +49,17 @@ class StructureIterative extends ElementGraphique {
         }
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
+    }
+
+    getAncreDecomposition() {
+        let abscisse = parseFloat(this._abscisse) + 2;
+        let ordonnee = parseFloat(this._ordonnee) + 4;
+        return {abscisse: abscisse, ordonnee: ordonnee};
+    }
+
+    getAncreComposition() {
+        let abscisse = parseFloat(this._abscisse) + 2;
+        let ordonnee = parseFloat(this._ordonnee);
+        return {abscisse: abscisse, ordonnee: ordonnee};
     }
 }

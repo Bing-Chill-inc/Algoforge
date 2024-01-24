@@ -132,7 +132,7 @@ a.afficher();
 b.afficher();
 
 a._listeConditions.children[0]._elemParent.lierEnfant(b)*/
-
+/* 
 let a = new Probleme('80vw','0vw', "Création de la chaine modifiée", [], [new Information("chaineOrig"),new Information("chaineModif")]);
 let b = new Probleme('80vw','10vw', "Générer le captcha", [], [new Information("chaineOrig"),new Information("chaineModif")]);
 let c = new Probleme('0vw','20vw', "generer la chaine de nombre", [], [new Information("chaineOrig")]);
@@ -194,9 +194,101 @@ j._elemParent.lierEnfant(k)
 k._elemParent.lierEnfant(l)
 
 document.getElementById('espace1') 
+*/ 
+/*
+document.getElementById('espace1'); 
+let a = new Probleme;
+let b = new Probleme('0vw','10vw');
+let r = new ConditionSortie('63vw','25vw');
+let c = new Probleme('50vw','10vw');
+let d = new Probleme('0vw','20vw');
+let e = new StructureIterativeBornee('0vw', '30vw', "CompteurIncrementale");
+let f = new Probleme('0vw', '40vw');
+let s = new StructureSwitch('80vw', '40vw',  [new Condition("a"),new Condition("2"),new Condition("3"),new Condition("4"),new Condition("5"),new Condition("6"),new Condition("7"),new Condition("8")], "p");
 
-let a = new Probleme
+document.getElementById('espace1').appendChild(a); 
+document.getElementById('espace1').appendChild(b); 
+document.getElementById('espace1').appendChild(c); 
+document.getElementById('espace1').appendChild(d); 
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(s);
+document.getElementById('espace1').appendChild(r);
 
-document.getElementById('espace1').appendChild(a) 
 
-a.afficher() 
+
+a.afficher();
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+s.afficher();
+r.afficher();
+
+a._elemParent.lierEnfant(b);
+c._elemParent.lierEnfant(r);
+a._elemParent.lierEnfant(c);
+b._elemParent.lierEnfant(d);
+d._elemParent.lierEnfant(e);
+e._elemParent.lierEnfant(f);
+*/
+
+let a = new Probleme('30vw','0vw', "Saisir nbre inférieur à MAX");
+let b = new Probleme('0vw','10vw', "MAX <- 100");
+let c = new StructureIterativeNonBornee('43vw', '10vw')
+let d = new Probleme('0vw','20vw', "Saisir",[], [new Information("nbre")]);
+let e = new Probleme('30vw','20vw', "Verifier nbre est inf a MAX" , [new Information("nbre"), new Information('MAX')]);
+let condition = new Condition("nbre < MAX")
+let autreCondition = new Condition("nbre > MAX")
+let f = new StructureSwitch("40vw", "30vw", [autreCondition, condition], 'p');
+let g =  new ConditionSortie('43vw','40vw');
+let g2 =  new ConditionSortie('47vw','40vw');
+let g3 =  new ConditionSortie('51vw','40vw');
+let g4 =  new ConditionSortie('58vw','40vw');
+let g5 =  new ConditionSortie('67vw','40vw');
+let h = new Probleme('60vw','20vw', "Afficher \"erreur\"" );
+document.getElementById('espace1').appendChild(a);
+document.getElementById('espace1').appendChild(b);
+document.getElementById('espace1').appendChild(c);
+document.getElementById('espace1').appendChild(d);
+document.getElementById('espace1').appendChild(e);
+document.getElementById('espace1').appendChild(f);
+document.getElementById('espace1').appendChild(g);
+document.getElementById('espace1').appendChild(g2);
+document.getElementById('espace1').appendChild(g3);
+document.getElementById('espace1').appendChild(g4);
+document.getElementById('espace1').appendChild(g5);
+document.getElementById('espace1').appendChild(h);
+
+a.afficher(); 
+b.afficher();
+c.afficher();
+d.afficher();
+e.afficher();
+f.afficher();
+g.afficher();
+g2.afficher();
+h.afficher();
+
+function maFonction() {
+    //Couche 1
+    a._elemParent.lierEnfant(b);
+    a._elemParent.lierEnfant(c);
+
+    //Couche 2
+    c._elemParent.lierEnfant(d);
+    c._elemParent.lierEnfant(e);
+    c._elemParent.lierEnfant(h);
+
+    //Couche 3
+    e._elemParent.lierEnfant(f);
+
+    //Couche 4
+    f._listeConditions.children[0]._elemParent.lierEnfant(g);
+    f._listeConditions.children[0]._elemParent.lierEnfant(g2);
+    f._listeConditions.children[1]._elemParent.lierEnfant(g3);
+    f._listeConditions.children[1]._elemParent.lierEnfant(g4);
+    f._listeConditions.children[1]._elemParent.lierEnfant(g5);
+}
+setTimeout("maFonction();", 0);

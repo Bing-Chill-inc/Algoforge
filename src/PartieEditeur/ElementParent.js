@@ -28,22 +28,10 @@ class ElementParent {
 
     // METHODES
     lierEnfant(elementAAjouter) {
-        if(elementAAjouter instanceof ElementGraphique)
-        {
+        if(elementAAjouter instanceof ElementGraphique) {
             elementAAjouter._parent = this;
-            let abscisse1 = parseFloat(this._proprietaire._abscisse) + (this._proprietaire.getTailleAbscisse()/2);
-            let ordonnee1 = parseFloat(this._proprietaire._ordonnee) + (this._proprietaire.getTailleOrdonnee());
-            console.log(parseFloat(this._proprietaire._ordonnee) + " " + this._proprietaire.getTailleAbscisse())
-            let abscisse2 = parseFloat(elementAAjouter._abscisse) + (elementAAjouter.getTailleAbscisse()/2);
-            let ordonnee2 = elementAAjouter._ordonnee;
-            abscisse1 = abscisse1.toString() + "vw";
-            ordonnee1 = ordonnee1.toString() + "vw";
-
-            console.log(abscisse1)
-            let uneLigne = new Ligne(abscisse1, ordonnee1, abscisse2, ordonnee2);
-            this._listeElementsEnfants.push({element : elementAAjouter, ligne : uneLigne});
-            document.getElementById('espace1').appendChild(uneLigne);
-
+            let ligneEntreLesElements = this.creerLienAdequat(this._proprietaire, elementAAjouter, this._proprietaire.espaceTravail);
+            this._listeElementsEnfants.push({element : elementAAjouter, ligne : ligneEntreLesElements});
             return true;
         }
         return false;
@@ -66,5 +54,39 @@ class ElementParent {
             listeEnfants.push(lien.element.toJSON());
         });
         return listeEnfants;
+    }
+
+    creerLienAdequat(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
+        let nouveauLien;
+        switch (elemGraphiqueParent.constructor.name) {
+            case Probleme.name:
+            case Procedure.name:
+                nouveauLien = new LienCompositionProbleme(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
+                break;
+            case StructureIterativeBornee.name:
+            case StructureIterativeNonBornee.name:
+                nouveauLien = new LienTriple(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
+                break;
+            case Condition.name:
+                // Si la condition n'a qu'un seul enfant (0 au moment de l'exécution de cette fonction), alors on crée un lien droit (LienDroit)
+                // Sinon, on crée un lien triple (LienTriple)
+                if (elemGraphiqueParent._elemParent._listeElementsEnfants.length == 0) {
+                    nouveauLien = new LienDroit(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
+                } else {
+                    nouveauLien = new LienTriple(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
+                    // Pour tous les autres enfants de la condition, on change le LienDroit en LienTriple
+                    elemGraphiqueParent._elemParent._listeElementsEnfants.forEach((lien) => {
+                        if (lien.ligne.constructor.name == LienDroit.name) {
+                            lien.ligne.supprimer();
+                            lien.ligne = new LienTriple(elemGraphiqueParent, lien.element, espaceTravail);
+                        }
+                    });
+                }
+                break;
+            default:
+                nouveauLien = new Lien(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
+                break;
+        }
+        return nouveauLien;
     }
 }
