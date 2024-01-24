@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoForge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <button id="btnMode">Afficher Dictionnaire</button>
+    </header>
+    <plan-travail id="espace1">
+
+    </plan-travail>
+    <dictionnaire-Donnee class ="dictionnaire-Donnee" id="dictionnaire1">
+        <table id="tableDictionnaireDonnee">
+            <tr>
+              <td>Nom</td>
+              <td>Type</td>
+              <td>Signification</td>
+            </tr>
+        </table>
+    </dictionnaire-Donnee>
+</body>
+<script>
+    function changerMode() {
+      // Your logic for the button click goes here
+      document.getElementById('espace1').classList.toggle('cacher');
+      document.getElementById('dictionnaire1').classList.toggle('cacher');
+    }
+
+    // Attach a click event listener to the button
+    document.getElementById('btnMode').addEventListener('click', changerMode);
+    document.getElementById('dictionnaire1').classList.toggle('cacher');
+</script>
+<script src="PartieEditeur/Type.js" defer></script>
+<script src="PartieEditeur/Information.js" defer></script>
+<script src="PartieEditeur/DictionnaireDonnee.js" defer></script>
+
+<script src="PartieErreur/AnomalieConceptuelle.js" defer></script>
+<script src="PartieErreur/ErreurConceptuelle.js" defer></script>
+<script src="PartieErreur/AvertissementConceptuel.js" defer></script>
+<script src="PartieErreur/AvertissementDonneeDynamiquementTypee.js" defer></script>
+<script src="PartieErreur/AvertissementInformationsInconsistantesSi.js" defer></script>
+<script src="PartieErreur/AvertissementPlanTropGrand.js" defer></script>
+<script src="PartieErreur/AvertissementSProblemeJamaisExecute.js" defer></script>
+<script src="PartieErreur/AvertissementStructureInoptimale.js" defer></script>
+<script src="PartieErreur/AvertissementTropDeSousElements.js" defer></script>
+<script src="PartieErreur/ErreurArretHorsIteratif.js" defer></script>
+<script src="PartieErreur/ErreurArretIteratifBornee.js" defer></script>
+<script src="PartieErreur/ErreurBoucleBorneeSansFin.js" defer></script>
+<script src="PartieErreur/ErreurBoucleSansSortie.js" defer></script>
+<script src="PartieErreur/ErreurComparaisonSwitch.js" defer></script>
+<script src="PartieErreur/ErreurDonneeInutilisee.js" defer></script>
+<script src="PartieErreur/ErreurDonneeMagique.js" defer></script>
+<script src="PartieErreur/ErreurResultatInutilisee.js" defer></script>
+<script src="PartieErreur/ErreurSyntaxeAssignation.js" defer></script>
+<script src="PartieErreur/ErreurSyntaxeComparaison.js" defer></script>
+<script src="PartieErreur/ErreurTypesInconsistantsAlternatif.js" defer></script>
+<script src="PartieErreur/ErreurVariableMagique.js" defer></script>
+
+<script src="PartieEditeur/PlanTravail.js" defer></script>
+<script src="PartieEditeur/ElementGraphique.js" defer></script>
+<script src="PartieEditeur/Probleme.js" defer></script>
+<script src="PartieEditeur/StructureAlternative.js" defer></script>
+<script src="PartieEditeur/StructureIterative.js" defer></script>
+<script src="PartieEditeur/ConditionSortie.js" defer></script>
+<script src="PartieEditeur/Procedure.js" defer></script>
+<script src="PartieEditeur/Condition.js" defer></script>
+<script src="PartieEditeur/StructureSi.js" defer></script>
+<script src="PartieEditeur/StructureSwitch.js" defer></script>
+<script src="PartieEditeur/StructureIterativeBornee.js" defer></script>
+<script src="PartieEditeur/StructureIterativeNonBornee.js" defer></script>
+<script src="PartieEditeur/ElementParent.js" defer></script>
+<script src="PartieEditeur/Ligne.js" defer></script>
+
+<script src="main.js" defer></script> 
+
+<script>
+    // Set css variables
+    document.body.style.setProperty('--sizeModifier', 1);
+    document.body.style.setProperty('--transitionTime', "0.1s");
+    // Test
+    /*
+    let a = [
+        {
+            "typeElement":"Probleme",
+            "abscisse":"30vw",
+            "ordonnee":"15vw",
+            "libelle":"1",
+            "listeDonnes":[],
+            "listeResultats":[],
+            "enfants":[
+                {
+                    "typeElement":"StructureIterativeNonBornee",
+                    "abscisse":"43vw",
+                    "ordonnee":"30vw",
+                    "enfants":[
+                        {
+                            "typeElement":"Probleme",
+                            "abscisse":"15vw",
+                            "ordonnee":"45vw",
+                            "libelle":"x = 2",
+                            "listeDonnes":[{"nom":"val"}],
+                            "listeResultats":[],
+                            "enfants":[]
+                        },
+                        {
+                            "typeElement":"StructureSi",
+                            "abscisse":"45vw",
+                            "ordonnee":"45vw",
+                            "conditions":[
+                                {
+                                    "typeElement":"Condition",
+                                    "libelle":"i == 4",
+                                    "enfants":[
+                                        {
+                                            "typeElement":"ConditionSortie",
+                                            "abscisse":"48vw",
+                                            "ordonnee":"60vw"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+    espaceTravail = document.getElementById("espace1");
+    espaceTravail.chargerDepuisJSON(a);
+    */
+</script>
+</html>
