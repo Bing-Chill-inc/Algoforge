@@ -32,6 +32,13 @@ class Probleme extends ElementGraphique {
         if (this._elemParent != null) {
             elemParent._proprietaire = this;
         }
+
+        this.addEventListener('mousemove', function(e) {
+            // update les liens vers les enfants
+            this._elemParent._listeElementsEnfants.forEach((lien) => {
+                lien.ligne.update();
+            });
+        });
     }
 
     // ENCAPSULATION

@@ -21,6 +21,13 @@ class StructureIterative extends ElementGraphique {
         if (this._elemParent != null) {
             elemParent._proprietaire = this;
         }
+
+        this.addEventListener('mousemove', function(e) {
+            // update les liens vers les enfants
+            this._elemParent._listeElementsEnfants.forEach((lien) => {
+                lien.ligne.update();
+            });
+        });
     }
 
     // ENCAPSULATION -non-
@@ -33,6 +40,7 @@ class StructureIterative extends ElementGraphique {
         let imgBoucleSVG = document.createElement("img");
         imgBoucleSVG.className = "boucleSVG";
         imgBoucleSVG.src = "assets/boucle.svg";
+        imgBoucleSVG.setAttribute('draggable', false);
         this.appendChild(imgBoucleSVG);
     }
     /**
