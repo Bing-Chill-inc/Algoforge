@@ -579,7 +579,6 @@ width: 25%; /* Deuxième colonne prend 25% de la largeur de la table */
 #espacement
 {
     width: 10%;
-    background-color: black;
 }
 #pageDauthentification
 {
@@ -649,7 +648,9 @@ ul
 
 #pageDauthentification h1
 {
+    margin-top: 50px;
     margin-bottom: 50px;
+    font-size: 4em;
 }
 #pageDauthentification .valid {
     display: none;
@@ -657,3 +658,9 @@ ul
 #pageDauthentification .invalid {
     color: red;
 }
+#pageDauthentification #imgSeparateur
+{
+    width: 100%;
+    height: 100%;
+}
+
