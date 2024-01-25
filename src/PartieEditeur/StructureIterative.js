@@ -70,4 +70,8 @@ class StructureIterative extends ElementGraphique {
         let ordonnee = parseFloat(this._ordonnee);
         return {abscisse: abscisse, ordonnee: ordonnee};
     }
+
+    peutEtreDecompose() {
+        return true;
+    }
 }

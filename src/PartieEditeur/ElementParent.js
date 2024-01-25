@@ -29,6 +29,15 @@ class ElementParent {
     // METHODES
     lierEnfant(elementAAjouter) {
         if(elementAAjouter instanceof ElementGraphique) {
+            // Si l'élément à ajouter est déjà un enfant, on l'enlève de son parent
+            for (var lien of this._listeElementsEnfants) {
+                if (lien.element === elementAAjouter) {
+                    if (verbose) console.log('L\'élément à ajouter est déjà un enfant, on l\'enlève de son parent');
+                    this.delierEnfant(elementAAjouter);
+                    elementAAjouter._parent = null;
+                    return false;
+                }
+            }
             elementAAjouter._parent = this;
             let ligneEntreLesElements = this.creerLienAdequat(this._proprietaire, elementAAjouter, this._proprietaire.espaceTravail);
             this._listeElementsEnfants.push({element : elementAAjouter, ligne : ligneEntreLesElements});
@@ -41,6 +50,7 @@ class ElementParent {
         var lien
         for (lien of this._listeElementsEnfants) {
             if (lien.element === elementASupprimer) {
+                lien.ligne.supprimer();
                 this._listeElementsEnfants.splice(this._listeElementsEnfants.indexOf(lien), 1);
                 lien.element._parent = null;
                 break;

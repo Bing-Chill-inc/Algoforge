@@ -3,8 +3,8 @@
 <svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 320.28 319.89" style="enable-background:new 0 0 320.28 319.89;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#838787;stroke-width:10;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#838787;stroke-width:10;stroke-linecap:round;stroke-miterlimit:10;}
+	.st0{fill:none;stroke:#838787;stroke-width:25px;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#838787;stroke-width:25px;stroke-linecap:round;stroke-miterlimit:10;}
 </style>
 <path class="st0" d="M294.62,312.59H25.4c-9.88,0-17.89-8.01-17.89-17.89V25.48c0-9.88,8.01-17.89,17.89-17.89h269.22
 	c9.88,0,17.89,8.01,17.89,17.89V294.7C312.51,304.58,304.5,312.59,294.62,312.59z"/>

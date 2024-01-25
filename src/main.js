@@ -233,10 +233,10 @@ b._elemParent.lierEnfant(d);
 d._elemParent.lierEnfant(e);
 e._elemParent.lierEnfant(f);
 */
-
-let a = new Probleme('30vw','0vw', "Saisir nbre inférieur à MAX");
-let b = new Probleme('0vw','10vw', "MAX <- 100");
-let c = new StructureIterativeNonBornee('43vw', '10vw')
+/* 
+let a = new Probleme('30vw','5vw', "Saisir nbre inférieur à MAX");
+let b = new Probleme('0vw','12vw', "MAX <- 100");
+let c = new StructureIterativeNonBornee('43vw', '14vw')
 let d = new Probleme('0vw','20vw', "Saisir",[], [new Information("nbre")]);
 let e = new Probleme('30vw','20vw', "Verifier nbre est inf a MAX" , [new Information("nbre"), new Information('MAX')]);
 let condition = new Condition("nbre < MAX")
@@ -292,3 +292,4 @@ function maFonction() {
     f._listeConditions.children[1]._elemParent.lierEnfant(g5);
 }
 setTimeout("maFonction();", 0);
+*/

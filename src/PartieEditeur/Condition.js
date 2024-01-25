@@ -106,4 +106,8 @@ class Condition extends HTMLElement {
         let ordonnee = parseFloat(this._structure._ordonnee) + 5;
         return {abscisse: abscisse, ordonnee: ordonnee - 0.7};
     }
+
+    peutEtreDecompose() {
+        return true;
+    }
 } window.customElements.define("condition-element", Condition);

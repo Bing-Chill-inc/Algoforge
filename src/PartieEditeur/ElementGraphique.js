@@ -51,9 +51,11 @@ class ElementGraphique extends HTMLElement {
                 this.setPosition();
 
                 // update le lien avec le parent
-                this._parent._listeElementsEnfants.forEach((lien) => {
-                    lien.ligne.update();
-                });
+                if (this._parent != null) {
+                    this._parent._listeElementsEnfants.forEach((lien) => {
+                        lien.ligne.update();
+                    });
+                }   
             }
         });
     }
@@ -355,5 +357,9 @@ class ElementGraphique extends HTMLElement {
         let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
         let ordonnee = parseFloat(this._ordonnee);
         return {abscisse: abscisse, ordonnee: ordonnee};
+    }
+
+    peutEtreDecompose() {
+        return false;
     }
 }

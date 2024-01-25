@@ -435,4 +435,8 @@ class Probleme extends ElementGraphique {
         this.replaceTexteResultat(ancienNom, nouveauNom);
     }
 
+    peutEtreDecompose() {
+        return true;
+    }
+
 } window.customElements.define("probleme-element", Probleme);
