@@ -509,7 +509,7 @@ ligne-element {
 
 .cacher 
 {
-    visibility: hidden;
+    display: none
 }
 
 /*
@@ -592,8 +592,8 @@ html
 }
 #traitLogin 
 {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-top: 50px;
     position: relative; /* Set the position of the container to relative */
     text-align: center; /* Pour centrer horizontalement */
     margin-left: 30px;
@@ -610,7 +610,7 @@ html
     left: 50%;
     transform: translate(-50%, -50%);
 }
-#pageDauthentification button
+#pageDauthentification .boutton
 {
     width: 80%;
     padding: 8px;
@@ -619,12 +619,17 @@ html
     border-radius: 20px;
     margin: 5px;
     height: 45px;
+    transition: background-color 0.1s, border-color 0.1s, color 0.1s;
 }
-#pageDauthentification #btnConnexion
+#pageDauthentification .boutton:hover
 {
-    width: 40%;
+    background-color: #bbbbbb;
 }
-#pageDauthentification #btnRegister
+#pageDauthentification .boutton:active
+{
+    background-color: #7e7d7d;
+}
+#pageDauthentification .btnInput
 {
     width: 40%;
 }
@@ -645,4 +650,10 @@ ul
 #pageDauthentification h1
 {
     margin-bottom: 50px;
+}
+#pageDauthentification .valid {
+    display: none;
+}
+#pageDauthentification .invalid {
+    color: red;
 }
