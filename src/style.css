@@ -555,3 +555,59 @@ table {
   td:nth-child(2), th:nth-child(2) {
     width: 25%; /* Deuxième colonne prend 25% de la largeur de la table */
   }
+
+
+  #Barre_Utilisateur {
+    width: 100%;
+    height: 10vh; /* Utilisation de l'unité vh */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px; /* Ajoutez du padding si nécessaire */
+    box-sizing: border-box;
+}
+
+#Barre_Utilisateur img {
+    height: 100%;
+    width: auto;
+    max-height: 100%;
+}
+
+.centered {
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+}
+
+.centered a {
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    margin: 0 10px; /* Ajoute une marge entre chaque élément au centre */
+}
+
+.centered img {
+    height: 100%;
+    width: auto;
+    max-height: 100%;
+}
+
+.centered a span {
+    font-size: 2em; /* Ajustez la taille de la police selon vos besoins */
+}
+
+.right-aligned {
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+}
+
+.right-aligned img {
+    height: 100%;
+    width: auto;
+    max-height: 100%;
+    margin-left: 10px; /* Ajustez la marge selon vos besoins */
+}
