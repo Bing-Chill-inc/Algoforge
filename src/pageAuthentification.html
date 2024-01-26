@@ -9,14 +9,14 @@
 <body id="pageDauthentification">
     <div id="login">
         <h1>Connexion</h1><br>
-        <form id="loginForm">
-            <input type="text" class="boiteSaisie" name="username" placeholder="adresse e-mail / Pseudonyme" required>
+        <form action="Authentification.php" method="post" id="FormulaireAuthentification">
+            <input type="text" class="boiteSaisie" name="adresseMail" placeholder="adresse e-mail" required>
             <br>
-            <input type="password" class="boiteSaisie" name="password" placeholder="mot de passe" required>
+            <input type="password" class="boiteSaisie" name="motDePasse" placeholder="mot de passe" required>
             <br>
-            <input type="checkbox" id="myCheckbox" name="seSouvenir">
-            <label for="myCheckbox">Se souvenir de moi</label>
-            <button type="button" id="btnConnexion">Se connecter</button>
+            <!--<input type="checkbox" id="myCheckbox" name="seSouvenir"> 
+            <label for="myCheckbox">Se souvenir de moi</label> -->
+            <button type="submit" id="btnConnexion">Se connecter</button>
         </form>
         <div id="traitLogin">
             <hr>
@@ -28,9 +28,12 @@
         <button class="apple-signin-button">
             Se connecter avec Apple id
         </button>
-        <button class="discord-signin-button">
-            Se connecter avec Discord
-        </button>
+        <!--<button class="discord-signin-button">
+        </button>    -->
+            <a href="https://discord.com/api/oauth2/authorize?client_id=1199990152823578635&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%2FAlgoForge%2Fsrc%2FAuthentificationDiscord.php&scope=identify">
+                <img src="https://discord.com/assets/28174a34e77bb5e5310ced9f95cb480b.png" alt="Se connecter avec Discord">
+            </a>            
+        
         
     </div>
     <div id="espacement"></div>
