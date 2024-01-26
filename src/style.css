@@ -509,7 +509,7 @@ ligne-element {
 
 .cacher 
 {
-    visibility: hidden;
+    display: none
 }
 
 /*
@@ -579,12 +579,12 @@ width: 25%; /* Deuxième colonne prend 25% de la largeur de la table */
 #espacement
 {
     width: 10%;
-    background-color: black;
 }
 #pageDauthentification
 {
     display: flex;
     height: 100%;
+    background-color: var(--bgColor);
 }
 html
 {
@@ -592,8 +592,8 @@ html
 }
 #traitLogin 
 {
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-top: 50px;
     position: relative; /* Set the position of the container to relative */
     text-align: center; /* Pour centrer horizontalement */
     margin-left: 30px;
@@ -603,14 +603,14 @@ html
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 3px;
-    background-color: #f5f5f5;
+    background-color: var(--bgColor);
     margin: 0px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-#pageDauthentification button
+#pageDauthentification .boutton
 {
     width: 80%;
     padding: 8px;
@@ -619,12 +619,19 @@ html
     border-radius: 20px;
     margin: 5px;
     height: 45px;
+    transition: background-color 0.1s, border-color 0.1s, color 0.1s;
 }
-#pageDauthentification #btnConnexion
+#pageDauthentification .boutton:hover
 {
-    width: 40%;
+    background-color: var(--bgColor);
+    color: var(--fgColorForward);
 }
-#pageDauthentification #btnRegister
+#pageDauthentification .boutton:active
+{
+    background-color: var(--fgColorForward);
+    color: var(--bgColor);
+}
+#pageDauthentification .btnInput
 {
     width: 40%;
 }
@@ -644,5 +651,27 @@ ul
 
 #pageDauthentification h1
 {
+    margin-top: 50px;
     margin-bottom: 50px;
+    font-size: 4em;
+    color: var(--fgColorForward);
+}
+#pageDauthentification .valid {
+    display: none;
+}
+#pageDauthentification .invalid {
+    color: red;
+}
+#pageDauthentification #imgSeparateur
+{
+    width: 100%;
+    height: 100%;
+}
+#pageDauthentification label
+{
+    color: var(--fgColorForward);
+}
+#pageDauthentification p
+{
+    color: var(--fgColorForward);
 }

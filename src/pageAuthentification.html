@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,10 +22,10 @@
             <hr>
             <p class="centered-text">ou</p>
         </div>
-        <button class="google-signin-button">
+        <button class="google-signin-button boutton">
             Se connecter avec Google
         </button>
-        <button class="apple-signin-button">
+        <button class="apple-signin-button boutton">
             Se connecter avec Apple id
         </button>
         <!--<button class="discord-signin-button">
@@ -36,31 +36,96 @@
         
         
     </div>
-    <div id="espacement"></div>
+    <div id="espacement">
+        <img id="imgSeparateur" src="assets/separateurLoginInscription.svg">
+    </div>
     <div id="register">
         <h1>Créer un<br>compte</h1>
-        <form id="registerForm">
-            <input type="text" class="boiteSaisie" name="username" placeholder="Pseudonyme" required>
-            <br>
+        <form id="registerForm" action="creerUnCompte.php" method="post">
             <input type="text" class="boiteSaisie" name="mail" placeholder="adresse e-mail" required>
             <br>
-            <input type="password" class="boiteSaisie" name="password" placeholder="mot de passe" required>
+            <input type="password" id="motDePasse" class="boiteSaisie" name="motDePasse" placeholder="mot de passe" onfocus="mdpSelect()" onblur="mdpDeSelect()" required>
             <br>
-            <input type="password" class="boiteSaisie" name="conf-password" placeholder="confirmer le mot de passe" required>
-            <br>
-            <p> Pour créer un mot de passe sécuriser, il doit contenir au moins: </p>
-            <ul>
-                <li>- 12 caractères</li>
-                <li>- 1 chiffre</li>
-                <li>- 1 majuscule</li>
-                <li>- 1 minuscule</li>
-                <li>- 1 caractère spécial</li>
+            <p class="cacher motDePasseAide"> Pour créer un mot de passe sécuriser, il doit contenir au moins: </p>
+            <ul class="cacher motDePasseAide">
+                <li id="li-taille" class="invalid">- 8 caractères</li>
+                <li id="li-chiffre" class="invalid">- 1 chiffre</li>
+                <li id="li-maj" class="invalid">- 1 majuscule</li>
+                <li id="li-nomaj" class="invalid">- 1 minuscule</li>
+                <li id="li-special" class="invalid">- 1 caractère spécial</li>
             </ul>
-            <button type="button" id="btnRegister">Créer le compte</button>
+            <input type="password" id="motDePasseConf" class="boiteSaisie" name="conf-motDePasse" placeholder="confirmer le mot de passe" onfocus="mdpConfSelect()" onblur="mdpConfDeSelect()" required>
+            <ul class="cacher motDePasseConfAide">
+                <li id="li-mdpconf" class="invalid">- le mot de passe conf ne correspond pas au mot de passe</li>
+            </ul>
+            <br>
+            <input type="submit" class="btnInput boutton" value="Créer le compte">
         </form>
+        <script>
+            function mdpConfSelect()
+            {
+                for(let e of document.querySelectorAll(".motDePasseConfAide"))
+                {
+                    e.classList.remove("cacher");
+                }
+                verifMotDePasseConf();
+            }
+            function mdpConfDeSelect()
+            {
+                for(let e of document.querySelectorAll(".motDePasseConfAide"))
+                {
+                    e.classList.add("cacher");
+                }
+            }
+            document.getElementById('motDePasseConf').addEventListener('input', verifMotDePasseConf);
+            function verifMotDePasseConf()
+            {
+                const confpassword = document.getElementById('motDePasseConf').value;
+                const password = document.getElementById('motDePasse').value;
+                document.getElementById("li-mdpconf").className = password == confpassword ? 'valid' : 'invalid';
+            }
+        </script>
+        <script>
+            function mdpSelect()
+            {
+                for(let e of document.querySelectorAll(".motDePasseAide"))
+                {
+                    e.classList.remove("cacher");
+                }
+            }
+            function mdpDeSelect()
+            {
+                for(let e of document.querySelectorAll(".motDePasseAide"))
+                {
+                    e.classList.add("cacher");
+                }
+            }
+            document.getElementById('motDePasse').addEventListener('input', function () {
+                // Récupérer la valeur du mot de passe
+                var password = this.value;
+        
+                // Vérifier chaque critère et afficher ou masquer l'élément correspondant
+                document.getElementById("li-taille").className = password.length >= 8 ? 'valid' : 'invalid';
+                document.getElementById("li-chiffre").className = /\d/.test(password) ? 'valid' : 'invalid';
+                document.getElementById("li-maj").className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
+                document.getElementById("li-nomaj").className = /[a-z]/.test(password) ? 'valid' : 'invalid';
+                document.getElementById("li-special").className = /[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'valid' : 'invalid';
+            });
+        </script>
+        
     </div>
 
-
-
 </body>
+<script>
+    document.body.style.setProperty('--sizeModifier', 1);
+    document.body.style.setProperty('--transitionTime', "0.0s");
+    document.body.style.setProperty('--bgColor', "#222222");
+    document.body.style.setProperty('--fgColor', "#838787");
+    document.body.style.setProperty('--fgColorForward', "#A6AAA9");
+    document.body.style.setProperty('--goodColor', "#8ABE5E");
+    document.body.style.setProperty('--goodColorTransparent', "#8ABE5E99");
+    document.body.style.setProperty('--errorColor', "#C82606");
+    document.body.style.setProperty('--warningColor', "#FFE989");
+    document.body.style.setProperty('--titleColor', "#34A5DA");
+</script>
 </html>
