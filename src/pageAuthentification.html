@@ -45,7 +45,7 @@
             <br>
             <p class="cacher motDePasseAide"> Pour créer un mot de passe sécuriser, il doit contenir au moins: </p>
             <ul class="cacher motDePasseAide">
-                <li id="li-taille" class="invalid">- 12 caractères</li>
+                <li id="li-taille" class="invalid">- 8 caractères</li>
                 <li id="li-chiffre" class="invalid">- 1 chiffre</li>
                 <li id="li-maj" class="invalid">- 1 majuscule</li>
                 <li id="li-nomaj" class="invalid">- 1 minuscule</li>
@@ -102,7 +102,7 @@
                 var password = this.value;
         
                 // Vérifier chaque critère et afficher ou masquer l'élément correspondant
-                document.getElementById("li-taille").className = password.length >= 12 ? 'valid' : 'invalid';
+                document.getElementById("li-taille").className = password.length >= 8 ? 'valid' : 'invalid';
                 document.getElementById("li-chiffre").className = /\d/.test(password) ? 'valid' : 'invalid';
                 document.getElementById("li-maj").className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
                 document.getElementById("li-nomaj").className = /[a-z]/.test(password) ? 'valid' : 'invalid';
@@ -113,4 +113,16 @@
     </div>
 
 </body>
+<script>
+    document.body.style.setProperty('--sizeModifier', 1);
+    document.body.style.setProperty('--transitionTime', "0.0s");
+    document.body.style.setProperty('--bgColor', "#222222");
+    document.body.style.setProperty('--fgColor', "#838787");
+    document.body.style.setProperty('--fgColorForward', "#A6AAA9");
+    document.body.style.setProperty('--goodColor', "#8ABE5E");
+    document.body.style.setProperty('--goodColorTransparent', "#8ABE5E99");
+    document.body.style.setProperty('--errorColor', "#C82606");
+    document.body.style.setProperty('--warningColor', "#FFE989");
+    document.body.style.setProperty('--titleColor', "#34A5DA");
+</script>
 </html>

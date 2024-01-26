@@ -1,12 +1,17 @@
 <?php
+    session_start();
     if ($_SERVER["REQUEST_METHOD"] != "POST") {
         echo "une erreur s'est produit";
         return;
     }
+
+    // Récupère le code de vérification stocké dans la session
     $mail = htmlspecialchars($_POST["mail"]);
     $motdepasse = htmlspecialchars($_POST["motDePasse"]);
     $conf_motdepasse = htmlspecialchars($_POST["conf-motDePasse"]);
     $motDePasseHash = password_hash($motdepasse, PASSWORD_BCRYPT);
+    $_SESSION['mail'] = $mail;
+    $_SESSION['motDePasseHash'] = $motDePasseHash;
     //
     // Regarder si le mail est valide
     //
@@ -29,7 +34,7 @@
         return;
     }
     // Vérifier la longueur
-    if(strlen($motdepasse) < 12)
+    if(strlen($motdepasse) < 8)
     {
         echo "Le mot de passe ne fait pas 12 caractères";
         return;
@@ -63,31 +68,33 @@
     $verifNom->close();
 
     // Si le nom n'existe pas, procéder à l'insertion
-    if ($count == 0) {
-        // Préparer la requête d'insertion
-        $requeteInsertion = $connexion->prepare("INSERT INTO Utilisateur (adresseMail, mdpHash, dateInscription, grilleActivee, accrochage, idTheme, imageProfil)
-        VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $dateInscription = date("Y-m-d H:i:s");
-        $grilleActivee = 1;
-        $accrochage = 1;
-        $idTheme = 1;
-        $imageProfil = NULL;
-
-        // Lier les paramètres
-        $requeteInsertion->bind_param("sssiiis", $mail, $motDePasseHash, $dateInscription, $grilleActivee, $accrochage, $idTheme, $imageProfil);
-
-        // Exécuter la requête d'insertion
-        if ($requeteInsertion->execute()) {
-            echo "Insertion réussie !";
-        } else {
-            echo "Erreur d'insertion : " . $requeteInsertion->error;
-        }
-
-        // Fermer la requête d'insertion
-        $requeteInsertion->close();
-        
-        echo "L'insertion a été effectuée avec succès.";
-    } else {
-        echo "Le nom existe déjà dans la base de données.";
+    if ($count != 0) {
+        echo "Le compte a déja été crée";
+        return;
     }
+    $code_verification = rand(100000, 999999);
+    $_SESSION['code_verification'] = $code_verification;
+    // Sujet du mail
+    $sujet = "Code de verification";
+
+    // Corps du mail
+    $message = "Le code est: " . $code_verification;
+
+    // Envoi du mail
+    /*$mailEnvoye = mail($mail, $sujet, $message);
+
+    // Vérifier si le mail a été envoyé avec succès
+    if ($mailEnvoye) {
+        echo "<p>L'e-mail a été envoyé avec succès.</p>";
+        echo "<br>";
+    } else {
+        echo "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.";
+        return;
+    }*/
+    echo 'Le code est ' . $code_verification;
+    echo '<form  action="verifCode.php"  method="post">';
+    echo '<input type="text" class="boiteSaisie" name="codeVerif" placeholder="Code verification" required>';
+    echo '<br>';
+    echo '<input type="submit" class="btnInput boutton" value="Se connecter">';
+    echo '</form>';
 ?>
