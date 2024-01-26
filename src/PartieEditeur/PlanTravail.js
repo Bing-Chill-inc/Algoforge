@@ -98,7 +98,7 @@ class PlanTravail extends HTMLElement {
     exporterEnJSON() {
         let listeElementsSansParents = [];
         for (let element of this.children) {
-            if (element._parent == null) {
+            if (element._parent == null && element instanceof ElementGraphique) {
                 listeElementsSansParents.push(element);
             }
         }

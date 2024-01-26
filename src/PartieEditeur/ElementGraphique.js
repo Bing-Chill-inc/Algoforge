@@ -36,7 +36,7 @@ class ElementGraphique extends HTMLElement {
             this.isDragging = true;
             this.offsetX = e.clientX - this.offsetLeft;
             this.offsetY = e.clientY - this.offsetTop;
-            });
+        });
         this.addEventListener('mouseup', function() {
             this.isDragging = false;
         });

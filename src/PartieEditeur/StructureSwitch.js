@@ -45,6 +45,11 @@ class StructureSwitch extends StructureAlternative {
     afficher() {
         let divTriangleGauche = document.createElement("div");
         divTriangleGauche.className = "triangleGauche";
+        divTriangleGauche.classList.add("triangle");
+        divTriangleGauche.innerHTML = "<span>-<span>";
+        divTriangleGauche.addEventListener('click', (e) => {
+            this.supprimerCondition();
+        });
         this.appendChild(divTriangleGauche);
 
         let divExpressionATester = document.createElement("div");
@@ -70,6 +75,11 @@ class StructureSwitch extends StructureAlternative {
 
         let divTriangleDroit = document.createElement("div");
         divTriangleDroit.className = "triangleDroit";
+        divTriangleDroit.classList.add("triangle");
+        divTriangleDroit.innerHTML = "<span>+<span>";
+        divTriangleDroit.addEventListener('click', (e) => {
+            this.ajouterCondition();
+        });
         this.appendChild(divTriangleDroit);
 
         let hrDiviseurDroit = document.createElement("hr");

@@ -247,8 +247,8 @@ class Probleme extends ElementGraphique {
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
             libelle: this._libelle,
-            listeDonnes: lstDonnees,
-            listeResultats: lstResultats,
+            listeDonnes: this._listeDonnes,
+            listeResultats: this._listeResultats,
             enfants: this._elemParent.toJSON()
         };
     }

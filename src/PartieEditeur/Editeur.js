@@ -97,6 +97,16 @@ class Editeur extends HTMLElement {
                     // Ctrl + 7
                     this.selectTool(6);
                 }
+
+                // Gestion du zoom
+                if (e.key === '+' || e.key === '=') {
+                    // Ctrl + +
+                    document.body.style.setProperty('--sizeModifier', parseFloat(document.body.style.getPropertyValue('--sizeModifier')) + 0.1);
+                }
+                if (e.key === '-') {
+                    // Ctrl + -
+                    document.body.style.setProperty('--sizeModifier', parseFloat(document.body.style.getPropertyValue('--sizeModifier')) - 0.1);
+                }
             }
         });
 
