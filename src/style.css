@@ -611,3 +611,18 @@ table {
     max-height: 100%;
     margin-left: 10px; /* Ajustez la marge selon vos besoins */
 }
+
+.information {
+    width: 20%;
+    height: 90vh; /* 100% moins la hauteur du header */
+    float: left;
+    box-sizing: border-box;
+}
+
+.MonEspace {
+    width: 80%;
+    height: 90vh; /* 100% moins la hauteur du header */
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    float: right;
+}
