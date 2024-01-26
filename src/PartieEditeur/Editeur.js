@@ -13,6 +13,10 @@ class Editeur extends HTMLElement {
     _undoButton = null;
     _redoButton = null;
     _pointePrecedementLien = null;
+    _menuDeroulantFichier = null;
+    _menuDeroulantEdition = null;
+    _menuDeroulantAide = null;
+    _espacePrincipal = null;
 
     constructor() {
         super();
@@ -26,6 +30,8 @@ class Editeur extends HTMLElement {
         this._typesElements.push(ConditionSortie);
 
         // Référencement des éléments d'interface
+        this._espacePrincipal = document.querySelector('#espacePrincipal');
+
         this._boutonPointeur = document.querySelector('#boutonPointeur');
 
         this._listeTools.push(document.querySelector('#boutonProbleme'));
@@ -38,6 +44,120 @@ class Editeur extends HTMLElement {
 
         this._undoButton = document.querySelector('#boutonUndo');
         this._redoButton = document.querySelector('#boutonRedo');
+
+        this._menuDeroulantFichier = document.querySelector('#menuDeroulantFichier');
+        this._menuDeroulantEdition = document.querySelector('#menuDeroulantEdition');
+        this._menuDeroulantAide = document.querySelector('#menuDeroulantAide');
+
+        // Ajout des éléments de menu
+        // Fichier
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Nouveau', () => {
+            console.log('Nouveau');
+        }));
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Créer une copie', () => {
+            console.log('Créer une copie');
+        }));
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Partager', () => {
+            console.log('Partager');
+        }));
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Renommer', () => {
+            console.log('Renommer');
+        }));
+        let exporter = new ElementMenuCompose('Exporter', () => {
+            console.log('Exporter');
+        })
+        this._menuDeroulantFichier.ajouterElementMenu(exporter);
+
+        let sousTitreGénéral = document.createElement('h3');
+        sousTitreGénéral.innerText = 'Tout';
+        exporter.ajouterElementMenu(sousTitreGénéral);
+
+        exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
+            console.log('Exporter en .svg');
+            console.log(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
+        }));
+
+        let sousTitreAlgorithme = document.createElement('h3');
+        sousTitreAlgorithme.innerText = 'Algorithme';
+        exporter.ajouterElementMenu(sousTitreAlgorithme);
+
+        exporter.ajouterElementMenu(new ElementMenu('.png', () => {
+            console.log('Exporter en .png');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.jpg', () => {
+            console.log('Exporter en .jpg');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
+            console.log('Exporter en .svg');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.pdf', () => {
+            console.log('Exporter en .pdf');
+        }));
+
+        let sousTitreDictionnaire = document.createElement('h3');
+        sousTitreDictionnaire.innerText = 'Dictionnaire';
+        exporter.ajouterElementMenu(sousTitreDictionnaire);
+
+        exporter.ajouterElementMenu(new ElementMenu('.xls', () => {
+            console.log('Exporter en .xls');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.csv', () => {
+            console.log('Exporter en .csv');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.md', () => {
+            console.log('Exporter en .md');
+        }));
+
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Supprimer', () => {
+            console.log('Supprimer');
+        }));
+
+        // Edition
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Annuler', () => {
+            console.log('Annuler');
+        }, 'Ctrl + Z'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Rétablir', () => {
+            console.log('Rétablir');
+        }, 'Ctrl + Y'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Couper', () => {
+            console.log('Couper');
+        }, 'Ctrl + X'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Copier', () => {
+            console.log('Copier');
+        }, 'Ctrl + C'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Coller', () => {
+            console.log('Coller');
+        }, 'Ctrl + V'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Sélectionner tout', () => {
+            console.log('Sélectionner tout');
+        }, 'Ctrl + A'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Supprimer', () => {
+            console.log('Supprimer');
+        }, 'Suppr'));
+
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Rechercher', () => {
+            console.log('Dupliquer');
+        }, 'Ctrl + F'));
+
+        // Aide
+        this._menuDeroulantAide.ajouterElementMenu(new ElementMenu('Tutoriels', () => {
+            console.log('Aide');
+        }));
+
+        this._menuDeroulantAide.ajouterElementMenu(new ElementMenu('Raccourcis clavier', () => {
+            console.log('Raccourcis clavier');
+        }));
 
         // Gestion des événements de l'interface
         this._listeTools.forEach((tool, index) => {

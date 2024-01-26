@@ -13,9 +13,24 @@
             <div class="titreEtMenu">
                 <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span> ✎</span></h1>
                 <div class="menuButtons">
-                    <button>Fichier</button>
-                    <button>Édition</button>
-                    <button>Aide</button>
+                    <button>
+                        <span>Fichier</span>
+                        <menu-deroulant id="menuDeroulantFichier">
+
+                        </menu-deroulant>
+                    </button>
+                    <button>
+                        <span>Édition</span>
+                        <menu-deroulant id="menuDeroulantEdition">
+
+                        </menu-deroulant>
+                    </button>
+                    <button>
+                        <span>Aide</span>
+                        <menu-deroulant id="menuDeroulantAide">
+
+                        </menu-deroulant>
+                    </button>
                 </div>
             </div>
             <div class="zonePartage">
@@ -39,7 +54,7 @@
                 <img src="assets/mini/redo.svg" id="boutonRedo">
             </div>
         </div>
-        <plan-travail id="espace1">
+        <plan-travail id="espacePrincipal">
 
         </plan-travail>
     </editeur-interface>
@@ -93,6 +108,10 @@
 <script src="PartieEditeur/LienTriple.js"></script>
 <script src="PartieEditeur/SymboleDecomposition.js"></script>
 
+<script src="PartieEditeur/MenuDeroulant.js"></script>
+<script src="PartieEditeur/ElementMenu.js"></script>
+<script src="PartieEditeur/ElementMenuCompose.js"></script>
+<script src="PartieEditeur/ElementMenuKeyboardTip.js"></script>
 <script src="PartieEditeur/Editeur.js"></script>
 
 <script src="main.js"></script>
