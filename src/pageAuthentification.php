@@ -69,6 +69,11 @@
                 <li id="li-mdpconf" class="invalid">- le mot de passe conf ne correspond pas au mot de passe</li>
             </ul>
             <br>
+<?php
+    if(isset($_GET['erreur']) && $_GET['erreur'] == 2) {
+        echo '<p class="invalid">Le compte associé à cette adresse e-mail existe déjà.</p>';
+    }
+?>
             <input type="submit" class="btnInput boutton" value="Créer le compte">
         </form>
         <script>
