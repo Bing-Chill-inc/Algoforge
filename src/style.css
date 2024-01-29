@@ -626,3 +626,23 @@ table {
     box-sizing: border-box;
     float: right;
 }
+
+
+.information table{
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px;
+    background-color: #d9d9d9;
+    border: 0px;
+}
+.information td{
+    border: 0px;
+    padding: 8px;
+  }
+  .information td:nth-child(1) {
+    width: 10%; /* Première colonne prend 15% de la largeur de la table */
+  }
+
+  .information td:nth-child(3) {
+    width: 5%; /* Deuxième colonne prend 15% de la largeur de la table */
+  }
