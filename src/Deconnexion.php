@@ -3,6 +3,6 @@
     setcookie("adresseMail", "", time() - 3600);
 
     // Rediriger vers la page de connexion ou une autre page après la déconnexion
-    header("Location: pageAuthentification.html");
+    header("Location: pageAuthentification.php");
     exit();
 ?>

@@ -1,8 +1,8 @@
 <?php
-    $serveur = "lakartxela.iutbayonne.univ-pau.fr";
-    $utilisateur = "jsuares_bd";
-    $motDePasse = "jsuares_bd";
-    $baseDeDonnees = "jsuares_bd";
+    $serveur = "localhost";
+    $utilisateur = "AlgoForge";
+    $motDePasse = "6ax?_J!j9xc9B4c";
+    $baseDeDonnees = "algoforge";
 
     // Créer la connexion
     $connexion = new mysqli($serveur, $utilisateur, $motDePasse, $baseDeDonnees);

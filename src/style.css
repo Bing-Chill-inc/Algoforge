@@ -620,6 +620,7 @@ html
     margin: 5px;
     height: 45px;
     transition: background-color 0.1s, border-color 0.1s, color 0.1s;
+    align-items: center;
 }
 #pageDauthentification .boutton:hover
 {
@@ -674,4 +675,17 @@ ul
 #pageDauthentification p
 {
     color: var(--fgColorForward);
+}
+#pageDauthentification .discord-signin-button img {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+#pageDauthentification .discord-signin-button p { 
+    color: #000000;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }

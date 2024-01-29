@@ -1,16 +1,15 @@
 <?php
-    require_once('BD.php');
+    require_once('bd.php');
+    require_once('fonctions.php');
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Récupérer les informations d'identification depuis le formulaire
-        $adresseMail = $_POST['adresseMail'];
-        $motDePasse = $_POST['motDePasse'];
-
-        //$motDePasseHash = password_hash($motdepasse, PASSWORD_BCRYPT);
+        $adresseMail = htmlspecialchars($_POST['adresseMail']);
+        $motDePasse = htmlspecialchars($_POST['motDePasse']);
     
-        // Utiliser une requête préparée pour éviter les attaques par injection SQL
-        $requete = $connexion->prepare("SELECT adresseMail, mdpHash FROM utilisateur WHERE adresseMail = ? AND mdpHash = ?");
-        $requete->bind_param("ss", $adresseMail, $motDePasse);
+        // Utiliser une requête préparée
+        $requete = $connexion->prepare("SELECT adresseMail, mdpHash FROM utilisateur WHERE adresseMail = ?");
+        $requete->bind_param("s", $adresseMail);
 
         // Exécuter la requête
         $requete->execute();
@@ -18,20 +17,16 @@
         // Lier les résultats de la requête à des variables
         $requete->bind_result($adresseMail, $motDePasseHash);
 
-        if ($requete->fetch() && $motDePasseHash != NULL) {
-            // Authentification réussie, initialiser du cookie
-            // Calculer le timestamp pour dans 2 mois (60 secondes * 60 minutes * 24 heures * 30 jours * 2 mois)
-            $expiration = time() + 60 * 60 * 24 * 30 * 2;
+        if ($requete->fetch() && password_verify($motDePasse, $motDePasseHash) && $motDePasseHash != NULL) {
+            // Authentification réussie
+            creerCookie($adresseMail);
 
-            // Créer un cookie sécurisé pour stocker le nom d'utilisateur avec une expiration de 2 mois
-            setcookie("adresseMail", $adresseMail, $expiration);
-    
-            // Rediriger vers la page d'accueil ou une autre page après la connexion
-            header("Location: testCookie.php");
-            exit();
         } else {
             // Authentification échouée
             echo "Adresse e-mail ou mot de passe incorrect.";
+            sleep(3);
+            header("Location: pageAuthentification.php?erreur=1");
+            exit();
         }
     
         // Fermer la requête
