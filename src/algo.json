@@ -1,0 +1,21 @@
+[
+    {
+        "abscisse": "70.6vw",
+        "ordonnee": "6.8vw",
+        "typeElement": "Probleme",
+        "libelle": "Ceci est jokin",
+        "listeDonnes": [],
+        "listeResultats": [],
+        "enfants": [
+            {
+                "abscisse": "72.3vw",
+                "ordonnee": "25.2vw",
+                "typeElement": "Probleme",
+                "libelle": "Ceci n'est pas yokin",
+                "listeDonnes": [],
+                "listeResultats": [],
+                "enfants": []
+            }
+        ]
+    }
+]

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE Tabula_Rasa>
+<Algorithme>
+  <nom>Algo3</nom>
+  <date_creation>26/1/2024 20:05</date_creation>
+  <Elements>
+    <Action>
+      <Position>706;68</Position>
+      <StyleLien>2</StyleLien>
+      <PreAssertion>∅</PreAssertion>
+      <PostAssertion>?</PostAssertion>
+      <Titre>Ceci est jokin</Titre>
+      <DetailsVisible>1</DetailsVisible>
+      <DetailsVideVisible>1</DetailsVideVisible>
+      <Enfants>
+        <Action>
+          <Position>723;252</Position>
+          <StyleLien>1</StyleLien>
+          <PreAssertion>∅</PreAssertion>
+          <PostAssertion>∅</PostAssertion>
+          <Titre>Ceci n'est pas yokin</Titre>
+          <DetailsVisible>1</DetailsVisible>
+          <DetailsVideVisible>1</DetailsVideVisible>
+          <Enfants/>
+        </Action>
+      </Enfants>
+    </Action>
+  </Elements>
+  <Dictionary/>
+</Algorithme>
