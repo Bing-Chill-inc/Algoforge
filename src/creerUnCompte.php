@@ -68,12 +68,13 @@
     // Si le nom n'existe pas, procéder à l'insertion
     if ($count != 0) {
         echo "Le compte a déja été crée";
+        header("Location: pageAuthentification.php?erreur=2");
         return;
     }
     $code_verification = rand(100000, 999999);
     $_SESSION['code_verification'] = $code_verification;
     // Sujet du mail
-    $sujet = "Code de verification";
+    /*$sujet = "Code de verification";
 
     // Corps du mail
     $message = "Le code est: " . $code_verification;
@@ -89,6 +90,7 @@
         echo "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.";
         return;
     }
+    */
     echo 'Le code est ' . $code_verification;
     echo '<form  action="verifCode.php"  method="post">';
     echo '<input type="text" class="boiteSaisie" name="codeVerif" placeholder="Code verification" required>';
