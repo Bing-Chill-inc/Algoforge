@@ -93,6 +93,16 @@
                 const confpassword = document.getElementById('motDePasseConf').value;
                 const password = document.getElementById('motDePasse').value;
                 document.getElementById("li-mdpconf").className = password == confpassword ? 'valid' : 'invalid';
+                for(let e of document.querySelectorAll(".motDePasseConfAide"))
+                {
+                    if(password == confpassword ) {
+                        e.classList.add("cacher");
+                    }
+                    else
+                    {
+                        e.classList.remove("cacher");
+                    }
+                }
             }
         </script>
         <script>
@@ -120,6 +130,19 @@
                 document.getElementById("li-maj").className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
                 document.getElementById("li-nomaj").className = /[a-z]/.test(password) ? 'valid' : 'invalid';
                 document.getElementById("li-special").className = /[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'valid' : 'invalid';
+
+                const allInvalid = document.querySelectorAll('.motDePasseAide .invalid').length 
+                for(let e of document.querySelectorAll(".motDePasseAide"))
+                {
+                    if(allInvalid == 0)
+                    {
+                        e.classList.add("cacher");
+                    }
+                    else
+                    {
+                        e.classList.remove("cacher");
+                    }
+                }
             });
         </script>
         
