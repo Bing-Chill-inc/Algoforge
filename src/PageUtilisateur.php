@@ -4,21 +4,6 @@
         <meta charset="UTF-8">
         <title>Page Utilisateur</title>
         <link rel="stylesheet" href="style.css">
-        <script type="text/javescript">
-            function marquerCommeLu(id, table) {
-                // Envoi d'une requête AJAX pour mettre à jour la base de données
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "script_mise_a_jour.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // Traitement de la réponse si nécessaire
-                        alert(xhr.responseText);
-                    }
-                };
-                xhr.send("id=" + id + "&table=" + table);
-            }
-        </script>
     </head>
     <Body>
         <header id="Barre_Utilisateur">
@@ -59,7 +44,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationDossier\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                         case "partager":
@@ -72,7 +61,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationDossier\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                         case "demande":
@@ -98,7 +91,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationDossier\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                     }
@@ -120,7 +117,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationAlgorithme\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationAlgorithme'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                         case "partager":
@@ -133,7 +134,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationAlgorithme\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationAlgorithme'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                         case "demande":
@@ -159,7 +164,11 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button onclick='marquerCommeLu(" . $donnees['idNotif'] . ", \"NotificationAlgorithme\")'>Lus</button></td>";
+                            echo "<form action='script_mise_a_jour.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationAlgorithme'>";
+                            echo "<td><button type='submit'>Lut</button></td>";
+                            echo "</form>";
                             echo "</tr>";
                             break;
                     }
