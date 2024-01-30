@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authentication</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 </head>
 <body id="pageDauthentification">
     <div id="login">
@@ -33,18 +34,10 @@
             <hr>
             <p class="centered-text">ou</p>
         </div>
-        <button class="google-signin-button boutton">
-            Se connecter avec Google
-        </button>
-        <button class="apple-signin-button boutton">
-            Se connecter avec Apple id
-        </button>
         <button class="discord-signin-button boutton" onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1199990152823578635&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%2FAlgoForge%2Fsrc%2FAuthentificationDiscord.php&scope=identify'">
             <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" alt="Se connecter avec Discord">
             <p>Se connecter avec Discord</p>
-        </button>
-        
-        
+        </button>      
     </div>
     <div id="espacement">
         <img id="imgSeparateur" src="assets/separateurLoginInscription.svg">
@@ -74,6 +67,7 @@
         echo '<p class="invalid">Le compte associé à cette adresse e-mail existe déjà.</p>';
     }
 ?>
+            <div class="g-recaptcha" data-sitekey="6LdNIl8pAAAAALIEBCwlcZnOi85CNc1UjSMh1Yug" data-action="LOGIN"></div>
             <input type="submit" class="btnInput boutton" value="Créer le compte">
         </form>
         <script>
