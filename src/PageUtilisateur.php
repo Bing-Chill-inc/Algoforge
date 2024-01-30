@@ -63,7 +63,10 @@
                             echo "<td>";
                             echo "<form action='AccepterUneDemande.php' method='post'>";
                             echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
-                            echo "<input type='hidden' name='table' value='".$donnees['adresseEmeteur']."'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<input type='hidden' name='adresseEmeteur' value='" . $donnees['adresseEmeteur'] . "'>";
+                            echo "<input type='hidden' name='idDossierConcernes' value='" . $donnees['idDossierConcernes'] . "'>";
+                            echo "<input type='hidden' name='droitsConcernes' value='" . $donnees['droitsConcernes'] . "'>";
                             echo "<button type='submit'>Accepter</button>";
                             echo "</form>";
 
@@ -124,17 +127,19 @@
                             echo "</tr>";
                             break;
                         case "demande":
-
                             echo "<td>";
                             echo "<form action='AccepterUneDemande.php' method='post'>";
                             echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
-                            echo "<input type='hidden' name='table' value='".$donnees['adresseEmeteur']."'>";
+                            echo "<input type='hidden' name='table' value='NotificationAlgorithme'>";
+                            echo "<input type='hidden' name='adresseEmeteur' value='" . $donnees['adresseEmeteur'] . "'>";
+                            echo "<input type='hidden' name='idAlgoConcernes' value='" . $donnees['idAlgoConcernes'] . "'>";
+                            echo "<input type='hidden' name='droitsConcernes' value='" . $donnees['droitsConcernes'] . "'>";
                             echo "<button type='submit'>Accepter</button>";
                             echo "</form>";
 
                             echo "<form action='RefuserUneDemande.php' method='post'>";
                             echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
-                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<input type='hidden' name='table' value='NotificationAlgorithme'>";
                             echo "<input type='hidden' name='adresseEmeteur' value='" . $donnees['adresseEmeteur'] . "'>";
                             echo "<input type='hidden' name='adresseRecipiendaire' value='" . $donnees['adresseRecipiendaire'] . "'>";
                             echo "<input type='hidden' name='idAlgoConcernes' value='" . $donnees['idAlgoConcernes'] . "'>";
