@@ -7,13 +7,13 @@
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
 
         // Cryptage des données
-        $donneesCryptees = openssl_encrypt($adresseMail, 'aes-256-cbc', $cleChiffrement, 0, $iv);
+        $donneesChiffrees = openssl_encrypt($adresseMail, 'aes-256-cbc', $cleChiffrement, 0, $iv);
 
         // Calcule de l'expiration du cookie dans 2 mois
         $expiration = time() + 60 * 60 * 24 * 30 * 2;
 
         // Stockage des données cryptées et de l'IV dans le cookie
-        $donneesCookie = base64_encode($donneesCryptees) . ':' . base64_encode($iv);
+        $donneesCookie = base64_encode($donneesChiffrees) . ':' . base64_encode($iv);
         setcookie('adresseMail', $donneesCookie, $expiration);
 
         // Rediriger vers la page d'accueil
