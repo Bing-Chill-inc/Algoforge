@@ -78,7 +78,21 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button>Accepter</button><button>Refuser</button></td>";
+                            echo "<td>";
+                            echo "<form action='AccepterUneDemande.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='".$donnees['adresseEmeteur']."'>";
+                            echo "<button type='submit'>Accepter</button>";
+                            echo "</form>";
+
+                            echo "<form action='RefuserUneDemande.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<input type='hidden' name='adresseEmeteur' value='" . $donnees['adresseEmeteur'] . "'>";
+                            echo "<input type='hidden' name='adresseRecipiendaire' value='" . $donnees['adresseRecipiendaire'] . "'>";
+                            echo "<button type='submit'>Refuser</button>";
+                            echo "</form>";
+                            echo "</td>";
                             echo "</tr>";
                             break;
                         case "refuser":
@@ -151,7 +165,21 @@
                             echo $donnees['droitsConcernes'];
                             echo "</td>";
 
-                            echo "<td><button>Accepter</button><button>Refuser</button></td>";
+                            echo "<td>";
+                            echo "<form action='AccepterUneDemande.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='".$donnees['adresseEmeteur']."'>";
+                            echo "<button type='submit'>Accepter</button>";
+                            echo "</form>";
+
+                            echo "<form action='RefuserUneDemande.php' method='post'>";
+                            echo "<input type='hidden' name='id' value='" . $donnees['idNotif'] . "'>";
+                            echo "<input type='hidden' name='table' value='NotificationDossier'>";
+                            echo "<input type='hidden' name='adresseEmeteur' value='" . $donnees['adresseEmeteur'] . "'>";
+                            echo "<input type='hidden' name='adresseRecipiendaire' value='" . $donnees['adresseRecipiendaire'] . "'>";
+                            echo "<button type='submit'>Refuser</button>";
+                            echo "</form>";
+                            echo "</td>";
                             echo "</tr>";
                             break;
                         case "refuser":
