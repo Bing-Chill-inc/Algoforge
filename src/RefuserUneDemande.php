@@ -1,5 +1,4 @@
 <?php
-echo "lalalalalalalalaalla";
 // Connexion à la base de données
 // Remplacez les valeurs par les vôtres
 $_bdd= "jsuares_bd"; // Base de données
@@ -19,6 +18,7 @@ $id = $_POST['id'];
 $table = $_POST['table'];
 $adresseEmeteur = $_POST['adresseEmeteur'];
 $adresseRecipiendaire = $_POST['adresseRecipiendaire'];
+$droitsConcernes = $_POST['droitsConcernes'];
 $date = time();
 
 
@@ -27,13 +27,22 @@ $stmt = $conn->prepare("UPDATE $table SET isRead='1' WHERE idNotif = :id");
 $stmt->bindParam(':id', $id);
 $stmt->execute();
 
-if($table == "NotificationDossier"){
-    $date = time();
-    $stmtInsert = $conn->prepare("INSERT INTO NotificationDossier (`idNotif`, `adresseRecipiendaire`, `adresseEmeteur`, `idDossierConcernes`, `typeNotification`, `droitsConcernes`, `dateEvent`, `isRead`) VALUES (UUID(), $adresseEmeteur, $adresseRecipiendaire, $idDossierConcernes, 'refuser', $date,0)");
+if ($table == "NotificationDossier") {
+    $idDossierConcernes = $_POST['idDossierConcernes'];
+    $stmtInsert = $conn->prepare("INSERT INTO NotificationDossier (`adresseRecipiendaire`, `adresseEmeteur`, `idDossierConcernes`, `typeNotification`, `droitsConcernes`, `dateEvent`, `isRead`) VALUES (:adresseRecipiendaire, :adresseEmeteur, :idDossierConcernes, 'refuser', :droitsConcernes, FROM_UNIXTIME(:date), 0)");
+    $stmtInsert->bindParam(':adresseRecipiendaire', $adresseEmeteur);
+    $stmtInsert->bindParam(':adresseEmeteur', $adresseRecipiendaire);
+    $stmtInsert->bindParam(':idDossierConcernes', $idDossierConcernes);
+    $stmtInsert->bindParam(':droitsConcernes', $droitsConcernes);
+    $stmtInsert->bindParam(':date', $date);
 }
-if($table == "NotificationAlgorithme"){
+if ($table == "NotificationAlgorithme") {
     $idAlgoConcernes = $_POST['idAlgoConcernes'];
-    $stmtInsert = $conn->prepare("INSERT INTO NotificationAlgorithme (`idNotif`, `adresseRecipiendaire`, `adresseEmeteur`, `idAlgoConcernes`, `typeNotification`, `droitsConcernes`, `dateEvent`, `isRead`) VALUES (UUID(), $adresseEmeteur, $adresseRecipiendaire, $idDossierConcernes, 'refuser', $date,0)");
+    $stmtInsert = $conn->prepare("INSERT INTO NotificationAlgorithme (`adresseRecipiendaire`, `adresseEmeteur`, `idAlgoConcernes`, `typeNotification`, `droitsConcernes`, `dateEvent`, `isRead`) VALUES (:adresseRecipiendaire, :adresseEmeteur, :idAlgoConcernes, 'refuser', :droitsConcernes, FROM_UNIXTIME(:date), 0)");
+    $stmtInsert->bindParam(':adresseRecipiendaire', $adresseEmeteur);
+    $stmtInsert->bindParam(':adresseEmeteur', $adresseEmeteur);
+    $stmtInsert->bindParam(':idAlgoConcernes', $idAlgoConcernes);
+    $stmtInsert->bindParam(':date', $date);
 }
 $stmtInsert->execute();
 
