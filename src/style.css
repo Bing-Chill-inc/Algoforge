@@ -2,8 +2,13 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
+    background-color:  var(--bgColor);
     overflow: hidden;
+}
+
+h1, h2, h3 
+{
+    color: var(--titleColor)
 }
 
 plan-travail {
@@ -579,7 +584,15 @@ table {
     display: flex;
     align-items: center;
 }
+.centered button
+{
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    margin: 0 10px; /* Ajoute une marge entre chaque élément au centre */
 
+}
 .centered a {
     height: 100%;
     width: auto;
@@ -613,6 +626,7 @@ table {
 }
 
 .information {
+    padding-left: 20px;
     width: 20%;
     height: 90vh; /* 100% moins la hauteur du header */
     float: left;
@@ -623,6 +637,7 @@ table {
     width: 80%;
     height: 90vh; /* 100% moins la hauteur du header */
     border: 1px solid #000000;
+    padding-left: 20px;
     box-sizing: border-box;
     float: right;
 }
@@ -634,9 +649,12 @@ table {
     margin: 0px;
     background-color: #d9d9d9;
     border: 0px;
+    max-width: 100%; /* Assure que le tableau ne dépasse pas la largeur maximale */
+    overflow: hidden;
 }
 .information td{
     border: 0px;
+    overflow: hidden;
     padding: 8px;
   }
   .information td:nth-child(1) {
@@ -645,4 +663,28 @@ table {
 
   .information td:nth-child(3) {
     width: 5%; /* Deuxième colonne prend 15% de la largeur de la table */
+  }
+  .information img
+  {
+    width: 100%;
+  }
+  .notification td, th, tr, tbody, table
+  {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: hidden;
+  }
+
+.notification table{
+    overflow-x: auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+  #PageUtilisateur h1
+  {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: hidden;
   }
