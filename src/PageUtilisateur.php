@@ -4,15 +4,17 @@
         <meta charset="UTF-8">
         <title>Page Utilisateur</title>
         <link rel="stylesheet" href="style.css">
+        <link href="DataTables/datatables.css" rel="stylesheet">
+        <script src="DataTables/datatables.js"></script>
     </head>
     <Body id="PageUtilisateur">
         <header id="Barre_Utilisateur">
             <img src="..\Images\algoforgeLogo.png" alt="Logo Algoforge">
             <div class="centered">
-                <button><img src="..\Images\NouveauAlgoLogo.PNG" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
-                <button><img src="..\Images\ImporterAlgoLogo.PNG" alt="Importer Algo"><span>Importer Algo</span></button>
-                <button><img src="..\Images\NouveauDossierLogo.PNG" alt="Nouveaux Dossier"><span>Nouveaux Dossier</span></button>
-                <button><img src="..\Images\ImporterDossierLogo.PNG" alt="Importer Dossier"> <span>Importer Dossier</span></button>
+                <button><img src="..\Images\nouveauAlgo.svg" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
+                <button><img src="..\Images\ImporterAlgo.svg" alt="Importer Algo"><span>Importer Algo</span></button>
+                <button><img src="..\Images\dossier.svg" alt="Nouveaux Dossier"><span>Nouveaux Dossier</span></button>
+                <button><img src="..\Images\dossierUpload.svg" alt="Importer Dossier"> <span>Importer Dossier</span></button>
             </div>
             <div class="right-aligned">
                 <img src="..\Images\RechercheLogo.PNG" alt="Recherche">
@@ -167,26 +169,38 @@
 
         <div class="MonEspace">
             <h1>Mon Espace</h1>
-            <table id='affichage'>
-            <tr><td></td><td>Nom</td><td>Propriétaire</td><td>Dernière modification</td><td></td></tr>
-            <?php
-
-            ?>
+            <table id='affichage' class="display" style="width:100%">
+                <thead>
+                    <th></th>
+                    <th>Nom</th>
+                    <th>Propriétaire</th>
+                    <th>Dernière modification</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <?php
+                        $link=mysqli_connect($_host,$_user,$_pass,$_bdd) or die( "Impossible de se connecter à la base de données");
+                        $query = "SELECT Dossier.*, Utilisateur.* FROM Dossier INNER JOIN PermissionDossier ON PermissionDossier.idDossier = Dossier.id INNER JOIN Utilisateur ON Utilisateur.adresseMail = PermissionDossier.adresseUtilisateur WHERE PermissionDossier.droits = 'Propriétaire'"; 
+                        $resultats = mysqli_query($link, $query);
+                        mysqli_close($link);
+                        while ($donnees = mysqli_fetch_assoc($resultats))
+                        {
+                            echo "<tr>";
+                            echo "<td></td>";
+                            echo "<td>".$donnees['Dossier.nom']."</td>";
+                            echo "<td>".$donnees['Utilisateur.adresseMail']."</td>";
+                            echo "<td>".$donnees['Dossier.dateModification']."</td>";
+                            echo "<td></td>";
+                            echo "</tr>";
+                        }
+                    ?>
+                </tbody>
             </table>
         </div>
     </Body>
 </html>
 <script>
-    document.body.style.setProperty('--sizeModifier', 1);
-    document.body.style.setProperty('--transitionTime', "0.0s");
-    document.body.style.setProperty('--bgColor', "#222222");
-    document.body.style.setProperty('--fgColor', "#838787");
-    document.body.style.setProperty('--fgColorForward', "#A6AAA9");
-    document.body.style.setProperty('--goodColor', "#8ABE5E");
-    document.body.style.setProperty('--goodColorTransparent', "#8ABE5E99");
-    document.body.style.setProperty('--errorColor', "#C82606");
-    document.body.style.setProperty('--warningColor', "#FFE989");
-    document.body.style.setProperty('--titleColor', "#34A5DA");
+    new DataTable('#affichage');
 </script>
 <?php
     

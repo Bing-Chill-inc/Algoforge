@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 68.622368 65.280016"
+   version="1.1"
+   id="svg985"
+   sodipodi:docname="dossierUpload.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   width="68.622368"
+   height="65.280014"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview985"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.45092357"
+     inkscape:cx="211.78755"
+     inkscape:cy="186.28434"
+     inkscape:window-width="1256"
+     inkscape:window-height="746"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg985" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1,.cls-10,.cls-13,.cls-14,.cls-15,.cls-16,.cls-3,.cls-32,.cls-33,.cls-4,.cls-43,.cls-44,.cls-51,.cls-6{fill:none;}.cls-1,.cls-10,.cls-14,.cls-15,.cls-16,.cls-18,.cls-19,.cls-3,.cls-4,.cls-43,.cls-44,.cls-45,.cls-48,.cls-51,.cls-6{stroke:#000;}.cls-1,.cls-12,.cls-13,.cls-14,.cls-19,.cls-43{stroke-linecap:round;}.cls-1,.cls-10,.cls-12,.cls-13,.cls-14,.cls-15,.cls-16,.cls-18,.cls-19,.cls-32,.cls-33,.cls-4,.cls-43,.cls-44,.cls-45,.cls-48,.cls-51,.cls-6{stroke-miterlimit:10;}.cls-1,.cls-3,.cls-4,.cls-48{stroke-width:5px;}.cls-19,.cls-2,.cls-48{fill:#fff;}.cls-3{stroke-linejoin:bevel;}.cls-5{font-size:23.57px;fill:#999;}.cls-20,.cls-22,.cls-29,.cls-5,.cls-52,.cls-56,.cls-7{font-family:MyriadPro-Regular, Myriad Pro;}.cls-43,.cls-6{stroke-width:4px;}.cls-7{font-size:21px;}.cls-8{letter-spacing:-0.01em;}.cls-9{letter-spacing:-0.01em;}.cls-10{stroke-width:8px;}.cls-11{letter-spacing:0.01em;}.cls-12{fill:#b3b3b3;stroke:#b3b3b3;}.cls-12,.cls-13,.cls-14{stroke-width:10px;}.cls-13{stroke:#fff;}.cls-15,.cls-19,.cls-32,.cls-33{stroke-width:3px;}.cls-17{font-size:31px;}.cls-17,.cls-39,.cls-47{font-family:HagridTextTrial-Extrabold, Hagrid Text Trial;font-weight:800;}.cls-18{fill:#e6e6e6;}.cls-20{font-size:19.5px;letter-spacing:-0.09em;}.cls-21{letter-spacing:-0.1em;}.cls-22{font-size:14px;letter-spacing:-0.02em;}.cls-23{letter-spacing:0em;}.cls-24{letter-spacing:-0.02em;}.cls-25{letter-spacing:0.02em;}.cls-26{letter-spacing:-0.01em;}.cls-27{letter-spacing:-0.01em;}.cls-28{letter-spacing:-0.01em;}.cls-29{font-size:15px;}.cls-30{letter-spacing:-0.03em;}.cls-31{letter-spacing:0em;}.cls-32{stroke:lime;}.cls-33{stroke:red;}.cls-34{letter-spacing:-0.01em;}.cls-35{letter-spacing:-0.01em;}.cls-36{letter-spacing:-0.01em;}.cls-37{letter-spacing:0.01em;}.cls-38{letter-spacing:-0.01em;}.cls-39{font-size:35px;}.cls-40{letter-spacing:0em;}.cls-41{letter-spacing:-0.02em;}.cls-42{letter-spacing:0em;}.cls-44{stroke-width:2px;}.cls-46{fill:#333;}.cls-47{font-size:80px;}.cls-49{font-size:59.12px;font-family:ChakraPetch-Regular, ChakraPetch Regular;}.cls-50{letter-spacing:-0.01em;}.cls-51{stroke-width:0.75px;}.cls-52{font-size:65px;}.cls-53{letter-spacing:0.01em;}.cls-54{letter-spacing:0.02em;}.cls-55{letter-spacing:-0.01em;}.cls-56{font-size:47.6px;}.cls-57{letter-spacing:-0.01em;}.cls-58{letter-spacing:0.01em;}.cls-59{letter-spacing:0.02em;}.cls-60{letter-spacing:-0.01em;}</style>
+  </defs>
+  <rect
+     class="cls-46"
+     x="0"
+     y="0"
+     width="40.685284"
+     height="40.169998"
+     rx="10.568883"
+     id="rect978"
+     style="fill:#333333;stroke-width:0.945197" />
+  <rect
+     x="0"
+     y="9.2000122"
+     width="68.622368"
+     height="56.080002"
+     rx="14.032888"
+     id="rect979"
+     style="stroke-width:1.08913" />
+  <rect
+     class="cls-2"
+     x="29.957642"
+     y="27.397766"
+     width="9.7981091"
+     height="32.486771"
+     id="rect983"
+     style="fill:#ffffff;stroke-width:0.824055" />
+  <polygon
+     class="cls-2"
+     points="1341.66,21.06 1328.83,43.27 1354.48,43.27 "
+     id="polygon983"
+     transform="matrix(0.78636512,0,0,0.86355052,-1020.178,-1.96295)"
+     style="fill:#ffffff" />
+</svg>
