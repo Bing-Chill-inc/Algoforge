@@ -330,4 +330,9 @@ class ElementGraphique extends HTMLElement {
     peutEtreDecompose() {
         return false;
     }
+
+    supprimer() {
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
+    }
 }

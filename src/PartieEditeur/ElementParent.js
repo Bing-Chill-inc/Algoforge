@@ -58,6 +58,12 @@ class ElementParent {
         }
     }
 
+    delierTousLesEnfants() {
+        while (this._listeElementsEnfants.length > 0) {
+            this.delierEnfant(this._listeElementsEnfants[0].element);
+        }
+    }
+
     toJSON() {
         let listeEnfants = [];
         this._listeElementsEnfants.forEach((lien) => {

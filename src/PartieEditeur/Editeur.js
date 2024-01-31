@@ -79,8 +79,8 @@ class Editeur extends HTMLElement {
         sousTitreGénéral.innerText = 'Tout';
         exporter.ajouterElementMenu(sousTitreGénéral);
 
-        exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
-            console.log('Exporter en .svg');
+        exporter.ajouterElementMenu(new ElementMenu('.json', () => {
+            console.log('Exporter en .json');
             console.log(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
         }));
 
@@ -184,6 +184,14 @@ class Editeur extends HTMLElement {
                 if (verbose) console.log(event);
                 event.dataTransfer.setData('text/plain', this._typesElements[index].prototype.constructor.name);
             });
+        });
+
+        this._undoButton.addEventListener('click', () => {
+            this.undo();
+        });
+
+        this._redoButton.addEventListener('click', () => {
+            this.redo();
         });
 
         this._boutonPointeur.addEventListener('click', () => {
@@ -468,6 +476,7 @@ class Editeur extends HTMLElement {
     }
     delete() {
         console.log('delete');
+        this._selection.supprimerTout();
     }
     search() {
         console.log('search');

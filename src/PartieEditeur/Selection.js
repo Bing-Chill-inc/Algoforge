@@ -16,7 +16,7 @@ class Selection extends HTMLElement {
     }
 
     selectionnerElement(element) {
-        if (element instanceof ElementGraphique) {
+        if (element instanceof ElementGraphique && !this.estSelectionne(element)) {
             let rep = new RepresentationSelectionSimple(element, this);
             this.parentNode.appendChild(rep);
             this._listeElementsSelectionnes.push(rep);
@@ -42,6 +42,18 @@ class Selection extends HTMLElement {
 
     deselectionnerTout() {
         for (var selection of this._listeElementsSelectionnes) {
+            selection.supprimer();
+        }
+        this._listeElementsSelectionnes = [];
+        this.style.width = "0vw";
+        this.style.height = "0vw";
+        this.style.left = "0vw";
+        this.style.top = "0vw";
+    }
+
+    supprimerTout() {
+        for (var selection of this._listeElementsSelectionnes) {
+            selection._element.supprimer();
             selection.supprimer();
         }
         this._listeElementsSelectionnes = [];

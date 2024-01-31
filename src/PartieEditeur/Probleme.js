@@ -471,4 +471,10 @@ class Probleme extends ElementGraphique {
         return true;
     }
 
+    supprimer() {
+        this._elemParent.delierTousLesEnfants();
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
+    }
+
 } window.customElements.define("probleme-element", Probleme);

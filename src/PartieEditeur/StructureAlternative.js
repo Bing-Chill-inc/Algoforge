@@ -187,4 +187,12 @@ class StructureAlternative extends ElementGraphique {
             });
         }, 200);
     }
+
+    supprimer() {
+        for (let condition of this._listeConditions.children) {
+            condition._elemParent.delierTousLesEnfants();
+        }
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
+    }
 }
