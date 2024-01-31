@@ -27,35 +27,6 @@ class ElementGraphique extends HTMLElement {
         this._ordonnee = ordonnee;
         this._parent = parent;
         this.setPosition(abscisse, ordonnee);
-
-        /* Déplacer l'élément graphique. */
-        this.isDragging = false;
-        this.offsetX = 0;
-        this.offsetY = 0;
-        this.addEventListener('mousedown', function(e) {
-            this.isDragging = true;
-            this.offsetX = e.clientX - this.offsetLeft;
-            this.offsetY = e.clientY - this.offsetTop;
-            });
-        this.addEventListener('mouseup', function() {
-            this.isDragging = false;
-        });
-        this.addEventListener('mousemove', function(e) {
-            if (this.isDragging) {
-                let abscisseEnPx = (e.clientX - this.offsetX);
-                let ordonneeEnPx = (e.clientY - this.offsetY);
-                let abscisseEnVw = abscisseEnPx / window.innerWidth * 100;
-                let ordonneeEnVw = ordonneeEnPx / window.innerWidth * 100;
-                this._abscisse = abscisseEnVw + 'vw';
-                this._ordonnee = ordonneeEnVw + 'vw';
-                this.setPosition();
-
-                // update le lien avec le parent
-                this._parent._listeElementsEnfants.forEach((lien) => {
-                    lien.ligne.update();
-                });
-            }
-        });
     }
 
     // ENCAPSULATION
@@ -114,8 +85,7 @@ class ElementGraphique extends HTMLElement {
 
     // ENCAPSULATION
 
-    getTailleAbscisse()
-    {
+    getTailleAbscisse() {
         let rect = this.getBoundingClientRect();
 
         // Calculez la largeur en unité vw
@@ -355,5 +325,14 @@ class ElementGraphique extends HTMLElement {
         let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
         let ordonnee = parseFloat(this._ordonnee);
         return {abscisse: abscisse, ordonnee: ordonnee};
+    }
+
+    peutEtreDecompose() {
+        return false;
+    }
+
+    supprimer() {
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
     }
 }

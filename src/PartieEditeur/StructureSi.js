@@ -28,6 +28,11 @@ class StructureSi extends StructureAlternative {
     afficher() {
         let divTriangleGauche = document.createElement("div");
         divTriangleGauche.className = "triangleGauche";
+        divTriangleGauche.classList.add("triangle");
+        divTriangleGauche.innerHTML = "<span>-<span>";
+        divTriangleGauche.addEventListener('click', (e) => {
+            this.supprimerCondition();
+        });
         this.appendChild(divTriangleGauche);
 
         let divConditionContainer = document.createElement("div");
@@ -43,6 +48,11 @@ class StructureSi extends StructureAlternative {
 
         let divTriangleDroit = document.createElement("div");
         divTriangleDroit.className = "triangleDroit";
+        divTriangleDroit.classList.add("triangle");
+        divTriangleDroit.innerHTML = "<span>+<span>";
+        divTriangleDroit.addEventListener('click', (e) => {
+            this.ajouterCondition();
+        });
         this.appendChild(divTriangleDroit);
     }
 

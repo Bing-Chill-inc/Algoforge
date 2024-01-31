@@ -5,13 +5,13 @@
                 fill: #ffffff00;
                 stroke: #838787;
                 stroke-miterlimit: 10;
-                stroke-width: 10px;
+                stroke-width: 25px;
             }
             .cls-2 {
                 fill: #222222;
                 stroke: #838787;
                 stroke-miterlimit: 10;
-                stroke-width: 10px;
+                stroke-width: 25px;
             }
         </style>
     </defs>

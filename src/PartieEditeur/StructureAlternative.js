@@ -87,6 +87,7 @@ class StructureAlternative extends ElementGraphique {
      * @param {Condition} condition la condition ajouter
      */
     ajouterCondition(condition = new Condition()) {
+        condition._structure = this;
         this._listeConditions.appendChild(condition);
     }
 
@@ -95,7 +96,103 @@ class StructureAlternative extends ElementGraphique {
      * 
      * @param {Condition} condition 
      */
-    supprimerCondition(condition) {
-        this._listeConditions.removeChild(condition);
+    supprimerCondition(condition = null) {
+        if(this._listeConditions.children.length == 1) {
+            return; // On ne peut pas supprimer la dernière condition
+        }
+        if (condition instanceof Condition) {
+            this._listeConditions.removeChild(condition);
+        } else {
+            // Parcourons les conditions de la droite vers la gauche et retirons la première qui est vide
+            for (let i = this._listeConditions.children.length - 1; i >= 0; i--) {
+                if (this._listeConditions.children[i]._libelle == "") {
+                    this._listeConditions.removeChild(this._listeConditions.children[i]);
+                    break;
+                }
+            }
+        }
+    }
+
+    getTailleAbscisse() {
+        let rect = this.getBoundingClientRect();
+
+        // Calculez la largeur en unité vw
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        return largeurEnVw;
+    }
+    getTailleOrdonnee() {
+        return 4;
+    }
+
+
+    decalerCondition(pCondition, decalage) {
+        if(decalage == -1 && pCondition instanceof Condition) {
+            // Décaler la condition vers la gauche
+            let autreCondition = pCondition.previousElementSibling;
+            if(autreCondition != null) {
+                pCondition.style.animation = "jumpOverLeft var(--specialTransitionTime) ease-in-out";
+                autreCondition.style.animation = "slideUnderRight var(--specialTransitionTime) ease-in-out";
+                setTimeout(() => {
+                    pCondition.parentElement.insertBefore(pCondition, autreCondition);
+                    pCondition.style.animation = "";
+                    autreCondition.style.animation = "";
+                    // update les liens vers les enfants
+                    pCondition._elemParent._listeElementsEnfants.forEach((lien) => {
+                        lien.ligne.update();
+                    });
+
+                    autreCondition._elemParent._listeElementsEnfants.forEach((lien) => {
+                        lien.ligne.update();
+                    });
+                }, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime"))*1000);
+            }
+        } else if (decalage == 1 && pCondition instanceof Condition) {
+            // Décaler la condition vers la droite
+            let autreCondition = pCondition.nextElementSibling;
+            if(autreCondition != null) {
+                pCondition.style.animation = "jumpOverRight var(--specialTransitionTime) ease-in-out";
+                autreCondition.style.animation = "slideUnderLeft var(--specialTransitionTime) ease-in-out";
+                setTimeout(() => {
+                    pCondition.parentElement.insertBefore(autreCondition, pCondition);
+                    pCondition.style.animation = "";
+                    autreCondition.style.animation = "";
+                    pCondition._elemParent._listeElementsEnfants.forEach((lien) => {
+                        lien.ligne.update();
+                    });
+
+                    autreCondition._elemParent._listeElementsEnfants.forEach((lien) => {
+                        lien.ligne.update();
+                    });
+                }, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime"))*1000);
+            }
+        }
+    }
+
+    ajouterConditionParRapportA(pCondition, decalage) {
+        if(decalage == -1 && pCondition instanceof Condition) {
+            // Ajouter une condition à gauche
+            let newCondition = new Condition();
+            newCondition._structure = this;
+            this._listeConditions.insertBefore(newCondition, pCondition);
+        } else if (decalage == 1 && pCondition instanceof Condition) {
+            // Ajouter une condition à droite
+            let newCondition = new Condition();
+            newCondition._structure = this;
+            this._listeConditions.insertBefore(newCondition, pCondition.nextElementSibling);
+        }
+        setTimeout(() => {
+            // update les liens vers les enfants
+            pCondition._elemParent._listeElementsEnfants.forEach((lien) => {
+                lien.ligne.update();
+            });
+        }, 200);
+    }
+
+    supprimer() {
+        for (let condition of this._listeConditions.children) {
+            condition._elemParent.delierTousLesEnfants();
+        }
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
     }
 }

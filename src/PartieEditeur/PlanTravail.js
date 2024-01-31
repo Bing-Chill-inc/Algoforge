@@ -18,6 +18,26 @@ class PlanTravail extends HTMLElement {
             let texte = event.clipboardData.getData("text/plain");
             this.chargerFichier(texte);
         });
+
+        this.addEventListener('dragover', (event) => {
+            event.preventDefault(); // Necessary to allow a drop
+        });
+
+        this.addEventListener('drop', (event) => {
+            event.preventDefault();
+        
+            // Get the id of the dragged element
+            const data = event.dataTransfer.getData('text/plain');
+            if (verbose) console.log('Dropped:', data);
+        
+            // Get the X and Y coordinates
+            const x = event.layerX;
+            const y = event.layerY;
+        
+            if (verbose) console.log('Dropped at coordinates:', x, y);
+            if (verbose) console.log('eval(data) = ' + eval(data));
+            this.ajouterElement(eval(data), x, y, false);
+        });
     }
 
     // ENCAPSULATION -non-
@@ -78,7 +98,7 @@ class PlanTravail extends HTMLElement {
     exporterEnJSON() {
         let listeElementsSansParents = [];
         for (let element of this.children) {
-            if (element._parent == null) {
+            if (element._parent == null && element instanceof ElementGraphique) {
                 listeElementsSansParents.push(element);
             }
         }
@@ -235,16 +255,37 @@ class PlanTravail extends HTMLElement {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
     }    
-    trouverToutLesElementsGraphiques()
-    {
+    trouverToutLesElementsGraphiques() {
         return this.children;
     }    
-    renameInformation(ancienNom, nouveauNom)
-    {
+    renameInformation(ancienNom, nouveauNom) {
         for(let enfantGraphique of this.trouverToutLesElementsGraphiques())
         {
             enfantGraphique.renameInformation(ancienNom, nouveauNom);
         }
+    }
+
+    ajouterElement(element, abscisse, ordonnee, estEnVW) {
+        if (element == null) {
+            return;
+        }
+        if (!estEnVW) {
+            // Conversion des coordonnées en vw
+            abscisse = abscisse / window.innerWidth * 100;
+            ordonnee = ordonnee / window.innerWidth * 100;
+        }
+        let newElement = new element(abscisse + 'vw', ordonnee + 'vw')
+        newElement.afficher();
+
+        // Adapter les coordonnées de l'élément pour le placer centré sur le curseur
+        let largeurElement = newElement.getTailleAbscisse();
+        let hauteurElement = newElement.getTailleOrdonnee();
+        if (verbose) console.log('largeurElement = ' + largeurElement + ' et hauteurElement = ' + hauteurElement);
+        newElement._abscisse = parseFloat(newElement._abscisse) - largeurElement / 2 + 'vw';
+        newElement._ordonnee = parseFloat(newElement._ordonnee) - hauteurElement / 2 + 'vw';
+        newElement.setPosition();
+        this.appendChild(newElement);
+
     }
 }
 window.customElements.define("plan-travail", PlanTravail);

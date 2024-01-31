@@ -47,14 +47,14 @@ class Probleme extends ElementGraphique {
      *
      * @type {string}
      */
-    get _libelle() {
-        return this._libelle;
+    get libelle() {
+        return this.divNom.textContent;
     }
 
     /**
      * @description Définie la valeur de la variable _libelle par la valeur donné
      */
-    set _libelle(value) {
+    set libelle(value) {
         this._libelle = value;
     }
 
@@ -63,8 +63,8 @@ class Probleme extends ElementGraphique {
      *
      * @deprecated
      */
-    get _listeDonnes() {
-        return this._listeDonnes;
+    get listeDonnes() {
+        return this.divDonneesEditable.innerText.split(",");
     }
 
     /**
@@ -81,8 +81,8 @@ class Probleme extends ElementGraphique {
      *
      * @deprecated
      */
-    get _listeResultats() {
-        return this._listeResultats;
+    get listeResultats() {
+        return this.divResultatsEditable.innerText.split(",");
     }
 
     /**
@@ -170,33 +170,49 @@ class Probleme extends ElementGraphique {
                 let labelAccoladesGDonnes = document.createElement("label");
                 labelAccoladesGDonnes.className = "accolades";
                 labelAccoladesGDonnes.innerHTML = "{";
+                labelAccoladesGDonnes.style.display = "none";
                 divDonnees.appendChild(labelAccoladesGDonnes);
 
-                let divDonneesEditable = document.createElement("div");
-                divDonneesEditable.className = "donneesEditable";
-                divDonneesEditable.contentEditable = "true";
+                this.divDonneesEditable = document.createElement("div");
+                this.divDonneesEditable.className = "donneesEditable";
+                this.divDonneesEditable.contentEditable = "true";
                 let donneesAAjouter = "";
                 this._listeDonnes.forEach((donnee) => {
                     if(!donneesAAjouter == "")
                     {
                         donneesAAjouter += ",";
-                        donneesAAjouter += "</br>";
                     }
                     donneesAAjouter += donnee._nom;
                 });
-                divDonneesEditable.innerHTML = donneesAAjouter;
-                divDonnees.appendChild(divDonneesEditable);
+                this.divDonneesEditable.innerHTML = donneesAAjouter;
+                divDonnees.appendChild(this.divDonneesEditable);
 
                 let labelAccoladesDDonnes = document.createElement("label");
                 labelAccoladesDDonnes.className = "accolades";
                 labelAccoladesDDonnes.innerHTML = "}";
+                labelAccoladesDDonnes.style.display = "none";
                 divDonnees.appendChild(labelAccoladesDDonnes);
 
-            let divNom = document.createElement("div");
-            divNom.className = "nom";
-            divNom.contentEditable = "true";
-            divNom.innerHTML = this._libelle;
-            divContainerDPR.appendChild(divNom);
+                this.divDonneesEditable.addEventListener("input", (e) => {
+                    if (verbose) console.log(e);
+                    if (this.divDonneesEditable.textContent == "") {
+                        for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                            accolade.style.display = "none";
+                            if (verbose) console.log("cacher les accolades");
+                        }
+                    } else {
+                        for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                            accolade.style.display = "";
+                            if (verbose) console.log("afficher les accolades");
+                        }
+                    }
+                });
+
+            this.divNom = document.createElement("div");
+            this.divNom.className = "nom";
+            this.divNom.contentEditable = "true";
+            this.divNom.innerHTML = this._libelle;
+            divContainerDPR.appendChild(this.divNom);
 
             let divResultat = document.createElement("div");
             divResultat.className = "resultat";
@@ -205,27 +221,43 @@ class Probleme extends ElementGraphique {
                 let labelAccoladesGResultats = document.createElement("label");
                 labelAccoladesGResultats.className = "accolades";
                 labelAccoladesGResultats.innerHTML = "{";
+                labelAccoladesGResultats.style.display = "none";
                 divResultat.appendChild(labelAccoladesGResultats);
 
-                let divResultatsEditable = document.createElement("div");
-                divResultatsEditable.className = "resultatEditable";
-                divResultatsEditable.contentEditable = "true";
+                this.divResultatsEditable = document.createElement("div");
+                this.divResultatsEditable.className = "resultatEditable";
+                this.divResultatsEditable.contentEditable = "true";
                 let resultatsAAjouter = "";
                 this._listeResultats.forEach((resultat) => {
                     if(!resultatsAAjouter == "")
                     {
                         resultatsAAjouter += ",";
-                        resultatsAAjouter += "</br>";
                     }
                     resultatsAAjouter += resultat._nom;
                 });
-                divResultatsEditable.innerHTML = resultatsAAjouter;
-                divResultat.appendChild(divResultatsEditable);
+                this.divResultatsEditable.innerHTML = resultatsAAjouter;
+                divResultat.appendChild(this.divResultatsEditable);
 
                 let labelAccoladesDResultats = document.createElement("label");
                 labelAccoladesDResultats.className = "accolades";
                 labelAccoladesDResultats.innerHTML = "}";
+                labelAccoladesDResultats.style.display = "none";
                 divResultat.appendChild(labelAccoladesDResultats);
+
+                this.divResultatsEditable.addEventListener("input", (e) => {
+                    if (verbose) console.log(e);
+                    if (this.divResultatsEditable.textContent == "") {
+                        for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                            accolade.style.display = "none";
+                            if (verbose) console.log("cacher les accolades");
+                        }
+                    } else {
+                        for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                            accolade.style.display = "";
+                            if (verbose) console.log("afficher les accolades");
+                        }
+                    }
+                });
     }
 
     /**
@@ -246,9 +278,9 @@ class Probleme extends ElementGraphique {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            libelle: this._libelle,
-            listeDonnes: lstDonnees,
-            listeResultats: lstResultats,
+            libelle: this.libelle,
+            listeDonnes: this.listeDonnes,
+            listeResultats: this.listeResultats,
             enfants: this._elemParent.toJSON()
         };
     }
@@ -433,6 +465,16 @@ class Probleme extends ElementGraphique {
         this.replaceTexte(ancienNom, nouveauNom);
         this.replaceTexteDonnee(ancienNom, nouveauNom);
         this.replaceTexteResultat(ancienNom, nouveauNom);
+    }
+
+    peutEtreDecompose() {
+        return true;
+    }
+
+    supprimer() {
+        this._elemParent.delierTousLesEnfants();
+        if (this._parent != null) this._parent.delierEnfant(this);
+        this.remove();
     }
 
 } window.customElements.define("probleme-element", Probleme);

@@ -7,37 +7,64 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <button id="btnMode">Afficher Dictionnaire</button>
-    </header>
-    <plan-travail id="espace1">
+    <editeur-interface>
+        <header>
+            <img src="assets/algoforgeLogo.png" alt="Logo AlgoForge">
+            <div class="titreEtMenu">
+                <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span> ✎</span></h1>
+                <div class="menuButtons">
+                    <button>
+                        <span>Fichier</span>
+                        <menu-deroulant id="menuDeroulantFichier">
 
-    </plan-travail>
-    <dictionnaire-Donnee class ="dictionnaire-Donnee" id="dictionnaire1">
-        <table id="tableDictionnaireDonnee">
-            <tr>
-              <td>Nom</td>
-              <td>Type</td>
-              <td>Signification</td>
-            </tr>
-        </table>
-    </dictionnaire-Donnee>
+                        </menu-deroulant>
+                    </button>
+                    <button>
+                        <span>Édition</span>
+                        <menu-deroulant id="menuDeroulantEdition">
+
+                        </menu-deroulant>
+                    </button>
+                    <button>
+                        <span>Aide</span>
+                        <menu-deroulant id="menuDeroulantAide">
+
+                        </menu-deroulant>
+                    </button>
+                </div>
+            </div>
+            <div class="zonePartage">
+                <button class="partage">Partager</button>
+            </div>
+            <div class="compte">
+                Compte
+            </div>
+        </header>
+        <div class="barreOutilsHorizontale">
+            <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected">
+            <img src="assets/mini/probleme.svg" id="boutonProbleme">
+            <img src="assets/mini/procedure.svg" id="boutonProcedure">
+            <img src="assets/mini/structureSi.svg" id="boutonStructureSi">
+            <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch">
+            <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative">
+            <img src="assets/mini/conditionSortie.svg" id="boutonConditionSortie">
+            <img src="assets/mini/lien.svg" id="boutonLien">
+            <div class="undoRedo">
+                <img src="assets/mini/undo.svg" id="boutonUndo">
+                <img src="assets/mini/redo.svg" id="boutonRedo">
+            </div>
+        </div>
+        <plan-travail id="espacePrincipal">
+
+        </plan-travail>
+    </editeur-interface>
 </body>
-<script>
-    function changerMode() {
-      // Your logic for the button click goes here
-      document.getElementById('espace1').classList.toggle('cacher');
-      document.getElementById('dictionnaire1').classList.toggle('cacher');
-    }
-
-    // Attach a click event listener to the button
-    document.getElementById('btnMode').addEventListener('click', changerMode);
-    document.getElementById('dictionnaire1').classList.toggle('cacher');
-</script>
+<!-- Dictionnaire des données-->
 <script src="PartieEditeur/Type.js"></script>
 <script src="PartieEditeur/Information.js"></script>
 <script src="PartieEditeur/DictionnaireDonnee.js"></script>
 
+<!--Gestion des anomalies conceptuelles-->
 <script src="PartieErreur/AnomalieConceptuelle.js"></script>
 <script src="PartieErreur/ErreurConceptuelle.js"></script>
 <script src="PartieErreur/AvertissementConceptuel.js"></script>
@@ -60,11 +87,13 @@
 <script src="PartieErreur/ErreurTypesInconsistantsAlternatif.js"></script>
 <script src="PartieErreur/ErreurVariableMagique.js"></script>
 
+<!--Éléments utilisés par l'éditeur-->
 <script src="PartieEditeur/PlanTravail.js"></script>
 <script src="PartieEditeur/ElementGraphique.js"></script>
 <script src="PartieEditeur/Probleme.js"></script>
 <script src="PartieEditeur/StructureAlternative.js"></script>
 <script src="PartieEditeur/StructureIterative.js"></script>
+<script src="PartieEditeur/InviteBornesPourSI.js"></script>
 <script src="PartieEditeur/ConditionSortie.js"></script>
 <script src="PartieEditeur/Procedure.js"></script>
 <script src="PartieEditeur/Condition.js"></script>
@@ -80,62 +109,29 @@
 <script src="PartieEditeur/LienTriple.js"></script>
 <script src="PartieEditeur/SymboleDecomposition.js"></script>
 
+<script src="PartieEditeur/Selection.js"></script>
+<script src="PartieEditeur/RepresentationSelectionSimple.js"></script>
+
+<script src="PartieEditeur/MenuDeroulant.js"></script>
+<script src="PartieEditeur/ElementMenu.js"></script>
+<script src="PartieEditeur/ElementMenuCompose.js"></script>
+<script src="PartieEditeur/ElementMenuKeyboardTip.js"></script>
+<script src="PartieEditeur/Editeur.js"></script>
+
 <script src="main.js"></script>
 <script>
     // Set css variables
     document.body.style.setProperty('--sizeModifier', 1);
     document.body.style.setProperty('--transitionTime', "0.0s");
-    // Test
-    /*
-    let a = [
-        {
-            "typeElement":"Probleme",
-            "abscisse":"30vw",
-            "ordonnee":"15vw",
-            "libelle":"1",
-            "listeDonnes":[],
-            "listeResultats":[],
-            "enfants":[
-                {
-                    "typeElement":"StructureIterativeNonBornee",
-                    "abscisse":"43vw",
-                    "ordonnee":"30vw",
-                    "enfants":[
-                        {
-                            "typeElement":"Probleme",
-                            "abscisse":"15vw",
-                            "ordonnee":"45vw",
-                            "libelle":"x = 2",
-                            "listeDonnes":[{"nom":"val"}],
-                            "listeResultats":[],
-                            "enfants":[]
-                        },
-                        {
-                            "typeElement":"StructureSi",
-                            "abscisse":"45vw",
-                            "ordonnee":"45vw",
-                            "conditions":[
-                                {
-                                    "typeElement":"Condition",
-                                    "libelle":"i == 4",
-                                    "enfants":[
-                                        {
-                                            "typeElement":"ConditionSortie",
-                                            "abscisse":"48vw",
-                                            "ordonnee":"60vw"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
-
-    espaceTravail = document.getElementById("espace1");
-    espaceTravail.chargerDepuisJSON(a);
-    */
+    document.body.style.setProperty('--specialTransitionTime', "0.5s");
+    document.body.style.setProperty('--bgColor', "#222222");
+    document.body.style.setProperty('--fgColor', "#838787");
+    document.body.style.setProperty('--fgColorForward', "#A6AAA9");
+    document.body.style.setProperty('--goodColor', "#8ABE5E");
+    document.body.style.setProperty('--goodColorTransparent', "#8ABE5E99");
+    document.body.style.setProperty('--errorColor', "#C82606");
+    document.body.style.setProperty('--warningColor', "#FFE989");
+    document.body.style.setProperty('--titleColor', "#34A5DA");
+    const verbose = true;
 </script>
 </html>
