@@ -28,6 +28,10 @@ class StructureIterative extends ElementGraphique {
                 lien.ligne.update();
             });
         });
+
+        this.addEventListener('dblclick', (e) => {
+            this.inviteBornes();
+        });
     }
 
     // ENCAPSULATION -non-
@@ -73,5 +77,16 @@ class StructureIterative extends ElementGraphique {
 
     peutEtreDecompose() {
         return true;
+    }
+
+    inviteBornes() {
+        // Supprimer une éventuelle autre invite
+        let invite = document.querySelector('invite-bornes-pour-si');
+        if (invite != null) {
+            invite.parentNode.removeChild(invite);
+        }
+
+        // Crée une petite fenêtre pour demander les bornes
+        this.parentNode.appendChild(new InviteBornesPourSI(this));
     }
 }

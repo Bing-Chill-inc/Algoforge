@@ -113,6 +113,18 @@ class StructureAlternative extends ElementGraphique {
         }
     }
 
+    getTailleAbscisse() {
+        let rect = this.getBoundingClientRect();
+
+        // Calculez la largeur en unité vw
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        return largeurEnVw;
+    }
+    getTailleOrdonnee() {
+        return 4;
+    }
+
+
     decalerCondition(pCondition, decalage) {
         if(decalage == -1 && pCondition instanceof Condition) {
             // Décaler la condition vers la gauche

@@ -40,6 +40,11 @@ class Condition extends HTMLElement {
         this._structure = value;
     }
 
+    get _ordonnee() {
+        // Pour le traitement des liens dans l'interface
+        return this._structure._ordonnee;
+    }
+
     get espaceTravail() {
         return this._structure.parentNode;
     }

@@ -99,4 +99,10 @@ class ElementParent {
         }
         return nouveauLien;
     }
+
+    updateAll() {
+        for (let lien of this._listeElementsEnfants) {
+            lien.ligne.update();
+        }
+    }
 }

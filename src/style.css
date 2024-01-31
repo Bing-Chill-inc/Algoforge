@@ -288,6 +288,28 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-bottom: 10px;
 }
 
+selection-editeur {
+    position: absolute;
+    border: 0.1vw solid var(--fgColorForward);
+    border-style: dashed;
+    border-radius: 0.5vw;
+    transition: all var(--transitionTime) ease;
+    z-index: -1;
+    transform: translate(-0.5vw, -0.5vw);
+    padding: 0.5vw;
+}
+
+selection-simple {
+    position: absolute;
+    border: 0.1vw solid var(--fgColorForward);
+    border-style: dotted;
+    border-radius: 0.5vw;
+    transition: all var(--transitionTime) ease;
+    z-index: -1;
+    transform: translate(-0.5vw, -0.5vw);
+    padding: 0.5vw;
+}
+
 plan-travail {
     width: 100%;
     height: 100%;
@@ -348,6 +370,10 @@ probleme-element {
                 overflow: hidden;
             }
 
+            probleme-element > div.containerDPR > div.donnees:hover >  label.accolades {
+                display: block !important;
+            }
+
         probleme-element > div.containerDPR > div.nom {
             width: calc(var(--sizeModifier) * 10vw);
             height: 100%;
@@ -394,6 +420,10 @@ probleme-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+            }
+
+            probleme-element > div.containerDPR > div.resultat:hover >  label.accolades {
+                display: block !important;
             }
 
 procedure-element {
@@ -446,6 +476,10 @@ procedure-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+            }
+
+            procedure-element > div.containerDPR > div.donnees:hover >  label.accolades {
+                display: block !important;
             }
 
         procedure-element > div.containerDPR > div.nom {
@@ -516,6 +550,10 @@ procedure-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+            }
+
+            procedure-element > div.containerDPR > div.resultat:hover >  label.accolades {
+                display: block !important;
             }
 
 symbole-decomposition-element {
@@ -849,6 +887,58 @@ condition-element:hover > div.ajouterADroite,
 condition-element:hover > button.supprimer {
     display: block;
     opacity: 60%;
+}
+
+invite-bornes-pour-si {
+    width: calc(var(--sizeModifier) * 20vw);
+    height: calc(var(--sizeModifier) * 8vw);
+    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+    border-radius: 0.5vw;
+    background-color: var(--bgColor);
+    position: absolute;
+    transition: all var(--transitionTime) ease;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 2fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    place-items: center;
+    padding: 1.5vw;
+}
+
+invite-bornes-pour-si > input {
+    border: none;
+    border-bottom: 0.2vw solid var(--fgColor);
+    background: none;
+    color: var(--fgColorForward);
+    font-weight: bold;
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    display: inline-block;
+    width: 90%;
+}
+
+invite-bornes-pour-si > label {
+    border: none;
+    background: none;
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    display: inline-block;
+    white-space: nowrap;
+    width: 100%;
+}
+
+invite-bornes-pour-si > button {
+    border: none;
+    border-radius: 0.5vw;
+    background-color: var(--goodColorTransparent);
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    display: inline-block;
+    white-space: nowrap;
+    width: 80%;
+    color: var(--fgColorForward);
+    cursor: pointer;
+}
+
+invite-bornes-pour-si > button:hover {
+    background-color: var(--goodColor);
+    color: var(--bgColor);
 }
 
 structure-iterative-non-bornee-element {
