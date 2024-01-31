@@ -370,6 +370,10 @@ probleme-element {
                 overflow: hidden;
             }
 
+            probleme-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
+                outline: none;
+            }
+
             probleme-element > div.containerDPR > div.donnees:hover >  label.accolades {
                 display: block !important;
             }
@@ -388,6 +392,10 @@ probleme-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
+        }
+
+        probleme-element > div.containerDPR > div.nom:focus-visible {
+            outline: none;
         }
 
         probleme-element > div.containerDPR > div.resultat {
@@ -420,6 +428,10 @@ probleme-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+            }
+
+            probleme-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
+                outline: none;
             }
 
             probleme-element > div.containerDPR > div.resultat:hover >  label.accolades {
@@ -478,6 +490,10 @@ procedure-element {
                 overflow: hidden;
             }
 
+            procedure-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
+                outline: none;
+            }
+
             procedure-element > div.containerDPR > div.donnees:hover >  label.accolades {
                 display: block !important;
             }
@@ -496,6 +512,10 @@ procedure-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
+        }
+
+        procedure-element > div.containerDPR > div.nom:focus-visible {
+            outline: none;
         }
 
         procedure-element > div.containerDPR > div.nom::before {
@@ -550,6 +570,10 @@ procedure-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+            }
+
+            procedure-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
+                outline: none;
             }
 
             procedure-element > div.containerDPR > div.resultat:hover >  label.accolades {
@@ -720,12 +744,17 @@ structure-switch-element {
         word-wrap: break-word;
         overflow: hidden;
         background-color: var(--bgColor);
-        padding: 0;
+        z-index: 10;
+    }
+
+    structure-switch-element > div.expressionATester:focus-visible {
+        outline: none;
     }
 
     structure-switch-element > div.conditionContainer {
         display: flex;
-        width: fit-content;
+        min-width: fit-content;
+        width: 100%;
         height: calc(var(--sizeModifier) * 2vw);   
         grid-column: 2;
         grid-row: 2;
@@ -733,7 +762,8 @@ structure-switch-element {
     }
 
         structure-switch-element > div.conditionContainer > condition-element {
-            width: calc(var(--sizeModifier) * 10vw);
+            min-width: calc(var(--sizeModifier) * 10vw);
+            width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -795,6 +825,10 @@ condition-element > div.libelle {
     word-wrap: break-word;
     overflow: hidden;
     background-color: var(--bgColor);
+}
+
+condition-element > div.libelle:focus-visible {
+    outline: none;
 }
 
 condition-element > button.supprimer {
