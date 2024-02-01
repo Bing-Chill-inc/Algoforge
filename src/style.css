@@ -631,6 +631,7 @@ table {
     height: 90vh; /* 100% moins la hauteur du header */
     float: left;
     box-sizing: border-box;
+    padding: 0%;
 }
 
 .MonEspace {
@@ -640,6 +641,7 @@ table {
     padding-left: 20px;
     box-sizing: border-box;
     float: right;
+    padding: 0%;
 }
 
 
