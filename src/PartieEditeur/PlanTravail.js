@@ -13,11 +13,11 @@ class PlanTravail extends HTMLElement {
      */
     constructor() {
         super();
-        this.addEventListener("paste", (event) => {
-            event.preventDefault();
-            let texte = event.clipboardData.getData("text/plain");
-            this.chargerFichier(texte);
-        });
+        // this.addEventListener("paste", (event) => {
+        //     event.preventDefault();
+        //     let texte = event.clipboardData.getData("text/plain");
+        //     this.chargerFichier(texte);
+        // });
 
         this.addEventListener('dragover', (event) => {
             event.preventDefault(); // Necessary to allow a drop
@@ -140,15 +140,15 @@ class PlanTravail extends HTMLElement {
                 case "Probleme":
                     let probleme = new Probleme(element.abscisse, element.ordonnee, element.libelle);
                     for (let donnee of element.listeDonnes) {
-                        probleme._listeDonnes.push(new Information(donnee.nom, donnee.type, donnee.signification));
+                        probleme._listeDonnes.push(new Information(donnee));
                     }
                     for (let resultat of element.listeResultats) {
-                        probleme._listeResultats.push(new Information(resultat.nom, resultat.type, resultat.signification));
+                        probleme._listeResultats.push(new Information(resultat));
                     }
+                    this.appendChild(probleme);
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         probleme._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(probleme);
                     probleme.afficher();
                     probleme.setPosition();
                     listeElems.push(probleme);
@@ -161,10 +161,10 @@ class PlanTravail extends HTMLElement {
                     for (let resultat of element.listeResultats) {
                         procedure._listeResultats.push(new Information(resultat.nom, resultat.type, resultat.signification));
                     }
+                    this.appendChild(procedure);
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         procedure._elemParent.lierEnfant(enfant);
                     }
-                    this.appendChild(procedure);
                     procedure.afficher();
                     procedure.setPosition();
                     listeElems.push(procedure);

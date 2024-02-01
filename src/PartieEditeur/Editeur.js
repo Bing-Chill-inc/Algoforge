@@ -6,7 +6,7 @@
  */
 class Editeur extends HTMLElement {
     // ATTRIBUTS
-    _currentTool = null;
+    _currentTool = -1;
     _listeTools = [];
     _typesElements = [];
     _boutonPointeur = null;
@@ -18,6 +18,9 @@ class Editeur extends HTMLElement {
     _menuDeroulantAide = null;
     _espacePrincipal = null;
     _selection = new Selection();
+    _selectionRectangle = new SelectionRectangle();
+    _coordonneesSelection = {x: 0, y:0}
+    _isSelecting = false;
     _isDragging = false;
     _offsetX = 0;
     _offsetY = 0;
@@ -38,6 +41,7 @@ class Editeur extends HTMLElement {
         // Référencement des éléments d'interface
         this._espacePrincipal = document.querySelector('#espacePrincipal');
         this._espacePrincipal.appendChild(this._selection);
+        this._espacePrincipal.appendChild(this._selectionRectangle);
 
         this._boutonPointeur = document.querySelector('#boutonPointeur');
 
@@ -265,11 +269,6 @@ class Editeur extends HTMLElement {
                     e.preventDefault();
                     this.copy();
                 }
-                if (e.key.toLowerCase() === 'v') {
-                    // Ctrl + V
-                    e.preventDefault();
-                    this.paste();
-                }
                 if (e.key.toLowerCase() === 'a') {
                     // Ctrl + A
                     e.preventDefault();
@@ -299,6 +298,18 @@ class Editeur extends HTMLElement {
                 }
             }
         });
+
+        this.addEventListener('paste', ((e) => {
+            if (verbose) console.log(e);
+            if (verbose) console.log(e.clipboardData.getData('text/plain'));
+            try {
+                var parsedData = JSON.parse(e.clipboardData.getData('text/plain'));
+                this.chargerDepuisJSON(parsedData);
+            } catch (error) {
+                console.error("Le fichier n'a pas été chargé correctement.");
+                console.error(error);
+            }
+        }));
 
         // Gestion des clics sur l'éditeur
         this.addEventListener('click', (e) => {
@@ -406,14 +417,30 @@ class Editeur extends HTMLElement {
             if (maTarget instanceof ElementGraphique && !this._selection.estSelectionne(maTarget)) {
                 if (verbose) console.log('Sélection d\'un élément graphique');
                 this._selection.selectionnerElement(maTarget);
+            } else if (e.shiftKey && this._selection.estSelectionne(maTarget)) {
+                this._selection.deselectionnerElement(maTarget);
             }
 
-            this._isDragging = true;
-            this._lastPosX = e.clientX;
-            this._lastPosY = e.clientY;
+            if (verbose) console.log(`this._currentTool = ${this._currentTool}`)
+
+            if (maTarget instanceof PlanTravail && this._currentTool == -1) {
+                this._isSelecting = true;
+                this._coordonneesSelection.x = e.clientX;
+                this._coordonneesSelection.y = e.clientY;
+            } else {
+                this._isDragging = true;
+                this._lastPosX = e.clientX;
+                this._lastPosY = e.clientY;
+            }
         });
         this.addEventListener('mouseup', function() {
             this._isDragging = false;
+            this._isSelecting = false;
+            let listeElemsASelec = this._selectionRectangle.listerElementsGraphiques();
+            for (let elem of listeElemsASelec) {
+                this._selection.selectionnerElement(elem);
+            }
+            this._selectionRectangle.placer(0, 0, 0, 0);
         });
         this.addEventListener('mousemove', function(e) {
             if (verbose) console.log(`mousemove avec ${this._isDragging}`);
@@ -429,7 +456,20 @@ class Editeur extends HTMLElement {
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
             }
+            if (this._isSelecting) {
+                let abscisseEnPx = e.clientX - this._espacePrincipal.getBoundingClientRect().left;
+                let ordonneeEnPx = e.clientY - this._espacePrincipal.getBoundingClientRect().top;
+                let abscisseEnVw = abscisseEnPx / window.innerWidth * 100;
+                let ordonneeEnVw = ordonneeEnPx / window.innerWidth * 100;
+                let lastXenVw = (this._coordonneesSelection.x - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
+                let lastYenVw = (this._coordonneesSelection.y - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
+                this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
+            }
         });
+    }
+
+    chargerDepuisJSON(json) {
+        this._espacePrincipal.chargerDepuisJSON(json);
     }
 
 
@@ -463,10 +503,16 @@ class Editeur extends HTMLElement {
         console.log('cut');
     }
     copy() {
-        console.log('copy');
+        console.log('copy'); 
     }
     paste() {
         console.log('paste');
+        try {
+            var parsedData = JSON.parse(readFromClipboard());
+            this.chargerDepuisJSON(parsedData);
+        } catch (error) {
+            console.error("Le fichier n'est pas au format JSON.");
+        }
     }
     selectAll() {
         console.log('selectAll');
