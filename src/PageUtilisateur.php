@@ -20,11 +20,11 @@
             }
         </script>
     </head>
-    <Bod id="PageUtilisateur">
+    <Body id="PageUtilisateur">
         <header id="Barre_Utilisateur">
             <img src="..\Images\algoforgeLogo.png" alt="Logo Algoforge">
             <div class="centered">
-                <button><img src="..\Images\NouveauAlgoLogo.PNG" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
+                <button onclick="bouttonCreerUnAlgo()"><img src="..\Images\NouveauAlgoLogo.PNG" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
                 <button><img src="..\Images\ImporterAlgoLogo.PNG" alt="Importer Algo"><span>Importer Algo</span></button>
                 <button><img src="..\Images\NouveauDossierLogo.PNG" alt="Nouveaux Dossier"><span>Nouveaux Dossier</span></button>
                 <button><img src="..\Images\ImporterDossierLogo.PNG" alt="Importer Dossier"> <span>Importer Dossier</span></button>
@@ -34,6 +34,46 @@
                 <img src="..\Images\CompteLogo.PNG" alt="Compte">
             </div>
         </header>
+    <div id="formulaireContainer">
+        <h2>Creer un algorithme</h2>
+        <form name="CreerAlgo">
+            <input type="text" id="zoneSaisie" name="zoneSaisie" placeholder="Entrez le nom de l'algorithmes">
+        </form>
+        <br>
+        <button onclick="creerUnAlgo()">Valider</button>
+    </div>
+    <script>
+        function bouttonCreerUnAlgo()
+        {
+            if(document.getElementById("formulaireContainer").style.display == "block")
+            {
+                masquerFormulaire();
+            }
+            else
+            {
+                afficherFormulaire();
+            }
+        }
+        function afficherFormulaire() {
+            document.getElementById("formulaireContainer").style.display = "block";
+        }
+        function masquerFormulaire() {
+            document.getElementById("formulaireContainer").style.display = "none";
+        }
+        function creerUnAlgo() {
+            const formData = new FormData(document.forms.CreerAlgo);
+            //formData.append("test", "erger");
+            // Utilisation d'AJAX pour envoyer les données à CreerUnAlgorithme.php
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "CreerUnAlgorithme.php");
+            xmlhttp.send(formData);
+            // Masquer le formulaire après l'envoi de la requête
+            masquerFormulaire();
+        }
+
+
+    </script>
+    
         <div class="information">
             <h1>Notification:</h1>
             <?php
