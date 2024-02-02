@@ -207,6 +207,17 @@ class Probleme extends ElementGraphique {
                         }
                     }
                 });
+                if (this.divDonneesEditable.textContent == "") {
+                    for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                        accolade.style.display = "none";
+                        if (verbose) console.log("cacher les accolades");
+                    }
+                } else {
+                    for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                        accolade.style.display = "";
+                        if (verbose) console.log("afficher les accolades");
+                    }
+                }
 
             this.divNom = document.createElement("div");
             this.divNom.className = "nom";
@@ -258,6 +269,17 @@ class Probleme extends ElementGraphique {
                         }
                     }
                 });
+                if (this.divResultatsEditable.textContent == "") {
+                    for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                        accolade.style.display = "none";
+                        if (verbose) console.log("cacher les accolades");
+                    }
+                } else {
+                    for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                        accolade.style.display = "";
+                        if (verbose) console.log("afficher les accolades");
+                    }
+                }
     }
 
     /**

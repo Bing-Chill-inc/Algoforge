@@ -27,7 +27,7 @@ class StructureSwitch extends StructureAlternative {
      * @returns {string} l'expression de la StructureSwitch
      */
     get _expressionATester() {
-        return this._expressionATester;
+        return this.querySelector(".expressionATester").textContent;
     }
 
     /**
@@ -52,11 +52,11 @@ class StructureSwitch extends StructureAlternative {
         });
         this.appendChild(divTriangleGauche);
 
-        let divExpressionATester = document.createElement("div");
-        divExpressionATester.className = "expressionATester";
-        divExpressionATester.contentEditable = "true";
-        divExpressionATester.innerText = this._expressionATester;
-        this.appendChild(divExpressionATester);
+        this.divExpressionATester = document.createElement("div");
+        this.divExpressionATester.className = "expressionATester";
+        this.divExpressionATester.contentEditable = "true";
+        this.divExpressionATester.innerText = this._expressionATester;
+        this.appendChild(this.divExpressionATester);
 
         let hrDiviseurGauche = document.createElement("hr");
         hrDiviseurGauche.className = "diviseurGauche";
@@ -110,14 +110,14 @@ class StructureSwitch extends StructureAlternative {
      */
     toJSON() {
         let conditions = [];
-        this._listeConditions.forEach((condition) => {
+        for (let condition of this._listeConditions.children) {
             conditions.push(condition.toJSON());
-        });
+        }
         return {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            expressionATester: this._expressionATester,
+            expressionATester: this.querySelector(".expressionATester").textContent,
             conditions: conditions
         };
     }
