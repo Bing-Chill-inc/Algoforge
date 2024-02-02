@@ -11,7 +11,7 @@
         <header id="Barre_Utilisateur">
             <img src="..\Images\algoforgeLogo.png" alt="Logo Algoforge">
             <div class="centered">
-                <button><img src="..\Images\nouveauAlgo.svg" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
+                <button onclick="bouttonCreerUnAlgo()"><img src="..\Images\nouveauAlgo.svg" alt="Nouvel Algo"><span>Nouvel Algo</span></button>
                 <button><img src="..\Images\ImporterAlgo.svg" alt="Importer Algo"><span>Importer Algo</span></button>
                 <button><img src="..\Images\dossier.svg" alt="Nouveaux Dossier"><span>Nouveaux Dossier</span></button>
                 <button><img src="..\Images\dossierUpload.svg" alt="Importer Dossier"> <span>Importer Dossier</span></button>
