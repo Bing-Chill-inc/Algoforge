@@ -85,7 +85,7 @@ class Editeur extends HTMLElement {
 
         exporter.ajouterElementMenu(new ElementMenu('.json', () => {
             console.log('Exporter en .json');
-            console.log(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
+            this.exporterJSON(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
         }));
 
         let sousTitreAlgorithme = document.createElement('h3');
@@ -102,6 +102,7 @@ class Editeur extends HTMLElement {
 
         exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
             console.log('Exporter en .svg');
+            this.exporterSVG(this._espacePrincipal);
         }));
 
         exporter.ajouterElementMenu(new ElementMenu('.pdf', () => {
@@ -162,7 +163,7 @@ class Editeur extends HTMLElement {
         this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Supprimer', () => {
             console.log('Supprimer');
             this.delete();
-        }, 'Suppr'));
+        }, 'Ctrl + Suppr'));
 
         this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Rechercher', () => {
             console.log('Rechercher');
@@ -526,5 +527,707 @@ class Editeur extends HTMLElement {
     }
     search() {
         console.log('search');
+    }
+
+    exporterJSON(jsonString) {
+        // On crée un Blob avec le contenu JSON
+        var blob = new Blob([jsonString], { type: 'application/json' });
+    
+        // On crée un URL pour le Blob
+        var url = URL.createObjectURL(blob);
+    
+        // On crée un élément <a> pour télécharger le fichier
+        var downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.json`;
+    
+        // Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    
+        // On supprime le Blob et l'URL pour libérer de la mémoire
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
+
+    // Exports
+    exporterSVG(nodeToCopy) {
+        console.log('exporterSVG() appelé');
+        // On crée une balise style pour embarquer le style dans le fichier SVG
+        var styleElement = document.createElement("style");
+        var cssStyles = `
+        selection-editeur {
+            display: none
+        }
+        
+        selection-simple {
+            display: none
+        }
+        
+        selection-rectangle {
+            display: none;
+        }
+        
+        plan-travail {
+            width: 100vw;
+            height: 100vh;
+            border: 0.1vw solid #000000;
+            position: relative;
+            overflow: scroll;
+            background-color: #FFFFFF;
+            --sizeModifier: 1;
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFFFFF;
+            color: #222222;
+        }
+        
+        probleme-element {
+            display: flex;
+            width: calc(var(--sizeModifier) * 30vw);
+            height: fit-content;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+        
+            probleme-element > div.containerDPR {
+                width: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                column-gap: calc(var(--sizeModifier) * 0.2vw);
+                place-items: center;
+            }
+        
+                probleme-element > div.containerDPR > div.donnees {
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    grid-template-rows: 1fr;
+                    column-gap: calc(var(--sizeModifier) * 0.2vw);
+                    place-items: center;
+                    grid-column: 1;
+                }
+        
+                    probleme-element > div.containerDPR > div.donnees > label.accolades {
+                        font-size: calc(var(--sizeModifier) * 4vw);
+                        transform: scaleX(0.75);
+                    }
+        
+                    probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
+                        width: calc(var(--sizeModifier) * 6.3vw);
+                        height: 100%;
+                        grid-column: 2;
+                        resize: none;
+                        border: none;
+                        background: none;
+                        font-size: calc(var(--sizeModifier) * 0.75vw);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                    }
+        
+                probleme-element > div.containerDPR > div.nom {
+                    width: calc(var(--sizeModifier) * 10vw);
+                    height: 100%;
+                    grid-column: 2;
+                    border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    text-align: center;
+                    font-size: calc(var(--sizeModifier) * 0.75vw);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    word-wrap: break-word;
+                    overflow: hidden;
+                    background-color: #FFFFFF;
+                }
+        
+                probleme-element > div.containerDPR > div.resultat {
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    grid-template-rows: 1fr;
+                    column-gap: calc(var(--sizeModifier) * 0.2vw);
+                    place-items: center;
+                    grid-column: 3;
+                }
+        
+                    probleme-element > div.containerDPR > div.resultat > label.accolades {
+                        font-size: calc(var(--sizeModifier) * 4vw);
+                        transform: scaleX(0.75);
+                    }
+        
+                    probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
+                        width: calc(var(--sizeModifier) * 6.3vw);
+                        height: 100%;
+                        grid-column: 2;
+                        resize: none;
+                        border: none;
+                        background: none;
+                        font-size: calc(var(--sizeModifier) * 0.75vw);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                    }
+        
+        procedure-element {
+            display: flex;
+            width: calc(var(--sizeModifier) * 30vw);
+            height: fit-content;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+            
+            procedure-element > div.containerDPR {
+                width: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                column-gap: calc(var(--sizeModifier) * 0.2vw);
+                place-items: center;
+            }
+        
+                procedure-element > div.containerDPR > div.donnees {
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    grid-template-rows: 1fr;
+                    column-gap: calc(var(--sizeModifier) * 0.2vw);
+                    place-items: center;
+                    grid-column: 1;
+                }
+        
+                    procedure-element > div.containerDPR > div.donnees > label.accolades {
+                        font-size: calc(var(--sizeModifier) * 4vw);
+                        transform: scaleX(0.75);
+                    }
+        
+                    procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
+                        width: calc(var(--sizeModifier) * 6.3vw);
+                        height: 100%;
+                        grid-column: 2;
+                        resize: none;
+                        border: none;
+                        background: none;
+                        font-size: calc(var(--sizeModifier) * 0.75vw);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                    }
+        
+                procedure-element > div.containerDPR > div.nom {
+                    width: calc(var(--sizeModifier) * 8vw);
+                    height: 100%;
+                    grid-column: 2;
+                    border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    text-align: center;
+                    font-size: calc(var(--sizeModifier) * 0.75vw);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    word-wrap: break-word;
+                    overflow: hidden;
+                    background-color: #FFFFFF;
+                }
+        
+                procedure-element > div.containerDPR > div.nom::before {
+                    position: absolute;
+                    content: "";
+                    transform: translateX(calc(var(--sizeModifier) *-4.5vw));
+                    width: calc(var(--sizeModifier) * 0.8vw);
+                    height: calc(var(--sizeModifier) * 4vw);
+                    border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    border-right: none;
+                    background-color: #FFFFFF;
+                }
+        
+                procedure-element > div.containerDPR > div.nom::after {
+                    position: absolute;
+                    content: "";
+                    transform: translateX(calc(var(--sizeModifier) *4.5vw));
+                    width: calc(var(--sizeModifier) * 0.8vw);
+                    height: calc(var(--sizeModifier) * 4vw);
+                    border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    border-left: none;
+                    background-color: #FFFFFF;
+                }
+        
+                procedure-element > div.containerDPR > div.resultat {
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 5fr 1fr;
+                    grid-template-rows: 1fr;
+                    column-gap: calc(var(--sizeModifier) * 0.2vw);
+                    place-items: center;
+                    grid-column: 3;
+                }
+        
+                    procedure-element > div.containerDPR > div.resultat > label.accolades {
+                        font-size: calc(var(--sizeModifier) * 4vw);
+                        transform: scaleX(0.75);
+                    }
+        
+                    procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
+                        width: calc(var(--sizeModifier) * 6.3vw);
+                        height: 100%;
+                        grid-column: 2;
+                        resize: none;
+                        border: none;
+                        background: none;
+                        font-size: calc(var(--sizeModifier) * 0.75vw);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                    }
+        
+        symbole-decomposition-element {
+            position: absolute;
+            transition: all var(--transitionTime) ease;
+            width: calc(var(--sizeModifier) * 1vw);
+            height: calc(var(--sizeModifier) * 1.5vw);
+            border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+            border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+            border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+        }
+        
+        structure-si-element {
+            display: grid;
+            grid-template-columns: 0px 1fr 0px;
+            grid-template-rows: 1fr;
+            width: fit-content;
+            height: calc(var(--sizeModifier) * 4vw);
+            position: absolute;
+            place-content: center;
+            place-items: center;
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+        
+        structure-si-element > div.triangle {
+            color: #0000;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 3vw;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+            structure-si-element > div.triangleGauche {
+                width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+                height: calc(var(--sizeModifier) * 2.8284271247vw);
+                border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                rotate: -45deg;
+                grid-column: 1;
+                background-color: #FFFFFF;
+                transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+            }
+        
+            structure-si-element > div.triangleGauche > span {
+                rotate: 45deg;
+                transform: translateX(-0.7vw);
+            }
+        
+            structure-si-element > div.conditionContainer {
+                display: flex;
+                width: fit-content;
+                height: 100%;   
+                grid-column: 2;
+                flex-direction: row;
+            }
+        
+                structure-si-element > div.conditionContainer > condition-element {
+                    width: calc(var(--sizeModifier) * 10vw);
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #FFFFFF;
+                    border-right: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+                    border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                }
+        
+            structure-si-element > div.triangleDroit {
+                width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+                height: calc(var(--sizeModifier) * 2.8284271247vw);
+                border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                rotate: 45deg;
+                grid-column: 3;
+                background-color: #FFFFFF;
+                transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+            }
+        
+            structure-si-element > div.triangleDroit > span {
+                rotate: -45deg;
+                transform: translateX(0.7vw);
+            }
+        
+        structure-switch-element {
+            display: grid;
+            grid-template-columns: 0px 1fr 0px;
+            grid-template-rows: 1fr 1fr;
+            width: fit-content;
+            height: calc(var(--sizeModifier) * 4vw);
+            position: absolute;
+            place-content: center;
+            place-items: center;
+            transition: all var(--transitionTime) ease;
+            background-color: #FFFFFF;
+            z-index: 2;
+        }
+        
+            structure-switch-element > div.triangle {
+                color: #0000;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                font-size: 2vw;
+                user-select: none;
+                cursor: pointer;
+            }
+        
+            structure-switch-element > div.triangleGauche {
+                width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+                height: calc(var(--sizeModifier) * 2.8284271247vw);
+                border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                rotate: -45deg;
+                grid-column: 1;
+                grid-row: 1/3;
+                background-color: #FFFFFF;
+                transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+            }
+        
+            structure-switch-element > div.triangleGauche > span {
+                rotate: 45deg;
+                transform: translate(-0.7vw, 30%);
+            }
+        
+            structure-switch-element > hr.diviseurGauche {
+                width: calc(var(--sizeModifier) * 4vw);
+                height: calc(var(--sizeModifier) * 0.05vw);
+                grid-column: 1;
+                grid-row: 1/3;
+                background-color: #000000;
+                z-index: 1;
+                transform: translateX(-50%);
+                border: 0;
+            }
+        
+            structure-switch-element > div.expressionATester {
+                width: 100%;
+                height: 100%;
+                grid-column: 2;
+                grid-row: 1;
+                resize: none;
+                border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                border-left: 0;
+                border-right: 0;
+                text-align: center;
+                font-size: calc(var(--sizeModifier) * 0.75vw);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                word-wrap: break-word;
+                overflow: hidden;
+                background-color: #FFFFFF;
+                z-index: 10;
+            }
+        
+            structure-switch-element > div.expressionATester:focus-visible {
+                outline: none;
+            }
+        
+            structure-switch-element > div.conditionContainer {
+                display: flex;
+                min-width: fit-content;
+                width: 100%;
+                height: calc(var(--sizeModifier) * 2vw);   
+                grid-column: 2;
+                grid-row: 2;
+                flex-direction: row;
+            }
+        
+                structure-switch-element > div.conditionContainer > condition-element {
+                    min-width: calc(var(--sizeModifier) * 10vw);
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #FFFFFF;
+                    border-right: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+                    border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                    border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+                }
+        
+            structure-switch-element > div.triangleDroit {
+            width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+            height: calc(var(--sizeModifier) * 2.8284271247vw);
+            border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+            border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+            rotate: 45deg;
+            grid-column: 3;
+            grid-row: 1/3;
+            background-color: #FFFFFF;
+            transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+            }
+        
+            structure-switch-element > div.triangleDroit > span {
+                rotate: -45deg;
+                transform: translate(0.7vw, 30%);
+            }
+        
+            structure-switch-element > hr.diviseurDroit {
+                width: calc(var(--sizeModifier) * 4vw);
+                height: calc(var(--sizeModifier) * 0.05vw);
+                grid-column: 3;
+                grid-row: 1/3;
+                background-color: #000000;
+                z-index: 1;
+                transform: translateX(-50%);
+                border: 0;
+            }
+        
+        condition-element {
+            position: relative;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        condition-element > div.libelle {
+            width: calc(var(--sizeModifier) * 10vw);
+            height: inherit;
+            resize: none;
+            border: none;
+            background: none;
+            text-align: center;
+            font-size: calc(var(--sizeModifier) * 0.75vw);
+            overflow: hidden;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            word-wrap: break-word;
+            overflow: hidden;
+            background-color: #FFFFFF;
+        }
+        
+        condition-element > div.libelle:focus-visible {
+            outline: none;
+        }
+        
+        condition-element > button.supprimer {
+            width: calc(var(--sizeModifier) * 2vw);
+            height: calc(var(--sizeModifier) * 1vw);
+            border: none;
+            border-radius: 0 0 999em 999em;
+            background-color: var(--warningColor);
+            z-index: 3;
+            transition: all var(--transitionTime) ease;
+            font-size: calc(var(--sizeModifier) * 1vw);
+            color: #FFFFFF;
+            display: none;
+            position: absolute;
+            top: 0;
+        }
+        
+        condition-element > div.arrowsWrapper {
+            width: calc(var(--sizeModifier) * 6vw);
+            height: calc(var(--sizeModifier) * 1vw);
+            border: none;
+            font-size: calc(var(--sizeModifier) * 1vw);
+            text-align: center;
+            position: absolute;
+            bottom: -1.5vw;
+            user-select: none;
+            cursor: pointer;
+            display: none;
+            padding: 0 0.5vw 0.5vw 0.5vw;
+        }
+        
+        condition-element > div.arrowsWrapper > span {
+            padding: 0.5vw;
+            border-radius: 0 0 999em 999em;
+        }
+        
+        condition-element > div.ajouterAGauche {
+            display: none;
+        }
+        
+        condition-element > div.ajouterADroite {
+            display: none;
+        }
+        
+        invite-bornes-pour-si {
+            display: none;
+        }
+        
+        structure-iterative-non-bornee-element {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            place-items: center;
+            width: fit-content;
+            height: calc(var(--sizeModifier) * 4vw);
+            position: absolute;
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+            structure-iterative-non-bornee-element > svg.boucleSVG {
+                width: calc(var(--sizeModifier) * 4vw);
+                height: calc(var(--sizeModifier) * 4vw);
+            }
+        
+        structure-iterative-bornee-element {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            place-items: center;
+            width: fit-content;
+            height: calc(var(--sizeModifier) * 4vw);
+            position: absolute;
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+            structure-iterative-bornee-element > svg.boucleSVG {
+                width: calc(var(--sizeModifier) * 4vw);
+                height: calc(var(--sizeModifier) * 4vw);
+            }
+        
+            structure-iterative-bornee-element > div.informationsBornes {
+                width: calc(var(--sizeModifier) * 8vw);
+                height: 100%;
+                font-size: calc(var(--sizeModifier) * 1vw);
+            }
+        
+        condition-sortie-element {
+            position: absolute;
+            background-image: url("assets/conditionSortie.svg");
+            height: calc(var(--sizeModifier) * 4vw);
+            width: calc(var(--sizeModifier) * 4vw);
+            transition: all var(--transitionTime) ease;
+            z-index: 2;
+        }
+        
+        ligne-element {
+            position: absolute;
+            transform-origin: 0% 50%;
+            margin: 0;
+            padding: 0;
+            border: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+            z-index: 0;
+        }
+        `;
+
+        // On assigne le contenu de la balise style
+        styleElement.textContent = cssStyles;
+
+        let planExport = new PlanTravail();
+
+        planExport.style.setProperty('--sizeModifier', 1);
+        planExport.insertBefore(styleElement, planExport.firstChild);
+
+        document.body.appendChild(planExport);
+        planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSON());
+        document.body.removeChild(planExport);
+
+        for (let imgBoucle of planExport.querySelectorAll('img.boucleSVG')) {
+            if (verbose) console.log(imgBoucle);
+            let element = imgBoucle.parentElement;
+            let svgBoucle = document.createElement('svg');
+            element.insertBefore(svgBoucle, imgBoucle);
+            element.removeChild(imgBoucle);
+            svgBoucle.outerHTML = `<svg class="boucleSVG" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.51 386.63">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: #ffffff00;
+                            stroke: #838787;
+                            stroke-miterlimit: 10;
+                            stroke-width: 10px;
+                        }
+                        .cls-2 {
+                            fill: #222222;
+                            stroke: #838787;
+                            stroke-miterlimit: 10;
+                            stroke-width: 10px;
+                        }
+                    </style>
+                </defs>
+                <circle class="cls-1 " cx="193.31" cy="193.31" r="190.81"/>
+                <polygon class="cls-2" points="377.88 154.61 334.58 229.61 421.18 229.61 377.88 154.61"/>
+            </svg>
+            `;
+        }
+
+        for (let conditionSortie of planExport.querySelectorAll('condition-sortie-element')) {
+            if (verbose) console.log(conditionSortie);
+            let svgConditionSortie = document.createElement('svg');
+            conditionSortie.appendChild(svgConditionSortie);
+            svgConditionSortie.outerHTML = `<?xml version="1.0" encoding="utf-8"?>
+            <!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+            <svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 320.28 319.89" style="enable-background:new 0 0 320.28 319.89;" xml:space="preserve">
+            <style type="text/css">
+                .st0{fill:none;stroke:#838787;stroke-width:10;stroke-miterlimit:10;}
+                .st1{fill:none;stroke:#838787;stroke-width:10;stroke-linecap:round;stroke-miterlimit:10;}
+            </style>
+            <path class="st0" d="M294.62,312.59H25.4c-9.88,0-17.89-8.01-17.89-17.89V25.48c0-9.88,8.01-17.89,17.89-17.89h269.22
+                c9.88,0,17.89,8.01,17.89,17.89V294.7C312.51,304.58,304.5,312.59,294.62,312.59z"/>
+            <line class="st1" x1="106.57" y1="204.62" x2="106.57" y2="7.62"/>
+            <line class="st1" x1="212.57" y1="7.62" x2="212.57" y2="204.62"/>
+            <path class="st1" d="M58.95,197.57"/>
+            <path class="st1" d="M58.95,197.57c-4.7,0-6.49,6.14-2.53,8.66l101.49,64.73c1.54,0.98,3.51,0.98,5.05,0l101.49-64.73
+                c3.96-2.53,2.17-8.66-2.53-8.66"/>
+            </svg>
+            `;
+        }
+
+        var serializer = new XMLSerializer();
+        var svgString = serializer.serializeToString(planExport);
+        var blob = new Blob([svgString], { type: 'image/svg+xml' });
+        var url = URL.createObjectURL(blob);
+    
+        var downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.svg`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     }
 } window.customElements.define('editeur-interface', Editeur);

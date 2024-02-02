@@ -156,10 +156,10 @@ class PlanTravail extends HTMLElement {
                 case "Procedure":
                     let procedure = new Procedure(element.abscisse, element.ordonnee, element.libelle);
                     for (let donnee of element.listeDonnes) {
-                        procedure._listeDonnes.push(new Information(donnee.nom, donnee.type, donnee.signification));
+                        procedure._listeDonnes.push(new Information(donnee));
                     }
                     for (let resultat of element.listeResultats) {
-                        procedure._listeResultats.push(new Information(resultat.nom, resultat.type, resultat.signification));
+                        procedure._listeResultats.push(new Information(resultat));
                     }
                     this.appendChild(procedure);
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
@@ -172,34 +172,45 @@ class PlanTravail extends HTMLElement {
                 case "StructureSi":
                     let listeConditionsSi = [];
                     for (let condition of this.chargerDepuisJSON(element.conditions)) {
+                        condition._structure = element;
                         listeConditionsSi.push(condition);
                     }
                     let structureSi = new StructureSi(element.abscisse, element.ordonnee, listeConditionsSi);
                     structureSi.afficher();
                     structureSi.setPosition();
                     this.appendChild(structureSi);
+                    for (let condition of structureSi._listeConditions.children) {
+                        if (verbose) console.log(condition);
+                        for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
+                            if (verbose) console.log(enfant);
+                            condition._elemParent.lierEnfant(enfant);
+                        }
+                    }
                     listeElems.push(structureSi);
                     break;
                 case "StructureSwitch":
                     let listeConditionsSwitch = [];
                     for (let condition of this.chargerDepuisJSON(element.conditions)) {
+                        condition._structure = element;
                         listeConditionsSwitch.push(condition);
                     }
                     let structureSwitch = new StructureSwitch(element.abscisse, element.ordonnee, listeConditionsSwitch ,element.expressionATester);
                     structureSwitch.afficher();
                     structureSwitch.setPosition();
-                    for (let condition of this.chargerDepuisJSON(element.conditions)) {
-                        structureSwitch.ajouterCondition(condition);
-                    }
                     this.appendChild(structureSwitch);
+                    for (let condition of structureSwitch._listeConditions.children) {
+                        if (verbose) console.log(condition);
+                        for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
+                            if (verbose) console.log(enfant);
+                            condition._elemParent.lierEnfant(enfant);
+                        }
+                    }
                     listeElems.push(structureSwitch);
                     break;
                 case "Condition":
                     let condition = new Condition(element.libelle);
-                    for (let enfant of this.chargerDepuisJSON(element.enfants)) {
-                        condition._elemParent.lierEnfant(enfant);
-                    }
                     condition.afficher();
+                    condition.enfantsAAjouter = element.enfants;
                     listeElems.push(condition);
                     break;
                 case "StructureIterativeNonBornee":
@@ -233,6 +244,7 @@ class PlanTravail extends HTMLElement {
                     break;
             }
         }
+        this.updateAllLines();
         return listeElems;
     }
 
@@ -286,6 +298,15 @@ class PlanTravail extends HTMLElement {
         newElement.setPosition();
         this.appendChild(newElement);
 
+    }
+
+    updateAllLines() {
+        for (let element of this.children) {
+            if (element instanceof ElementGraphique) {
+                if (element._parent != null) element._parent.updateAll();
+            }
+        }
+    
     }
 }
 window.customElements.define("plan-travail", PlanTravail);

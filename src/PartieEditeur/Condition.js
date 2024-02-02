@@ -66,7 +66,8 @@ class Condition extends HTMLElement {
         this.appendChild(this.divLibelle);
 
         let divArrowsWrapper = document.createElement("div");
-        divArrowsWrapper.className = "arrowsWrapper"; // TODO: changer le nom de la classe
+        divArrowsWrapper.className = "arrowsWrapper";
+        divArrowsWrapper.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
         this.flecheGauche = document.createElement("span");
         this.flecheGauche.innerHTML = "← ";
         this.flecheGauche.addEventListener('click', (e) => {
@@ -86,6 +87,7 @@ class Condition extends HTMLElement {
         this.divAjouterAGauche = document.createElement("div");
         this.divAjouterAGauche.className = "ajouterAGauche";
         this.divAjouterAGauche.innerHTML = "+";
+        this.divAjouterAGauche.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
         this.divAjouterAGauche.addEventListener('click', (e) => {
             this._structure.ajouterConditionParRapportA(this, -1);
         });
@@ -94,6 +96,7 @@ class Condition extends HTMLElement {
         this.divAjouterADroite = document.createElement("div");
         this.divAjouterADroite.className = "ajouterADroite";
         this.divAjouterADroite.innerHTML = "+";
+        this.divAjouterADroite.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
         this.divAjouterADroite.addEventListener('click', (e) => {
             this._structure.ajouterConditionParRapportA(this, 1);
         });

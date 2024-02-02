@@ -339,6 +339,7 @@ probleme-element {
     justify-content: center;
     position: absolute;
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
 
     probleme-element > div.containerDPR {
@@ -459,6 +460,7 @@ procedure-element {
     justify-content: center;
     position: absolute;
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
     
     procedure-element > div.containerDPR {
@@ -612,6 +614,7 @@ structure-si-element {
     place-content: center;
     place-items: center;
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
 
 structure-si-element > div.triangle {
@@ -693,6 +696,7 @@ structure-switch-element {
     place-items: center;
     transition: all var(--transitionTime) ease;
     background-color: var(--bgColor);
+    z-index: 2;
 }
 
     structure-switch-element > div.triangle {
@@ -996,6 +1000,7 @@ structure-iterative-non-bornee-element {
     height: calc(var(--sizeModifier) * 4vw);
     position: absolute;
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
     structure-iterative-non-bornee-element > img.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
@@ -1011,6 +1016,7 @@ structure-iterative-bornee-element {
     height: calc(var(--sizeModifier) * 4vw);
     position: absolute;
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
     structure-iterative-bornee-element > img.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
@@ -1029,6 +1035,7 @@ condition-sortie-element {
     height: calc(var(--sizeModifier) * 4vw);
     width: calc(var(--sizeModifier) * 4vw);
     transition: all var(--transitionTime) ease;
+    z-index: 2;
 }
 
 ligne-element {
@@ -1037,7 +1044,7 @@ ligne-element {
     margin: 0;
     padding: 0;
     border: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
-    z-index: -1;
+    z-index: 0;
 }
 
 @keyframes jumpOverLeft {
