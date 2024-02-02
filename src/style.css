@@ -17,6 +17,13 @@ h1 {
     font-size: 2vw;
 }
 
+canvas#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
 editeur-interface {
     display: block;
     width: 100vw;

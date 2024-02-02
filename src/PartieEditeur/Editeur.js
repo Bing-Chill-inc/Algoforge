@@ -74,6 +74,10 @@ class Editeur extends HTMLElement {
         this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Renommer', () => {
             console.log('Renommer');
         }));
+        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Importer', () => {
+            console.log('Importer');
+            this.importerJSON();
+        }));
         let exporter = new ElementMenuCompose('Exporter', () => {
             console.log('Exporter');
         })
@@ -94,6 +98,8 @@ class Editeur extends HTMLElement {
 
         exporter.ajouterElementMenu(new ElementMenu('.png', () => {
             console.log('Exporter en .png');
+            var svgStr = this.exporterSVG(this._espacePrincipal, false);
+            this.exportSVGAsPNG(svgStr, `${this.querySelector('#titreAlgo').innerText}.png`);
         }));
 
         exporter.ajouterElementMenu(new ElementMenu('.jpg', () => {
@@ -550,9 +556,32 @@ class Editeur extends HTMLElement {
         setTimeout(() => URL.revokeObjectURL(url), 100);
     }
 
+    // Imports
+    importerJSON() {
+        // On crée un input de type file pour que l'utilisateur puisse choisir un fichier
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', () => {
+            var reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    var parsedData = JSON.parse(reader.result);
+                    this._espacePrincipal.chargerDepuisJSON(parsedData);
+                } catch (error) {
+                    console.error("Le fichier n'a pas été chargé correctement.");
+                    console.error(error);
+                }
+            }
+            reader.readAsText(fileInput.files[0]);
+        });
+        fileInput.click();
+    }
+
 
     // Exports
-    exporterSVG(nodeToCopy) {
+    exporterSVG(nodeToCopy, download = true) {
         console.log('exporterSVG() appelé');
         // On crée une balise style pour embarquer le style dans le fichier SVG
         var styleElement = document.createElement("style");
@@ -1222,12 +1251,59 @@ class Editeur extends HTMLElement {
         var svgString = serializer.serializeToString(planExport);
         var blob = new Blob([svgString], { type: 'image/svg+xml' });
         var url = URL.createObjectURL(blob);
+        if (download) {
+            var downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.svg`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+        return svgString;
+    }
+
+    exportSVGAsPNG(svgStr, outputFileName) {
+        var blob = new Blob([svgStr], { type: 'image/svg+xml' });
+        var url = URL.createObjectURL(blob);
+
+        // Create an image to load the SVG
+        const img = new Image();
+        img.onload = function() {
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
     
-        var downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.svg`;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+            // Draw the SVG onto the canvas
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+    
+            // Convert the canvas to a PNG data URL
+            canvas.toBlob(function(blob) {
+                // Create a new URL for the blob
+                const pngUrl = URL.createObjectURL(blob);
+    
+                // Download the PNG image
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pngUrl;
+                downloadLink.download = outputFileName;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+    
+                // Optionally, free up the memory by revoking the object URL
+                URL.revokeObjectURL(pngUrl);
+            }, 'image/png');
+        };
+    
+        img.onerror = function(ev) {
+            console.error("Error loading SVG image.");
+            console.error(ev);
+            console.error(img.width);
+            console.error(img.height);
+        };
+    
+        // Set the source of the image to the SVG data URL
+        img.src = url;
     }
 } window.customElements.define('editeur-interface', Editeur);
