@@ -310,6 +310,18 @@ selection-simple {
     padding: 0.5vw;
 }
 
+selection-rectangle {
+    position: absolute;
+    border: 0.1vw solid var(--fgColorForward);
+    border-style: dashed;
+    border-radius: 0.1vw;
+    transition: all var(--transitionTime) ease;
+    z-index: -1;
+    padding: 0;
+    background-color: var(--fgColorTransparent);
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
 plan-travail {
     width: 100%;
     height: 100%;

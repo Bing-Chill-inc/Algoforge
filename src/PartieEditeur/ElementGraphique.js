@@ -83,6 +83,13 @@ class ElementGraphique extends HTMLElement {
         return this.parentNode;
     }
 
+    get selectAnchor() {
+        let anchor = {x: 0, y: 0};
+        anchor.x = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+        anchor.y = parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2;
+        return anchor;
+    }
+
     // ENCAPSULATION
 
     getTailleAbscisse() {
