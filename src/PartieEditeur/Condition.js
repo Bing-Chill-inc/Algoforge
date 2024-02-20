@@ -2,6 +2,8 @@ class Condition extends HTMLElement {
     // ATTRIBUTS
     _elemParent; // ElementParent (liste des enfants)
     _structure; // StructureAlternative qui contient cette condition
+    _editeur = document.querySelector("editeur-interface"); // Editeur
+    _ancienLib;
 
     // CONSTRUCTEUR
     constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
@@ -10,6 +12,7 @@ class Condition extends HTMLElement {
         this._structure = structure;
         this.afficher();
         this._libelle = libelle;
+        this._ancienLib = libelle;
         if (this._elemParent != null) {
             elemParent._proprietaire = this;
         }
@@ -65,6 +68,13 @@ class Condition extends HTMLElement {
         this.divLibelle.contentEditable = "true";
         this.appendChild(this.divLibelle);
 
+        this.divLibelle.addEventListener('focusout', (e) => {
+            if (this._ancienLib != this._libelle) {
+                this._editeur.ajouterEvenement(new EvenementEditionLibelleCondition(this, this._ancienLib, this._libelle));
+                this._ancienLib = this._libelle;
+            }
+        });
+
         let divArrowsWrapper = document.createElement("div");
         divArrowsWrapper.className = "arrowsWrapper";
         divArrowsWrapper.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
@@ -109,8 +119,9 @@ class Condition extends HTMLElement {
     }
 
     supprimer() {
+        this._editeur.ajouterEvenement(new EvenementSuppressionElement(this));
+        this._elemParent.delierTousLesEnfants();
         this._structure.supprimerCondition(this);
-        delete this;
     }
 
     toJSON() {
@@ -144,5 +155,14 @@ class Condition extends HTMLElement {
 
     peutEtreDecompose() {
         return true;
+    }
+
+    getEnfants(typeRechercher = ElementGraphique) {
+        let listeDesEnfants = [];
+        for(let enfant of this._elemParent._listeElementsEnfants) {
+            listeDesEnfants.push(enfant.element);
+        }
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 } window.customElements.define("condition-element", Condition);

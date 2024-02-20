@@ -5,7 +5,8 @@
  * @extends {HTMLElement}
  */
 class PlanTravail extends HTMLElement {
-    // ATTRIBUTS -non-
+    // ATTRIBUTS 
+    _editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
     leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
     // CONSTRUCTEUR
     /**
@@ -297,7 +298,7 @@ class PlanTravail extends HTMLElement {
         newElement._ordonnee = parseFloat(newElement._ordonnee) - hauteurElement / 2 + 'vw';
         newElement.setPosition();
         this.appendChild(newElement);
-
+        this._editeur.ajouterEvenement(new EvenementCreationElement(newElement, this));
     }
 
     updateAllLines() {

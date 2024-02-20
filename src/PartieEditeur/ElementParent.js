@@ -2,11 +2,16 @@ class ElementParent {
     // ATTRIBUTS
     _listeElementsEnfants; // Liste contient les ElementGraphiques et les Lignes
     _proprietaire; // ElementGraphique
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     // CONSTRUCTEUR
     constructor(proprietaire, listeElementsEnfants = []) {
         this._proprietaire = proprietaire;
         this._listeElementsEnfants = listeElementsEnfants;
+
+        setInterval(() => {
+            this.updateAll();
+        }, 1000 / 12); // 12FPS
     }
 
     // ENCAPSULATION
@@ -27,7 +32,8 @@ class ElementParent {
     }
 
     // METHODES
-    lierEnfant(elementAAjouter) {
+    lierEnfant(elementAAjouter, provientAnnulation = false) {
+        if (!provientAnnulation) this._editeur.ajouterEvenement(new EvenementLiaison(this._proprietaire, elementAAjouter));
         if(elementAAjouter instanceof ElementGraphique) {
             // Si l'élément à ajouter est déjà un enfant, on l'enlève de son parent
             for (var lien of this._listeElementsEnfants) {
@@ -38,6 +44,10 @@ class ElementParent {
                     return false;
                 }
             }
+            if (elementAAjouter._parent != null) {
+                if (verbose) console.log('L\'élément à ajouter a déjà un parent, on l\'enlève de son parent');
+                elementAAjouter._parent.delierEnfant(elementAAjouter);
+            }
             elementAAjouter._parent = this;
             let ligneEntreLesElements = this.creerLienAdequat(this._proprietaire, elementAAjouter, this._proprietaire.espaceTravail);
             this._listeElementsEnfants.push({element : elementAAjouter, ligne : ligneEntreLesElements});
@@ -46,7 +56,8 @@ class ElementParent {
         return false;
     }
 
-    delierEnfant(elementASupprimer) {
+    delierEnfant(elementASupprimer, provientAnnulation = false) {
+        if (!provientAnnulation) this._editeur.ajouterEvenement(new EvenementSuppressionLiaison(this._proprietaire, elementASupprimer));
         var lien
         for (lien of this._listeElementsEnfants) {
             if (lien.element === elementASupprimer) {

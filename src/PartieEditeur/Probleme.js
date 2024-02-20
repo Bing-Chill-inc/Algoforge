@@ -10,6 +10,7 @@ class Probleme extends ElementGraphique {
     _listeDonnes; // Liste d'Information
     _listeResultats; // Liste d'Information
     _elemParent; // ElementParent (liste des enfants)
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     // CONSTRUCTEUR
     /**
@@ -55,13 +56,13 @@ class Probleme extends ElementGraphique {
      * @description Définie la valeur de la variable _libelle par la valeur donné
      */
     set libelle(value) {
-        this._libelle = value;
+        this.divNom.innerText = value;
     }
 
     /**
      * @description Renvoie la valeur de la variable _listeDonnes
      *
-     * @deprecated
+     * 
      */
     get listeDonnes() {
         return this.divDonneesEditable.innerText.split(",");
@@ -72,14 +73,14 @@ class Probleme extends ElementGraphique {
      * 
      * @deprecated
      */
-    set _listeDonnes(value) {
-        this._listeDonnes = value;
+    set listeDonnes(value) {
+        this.divDonneesEditable.innerText = value;
     }
 
     /**
      * @description Renvoie la valeur de la variable _listeResultats
      *
-     * @deprecated
+     * 
      */
     get listeResultats() {
         return this.divResultatsEditable.innerText.split(",");
@@ -90,8 +91,8 @@ class Probleme extends ElementGraphique {
      * 
      * @deprecated
      */
-    set _listeResultats(value) {
-        this._listeResultats = value;
+    set listeResultats(value) {
+        this.divResultatsEditable.innerText = value;
     }
 
     /**
@@ -153,6 +154,32 @@ class Probleme extends ElementGraphique {
         this.querySelector(".resultatEditable").textContent = this.querySelector(".resultatEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
 
+    updateAccolades() {
+        if (this.divDonneesEditable.textContent == "") {
+            for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                accolade.style.display = "none";
+                if (verbose) console.log("cacher les accolades");
+            }
+        } else {
+            for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+                accolade.style.display = "";
+                if (verbose) console.log("afficher les accolades");
+            }
+        }
+
+        if (this.divResultatsEditable.textContent == "") {
+            for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                accolade.style.display = "none";
+                if (verbose) console.log("cacher les accolades");
+            }
+        } else {
+            for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+                accolade.style.display = "";
+                if (verbose) console.log("afficher les accolades");
+            }
+        }
+    }
+
     // METHODES
     
     /**
@@ -178,13 +205,13 @@ class Probleme extends ElementGraphique {
                 this.divDonneesEditable.contentEditable = "true";
                 let donneesAAjouter = "";
                 this._listeDonnes.forEach((donnee) => {
-                    if(!donneesAAjouter == "")
-                    {
+                    if(!donneesAAjouter == "") {
                         donneesAAjouter += ",";
                     }
                     donneesAAjouter += donnee._nom;
                 });
                 this.divDonneesEditable.innerHTML = donneesAAjouter;
+                this._listeDonnes = this.divDonneesEditable.innerHTML;
                 divDonnees.appendChild(this.divDonneesEditable);
 
                 let labelAccoladesDDonnes = document.createElement("label");
@@ -207,6 +234,11 @@ class Probleme extends ElementGraphique {
                         }
                     }
                 });
+                this.divDonneesEditable.addEventListener("focusout", (e) => {
+                    if (this._listeDonnes == this.listeDonnes) return;
+                    this._editeur.ajouterEvenement(new EvenementEditionDonneesProbleme(this, this._listeDonnes, this.listeDonnes));
+                    this._listeDonnes = this.listeDonnes;
+                })
                 if (this.divDonneesEditable.textContent == "") {
                     for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
                         accolade.style.display = "none";
@@ -224,6 +256,12 @@ class Probleme extends ElementGraphique {
             this.divNom.contentEditable = "true";
             this.divNom.innerHTML = this._libelle;
             divContainerDPR.appendChild(this.divNom);
+
+            this.divNom.addEventListener("focusout", (e) => {
+                if (this._libelle == this.libelle) return;
+                this._editeur.ajouterEvenement(new EvenementEditionLibelleProbleme(this, this._libelle, this.libelle));
+                this._libelle = this.libelle;
+            });
 
             let divResultat = document.createElement("div");
             divResultat.className = "resultat";
@@ -247,6 +285,7 @@ class Probleme extends ElementGraphique {
                     resultatsAAjouter += resultat._nom;
                 });
                 this.divResultatsEditable.innerHTML = resultatsAAjouter;
+                this._listeResultats = this.divResultatsEditable.innerHTML;
                 divResultat.appendChild(this.divResultatsEditable);
 
                 let labelAccoladesDResultats = document.createElement("label");
@@ -268,6 +307,11 @@ class Probleme extends ElementGraphique {
                             if (verbose) console.log("afficher les accolades");
                         }
                     }
+                });
+                this.divResultatsEditable.addEventListener("focusout", (e) => {
+                    if (this._listeResultats == this.listeResultats) return;
+                    this._editeur.ajouterEvenement(new EvenementEditionResultatsProbleme(this, this._listeResultats, this.listeResultats));
+                    this._listeResultats = this.listeResultats;
                 });
                 if (this.divResultatsEditable.textContent == "") {
                     for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
@@ -316,8 +360,7 @@ class Probleme extends ElementGraphique {
      */
     getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
-        for(let enfant of this._elemParent._listeElementsEnfants)
-        {
+        for(let enfant of this._elemParent._listeElementsEnfants) {
             listeDesEnfants.push(enfant.element);
         }
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);

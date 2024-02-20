@@ -1,5 +1,6 @@
 class InviteBornesPourSI extends HTMLElement {
     _structureIterative;
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     constructor(uneStructureIterative, oldIndice = "", oldBorneInf = "", oldBorneSup = "", oldPas = "") {
         super();
@@ -85,6 +86,23 @@ class InviteBornesPourSI extends HTMLElement {
     }
 
     valider() {
+        let ancienneStructure = {}
+        ancienneStructure.estBornee = this._structureIterative instanceof StructureIterativeBornee;
+        ancienneStructure.indice = this._structureIterative._indice;
+        ancienneStructure.borneInf = this._structureIterative._borneInferieure;
+        ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
+        ancienneStructure.pas = this._structureIterative._pas;
+
+        let nouvelleStructure = {};
+        nouvelleStructure.estBornee = true;
+        nouvelleStructure.indice = this.indice.value;
+        nouvelleStructure.borneInf = this.borneInf.value;
+        nouvelleStructure.borneSup = this.borneSup.value;
+        nouvelleStructure.pas = this.pas.value;
+
+        // this._editeur.ajouterEvenement(new EvenementEditionStructureIterative(this._structureIterative, ancienneStructure, nouvelleStructure));
+
+
         if (this._structureIterative instanceof StructureIterativeBornee) {
             this._structureIterative._borneInferieure = this.borneInf.value;
             this._structureIterative._borneSuperieure = this.borneSup.value;
@@ -111,6 +129,18 @@ class InviteBornesPourSI extends HTMLElement {
     }
 
     nonBorne() {
+        let ancienneStructure = {}
+        ancienneStructure.estBornee = this._structureIterative instanceof StructureIterativeBornee;
+        ancienneStructure.indice = this._structureIterative._indice;
+        ancienneStructure.borneInf = this._structureIterative._borneInferieure;
+        ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
+        ancienneStructure.pas = this._structureIterative._pas;
+
+        let nouvelleStructureEvent = {};
+        nouvelleStructureEvent.estBornee = false;
+
+        // this._editeur.ajouterEvenement(new EvenementEditionStructureIterative(this._structureIterative, ancienneStructure, nouvelleStructureEvent));
+
         let plan = this._structureIterative.parentNode;
         let nouvelleStructure = new StructureIterativeNonBornee(this._structureIterative._abscisse, this._structureIterative._ordonnee);
         nouvelleStructure.afficher();

@@ -7,6 +7,7 @@
 class StructureAlternative extends ElementGraphique {
     // ATTRIBUTS 
     _listeConditions; // HTML Collection de Condition•s
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     // CONSTRUCTEUR
     /**
@@ -67,8 +68,7 @@ class StructureAlternative extends ElementGraphique {
      * @param {ElementGraphique} typeRechercher Le type d'ElementGraphique rechercher
      * @returns {Array<ElementGraphique>} la liste des ElementGraphique correspondant au type rechercher
      */
-    getEnfants(typeRechercher = ElementGraphique)
-    {
+    getEnfants(typeRechercher = ElementGraphique) {
         let listeEnfants = [];
         for(let condition of this._listeConditions.children)
         {
@@ -89,6 +89,7 @@ class StructureAlternative extends ElementGraphique {
     ajouterCondition(condition = new Condition()) {
         condition._structure = this;
         this._listeConditions.appendChild(condition);
+        this._editeur.ajouterEvenement(new EvenementCreationElement(condition, this._listeConditions));
     }
 
     /**
@@ -101,6 +102,7 @@ class StructureAlternative extends ElementGraphique {
             return; // On ne peut pas supprimer la dernière condition
         }
         if (condition instanceof Condition) {
+            this._editeur.ajouterEvenement(new EvenementSuppressionElement(condition));
             this._listeConditions.removeChild(condition);
         } else {
             // Parcourons les conditions de la droite vers la gauche et retirons la première qui est vide
@@ -125,7 +127,8 @@ class StructureAlternative extends ElementGraphique {
     }
 
 
-    decalerCondition(pCondition, decalage) {
+    decalerCondition(pCondition, decalage, estAnnulation = false) {
+        if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementDeplacementCondition(pCondition, decalage));
         if(decalage == -1 && pCondition instanceof Condition) {
             // Décaler la condition vers la gauche
             let autreCondition = pCondition.previousElementSibling;
@@ -168,7 +171,8 @@ class StructureAlternative extends ElementGraphique {
         }
     }
 
-    ajouterConditionParRapportA(pCondition, decalage) {
+    ajouterConditionParRapportA(pCondition, decalage, estAnnulation = false) {
+        if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementCreationElement(condition, this._listeConditions));
         if(decalage == -1 && pCondition instanceof Condition) {
             // Ajouter une condition à gauche
             let newCondition = new Condition();
@@ -194,5 +198,17 @@ class StructureAlternative extends ElementGraphique {
         }
         if (this._parent != null) this._parent.delierEnfant(this);
         this.remove();
+    }
+
+    getEnfantsParCondition() {
+        let listeEnfants = [];
+        for(let condition of this._listeConditions.children)
+        {
+            for(let elem of condition._elemParent._listeElementsEnfants)
+            {
+                listeEnfants.push([condition, elem.element]);
+            }
+        }
+        return listeEnfants;
     }
 }

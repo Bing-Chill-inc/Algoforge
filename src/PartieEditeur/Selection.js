@@ -6,6 +6,7 @@
  */
 class Selection extends HTMLElement {
     _dicoElementsSelectionnes; // Dictionnaire ayant pour clés les éléments graphiques sélectionnés et pour valeur la représentation graphique de la sélection.
+    _editeur = document.querySelector('editeur-interface'); // Editeur
 
     /**
      * @constructor
@@ -13,6 +14,10 @@ class Selection extends HTMLElement {
     constructor() {
         super();
         this._listeElementsSelectionnes = [];
+
+        setInterval(() => {
+            this.update();
+        }, 1000 / 24); // 24 fps
     }
 
     selectionnerElement(element) {
@@ -53,6 +58,7 @@ class Selection extends HTMLElement {
 
     supprimerTout() {
         for (var selection of this._listeElementsSelectionnes) {
+            this._editeur.ajouterEvenement(new EvenementSuppressionElement(selection._element));
             selection._element.supprimer();
             selection.supprimer();
         }
@@ -111,5 +117,13 @@ class Selection extends HTMLElement {
             if (selection._element === element) return true;
         }
         return false;
+    }
+
+    getElementsSelectionnes() {
+        let listeElements = [];
+        for (var selection of this._listeElementsSelectionnes) {
+            listeElements.push(selection._element);
+        }
+        return listeElements;
     }
 } window.customElements.define('selection-editeur', Selection);

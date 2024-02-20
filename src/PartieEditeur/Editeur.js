@@ -27,6 +27,9 @@ class Editeur extends HTMLElement {
     _lastPosX = 0;
     _lastPosY = 0;
 
+    _pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
+    _pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
+
     constructor() {
         super();
 
@@ -104,6 +107,23 @@ class Editeur extends HTMLElement {
 
         exporter.ajouterElementMenu(new ElementMenu('.jpg', () => {
             console.log('Exporter en .jpg');
+            const capture = async () => {
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                const video = document.createElement("video");
+              
+                try {
+                  const captureStream = await navigator.mediaDevices.getDisplayMedia();
+                  video.srcObject = captureStream;
+                  context.drawImage(video, 0, 0, window.width, window.height);
+                  const frame = canvas.toDataURL("image/png");
+                  captureStream.getTracks().forEach(track => track.stop());
+                  window.location.href = frame;
+                } catch (err) {
+                  console.error("Error: " + err);
+                }
+              };
+            capture();
         }));
 
         exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
@@ -438,9 +458,18 @@ class Editeur extends HTMLElement {
                 this._isDragging = true;
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
+                this._evenementDeplacement = new EvenementDeplacementElementMultiples();
+                for (let element of this._selection.getElementsSelectionnes()) {
+                    this._evenementDeplacement.ajouterElementDeplace(new EvenementDeplacementElement(element));
+                }
             }
         });
         this.addEventListener('mouseup', function() {
+            if (this._evenementDeplacement != null) {
+                if (this._evenementDeplacement.estDecale() && this._isDragging) {
+                    this.ajouterEvenement(this._evenementDeplacement);
+                }
+            }
             this._isDragging = false;
             this._isSelecting = false;
             let listeElemsASelec = this._selectionRectangle.listerElementsGraphiques();
@@ -501,10 +530,10 @@ class Editeur extends HTMLElement {
 
     // Outils d'édition
     undo() {
-        console.log('undo');
+        this.annuler();
     }
     redo() {
-        console.log('redo');
+        this.retablir();
     }
     cut() {
         console.log('cut');
@@ -554,6 +583,28 @@ class Editeur extends HTMLElement {
     
         // On supprime le Blob et l'URL pour libérer de la mémoire
         setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
+    // Gestion des événements
+    ajouterEvenement(evenement) {
+        this._pileAnnuler.push(evenement);
+        this._pileRétablir = [];
+    }
+
+    annuler() {
+        if (this._pileAnnuler.length > 0) {
+            let evenement = this._pileAnnuler.pop();
+            evenement.annuler();
+            this._pileRétablir.push(evenement);
+        }
+    }
+
+    retablir() {
+        if (this._pileRétablir.length > 0) {
+            let evenement = this._pileRétablir.pop();
+            evenement.retablir();
+            this._pileAnnuler.push(evenement);
+        }
     }
 
     // Imports

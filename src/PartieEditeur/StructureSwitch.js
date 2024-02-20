@@ -7,6 +7,8 @@
 class StructureSwitch extends StructureAlternative {
     // ATTRIBUTS
     _expressionATester; // String
+    _ancienneExpressionATester; // String
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     // CONSTRUCTEUR
     /**
@@ -19,6 +21,7 @@ class StructureSwitch extends StructureAlternative {
     constructor(abscisse, ordonnee, listeConditions = [], expressionATester = "") {
         super(abscisse, ordonnee, listeConditions);
         this._expressionATester = expressionATester;
+        this._ancienneExpressionATester = expressionATester;
     }
 
     // ENCAPSULATION
@@ -26,7 +29,7 @@ class StructureSwitch extends StructureAlternative {
      * @description Renvoie l'expression à tester de la StructureSwitch
      * @returns {string} l'expression de la StructureSwitch
      */
-    get _expressionATester() {
+    get expressionATester() {
         return this.querySelector(".expressionATester").textContent;
     }
 
@@ -34,8 +37,8 @@ class StructureSwitch extends StructureAlternative {
      * @description Définie l'expression à tester pour la StructureSwitch
      * @param {string} value La nouvelle expression à tester
      */
-    set _expressionATester(value) {
-        this._expressionATester = value;
+    set expressionATester(value) {
+        this.querySelector(".expressionATester").innerText = value;
     }
 
     // METHODES
@@ -57,6 +60,13 @@ class StructureSwitch extends StructureAlternative {
         this.divExpressionATester.contentEditable = "true";
         this.divExpressionATester.innerText = this._expressionATester;
         this.appendChild(this.divExpressionATester);
+
+        this.divExpressionATester.addEventListener('focusout', (e) => {
+            if (this._ancienneExpressionATester != this.expressionATester) {
+                this._editeur.ajouterEvenement(new EvenementEditionExpressionSwitch(this, this._ancienneExpressionATester, this.expressionATester));
+                this._ancienneExpressionATester = this.expressionATester;
+            }
+        });
 
         let hrDiviseurGauche = document.createElement("hr");
         hrDiviseurGauche.className = "diviseurGauche";
