@@ -1,0 +1,1 @@
+Décomposition en 2 sous-problèmes
