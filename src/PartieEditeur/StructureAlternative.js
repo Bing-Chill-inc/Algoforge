@@ -172,17 +172,18 @@ class StructureAlternative extends ElementGraphique {
     }
 
     ajouterConditionParRapportA(pCondition, decalage, estAnnulation = false) {
-        if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementCreationElement(condition, this._listeConditions));
         if(decalage == -1 && pCondition instanceof Condition) {
             // Ajouter une condition à gauche
             let newCondition = new Condition();
             newCondition._structure = this;
             this._listeConditions.insertBefore(newCondition, pCondition);
+            if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementCreationElement(newCondition, this._listeConditions));
         } else if (decalage == 1 && pCondition instanceof Condition) {
             // Ajouter une condition à droite
             let newCondition = new Condition();
             newCondition._structure = this;
             this._listeConditions.insertBefore(newCondition, pCondition.nextElementSibling);
+            if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementCreationElement(newCondition, this._listeConditions));
         }
         setTimeout(() => {
             // update les liens vers les enfants

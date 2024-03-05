@@ -8,6 +8,7 @@ class Editeur extends HTMLElement {
     // ATTRIBUTS
     _logoAlgoForge = null;
     _themeSelect = null;
+    _indicateurZoom = new IndicateurZoom();
     _currentTool = -1;
     _listeTools = [];
     _typesElements = [];
@@ -50,6 +51,7 @@ class Editeur extends HTMLElement {
 
         this._logoAlgoForge = document.querySelector('#logoAlgoForge');
         this._themeSelect = document.querySelector('select#theme');
+        this.appendChild(this._indicateurZoom);
 
         this._boutonPointeur = document.querySelector('#boutonPointeur');
 
@@ -68,9 +70,17 @@ class Editeur extends HTMLElement {
         this._menuDeroulantEdition = document.querySelector('#menuDeroulantEdition');
         this._menuDeroulantAide = document.querySelector('#menuDeroulantAide');
 
+        this.querySelector('#titreAlgo').addEventListener('keydown', function(event) {
+            // On vérifie si la touche appuyée est "Entrée"
+            if (event.key === 'Enter') {
+                // On l'empêche pour éviter le saut de ligne, qui casse le design
+                event.preventDefault();
+            }
+        });
+
         // Ajouter les options de thème
         this._themeSelect.appendChild(new ThemeEditeur('Thème Sombre', '#222222', '#838787', '#83878755', '#83878711', '#A6AAA9', '#8ABE5E', '#8ABE5E99', '#C82606', '#FFE989', '#34A5DA', 'assets/algoforgeLogo.png'));
-        this._themeSelect.appendChild(new ThemeEditeur('Thème Clair', '#FFFFFF', '#222222', '#22222255', '#22222211', '#A6AAA9', '#589129', '#58912999', '#C82606', '#b89f30', '#22759c', 'assets/algoforgeLogoThemeClair.png'));
+        this._themeSelect.appendChild(new ThemeEditeur('Thème Clair', '#FFFFFF', '#222222', '#22222255', '#22222222', '#A6AAA9', '#589129', '#58912999', '#C82606', '#b89f30', '#22759c', 'assets/algoforgeLogoThemeClair.png'));
 
         // Gestion des événements de thème
         this._themeSelect.addEventListener('change', () => {
@@ -334,12 +344,12 @@ class Editeur extends HTMLElement {
                 if (e.key === '+' || e.key === '=') {
                     // Ctrl + +
                     e.preventDefault();
-                    document.body.style.setProperty('--sizeModifier', parseFloat(document.body.style.getPropertyValue('--sizeModifier')) + 0.1);
+                    this._indicateurZoom.zoomIn();
                 }
                 if (e.key === '-') {
                     // Ctrl + -
                     e.preventDefault();
-                    document.body.style.setProperty('--sizeModifier', parseFloat(document.body.style.getPropertyValue('--sizeModifier')) - 0.1);
+                    this._indicateurZoom.zoomOut();
                 }
             }
         });
@@ -556,12 +566,20 @@ class Editeur extends HTMLElement {
         console.log('cut');
     }
     copy() {
-        console.log('copy'); 
+        if (verbose) console.log('copy'); 
+        let elementsACopier = [];
         let elementsSelectionnees = this._selection.getElementsSelectionnes(); // Liste des éléments sélectionnés
-        
+        for (let elementGraphique of elementsSelectionnees) {
+            if (elementGraphique._parent == null || !elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire) == -1) {
+                if (verbose) console.log(elementGraphique);
+                elementsACopier.push(elementGraphique.toJSONspecifier(elementsSelectionnees));
+            }
+        }
+        if (verbose) console.log(elementsACopier);
+        navigator.clipboard.writeText(JSON.stringify(elementsACopier));
     }
     paste() {
-        console.log('paste');
+        if (verbose) console.log('paste');
         try {
             var parsedData = JSON.parse(readFromClipboard());
             this.chargerDepuisJSON(parsedData);

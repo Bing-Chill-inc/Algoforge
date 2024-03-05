@@ -132,6 +132,20 @@ class StructureSwitch extends StructureAlternative {
         };
     }
 
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        let conditions = [];
+        for (let condition of this._listeConditions.children) {
+            conditions.push(condition.toJSONspecifier(listeElemEnfantsAConcerver));
+        }
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee,
+            expressionATester: this.querySelector(".expressionATester").textContent,
+            conditions: conditions
+        };
+    }
+
     /**
      * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci<br>
      * Liste des Erreurs :<br>

@@ -161,6 +161,19 @@ class StructureIterativeBornee extends StructureIterative {
         };
     }
 
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee,
+            variableAIterer: this._variableAIterer,
+            borneInferieure: this._borneInferieure,
+            borneSuperieure: this._borneSuperieure,
+            pas: this._pas,
+            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+        };
+    }
+
     /**
      * @description Extrait les information de la StructureItérativeBornée
      * 

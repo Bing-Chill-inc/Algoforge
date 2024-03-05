@@ -68,5 +68,14 @@ class StructureIterativeNonBornee extends StructureIterative {
             ordonnee: this._ordonnee,
             enfants: this._elemParent.toJSON()
         };
-    }   
+    } 
+    
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee,
+            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+        };
+    }
 } window.customElements.define("structure-iterative-non-bornee-element", StructureIterativeNonBornee);

@@ -77,6 +77,19 @@ class StructureSi extends StructureAlternative {
             conditions: conditions
         };
     }
+
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        let conditions = [];
+        for (let condition of this._listeConditions.children) {
+            conditions.push(condition.toJSONspecifier(listeElemEnfantsAConcerver));
+        }
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee,
+            conditions: conditions
+        };
+    }
     /**
      * @deprecated
      * @returns {}

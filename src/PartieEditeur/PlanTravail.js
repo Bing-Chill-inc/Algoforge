@@ -147,6 +147,7 @@ class PlanTravail extends HTMLElement {
                         probleme._listeResultats.push(new Information(resultat));
                     }
                     this.appendChild(probleme);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(probleme, this));
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         probleme._elemParent.lierEnfant(enfant);
                     }
@@ -163,6 +164,7 @@ class PlanTravail extends HTMLElement {
                         procedure._listeResultats.push(new Information(resultat));
                     }
                     this.appendChild(procedure);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(procedure, this));
                     for (let enfant of this.chargerDepuisJSON(element.enfants)) {
                         procedure._elemParent.lierEnfant(enfant);
                     }
@@ -180,6 +182,7 @@ class PlanTravail extends HTMLElement {
                     structureSi.afficher();
                     structureSi.setPosition();
                     this.appendChild(structureSi);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(structureSi, this));
                     for (let condition of structureSi._listeConditions.children) {
                         if (verbose) console.log(condition);
                         for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
@@ -199,6 +202,7 @@ class PlanTravail extends HTMLElement {
                     structureSwitch.afficher();
                     structureSwitch.setPosition();
                     this.appendChild(structureSwitch);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(structureSwitch, this));
                     for (let condition of structureSwitch._listeConditions.children) {
                         if (verbose) console.log(condition);
                         for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
@@ -220,6 +224,7 @@ class PlanTravail extends HTMLElement {
                         structureIterativeNonBornee._elemParent.lierEnfant(enfant);
                     }
                     this.appendChild(structureIterativeNonBornee);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeNonBornee, this));
                     structureIterativeNonBornee.afficher();
                     structureIterativeNonBornee.setPosition();
                     listeElems.push(structureIterativeNonBornee);
@@ -230,6 +235,7 @@ class PlanTravail extends HTMLElement {
                         structureIterativeBornee._elemParent.lierEnfant(enfant);
                     }
                     this.appendChild(structureIterativeBornee);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeBornee, this));
                     structureIterativeBornee.afficher();
                     structureIterativeBornee.setPosition();
                     listeElems.push(structureIterativeBornee);
@@ -237,6 +243,7 @@ class PlanTravail extends HTMLElement {
                 case "ConditionSortie":
                     let conditionSortie = new ConditionSortie(element.abscisse, element.ordonnee);
                     this.appendChild(conditionSortie);
+                    this._editeur.ajouterEvenement(new EvenementCreationElement(conditionSortie, this));
                     conditionSortie.afficher();
                     conditionSortie.setPosition();
                     listeElems.push(conditionSortie);
@@ -286,6 +293,14 @@ class PlanTravail extends HTMLElement {
             // Conversion des coordonnées en vw
             abscisse = abscisse / window.innerWidth * 100;
             ordonnee = ordonnee / window.innerWidth * 100;
+
+            // Il faut prendre en compte le décalage du plan de travail en scroll
+            abscisse += this.scrollLeft / window.innerWidth * 100;
+            ordonnee += this.scrollTop / window.innerWidth * 100;
+
+            // Et le niveau de zoom
+            abscisse /= this._editeur._indicateurZoom._zoom;
+            ordonnee /= this._editeur._indicateurZoom._zoom;
         }
         let newElement = new element(abscisse + 'vw', ordonnee + 'vw')
         newElement.afficher();

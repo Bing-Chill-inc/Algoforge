@@ -46,6 +46,10 @@ class ConditionSortie extends ElementGraphique {
         };
     }
 
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        return this.toJSON();
+    }
+
     getAncreComposition() {
         let abscisse = parseFloat(this._abscisse) + 2;
         let ordonnee = parseFloat(this._ordonnee);

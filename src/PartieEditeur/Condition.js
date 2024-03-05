@@ -131,6 +131,14 @@ class Condition extends HTMLElement {
             enfants: this._elemParent.toJSON()
         };
     }
+
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        return {
+            typeElement: this.constructor.name,
+            libelle: this._libelle,
+            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+        };
+    }
     
     getTailleAbscisse() {
         let rect = this.getBoundingClientRect();

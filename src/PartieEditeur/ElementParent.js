@@ -31,6 +31,10 @@ class ElementParent {
         this._proprietaire = value;
     }
 
+    get nombreEnfants() {
+        return this._listeElementsEnfants.length;
+    }
+
     // METHODES
     lierEnfant(elementAAjouter, provientAnnulation = false) {
         if (!provientAnnulation) this._editeur.ajouterEvenement(new EvenementLiaison(this._proprietaire, elementAAjouter));
@@ -87,7 +91,7 @@ class ElementParent {
         let listeEnfants = [];
         this._listeElementsEnfants.forEach((lien) => {
             if (listeElemEnfantsAConcerver.includes(lien.element)) {
-                listeEnfants.push(lien.element.toJSON());
+                listeEnfants.push(lien.element.toJSONspecifier(listeElemEnfantsAConcerver));
             }
         });
         return listeEnfants;
