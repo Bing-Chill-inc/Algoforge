@@ -94,10 +94,6 @@ class Editeur extends HTMLElement {
         this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Renommer', () => {
             console.log('Renommer');
         }));
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Importer', () => {
-            console.log('Importer');
-            this.importerJSON();
-        }));
         let exporter = new ElementMenuCompose('Exporter', () => {
             console.log('Exporter');
         })
@@ -173,6 +169,11 @@ class Editeur extends HTMLElement {
         }));
 
         // Edition
+        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenu('Importer', () => {
+            console.log('Importer');
+            this.importerJSON();
+        }));
+
         this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Annuler', () => {
             console.log('Annuler');
             this.undo();

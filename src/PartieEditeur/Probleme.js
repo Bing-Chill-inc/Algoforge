@@ -259,6 +259,9 @@ class Probleme extends ElementGraphique {
 
             this.divNom.addEventListener("focusout", (e) => {
                 if (this._libelle == this.libelle) return;
+                // Chercher dans le texte si il y a '<-' et si oui, le remplacer par '←'
+                this.libelle = this.libelle.replace('<-', '←');
+                if (verbose) console.log("Changement de libellé");
                 this._editeur.ajouterEvenement(new EvenementEditionLibelleProbleme(this, this._libelle, this.libelle));
                 this._libelle = this.libelle;
             });

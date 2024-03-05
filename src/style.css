@@ -426,6 +426,7 @@ probleme-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
+            white-space: pre-wrap;
         }
 
         probleme-element > div.containerDPR > div.nom:focus-visible {
