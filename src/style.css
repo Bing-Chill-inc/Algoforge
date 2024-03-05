@@ -251,7 +251,7 @@ editeur-interface > div.barreOutilsHorizontale {
     justify-content: center;
     gap: 2%;
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     top: 4.2vw;
 }
 
