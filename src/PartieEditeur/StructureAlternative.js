@@ -103,11 +103,13 @@ class StructureAlternative extends ElementGraphique {
         }
         if (condition instanceof Condition) {
             this._editeur.ajouterEvenement(new EvenementSuppressionElement(condition));
+            condition._elemParent.delierTousLesEnfants()
             this._listeConditions.removeChild(condition);
         } else {
             // Parcourons les conditions de la droite vers la gauche et retirons la première qui est vide
             for (let i = this._listeConditions.children.length - 1; i >= 0; i--) {
                 if (this._listeConditions.children[i]._libelle == "") {
+                    this._listeConditions.children[i]._elemParent.delierTousLesEnfants();
                     this._listeConditions.removeChild(this._listeConditions.children[i]);
                     break;
                 }

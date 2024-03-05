@@ -99,7 +99,7 @@ class StructureIterative extends ElementGraphique {
     supprimer() {
         this._elemParent.delierTousLesEnfants();
         if (this._parent != null) this._parent.delierEnfant(this);
-        if (this._inviteBornes != null) this._inviteBornes.parentNode.removeChild(this._inviteBornes);
+        if (this._inviteBornes != null) if (this._inviteBornes.parentNode != null) this._inviteBornes.parentNode.removeChild(this._inviteBornes);
         this.remove();
     }
 }

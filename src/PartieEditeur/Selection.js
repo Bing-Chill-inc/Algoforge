@@ -20,6 +20,10 @@ class Selection extends HTMLElement {
         }, 1000 / 24); // 24 fps
     }
 
+    get nbElementsSelectionnes() {
+        return this._listeElementsSelectionnes.length;
+    }
+
     selectionnerElement(element) {
         if (element instanceof ElementGraphique && !this.estSelectionne(element)) {
             let rep = new RepresentationSelectionSimple(element, this);

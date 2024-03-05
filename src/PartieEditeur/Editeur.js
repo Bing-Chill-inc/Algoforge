@@ -29,6 +29,7 @@ class Editeur extends HTMLElement {
     _offsetY = 0;
     _lastPosX = 0;
     _lastPosY = 0;
+    _ancienPlusProche = null;
 
     _pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
     _pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -260,6 +261,11 @@ class Editeur extends HTMLElement {
         // Gestion des raccourcis clavier
         document.body.addEventListener('keydown', (e) => {
             if (verbose) console.log(e);
+            if (e.keyCode === 8) {
+                // Suppr
+                e.preventDefault();
+                this.delete();
+            }
             if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
                 // Raccourcis clavier en Ctrl + ... pour les outils
                 if (e.keyCode === 64) {
@@ -551,17 +557,35 @@ class Editeur extends HTMLElement {
                     }
                 }
                 if (verbose) console.log(elemLePlusProche);
-                if (elemLePlusProche) elemLePlusProche.parentNode.appendChild(elemLePlusProche);
+                if (elemLePlusProche != this._ancienPlusProche && elemLePlusProche != null) {
+                    elemLePlusProche.parentNode.appendChild(elemLePlusProche);
+                    this._ancienPlusProche = elemLePlusProche;
+                }
             }
             if (this._isSelecting) {
-                let abscisseEnPx = e.clientX - this._espacePrincipal.getBoundingClientRect().left;
-                let ordonneeEnPx = e.clientY - this._espacePrincipal.getBoundingClientRect().top;
+                let abscisseEnPx = (e.clientX - this._espacePrincipal.getBoundingClientRect().left) / document.body.style.getPropertyValue('--sizeModifier');
+                let ordonneeEnPx = (e.clientY - this._espacePrincipal.getBoundingClientRect().top) / document.body.style.getPropertyValue('--sizeModifier');
                 let abscisseEnVw = abscisseEnPx / window.innerWidth * 100;
                 let ordonneeEnVw = ordonneeEnPx / window.innerWidth * 100;
-                let lastXenVw = (this._coordonneesSelection.x - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
-                let lastYenVw = (this._coordonneesSelection.y - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
+                let lastXenVw = (this._coordonneesSelection.x / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
+                let lastYenVw = (this._coordonneesSelection.y / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
                 this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
             }
+        });
+
+        this.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+
+            // Calculer la position du menu contextuel
+            let abscisse = e.clientX;
+            let ordonnee = e.clientY;
+
+            // Transformer les coordonnées en vw
+            abscisse = abscisse / window.innerWidth * 100;
+            ordonnee = ordonnee / window.innerWidth * 100;
+
+            // Créer le menu contextuel
+            this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection));
         });
     }
 

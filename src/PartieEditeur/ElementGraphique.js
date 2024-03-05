@@ -347,4 +347,10 @@ class ElementGraphique extends HTMLElement {
         if (this._parent != null) this._parent.delierEnfant(this);
         this.remove();
     }
+
+    genererOptionsContextuelles(selection) {
+        let lesOptions = [];
+        lesOptions.push();
+        return lesOptions;
+    }
 }
