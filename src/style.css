@@ -197,6 +197,8 @@ editeur-interface > header > div.zonePartage {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    cursor: default;
 }
 
 editeur-interface > header > div.zonePartage > button {
@@ -207,10 +209,10 @@ editeur-interface > header > div.zonePartage > button {
     border-radius: 1vw;
     font-size: 1vw;
     color: var(--fgColor);
-    cursor: pointer;
+    cursor: default;
 }
 
-editeur-interface > header > div.compte {
+/* editeur-interface > header > div.compte {
     height: 75%;
     aspect-ratio: 1/1;
     background: none;
@@ -222,6 +224,18 @@ editeur-interface > header > div.compte {
     display: flex;
     align-items: center;
     justify-content: center;
+} */ /* A remettre quand le compte sera fonctionnel */
+
+editeur-interface > header > select#theme {
+    width: 10%;
+    height: 50%;
+    background: none;
+    border: var(--fgColor) solid 0.1vw;
+    border-radius: 1vw;
+    font-size: 1vw;
+    color: var(--fgColor);
+    cursor: pointer;
+
 }
 
 editeur-interface > div.barreOutilsHorizontale {

@@ -6,6 +6,8 @@
  */
 class Editeur extends HTMLElement {
     // ATTRIBUTS
+    _logoAlgoForge = null;
+    _themeSelect = null;
     _currentTool = -1;
     _listeTools = [];
     _typesElements = [];
@@ -46,6 +48,9 @@ class Editeur extends HTMLElement {
         this._espacePrincipal.appendChild(this._selection);
         this._espacePrincipal.appendChild(this._selectionRectangle);
 
+        this._logoAlgoForge = document.querySelector('#logoAlgoForge');
+        this._themeSelect = document.querySelector('select#theme');
+
         this._boutonPointeur = document.querySelector('#boutonPointeur');
 
         this._listeTools.push(document.querySelector('#boutonProbleme'));
@@ -62,6 +67,18 @@ class Editeur extends HTMLElement {
         this._menuDeroulantFichier = document.querySelector('#menuDeroulantFichier');
         this._menuDeroulantEdition = document.querySelector('#menuDeroulantEdition');
         this._menuDeroulantAide = document.querySelector('#menuDeroulantAide');
+
+        // Ajouter les options de thème
+        this._themeSelect.appendChild(new ThemeEditeur('Thème Sombre', '#222222', '#838787', '#83878755', '#83878711', '#A6AAA9', '#8ABE5E', '#8ABE5E99', '#C82606', '#FFE989', '#34A5DA', 'assets/algoforgeLogo.png'));
+        this._themeSelect.appendChild(new ThemeEditeur('Thème Clair', '#FFFFFF', '#222222', '#22222255', '#22222211', '#A6AAA9', '#589129', '#58912999', '#C82606', '#b89f30', '#22759c', 'assets/algoforgeLogoThemeClair.png'));
+
+        // Gestion des événements de thème
+        this._themeSelect.addEventListener('change', () => {
+            let theme = this._themeSelect.options[this._themeSelect.selectedIndex];
+            theme.appliquer();
+        });
+
+        this._themeSelect.options[0].appliquer();
 
         // Ajout des éléments de menu
         // Fichier

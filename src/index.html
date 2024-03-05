@@ -9,7 +9,7 @@
 <body>
     <editeur-interface>
         <header>
-            <img src="assets/algoforgeLogo.png" alt="Logo AlgoForge">
+            <img src="assets/algoforgeLogo.png" alt="Logo AlgoForge" id="logoAlgoForge">
             <div class="titreEtMenu">
                 <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span> ✎</span></h1>
                 <div class="menuButtons">
@@ -36,9 +36,9 @@
             <div class="zonePartage">
                 <button class="partage">Partager</button>
             </div>
-            <div class="compte">
-                Compte
-            </div>
+            <select id="theme">
+
+            </select>
         </header>
         <div class="barreOutilsHorizontale">
             <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected">
@@ -117,6 +117,8 @@
 <script src="PartieEditeur/ElementMenu.js"></script>
 <script src="PartieEditeur/ElementMenuCompose.js"></script>
 <script src="PartieEditeur/ElementMenuKeyboardTip.js"></script>
+
+<script src="PartieEditeur/ThemeEditeur.js"></script>
 
 <!--Gestion des évenement de l'éditeur-->
 <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>

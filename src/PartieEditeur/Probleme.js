@@ -510,12 +510,11 @@ class Probleme extends ElementGraphique {
      *
      * @returns {Array} liste des variables
      */
-    getTailleAbscisse()
-    {
+    getTailleAbscisse() {
         return 30;
     }
     getTailleOrdonnee() {
-        return 5;
+        return 4.75;
     }
     extraireInformation() {
         let listeInformation = [];
