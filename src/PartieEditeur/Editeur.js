@@ -508,7 +508,6 @@ class Editeur extends HTMLElement {
         this._espacePrincipal.chargerDepuisJSON(json);
     }
 
-
     selectTool(idTool) {
         this._currentTool = idTool;
         this._listeTools.forEach((tool) => {
@@ -540,6 +539,8 @@ class Editeur extends HTMLElement {
     }
     copy() {
         console.log('copy'); 
+        let elementsSelectionnees = this._selection.getElementsSelectionnes(); // Liste des éléments sélectionnés
+        
     }
     paste() {
         console.log('paste');
@@ -621,7 +622,7 @@ class Editeur extends HTMLElement {
                     var parsedData = JSON.parse(reader.result);
                     this._espacePrincipal.chargerDepuisJSON(parsedData);
                 } catch (error) {
-                    console.error("Le fichier n'a pas été chargé correctement.");
+                    alert("Le fichier n'a pas été chargé correctement.");
                     console.error(error);
                 }
             }

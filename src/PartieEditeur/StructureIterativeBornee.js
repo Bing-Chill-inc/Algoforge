@@ -217,15 +217,4 @@ class StructureIterativeBornee extends StructureIterative {
             this.setVariableAIterer(nouveauNom);
         }
     }
-
-    inviteBornes() {
-        // Supprimer une éventuelle autre invite
-        let invite = document.querySelector('invite-bornes-pour-si');
-        if (invite != null) {
-            invite.parentNode.removeChild(invite);
-        }
-        
-        // Crée une petite fenêtre pour demander les bornes
-        this.parentNode.appendChild(new InviteBornesPourSI(this, this._variableAIterer, this._borneInferieure, this._borneSuperieure, this._pas));
-    }
 } window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);

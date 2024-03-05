@@ -6,69 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <img id="myImg" style="width: 1920px">
+    <h1 class="titre">Ceci est un titre 1</h1>
+    <h2 class="titre">Ceci est un titre 2</h2>
+    <h3 class="titre">Ceci est un titre 3</h3>
+    <h4 class="titre">Ceci est un titre 4</h4>
+    <h5 class="titre">Ceci est un titre 5</h5>
+    <h6 class="titre">Ceci est un titre 6</h6>
+    <p class="texte">Ceci est un texte dans un problème</p>
+    <p class="texteMisEnAvant">Ceci est un texte mis en avant</p>
 </body>
-<script>
-    function setSvgAsImgSrc(imgElement, svgString) {
-        // URL-encode the SVG string
-        const encodedSvg = encodeURIComponent(svgString);
-    
-        // Create the Data URL
-        const dataUrl = 'data:image/svg+xml;utf8,' + encodedSvg;
-    
-        // Set the 'src' attribute of the img element
-        imgElement.src = dataUrl;
-    }
-    
-    // Example usage:
-    const svgString = `<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.51 386.63">
-        <defs>
-            <style>
-                .cls-1 {
-                    fill: #ffffff00;
-                    stroke: #838787;
-                    stroke-miterlimit: 10;
-                    stroke-width: 10px;
-                }
-                .cls-2 {
-                    fill: #222222;
-                    stroke: #838787;
-                    stroke-miterlimit: 10;
-                    stroke-width: 10px;
-                }
-            </style>
-        </defs>
-        <circle class="cls-1 " cx="193.31" cy="193.31" r="190.81"/>
-        <polygon class="cls-2" points="377.88 154.61 334.58 229.61 421.18 229.61 377.88 154.61"/>
-    </svg>`;
-    const imgElement = document.getElementById('myImg'); // Make sure this is the correct ID of your <img> element
-    setSvgAsImgSrc(imgElement, svgString);    
-
-    const width = imgElement.getAttribute('width')
-    const height = imgElement.getAttribute('height')
-    const canvas = document.createElement('canvas')
-
-    canvas.setAttribute('width', 1920)
-    canvas.setAttribute('height', 1080)
-    document.body.appendChild(canvas);
-
-    const context = canvas.getContext('2d')
-    context.drawImage(imgElement, 0, 0)
-
-    const dataUrl = canvas.toDataURL('image/png')
-    console.log(dataUrl);
-    // Create an anchor element
-    const downloadLink = document.createElement('a');
-    downloadLink.href = dataUrl; // Set the href to the canvas data URL
-    downloadLink.download = 'test.png'; // Set the desired file name
-
-    // Append the anchor to the document
-    document.body.appendChild(downloadLink);
-
-    // Trigger a click on the anchor
-    downloadLink.click();
-
-    // Remove the anchor from the document
-    document.body.removeChild(downloadLink);
-</script>
 </html>

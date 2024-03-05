@@ -351,6 +351,18 @@ class Probleme extends ElementGraphique {
         };
     }
 
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        return {
+            typeElement: this.constructor.name,
+            abscisse: this._abscisse,
+            ordonnee: this._ordonnee,
+            libelle: this.libelle,
+            listeDonnes: this.listeDonnes,
+            listeResultats: this.listeResultats,
+            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+        };
+    }
+
     /**
      * @description Renvoie l'arbres des enfants du Probleme par ordre
      *

@@ -83,6 +83,16 @@ class ElementParent {
         return listeEnfants;
     }
 
+    toJSONspecifier(listeElemEnfantsAConcerver) {
+        let listeEnfants = [];
+        this._listeElementsEnfants.forEach((lien) => {
+            if (listeElemEnfantsAConcerver.includes(lien.element)) {
+                listeEnfants.push(lien.element.toJSON());
+            }
+        });
+        return listeEnfants;
+    }
+
     creerLienAdequat(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
         let nouveauLien;
         switch (elemGraphiqueParent.constructor.name) {

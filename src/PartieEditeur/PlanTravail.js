@@ -121,7 +121,7 @@ class PlanTravail extends HTMLElement {
             var parsedData = JSON.parse(fichier)
             this.chargerDepuisJSON(parsedData);
         } catch (error) {
-            console.error("Le fichier n'est pas au format JSON.");
+            alert("Le fichier n'est pas au format JSON.");
         }
     }
 

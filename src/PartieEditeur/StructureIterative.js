@@ -7,6 +7,7 @@
 class StructureIterative extends ElementGraphique {
     // ATTRIBUTS
     _elemParent; // ElementParent (liste des enfants)
+    _inviteBornes; // InviteBornesPourSI (invite pour les bornes)
 
     // CONSTRUCTEUR
     /**
@@ -80,6 +81,11 @@ class StructureIterative extends ElementGraphique {
     }
 
     inviteBornes() {
+        if (verbose) console.log(`this._inviteBornes : ${this._inviteBornes}`);
+        if (this._inviteBornes == null) {
+            this._inviteBornes = new InviteBornesPourSI(this);
+        }
+
         // Supprimer une éventuelle autre invite
         let invite = document.querySelector('invite-bornes-pour-si');
         if (invite != null) {
@@ -87,12 +93,13 @@ class StructureIterative extends ElementGraphique {
         }
 
         // Crée une petite fenêtre pour demander les bornes
-        this.parentNode.appendChild(new InviteBornesPourSI(this));
+        this.parentNode.appendChild(this._inviteBornes);
     }
 
     supprimer() {
         this._elemParent.delierTousLesEnfants();
         if (this._parent != null) this._parent.delierEnfant(this);
         this.remove();
+        this._inviteBornes.parentNode.removeChild(this._inviteBornes);
     }
 }
