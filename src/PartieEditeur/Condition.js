@@ -4,6 +4,7 @@ class Condition extends HTMLElement {
     _structure; // StructureAlternative qui contient cette condition
     _editeur = document.querySelector("editeur-interface"); // Editeur
     _ancienLib;
+    _maxLines = 4;
 
     // CONSTRUCTEUR
     constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
@@ -72,6 +73,15 @@ class Condition extends HTMLElement {
             if (this._ancienLib != this._libelle) {
                 this._editeur.ajouterEvenement(new EvenementEditionLibelleCondition(this, this._ancienLib, this._libelle));
                 this._ancienLib = this._libelle;
+            }
+        });
+
+        this.divLibelle.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const lines = this.innerText.split('\n');
+                if (lines.length >= this._maxLines) { // Le nombre max de lignes est atteint
+                    e.preventDefault(); // Empêche le retour à la ligne
+                }
             }
         });
 

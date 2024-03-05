@@ -326,6 +326,7 @@ class Editeur extends HTMLElement {
                 }
                 if (e.key.toLowerCase() === 'a') {
                     // Ctrl + A
+                    if (document.activeElement.isContentEditable) return;
                     e.preventDefault();
                     this.selectAll();
                 }
@@ -519,6 +520,38 @@ class Editeur extends HTMLElement {
                 if (verbose) console.log(`Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`);
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
+            } else {
+                // L'élément graphique dont le centre est le plus proche de la souris doit être devant les autres
+                let distanceMin = 1000000;
+                let elemLePlusProche = null;
+
+                // Adapter les coordonnees de la souris pour les comparer avec les coordonnees des éléments graphiques
+                // Convertir en vw
+                let coordSouris = {
+                    x: e.clientX / window.innerWidth * 100,
+                    y: e.clientY / window.innerWidth * 100
+                }
+
+                // Prendre en compte le zoom
+                coordSouris.x /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
+                coordSouris.y /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
+
+                // Prendre en compte le scroll du plan de travail
+                coordSouris.x += this._espacePrincipal.scrollLeft / window.innerWidth * 100;
+                coordSouris.y += this._espacePrincipal.scrollTop / window.innerWidth * 100;
+
+                // Trouver l'élément le plus proche
+                for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+                    let coordCentreElem = elem.getCentre();
+
+                    let distance = Math.sqrt((coordSouris.x - coordCentreElem.x)**2 + (coordSouris.y - coordCentreElem.y)**2);
+                    if (distance < distanceMin) {
+                        distanceMin = distance;
+                        elemLePlusProche = elem;
+                    }
+                }
+                if (verbose) console.log(elemLePlusProche);
+                if (elemLePlusProche) elemLePlusProche.parentNode.appendChild(elemLePlusProche);
             }
             if (this._isSelecting) {
                 let abscisseEnPx = e.clientX - this._espacePrincipal.getBoundingClientRect().left;

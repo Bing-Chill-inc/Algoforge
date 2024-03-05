@@ -384,6 +384,10 @@ selection-rectangle {
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
 }
 
+[contenteditable="true"] { /* Pour empêcher le navigateur de supprimer les espaces */
+    white-space: pre-wrap;
+}
+
 plan-travail {
     width: 100%;
     height: 100%;
@@ -455,7 +459,7 @@ probleme-element {
 
         probleme-element > div.containerDPR > div.nom {
             width: calc(var(--sizeModifier) * 10vw);
-            height: 100%;
+            height: calc(var(--sizeModifier) * 4vw);
             grid-column: 2;
             border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
             text-align: center;
@@ -467,7 +471,6 @@ probleme-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
-            white-space: pre-wrap;
         }
 
         probleme-element > div.containerDPR > div.nom:focus-visible {
@@ -577,7 +580,7 @@ procedure-element {
 
         procedure-element > div.containerDPR > div.nom {
             width: calc(var(--sizeModifier) * 8vw);
-            height: 100%;
+            height: calc(var(--sizeModifier) * 4vw);
             grid-column: 2;
             border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
             text-align: center;
@@ -885,11 +888,12 @@ structure-switch-element {
 condition-element {
     position: relative;
     transition: all 0.2s ease-in-out;
+    height: 100%;
 }
 
 condition-element > div.libelle {
     width: calc(var(--sizeModifier) * 10vw);
-    height: inherit;
+    height: 100%;
     resize: none;
     border: none;
     background: none;
@@ -902,7 +906,6 @@ condition-element > div.libelle {
     justify-content: center;
     flex-direction: column;
     word-wrap: break-word;
-    overflow: hidden;
     background-color: var(--bgColor);
 }
 
