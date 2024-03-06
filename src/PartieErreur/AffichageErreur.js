@@ -72,7 +72,7 @@ class AffichageErreur extends HTMLElement {
         
         // Création du bouton pour supprimer la div d'erreur
         const bouttonSupprimer = document.createElement('button');
-        bouttonSupprimer.textContent = 'Supprimer';
+        bouttonSupprimer.textContent = 'Fermer';
         bouttonSupprimer.classList.add('boutton-supprimer');
         bouttonSupprimer.addEventListener('click', () => {
             this.supprimerDivErreur();

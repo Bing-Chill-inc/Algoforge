@@ -1169,13 +1169,23 @@ ligne-element {
 affichage-erreur-element {
     position: relative;
 }
+affichage-erreur-element button
+{
+    background: none;
+    border: var(--fgColor) solid 0.1vw;
+    border-radius: 1vw;
+    font-size: 1vw;
+    color: var(--fgColor);
+    cursor: default;
+    margin: 1vw;
+}
 
 affichage-erreur-element .erreur-container {
     position: absolute;
     top: calc(100% + 5px); /* Place la div juste en dessous du bouton */
     left: 0; /* Centre la div par rapport au bouton */
-    background-color: #f8d7da; /* Couleur de fond */
-    border: 1px solid #f5c6cb; /* Bordure */
+    background-color: var(--bgColor); /* Couleur de fond */
+    border: 1px solid var(--fgColor); /* Bordure */
     padding: 10px; /* Espacement intérieur */
     border-radius: 5px; /* Bord arrondi */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre */

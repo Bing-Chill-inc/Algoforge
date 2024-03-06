@@ -41,7 +41,7 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
      * @description La méthode detecterAnomalie vérifie si la boucle bornée est bien bornée.
      */
     static detecterAnomalie(uneBoucleBornee) {
-        // On vérifie que la borne inférieure et supèrieur sont des nombres
+        // On vérifie que la borne inférieure et superieur sont des nombres
         if (isNaN(uneBoucleBornee._borneInferieure) || isNaN(uneBoucleBornee._borneSuperieure)) {
             return false;
         }  
