@@ -74,7 +74,6 @@ class PlanTravail extends HTMLElement {
         for(let elementgraphique of this.getProblemePrincipal()) {
             listeAnomalies = [...listeAnomalies, ...elementgraphique.rechercherAnomalies()];
         }
-        console.log(listeAnomalies);
         return listeAnomalies;
     }
 

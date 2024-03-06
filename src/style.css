@@ -1166,3 +1166,27 @@ ligne-element {
         translate: 0 0;
     }
 }
+affichage-erreur-element {
+    position: relative;
+}
+
+affichage-erreur-element .erreur-container {
+    position: absolute;
+    top: calc(100% + 5px); /* Place la div juste en dessous du bouton */
+    left: 0; /* Centre la div par rapport au bouton */
+    background-color: #f8d7da; /* Couleur de fond */
+    border: 1px solid #f5c6cb; /* Bordure */
+    padding: 10px; /* Espacement intérieur */
+    border-radius: 5px; /* Bord arrondi */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre */
+    z-index: 999; /* S'assure que la boîte est au-dessus des autres éléments */
+    width: 200px;
+}
+
+affichage-erreur-element .erreur-containerp {
+    margin: 0; /* Supprime les marges par défaut du paragraphe */
+}
+
+affichage-erreur-element .erreur-container .fleche {
+    cursor: pointer; /* Curseur de la flèche */
+}
