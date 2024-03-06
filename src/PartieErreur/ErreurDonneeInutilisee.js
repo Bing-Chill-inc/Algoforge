@@ -67,6 +67,7 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
      * @description La méthode detecterAnomalie cherche les données inutilisées dans l'algorithme et retourne une liste contenant les noms des données inutilisées trouvées.
      */
     static detecterAnomalie(unProbleme) {
+        try{
         // A changer reperer juste si il y'a le texte
         const listeDentree = unProbleme.getInformationDonnee(); 
         let listeEntree = listeDentree;
@@ -92,6 +93,10 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
         }
         else {
             return [false];
+        }
+        }
+        catch(e) {
+            console.error(e);
         }
     } 
 } 

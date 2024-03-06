@@ -54,21 +54,27 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
      * @description La méthode detecterAnomalie cherche si le parent de la condition d'arrêt a des enfants qui sont après la condition d'arrêt. Si oui, la méthode renvoie un tableau avec le premier élément à exécuter après la condition d'arrêt, sinon renvoie un tableau vide.
      */
     static detecterAnomalie(unArret) {
-        const parent = unArret.getParent();
-        if (parent == null) {
+        try {
+            const parent = unArret.getParent();
+            if (parent == null) {
+                return [false];
+            }
+            const listeEnfantsDuParent = parent.getEnfants();
+            let tailleListe = listeEnfantsDuParent.length;
+            if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
+                let courant = tailleListe - 1;
+                let elementsConcernes = [];
+                while (listeEnfantsDuParent[courant] != unArret){
+                    elementsConcernes.push(listeEnfantsDuParent[courant]);
+                    courant--;
+                }
+                return [true, elementsConcernes];
+            }
             return [false];
         }
-        const listeEnfantsDuParent = parent.getEnfants();
-        let tailleListe = listeEnfantsDuParent.length;
-        if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
-            let courant = tailleListe - 1;
-            let elementsConcernes = [];
-            while (listeEnfantsDuParent[courant] != unArret){
-                elementsConcernes.push(listeEnfantsDuParent[courant]);
-                courant--;
-            }
-            return [true, elementsConcernes];
+        catch(e) {
+            console.error(e);
+            return [false];
         }
-        return [false];
     }
 } 

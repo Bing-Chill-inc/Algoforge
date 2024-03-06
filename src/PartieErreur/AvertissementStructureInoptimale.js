@@ -76,24 +76,48 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
      * @description La méthode detecterAnomalie cherche s'il y a une StructureSi mal utilisée.
      */
     static detecterAnomalie(StructureAlternative){
+        /* 
+        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
+        */
+        try {
         const conditions = StructureAlternative._listeConditions.children;
-
-        // Récupérer les caractères avant "=" dans la première condition
-        let  libelle = conditions[0].querySelector('.libelle').textContent;
-        const premierCaracteresAvantEgal = libelle.split('=')[0].trim();
-        let variable = premierCaracteresAvantEgal;
-        let valeurs = [libelle.split('=')[1].trim()];
-    
-        // Vérifier si ces caractères sont présents dans tous les autres libellés
-        for (let condition of StructureAlternative._listeConditions.children) {
+        if(conditions.lenght < 3)
+        {
+            return [false];
+        }
+        let libelle = conditions[0].querySelector('.libelle').textContent;
+        let caracteresAvantEgal;
+        let valeurs = [];
+        
+        if(libelle.includes("="))
+        {
+            caracteresAvantEgal = libelle.split('=')[0].trim();
+        }
+        // Vérifier si tout les conditions contient un = et que la variable traiter est constante
+        for (let condition of conditions) {
+            console.log(condition);
             libelle = condition.querySelector('.libelle').textContent;
-            let caracteresAvantEgal = libelle.split('=')[0].trim();
-            if (premierCaracteresAvantEgal !== caracteresAvantEgal) {
-                return [false]; // Les caractères ne sont pas présents dans tous les autres libellés
+            if(libelle.toLowerCase().includes("sinon"))
+            {
+                // default statement structure switch
+                continue;
+            }
+            if(!libelle.includes("=") || libelle.toLowerCase().includes("ou") || libelle.toLowerCase().includes("et"))
+            {
+                return [false];
+            }
+            if(caracteresAvantEgal != libelle.split('=')[0].trim()) 
+            {
+                return [false];
             }
             valeurs.push(libelle.split('=')[1].trim());
         }
     
-        return [true, variable, valeurs];
+        return [true, caracteresAvantEgal, valeurs];
+        }
+        catch(e){
+            console.error(e);
+            return [false]; 
+        }
     }
 }

@@ -39,6 +39,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
      * @description La méthode detecterAnomalie cherche si la taille d'un PlanTravail n'est pas plus grande que la distance maximale définie.
      */
     static detecterAnomalie(unPlan) {
+        try {
         let distanceMax = 100;
         let listeElementGraphique = unPlan.children;
         let elementHautGauche = listeElementGraphique[0];
@@ -56,6 +57,10 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
             return true;
         }
         return false;
+        }
+        catch(e) {
+            console.error(e);
+        }
     }
     /**
      * @static

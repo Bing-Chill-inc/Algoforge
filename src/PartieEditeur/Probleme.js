@@ -124,7 +124,6 @@ class Probleme extends ElementGraphique {
     replaceTexte(chaineAChercher, chaineARemplacer) {
         this.querySelector(".nom").textContent = this.querySelector(".nom").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
     }
-
     /**
      * @description Retourne les données du Probleme
      *

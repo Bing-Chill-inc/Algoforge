@@ -66,10 +66,11 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
      * @description La méthode detecterAnomalie cherche les résultats inutilisés dans l'algorithme et retourne une liste contenant les noms des résultats inutilisés trouvés.
      */
     static detecterAnomalie(unProbleme) {
+        try {
         const parent = unProbleme.getParent();
         if(parent == null)
         {
-            return false;
+            return [false];
         }
         let resultatProbleme = unProbleme.getInformationResultat();
         // Regarder si le resultat est utiliser dans les resultats des antescdédants
@@ -109,5 +110,11 @@ class ErreurResultatInutilisee extends ErreurConceptuelle {
         else {
             return [false];
         }
+    }
+    catch(e)
+    {
+        console.error(e);
+        return [false];
+    }
     }
 } 

@@ -91,7 +91,6 @@ class ElementGraphique extends HTMLElement {
     }
 
     // ENCAPSULATION
-
     getTailleAbscisse() {
         let rect = this.getBoundingClientRect();
 
@@ -228,6 +227,18 @@ class ElementGraphique extends HTMLElement {
     }
     
     /**
+     * @description Comportement natif de getPlanTravail(), Retourne le plan de travail
+     * 
+     * <br>Est étendu dans les sous classes
+     *
+     * @returns {PlanTravail} Le Plan Travail appartenant au résultat défini, dans Probleme
+     */
+    getPlanTravail()
+    {
+        return this.parentElement;
+    }
+
+    /**
      * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
      * 
      * <br>Est étendu dans les sous classes
@@ -259,65 +270,12 @@ class ElementGraphique extends HTMLElement {
             anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes,...enfant.rechercherAnomalies()];
         }
         anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
-        this.afficherErreur();
         return anomalieDeMesEnfantsEtLesMiennes;
     }
     /* Partie Affichage */
     colorierElement() {
         //console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
     }
-    signalerErreur() {
-        this._etat = "Erreur"
-        this._couleurPrimaire = "red";
-        this.colorierElement();
-    }
-    signalerAvertissement() {
-        this._etat = "Avertissement"
-        this._couleurPrimaire = "yellow";
-        this.colorierElement();
-    }
-    effacerSignalement() {
-        this._etat = "Defaut"
-        this._couleurPrimaire = "black";
-        this.colorierElement();
-    }
-    afficherErreur() {
-        this.effacerErreur();
-        if(this._listeAnomalie) {
-            if(this._listeAnomalie.length > 0) {
-                let EstUneErreur = false;
-                /*let divListeErreur = document.createElement("div");
-                divListeErreur.className = "divErreur";
-                this.appendChild(divListeErreur);
-
-                let listeErreur = document.createElement("ul");
-                divListeErreur.appendChild(listeErreur);*/
-                for(let anomalie of this._listeAnomalie) {
-                    if(anomalie instanceof ErreurConceptuelle) {
-                        EstUneErreur = true;
-                    }
-                    /*
-                    let erreur = document.createElement("li");
-                    erreur.textContent = probleme;
-                    listeErreur.appendChild(erreur);*/
-                }
-                if(EstUneErreur) {
-                    this.signalerErreur();
-                }
-                else {
-                    this.signalerAvertissement();
-                }
-            }
-        }
-    }
-    effacerErreur() {
-        this.effacerSignalement();
-        const divErreur = this.querySelector(".divErreur");
-        if (divErreur) {
-            divErreur.remove();
-        }
-    }
-
     renameInformation(ancienNom, nouveauNom) {
         
     }

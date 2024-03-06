@@ -37,6 +37,7 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
      * @description La méthode detecterAnomalie vérifie si une condition de sortie est en dehors d'une boucle itérative et renvoie true si c'est le cas, sinon false.
      */
     static detecterAnomalie(unArret) {
+        
         let listeAntescedants = unArret.getAntescedants(StructureIterativeNonBornee);
         if(listeAntescedants.length > 0){
             return false;

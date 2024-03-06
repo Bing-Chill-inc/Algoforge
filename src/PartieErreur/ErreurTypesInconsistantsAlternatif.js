@@ -78,17 +78,22 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
      * @description La méthode detecterAnomalie cherche si dans une StructureAlternative une variable a un tipé inconsistant.
      */
     static detecterAnomalie(uneStructureAlternative){
+        try {
         let types = [];
         let variable = null;
         if(uneStructureAlternative instanceof StructureSi) {
             const regex = /^(.*?)\s*([=!<>]=?)\s*(.*?)$/;
             const premierLibelle = uneStructureAlternative._listeConditions.children[0]._libelle;
-            variable = premierLibelle.match(regex)[1];
-            let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(uneStructureAlternative._listeConditions.children[0]._libelle));
-            types.push(typePremier);
-            for (let condition of uneStructureAlternative._listeConditions.children) { 
-                let type = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle));
-                types.push(type);
+            let resultat = premierLibelle.match(regex);
+            if(resultat)
+            {
+                variable = resultat[1];
+                let typePremier = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(uneStructureAlternative._listeConditions.children[0]._libelle));
+                types.push(typePremier);
+                for (let condition of uneStructureAlternative._listeConditions.children) { 
+                    let type = ErreurTypesInconsistantsAlternatif.determinerType(ErreurTypesInconsistantsAlternatif.extraireValeurComparaison(condition._libelle));
+                    types.push(type);
+                }
             }
 
         }
@@ -107,6 +112,12 @@ class ErreurTypesInconsistantsAlternatif extends ErreurConceptuelle
             }
         }
         return [false];
+        }
+        catch(e)
+        {
+            console.error(e);
+            return [false];
+        }
     }
     /**
      * @static

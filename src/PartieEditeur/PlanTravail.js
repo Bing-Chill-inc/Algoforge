@@ -8,6 +8,7 @@ class PlanTravail extends HTMLElement {
     // ATTRIBUTS 
     _editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
     leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
+
     // CONSTRUCTEUR
     /**
      * @constructor
@@ -45,13 +46,15 @@ class PlanTravail extends HTMLElement {
 
     // METHODES
     /**
-     * @description Retourne le premier Problème du plant de travail
+     * @description Retourne lesProblèmes du plans de travail n'ayant pas de parent
      *
      * @type {Probleme}
      * @returns {Probleme} Le premier problème du plan de travail
      */
     getProblemePrincipal() {
-        return this.children[0];
+        let listeElementsGraphiques = PlanTravail.FiltrerElementsGraphique(this.children, ElementGraphique);
+        listeElementsGraphiques = listeElementsGraphiques.filter((unElementGraphique) => unElementGraphique.getParent()==undefined);
+        return listeElementsGraphiques;
     }
     
     /**
@@ -68,7 +71,9 @@ class PlanTravail extends HTMLElement {
         if(AvertissementPlanTropGrand.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementPlanTropGrand(this));
         }
-        listeAnomalies = [...listeAnomalies, ...this.getProblemePrincipal().rechercherAnomalies()];
+        for(let elementgraphique of this.getProblemePrincipal()) {
+            listeAnomalies = [...listeAnomalies, ...elementgraphique.rechercherAnomalies()];
+        }
         console.log(listeAnomalies);
         return listeAnomalies;
     }

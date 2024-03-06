@@ -37,16 +37,16 @@ class StructureIterativeNonBornee extends StructureIterative {
      * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies récupéré par les enfants
      * @returns {Array<AnomalieConceptuelle>} la liste des anomalies précédante+ celle trouvé par la structure
      */
-    rechercherAnomalies(listeAnomaliesPrecedent = []) {
-        let listeAnomalies = listeAnomaliesPrecedent;
+    rechercherAnomalies() {
+        let mesAnomalies = [];
         // 10
         if(ErreurBoucleSansSortie.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurBoucleSansSortie(this));
+            mesAnomalies.push(new ErreurBoucleSansSortie(this));
         }
         // 12
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
         }
         return super.rechercherAnomalies(mesAnomalies);
     }
