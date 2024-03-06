@@ -7,7 +7,7 @@
 class PlanTravail extends HTMLElement {
     // ATTRIBUTS 
     _editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
-    leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
+
     // CONSTRUCTEUR
     /**
      * @constructor
@@ -39,9 +39,26 @@ class PlanTravail extends HTMLElement {
             if (verbose) console.log('eval(data) = ' + eval(data));
             this.ajouterElement(eval(data), x, y, false);
         });
+
+        // Une fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
+        setInterval(() => {
+            for (let element of this.children) {
+                if (element instanceof ElementGraphique) {
+                    if (element.getCentre().x < 0 || parseFloat(element._ordonnee) < 0) {
+                        element._abscisse = Math.max(0, parseFloat(element._abscisse)) + 'vw';
+                        element._ordonnee = Math.max(0, parseFloat(element._ordonnee)) + 'vw';
+                        element.setPosition();
+                    }
+                }
+            }
+        }, 1000);
     }
 
-    // ENCAPSULATION -non-
+    // ENCAPSULATION 
+
+    get leDictionnaireDesDonnees() {
+        return this._editeur._dictionnaireDesDonnees;
+    }
 
     // METHODES
     /**
@@ -108,11 +125,13 @@ class PlanTravail extends HTMLElement {
         listeElementsSansParents.forEach((element) => {
             corpsJSON.push(element.toJSON());
         });
+
+        corpsJSON.push(this.leDictionnaireDesDonnees.toJSON());
         return corpsJSON;
     }
 
     /**
-     * @description Lis un fichier json et le charge en mémoire. Vérifi également si le fichier est bien un JSON
+     * @description Lis un fichier json et le charge en mémoire. Vérifie également si le fichier est bien un JSON
      *
      * @param {string} fichier Le fichier json à charger en mémoire
      */
@@ -122,6 +141,7 @@ class PlanTravail extends HTMLElement {
             this.chargerDepuisJSON(parsedData);
         } catch (error) {
             alert("Le fichier n'est pas au format JSON.");
+            if (verbose) console.log(error);
         }
     }
 
@@ -248,6 +268,8 @@ class PlanTravail extends HTMLElement {
                     conditionSortie.setPosition();
                     listeElems.push(conditionSortie);
                     break;
+                case 'DictionnaireDonnee':
+                    this.leDictionnaireDesDonnees.chargerDepuisJSON(element);
                 default:
                     break;
             }
@@ -261,19 +283,20 @@ class PlanTravail extends HTMLElement {
      * @description Recherche toutes les variables à l'intérieur du PlanTravail et les donne au dictionnaire de donnée
      */
     effectuerDictionnaireDesDonnee() {
-        // Suppression de toutes les Informations ayant comme type undefined
-        this.leDictionnaireDesDonnees.suppressionDonneeInutiliser()
+        // Suppression de toutes les Informations
+        this.leDictionnaireDesDonnees.suppressionTout()
 
-        //Ajout des Informations
+        // Ajout des Informations
         let lesInformations = [];
-        for(let courantObjetGraphique of this.children)
-        {
+        for(let courantObjetGraphique of this.children) {
+            if (courantObjetGraphique instanceof ElementGraphique)
             lesInformations = [...lesInformations, ...courantObjetGraphique.extraireInformation()];
         }
-        for(let uneInformation of lesInformations)
-        {
+        for(let uneInformation of lesInformations) {
             this.leDictionnaireDesDonnees.AjouterUneVariable(uneInformation);
         }
+
+        // this.leDictionnaireDesDonnees.retirerInformationsAbsentes(lesInformations);
     }    
     trouverToutLesElementsGraphiques() {
         let elements = [];

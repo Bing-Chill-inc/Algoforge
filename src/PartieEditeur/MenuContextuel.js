@@ -13,11 +13,16 @@ class MenuContextuel extends HTMLElement {
         for (let i = 0; i < menuContextuel.length; i++) {
             menuContextuel[i].remove();
         }
+
+        // Prendre en compte le zoom
+        x = x / this._editeur._indicateurZoom._zoom;
+        y = y / this._editeur._indicateurZoom._zoom
+
         this._x = x;
         this._y = y;
 
-        if (x > 90) {
-            x = 90; // Empêcher le menu de déborder à droite
+        if (x > 90 / this._editeur._indicateurZoom._zoom) {
+            x = 90 / this._editeur._indicateurZoom._zoom; // Empêcher le menu de déborder à droite
         }
 
         this.style.left = `calc(var(--sizeModifier) * ${x}vw)`
@@ -27,6 +32,40 @@ class MenuContextuel extends HTMLElement {
     }
 
     genererOptions() {
+        // Les options toujours disponibles
+        this.appendChild(new ElementMenuKeyboardTip('Annuler', () => {
+            console.log('Annuler');
+            this._editeur.undo();
+        }, `${this._editeur._toucheMeta}Z`));
+
+        this.appendChild(new ElementMenuKeyboardTip('Rétablir', () => {
+            console.log('Rétablir');
+            this._editeur.redo();
+        }, `${this._editeur._toucheMeta}Y`));
+
+        if (this._selection.nbElementsSelectionnes >= 1) {
+            this.appendChild(new ElementMenuKeyboardTip('Supprimer', () => {
+                console.log('Supprimer l\'élément');
+                this._selection.supprimerTout();
+                this.remove();
+            }, `Suppr`));
+
+            this.appendChild(new ElementMenuKeyboardTip('Couper', () => {
+                console.log('Couper');
+                this._editeur.cut();
+            }, `${this._editeur._toucheMeta}X`));
+    
+            this.appendChild(new ElementMenuKeyboardTip('Copier', () => {
+                console.log('Copier');
+                this._editeur.copy();
+            }, `${this._editeur._toucheMeta}C`));
+        }
+
+        this.appendChild(new ElementMenuKeyboardTip('Coller', () => {
+            console.log('Coller');
+            this._editeur.paste();
+        }, `${this._editeur._toucheMeta}V`));
+
         /*
             Il y a 3 cas de figures:
             - Aucun élément n'est sélectionné, on affiche un menu pour ajouter un élément à l'espace de travail.
@@ -83,16 +122,37 @@ class MenuContextuel extends HTMLElement {
         } else if (this._selection.nbElementsSelectionnes == 1) {
             let elem = this._selection._listeElementsSelectionnes[0]._element;
             if (verbose) console.log(elem);
-            for (let optionContextuelle of elem.genererOptionsContextuelles(this._selection)) {
+            for (let optionContextuelle of elem.genererOptionsContextuelles(this._editeur)) {
                 this.appendChild(optionContextuelle);
             }
         }
 
         if (this._selection.nbElementsSelectionnes >= 1) {
-            this.appendChild(new ElementMenu('Supprimer', () => {
-                console.log('Supprimer l\'élément');
-                this._selection.supprimerTout();
-                this.remove();
+            let exporter = new ElementMenuCompose('Exporter la sélection', () => {
+                console.log('Exporter la sélection');
+            })
+            this.appendChild(exporter);
+    
+            let sousTitreGénéral = document.createElement('h3');
+            sousTitreGénéral.innerText = 'Tout';
+            exporter.ajouterElementMenu(sousTitreGénéral);
+    
+            exporter.ajouterElementMenu(new ElementMenu('.json', () => {
+                console.log('Exporter en .json');
+                this._editeur.exporterJSON(this._editeur.copy(false));
+            }));
+    
+            let sousTitreAlgorithme = document.createElement('h3');
+            sousTitreAlgorithme.innerText = 'Algorithme';
+            exporter.ajouterElementMenu(sousTitreAlgorithme);
+    
+            exporter.ajouterElementMenu(new ElementMenu('.png', () => {
+                console.log('Exporter en .png');
+            }));
+    
+            exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
+                console.log('Exporter en .svg');
+                this._editeur.exporterSVG(this._editeur.copy(false), true, true);
             }));
         }
     }

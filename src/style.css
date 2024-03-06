@@ -304,8 +304,193 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-right: 0.2vw;
 }
 
+dictionnaire-donnee {
+    position: fixed;
+    top: 10vw;
+    right: 0;
+    width: 5vw;
+    height: 5vw;
+    padding: 0.5vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 1vw 0 0 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
+    overflow: hidden;
+    cursor: pointer;
+    transform-origin: right;
+    transition: 0.2s all ease;
+}
+
+dictionnaire-donnee > img {
+    width: 5vw;
+    height: 5vw;
+}
+
+dictionnaire-donnee:hover {
+    scale: 1.15 1;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
+dictionnaire-donnee.ouvert {
+    width: 40vw;
+    height: fit-content;
+    max-height: calc(80vh - 10vw);
+    min-height: 15vw;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
+dictionnaire-donnee.ouvert:hover {
+    scale: 1 1;
+}
+
+dictionnaire-donnee > span.raffraichir {
+    position: absolute;
+    top: 0;
+    right: 3.5vw;
+    padding: 0.5vw;
+    font-size: 2vw;
+    transition: 0.2s all ease;
+}
+
+dictionnaire-donnee > span.raffraichir.rotation {
+    rotate: 360deg;
+}
+
+dictionnaire-donnee > span.fermeture {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5vw;
+    font-size: 3vw;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    scrollbar-width: none;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > th {
+    width: 95%;
+    height: 5vw;
+    min-height: 5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.1vw solid var(--fgColor);
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    border-right: 0.1vw solid var(--fgColor);
+    margin-left: 1%;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > th > td:last-child {
+    border-right: none;
+    width: 150%;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > tr {
+    width: 95%;
+    height: 3vw;
+    min-height: 3vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.1vw solid var(--fgColorSemiTransparent);
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > tr > td {
+    width: 100%;
+    height: 100%;
+    margin-left: 1%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    border-right: 0.1vw solid var(--fgColor);
+    cursor: text;
+    overflow-x: hidden;
+    word-wrap: anywhere;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > tr > td:last-child {
+    border-right: none;
+    width: 150%;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > tr.ajout {
+    opacity: 0.75;
+}
+
 menu-contextuel {
     position: fixed;
+    width: 15vw;
+    height: fit-content;
+    min-height: 2vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    z-index: 2048;
+    font-size: 1vw;
+}
+menu-contextuel > element-menu,
+menu-contextuel > element-menu-compose,
+menu-contextuel > element-menu-keyboard-tip,
+element-menu-compose:hover > menu-deroulant > element-menu,
+element-menu-compose:hover > menu-deroulant > element-menu-compose,
+element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
+    padding-left: 5%;
+    width: 95%;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+}
+
+menu-contextuel > element-menu:hover,
+menu-contextuel > element-menu-compose:hover,
+menu-contextuel > element-menu-keyboard-tip:hover {
+    background-color: var(--fgColor);
+    color: var(--bgColor);
+}
+
+menu-contextuel >element-menu-compose > span,
+menu-contextuel > element-menu-keyboard-tip > span {
+    transition: all 0.5s ease;
+    position: absolute;
+    right: 5%;
+}
+
+menu-contextuel > element-menu-compose:hover > span {
+    position: absolute;
+    right: 2%;
+    rotate: 90deg;
+}
+
+menu-contextuel > element-menu-compose:hover > menu-deroulant {
+    scale: 1;
     width: 10vw;
     height: fit-content;
     min-height: 2vw;
@@ -315,16 +500,18 @@ menu-contextuel {
     display: flex;
     flex-direction: column;
     z-index: 2048;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
 }
-menu-contextuel > element-menu,
-menu-contextuel > element-menu-compose {
+
+menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
     padding-left: 5%;
     width: 95%;
     padding-top: 0.5vw;
     padding-bottom: 0.5vw;
     text-align: left;
     white-space: nowrap;
-    position: relative;
 }
 
 indicateur-zoom {
@@ -963,28 +1150,28 @@ condition-element > div.arrowsWrapper {
     font-size: calc(var(--sizeModifier) * 1vw);
     text-align: center;
     position: absolute;
-    bottom: -1.5vw;
+    bottom: calc(var(--sizeModifier) * -1.5vw);
     user-select: none;
     cursor: pointer;
     display: none;
-    padding: 0 0.5vw 0.5vw 0.5vw;
+    padding: 0 calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw);
 }
 
 condition-element > div.arrowsWrapper > span {
-    padding: 0.5vw;
+    padding: calc(var(--sizeModifier) * 0.5vw);
     border-radius: 0 0 999em 999em;
 }
 
 condition-element > div.arrowsWrapper > span:hover {
     color: var(--goodColor);
-    font-size: 1.2vw;
+    font-size: calc(var(--sizeModifier) * 1.2vw);
     transition: all 0.2s ease;
     background-color: var(--goodColorTransparent);
 }
 
 condition-element > div.ajouterAGauche {
-    width: 1.5vw;
-    height: 1.5vw;
+    width: calc(var(--sizeModifier) * 1.5vw);
+    height: calc(var(--sizeModifier) * 1.5vw);
     position: absolute;
     left: 0;
     border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
@@ -1000,8 +1187,8 @@ condition-element > div.ajouterAGauche {
 }
 
 condition-element > div.ajouterADroite {
-    width: 1.5vw;
-    height: 1.5vw;
+    width: calc(var(--sizeModifier) * 1.5vw);
+    height: calc(var(--sizeModifier) * 1.5vw);
     position: absolute;
     right: 0;
     border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);

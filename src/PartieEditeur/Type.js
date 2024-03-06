@@ -1,11 +1,11 @@
 class Type {
     // Enum type
-    static Boolean = 'Boolean';
-    static Char = 'Char';
-    static String = 'String';
-    static double = 'double';
-    static unsigned_int = 'unsigned int';
-    static int = 'int';
+    static Boolean = 'Booléen';
+    static Char = 'Charactère';
+    static String = 'Chaine de caractère';
+    static double = 'Double';
+    static unsigned_int = 'Entier non signé';
+    static int = 'Entier';
     static undefined = undefined;
 
     // CONSTRUCTEUR

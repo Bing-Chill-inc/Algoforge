@@ -348,9 +348,25 @@ class ElementGraphique extends HTMLElement {
         this.remove();
     }
 
-    genererOptionsContextuelles(selection) {
+    genererOptionsContextuelles(editeur) {
         let lesOptions = [];
-        lesOptions.push();
+        if (this.peutEtreDecompose()) {
+            lesOptions.push(new ElementMenu("Décomposer", () => {
+                editeur.selectTool(6); // Outil de liaison
+                editeur._pointePrecedementLien = this;
+                this.classList.add('pointePourLien');
+            }));
+            if (this._elemParent.nombreEnfants != 0) {
+                lesOptions.push(new ElementMenu("Délier tous les enfants", () => {
+                    this._elemParent.delierTousLesEnfants();
+                }));
+            }
+        }
+        if (this._parent != null) {
+            lesOptions.push(new ElementMenu("Délier du parent", () => {
+                this._parent.delierEnfant(this);
+            }));
+        }
         return lesOptions;
     }
 }

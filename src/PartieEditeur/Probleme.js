@@ -487,14 +487,18 @@ class Probleme extends ElementGraphique {
         let i = new Information();
         i._nom = "";
         const contenue = this.getTexte(); //' aa -> " a a " ';
-        if(contenue == "")
-        {
+        if(contenue == "") {
             return null;
         }
-        if(contenue.includes("<-"))
-        {
+        if(contenue.includes("<-")) {
             let nomDeVariable = contenue.split("<-")[0].trim();
             let contenueVariable = contenue.split("<-")[1].trim();
+            i._nom = nomDeVariable;
+            i._type = Type.DetecterLeType(contenueVariable);
+        }
+        if(contenue.includes("←")) {
+            let nomDeVariable = contenue.split("←")[0].trim();
+            let contenueVariable = contenue.split("←")[1].trim();
             i._nom = nomDeVariable;
             i._type = Type.DetecterLeType(contenueVariable);
         }
@@ -554,6 +558,38 @@ class Probleme extends ElementGraphique {
         this._elemParent.delierTousLesEnfants();
         if (this._parent != null) this._parent.delierEnfant(this);
         this.remove();
+    }
+
+    genererOptionsContextuelles(editeur) {
+        let listeOptions = super.genererOptionsContextuelles(editeur);
+        let exporter = new ElementMenuCompose('Exporter le sous-arbre', () => {
+            console.log('Exporter le sous-arbre');
+        })
+        listeOptions.push(exporter);
+
+        let sousTitreGénéral = document.createElement('h3');
+        sousTitreGénéral.innerText = 'Tout';
+        exporter.ajouterElementMenu(sousTitreGénéral);
+
+        exporter.ajouterElementMenu(new ElementMenu('.json', () => {
+            console.log('Exporter en .json');
+            this._editeur.exporterJSON(JSON.stringify([this.toJSON()]));
+        }));
+
+        let sousTitreAlgorithme = document.createElement('h3');
+        sousTitreAlgorithme.innerText = 'Algorithme';
+        exporter.ajouterElementMenu(sousTitreAlgorithme);
+
+        exporter.ajouterElementMenu(new ElementMenu('.png', () => {
+            console.log('Exporter en .png');
+        }));
+
+        exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
+            console.log('Exporter en .svg');
+            this._editeur.exporterSVG(JSON.stringify([this.toJSON()]), true, true);
+        }));
+
+        return listeOptions;
     }
 
 } window.customElements.define("probleme-element", Probleme);

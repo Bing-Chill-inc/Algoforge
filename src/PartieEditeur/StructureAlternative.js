@@ -214,4 +214,21 @@ class StructureAlternative extends ElementGraphique {
         }
         return listeEnfants;
     }
+
+    getCondition(index) {
+        return this._listeConditions.children[index];
+    }
+
+    genererOptionsContextuelles(editeur) {
+        let listeOptions = super.genererOptionsContextuelles(editeur);
+
+        // Ajouter la possibilité de délier les enfants
+        listeOptions.push(new ElementMenu('Délier toutes les conditions', () => {
+            console.log('Supprimer');
+            for (let condition of this._listeConditions.children) {
+                condition._elemParent.delierTousLesEnfants();
+            }
+        }));
+        return listeOptions;
+    }
 }

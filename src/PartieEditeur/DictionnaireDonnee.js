@@ -1,19 +1,176 @@
-class DictionnaireDonnee
-{    // ATTRIBUTS
+class DictionnaireDonnee extends HTMLElement {    // ATTRIBUTS
     _mesInformations; // Liste<Information> Liste de toutes les variables
     _dictionnaireDesConvertionTypes = {"Char":"String", "int":"double", "unsigned int":"int"} 
+    _estOuvert = false;
+
+    _matchSignification = {};
+
+    VARIABLE_SUPPR = '*variable_supprimee*'
+
     // CONSTRUCTEUR
-    constructor(listeVariable = [])
-    {
+    constructor(listeVariable = []) {
+        super();
         this._mesInformations = listeVariable;
+
+        // Affichage
+        let iconeDico = document.createElement("img");
+        iconeDico.src = "assets/DictionnaireDonnees.svg";
+        this.appendChild(iconeDico);
+
+        this.addEventListener("click", () => {
+            this.ouvrir();
+        });
     }
 
     // ENCAPSULATION
 
 
     // METHODES 
-    AfficherDictionnaire()
-    {
+    ouvrir() {
+        document.querySelector('plan-travail').effectuerDictionnaireDesDonnee();
+        if (this._estOuvert) return;
+        // Supprimer tout le contenu
+        this.innerHTML = "";
+
+        this.classList.add("ouvert");
+
+        this.genererDictionnaire();
+
+        // Ajout de la flèche de fermeture
+        let flecheFermeture = document.createElement("span");
+        flecheFermeture.innerHTML = "➔";
+        flecheFermeture.classList.add("fermeture");
+        flecheFermeture.addEventListener("click", (e) => {
+            e.stopPropagation();
+            this.fermer();
+        });
+        this.appendChild(flecheFermeture);
+        this._estOuvert = true;
+
+        // Ajout d'un bouton de raffraichissement
+        let boutonRaffraichir = document.createElement("span");
+        boutonRaffraichir.innerHTML = "⟳";
+        boutonRaffraichir.classList.add("raffraichir");
+        boutonRaffraichir.addEventListener("click", (e) => {
+            e.stopPropagation();
+            boutonRaffraichir.classList.add("rotation");
+            setTimeout(() => {
+                boutonRaffraichir.classList.remove("rotation");
+                this.fermer();
+                this.ouvrir();
+            }, 200);
+        });
+        this.appendChild(boutonRaffraichir);
+    }
+
+    fermer() {
+        // Supprimer tout le contenu
+        this.innerHTML = "";
+
+        this.classList.remove("ouvert");
+
+        // Affichage de l'icone
+        let iconeDico = document.createElement("img");
+        iconeDico.src = "assets/DictionnaireDonnees.svg";
+        this.appendChild(iconeDico);
+        this._estOuvert = false;
+    }
+
+    genererDictionnaire() {
+        let table = document.createElement("table");
+        table.id = "tableDictionnaireDonnee";
+        this.appendChild(table);
+
+        // Entête
+        let thEntete = document.createElement("th");
+        table.appendChild(thEntete);
+
+        let tdNom = document.createElement("td");
+        tdNom.textContent = "Nom";
+        thEntete.appendChild(tdNom);
+
+        let tdType = document.createElement("td");
+        tdType.textContent = "Type";
+        thEntete.appendChild(tdType);
+
+        let tdSignification = document.createElement("td");
+        tdSignification.textContent = "Signification";
+        thEntete.appendChild(tdSignification);
+
+        // Contenu
+        for (let info of this._mesInformations) {
+            let trContent = document.createElement("tr");
+            table.appendChild(trContent);
+
+            let tdNom = document.createElement("td");
+            tdNom.textContent = info._nom;
+            tdNom.setAttribute('contenteditable', 'true');
+            trContent.append(tdNom);
+            tdNom.addEventListener('keydown', (event) => {
+                // On vérifie si la touche appuyée est "Entrée" ou "Espace"
+                if (event.key === 'Enter' || event.key === ' ') {
+                    // On l'empêche pour éviter le saut de ligne, qui casse le design
+                    event.preventDefault();
+                }
+                // Demander confirmation pour la suppression si il ne reste qu'un caractère
+                if (event.key === 'Backspace' && tdNom.innerText.length == 1) {
+                    if (!confirm("Voulez-vous vraiment supprimer cette variable?")) {
+                        event.preventDefault();
+                    } else {
+                        if (verbose) console.log(info);
+                        document.querySelector('plan-travail').renameInformation(info._nom, this.VARIABLE_SUPPR);
+                        this._mesInformations.splice(this._mesInformations.indexOf(info), 1);
+                        this.fermer();
+                        this.ouvrir();
+                    }
+                }
+            });
+
+            tdNom.addEventListener('input', () => {
+                this._mesInformations.forEach(element => {
+                    if (element._nom == info._nom) {
+                        document.querySelector('plan-travail').renameInformation(element._nom, tdNom.innerText);
+                        this._matchSignification[tdNom.innerText] = this._matchSignification[element._nom];
+                        this._matchSignification[element._nom] = undefined;
+                        element._nom = tdNom.innerText;
+                    }
+                });
+            });
+
+            let tdType = document.createElement("td");
+            tdType.textContent = info._type;
+            trContent.append(tdType);
+
+            let tdSignification = document.createElement("td");
+            tdSignification.textContent = this._matchSignification[info._nom];
+            tdSignification.setAttribute('contenteditable', 'true');
+            trContent.append(tdSignification);
+            tdSignification.addEventListener('input', () => {
+                this._matchSignification[info._nom] = tdSignification.innerText;
+            });
+        }
+
+        // Ajout d'une ligne pour ajouter une variable
+        let trAjout = document.createElement("tr");
+        trAjout.classList.add("ajout");
+        table.appendChild(trAjout);
+
+        tdNom = document.createElement("td");
+        tdNom.contentEditable = "true";
+        tdNom.textContent = "Nouvelle variable";
+        trAjout.append(tdNom);
+
+        tdType = document.createElement("td");
+        tdType.contentEditable = "true";
+        trAjout.append(tdType);
+
+        tdSignification = document.createElement("td");
+        tdSignification.contentEditable = "true";
+        trAjout.append(tdSignification);
+    }
+
+    // Déprécié
+    #AfficherDictionnaire() {
         // Récupérez la référence de la table par son ID
         const table = document.getElementById("tableDictionnaireDonnee");
          // Obtenez toutes les lignes de la table
@@ -60,8 +217,10 @@ class DictionnaireDonnee
     }
 
     
-    AjouterUneVariable(uneInformation)
-    {
+    AjouterUneVariable(uneInformation) {
+        if (uneInformation._nom == this.VARIABLE_SUPPR) {
+            return false;
+        }
         let reussis = false;
         const nameInformation = uneInformation._nom;
         if(uneInformation instanceof Information) {
@@ -76,23 +235,28 @@ class DictionnaireDonnee
                 }
                 else {
                     this._mesInformations.push(uneInformation);
-                    this.AfficherDictionnaire();
                     reussis = true;
                 }
             }
         }
         return reussis;
     }
-    retirerUneInformation(nameVariable)
-    {
+
+    retirerInformationsAbsentes(listeInformations) {
+        for (let info of this._mesInformations) {
+            if (!listeInformations.includes(info)) {
+                this.retirerUneInformation(info._nom);
+            }
+        }
+    }
+
+    retirerUneInformation(nameVariable) {
         this._mesInformations = this._mesInformations.filter(element => element._nom != nameVariable);
-        this.AfficherDictionnaire();
         return true;
     }
 
 
-    TypeCompatible(type1, type2)
-    {
+    TypeCompatible(type1, type2) {
         if(type1 == undefined || type2 == undefined) {
             return true;
         }
@@ -112,8 +276,7 @@ class DictionnaireDonnee
             if(!courant) {
                 break;
             }
-            if(type1 == courant)
-            {
+            if(type1 == courant) {
                 return true;
             }
             courant = this._dictionnaireDesConvertionTypes[courant];
@@ -155,12 +318,10 @@ class DictionnaireDonnee
         let courant = type1;
         while(true)
         {
-            if(!courant)
-            {
+            if(!courant) {
                 break;
             }
-            if(type2 == courant)
-            {
+            if(type2 == courant) {
                 return type2;
             }
             courant = this._dictionnaireDesConvertionTypes[courant];
@@ -168,12 +329,10 @@ class DictionnaireDonnee
         courant = type2;
         while(true)
         {
-            if(!courant)
-            {
+            if(!courant) {
                 break;
             }
-            if(type1 == courant)
-            {
+            if(type1 == courant) {
                 return type1;
             }
             courant = this._dictionnaireDesConvertionTypes[courant];
@@ -183,8 +342,7 @@ class DictionnaireDonnee
     containInformation(nameInformation) {
         let trouver = false;
         this._mesInformations.forEach(element => {
-            if(element._nom == nameInformation)
-            {
+            if(element._nom == nameInformation) {
                 trouver = true;
             }
         });
@@ -202,13 +360,11 @@ class DictionnaireDonnee
         }
         else if(!this.containInformation(newName))
         {
-            if(this.nomCorrecte(newName))
-            {
+            if(this.nomCorrecte(newName)) {
                 this._mesInformations.forEach(element => {
                     if(element._nom == nameVariable)
                     {
                         element._nom = newName;
-                        this.AfficherDictionnaire();
                         resultat = true;
                     }
                 });
@@ -219,10 +375,8 @@ class DictionnaireDonnee
     changeSignification(nameVariable, nouvelleSignification) {
         let resultat = false;
         this._mesInformations.forEach(element => {
-            if(element._nom == nameVariable)
-            {
+            if(element._nom == nameVariable) {
                 element._signification = nouvelleSignification;
-                this.AfficherDictionnaire();
                 resultat = true;
                 
             }
@@ -232,11 +386,9 @@ class DictionnaireDonnee
     changeType(nameVariable, newType) {
         let resultat = false;
         this._mesInformations.forEach(element => {
-            if(element._nom == nameVariable)
-            {
+            if(element._nom == nameVariable) {
                 element._type = newType;
                 resultat = true;
-                this.AfficherDictionnaire();
             }
             }
         );
@@ -251,8 +403,7 @@ class DictionnaireDonnee
         }
         for(let char of nameVariable)
         {
-            if (!(char >= 'a' && char <= 'z') && !(char >= 'A' && char <= 'Z') && char !== '_')
-            {
+            if (!(char >= 'a' && char <= 'z') && !(char >= 'A' && char <= 'Z') && char !== '_') {
                 resultat = false;
             }
         }
@@ -263,6 +414,68 @@ class DictionnaireDonnee
         this._mesInformations = this._mesInformations.filter(element => {
             return element._type != undefined || (element._signification != undefined && element._signification != "");
         });
-        this.AfficherDictionnaire();
     }
-}
+
+    suppressionTout() {
+        this._mesInformations = [];
+    }
+
+    toJSON() {
+        return {
+            typeElement: 'DictionnaireDonnee',
+            contenu: this._matchSignification
+        };
+    }
+
+    exporter(format) {
+        switch (format.toLowerCase()) {
+            case 'xls':
+                // Code snippet de SheetJS
+                this.ouvrir();
+                /* Create worksheet from HTML DOM TABLE */
+                var wb = XLSX.utils.table_to_book(this.querySelector('table#tableDictionnaireDonnee'));
+                /* Export to file (start a download) */
+                XLSX.writeFile(wb, "SheetJSTable.xlsx");
+                this.fermer();
+                break;
+            case 'csv':
+                // On crée le contenu du fichier
+                var contenuTexte = "Nom;Type;Signification\n";
+                this.ouvrir();
+                this.fermer();
+
+                this._mesInformations.forEach((info) => {
+                    contenuTexte += `${info._nom};${info._type};${this._matchSignification[info._nom]}\n`;
+                });
+
+                // On crée un Blob avec le contenu JSON
+                var blob = new Blob([contenuTexte], { type: 'application/json' });
+                    
+                // On crée un URL pour le Blob
+                var url = URL.createObjectURL(blob);
+
+                // On crée un élément <a> pour télécharger le fichier
+                var downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = `${document.querySelector('#titreAlgo').innerText}Dictionnaire.csv`;
+
+                // Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                // On supprime le Blob et l'URL pour libérer de la mémoire
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                break;
+            case 'md':
+                    
+                break;
+            default:
+                break;
+        }
+    }
+
+    chargerDepuisJSON(json) {
+        this._matchSignification = json.contenu;
+    }
+} window.customElements.define("dictionnaire-donnee", DictionnaireDonnee);

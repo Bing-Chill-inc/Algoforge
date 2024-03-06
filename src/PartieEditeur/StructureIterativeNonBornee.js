@@ -78,4 +78,26 @@ class StructureIterativeNonBornee extends StructureIterative {
             enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
         };
     }
+
+    genererOptionsContextuelles(editeur) {
+        let listeOptions = super.genererOptionsContextuelles(editeur);
+
+        // Option d'ajout d'une condition d'arrêt
+        listeOptions.push(new ElementMenu('Ajouter une condition d\'arrêt', () => {
+            console.log('Ajouter une condition d\'arrêt');
+            let nouveauIf = new StructureSi(parseFloat(this._abscisse) - 3 + 'vw', parseFloat(this._ordonnee) + 10 + 'vw');
+            nouveauIf.setPosition();
+            nouveauIf.afficher();
+            this.parentNode.appendChild(nouveauIf);
+
+            let sortie = new ConditionSortie(parseFloat(this._abscisse) + 'vw', parseFloat(this._ordonnee) + 15 + 'vw');
+            sortie.setPosition();
+            sortie.afficher();
+            this.parentNode.appendChild(sortie);
+
+            this._elemParent.lierEnfant(nouveauIf);
+            nouveauIf.getCondition(0)._elemParent.lierEnfant(sortie);
+        }))
+        return listeOptions;
+    }
 } window.customElements.define("structure-iterative-non-bornee-element", StructureIterativeNonBornee);
