@@ -29,6 +29,7 @@ class Editeur extends HTMLElement {
     _offsetY = 0;
     _lastPosX = 0;
     _lastPosY = 0;
+    _ancienPlusProche = null;
 
     _pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
     _pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -260,6 +261,11 @@ class Editeur extends HTMLElement {
         // Gestion des raccourcis clavier
         document.body.addEventListener('keydown', (e) => {
             if (verbose) console.log(e);
+            if (e.keyCode === 8) {
+                // Suppr
+                e.preventDefault();
+                this.delete();
+            }
             if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
                 // Raccourcis clavier en Ctrl + ... pour les outils
                 if (e.keyCode === 64) {
@@ -326,6 +332,7 @@ class Editeur extends HTMLElement {
                 }
                 if (e.key.toLowerCase() === 'a') {
                     // Ctrl + A
+                    if (document.activeElement.isContentEditable) return;
                     e.preventDefault();
                     this.selectAll();
                 }
@@ -519,16 +526,66 @@ class Editeur extends HTMLElement {
                 if (verbose) console.log(`Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`);
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
+            } else {
+                // L'élément graphique dont le centre est le plus proche de la souris doit être devant les autres
+                let distanceMin = 1000000;
+                let elemLePlusProche = null;
+
+                // Adapter les coordonnees de la souris pour les comparer avec les coordonnees des éléments graphiques
+                // Convertir en vw
+                let coordSouris = {
+                    x: e.clientX / window.innerWidth * 100,
+                    y: e.clientY / window.innerWidth * 100
+                }
+
+                // Prendre en compte le zoom
+                coordSouris.x /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
+                coordSouris.y /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
+
+                // Prendre en compte le scroll du plan de travail
+                coordSouris.x += this._espacePrincipal.scrollLeft / window.innerWidth * 100;
+                coordSouris.y += this._espacePrincipal.scrollTop / window.innerWidth * 100;
+
+                // Trouver l'élément le plus proche
+                for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+                    let coordCentreElem = elem.getCentre();
+
+                    let distance = Math.sqrt((coordSouris.x - coordCentreElem.x)**2 + (coordSouris.y - coordCentreElem.y)**2);
+                    if (distance < distanceMin) {
+                        distanceMin = distance;
+                        elemLePlusProche = elem;
+                    }
+                }
+                if (verbose) console.log(elemLePlusProche);
+                if (elemLePlusProche != this._ancienPlusProche && elemLePlusProche != null) {
+                    elemLePlusProche.parentNode.appendChild(elemLePlusProche);
+                    this._ancienPlusProche = elemLePlusProche;
+                }
             }
             if (this._isSelecting) {
-                let abscisseEnPx = e.clientX - this._espacePrincipal.getBoundingClientRect().left;
-                let ordonneeEnPx = e.clientY - this._espacePrincipal.getBoundingClientRect().top;
+                let abscisseEnPx = (e.clientX - this._espacePrincipal.getBoundingClientRect().left) / document.body.style.getPropertyValue('--sizeModifier');
+                let ordonneeEnPx = (e.clientY - this._espacePrincipal.getBoundingClientRect().top) / document.body.style.getPropertyValue('--sizeModifier');
                 let abscisseEnVw = abscisseEnPx / window.innerWidth * 100;
                 let ordonneeEnVw = ordonneeEnPx / window.innerWidth * 100;
-                let lastXenVw = (this._coordonneesSelection.x - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
-                let lastYenVw = (this._coordonneesSelection.y - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
+                let lastXenVw = (this._coordonneesSelection.x / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
+                let lastYenVw = (this._coordonneesSelection.y / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
                 this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
             }
+        });
+
+        this.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+
+            // Calculer la position du menu contextuel
+            let abscisse = e.clientX;
+            let ordonnee = e.clientY;
+
+            // Transformer les coordonnées en vw
+            abscisse = abscisse / window.innerWidth * 100;
+            ordonnee = ordonnee / window.innerWidth * 100;
+
+            // Créer le menu contextuel
+            this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection));
         });
     }
 

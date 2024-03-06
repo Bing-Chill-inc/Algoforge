@@ -251,7 +251,7 @@ editeur-interface > div.barreOutilsHorizontale {
     justify-content: center;
     gap: 2%;
     position: fixed;
-    z-index: 1;
+    z-index: 4;
     top: 4.2vw;
 }
 
@@ -304,6 +304,29 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-right: 0.2vw;
 }
 
+menu-contextuel {
+    position: fixed;
+    width: 10vw;
+    height: fit-content;
+    min-height: 2vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    z-index: 2048;
+}
+menu-contextuel > element-menu,
+menu-contextuel > element-menu-compose {
+    padding-left: 5%;
+    width: 95%;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+}
+
 indicateur-zoom {
     position: fixed;
     bottom: 2vw;
@@ -315,6 +338,7 @@ indicateur-zoom {
     width: 10vw;
     height: 3vw;
     background-color: var(--fgColorTransparent);
+    z-index: 258;
 }
 
 indicateur-zoom > .zoomDisplay {
@@ -382,6 +406,10 @@ selection-rectangle {
     padding: 0;
     background-color: var(--fgColorTransparent);
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
+[contenteditable="true"] { /* Pour empêcher le navigateur de supprimer les espaces */
+    white-space: pre-wrap;
 }
 
 plan-travail {
@@ -455,7 +483,7 @@ probleme-element {
 
         probleme-element > div.containerDPR > div.nom {
             width: calc(var(--sizeModifier) * 10vw);
-            height: 100%;
+            height: calc(var(--sizeModifier) * 4vw);
             grid-column: 2;
             border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
             text-align: center;
@@ -467,7 +495,6 @@ probleme-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
-            white-space: pre-wrap;
         }
 
         probleme-element > div.containerDPR > div.nom:focus-visible {
@@ -577,7 +604,7 @@ procedure-element {
 
         procedure-element > div.containerDPR > div.nom {
             width: calc(var(--sizeModifier) * 8vw);
-            height: 100%;
+            height: calc(var(--sizeModifier) * 4vw);
             grid-column: 2;
             border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
             text-align: center;
@@ -885,11 +912,12 @@ structure-switch-element {
 condition-element {
     position: relative;
     transition: all 0.2s ease-in-out;
+    height: 100%;
 }
 
 condition-element > div.libelle {
     width: calc(var(--sizeModifier) * 10vw);
-    height: inherit;
+    height: 100%;
     resize: none;
     border: none;
     background: none;
@@ -902,7 +930,6 @@ condition-element > div.libelle {
     justify-content: center;
     flex-direction: column;
     word-wrap: break-word;
-    overflow: hidden;
     background-color: var(--bgColor);
 }
 
@@ -1015,6 +1042,7 @@ invite-bornes-pour-si {
     grid-template-rows: 1fr 1fr 1fr 1fr;
     place-items: center;
     padding: 1.5vw;
+    z-index: 3;
 }
 
 invite-bornes-pour-si > input {

@@ -280,7 +280,13 @@ class PlanTravail extends HTMLElement {
         }
     }    
     trouverToutLesElementsGraphiques() {
-        return this.children;
+        let elements = [];
+        for (let element of this.children) {
+            if (element instanceof ElementGraphique) {
+                elements.push(element);
+            }
+        }
+        return elements;
     }    
     renameInformation(ancienNom, nouveauNom) {
         for(let enfantGraphique of this.trouverToutLesElementsGraphiques())

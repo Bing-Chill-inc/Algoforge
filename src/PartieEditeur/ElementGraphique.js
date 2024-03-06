@@ -105,6 +105,11 @@ class ElementGraphique extends HTMLElement {
         let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight * 100);
         return hauteurEnVh;
     }
+
+    getCentre() {
+        return {x: parseFloat(this._abscisse) + this.getTailleAbscisse() / 2, y: parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2};
+    }
+
     /**
      * @description Définit la positon de l'ElementGraphique<br>
      * Si aucune valeur n'est définit la position ne change pas. Sinon la nouvelle valeur est donné à l'ElementGraphique
@@ -299,5 +304,11 @@ class ElementGraphique extends HTMLElement {
     supprimer() {
         if (this._parent != null) this._parent.delierEnfant(this);
         this.remove();
+    }
+
+    genererOptionsContextuelles(selection) {
+        let lesOptions = [];
+        lesOptions.push();
+        return lesOptions;
     }
 }
