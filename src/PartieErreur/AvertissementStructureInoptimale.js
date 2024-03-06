@@ -66,7 +66,7 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
      * @description Cette méthode renvoie un message indiquant qu'une structure conditionnelle en surbrillance est mal utilisée.
      */
     toString(){
-        return "La structure conditionnel en surbrillance est mal utilisée.";
+        return "La structure conditionnel en surbrillance est mal utilisée. Un switch est préférable.";
     }
     /**
      * @static
@@ -81,7 +81,7 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel
         */
         try {
         const conditions = StructureAlternative._listeConditions.children;
-        if(conditions.lenght < 3)
+        if(conditions.length < 3)
         {
             return [false];
         }

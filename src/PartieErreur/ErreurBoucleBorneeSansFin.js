@@ -41,23 +41,30 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle
      * @description La méthode detecterAnomalie vérifie si la boucle bornée est bien bornée.
      */
     static detecterAnomalie(uneBoucleBornee) {
-        // On vérifie que la borne inférieure et superieur sont des nombres
-        if (isNaN(uneBoucleBornee._borneInferieure) || isNaN(uneBoucleBornee._borneSuperieure)) {
-            return false;
-        }  
-        else {
-            // convertion des bornes en nombre
-            borneInferieure = Number(uneBoucleBornee._borneInferieure);
-            borneSuperieure = Number(uneBoucleBornee._borneSuperieure);
-            pas = Number(uneBoucleBornee._pas);
-            let courant = borneInferieure;
-            while (courant <= borneSuperieure && pas != 0) {
-                if (courant >= borneSuperieure) {
-                    return false;
+        try {
+            // On vérifie que la borne inférieure et superieur sont des nombres
+            if (isNaN(uneBoucleBornee._borneInferieure) || isNaN(uneBoucleBornee._borneSuperieure)) {
+                return false;
+            }  
+            else {
+                // convertion des bornes en nombre
+                borneInferieure = Number(uneBoucleBornee._borneInferieure);
+                borneSuperieure = Number(uneBoucleBornee._borneSuperieure);
+                pas = Number(uneBoucleBornee._pas);
+                let courant = borneInferieure;
+                while (courant <= borneSuperieure && pas != 0) {
+                    if (courant >= borneSuperieure) {
+                        return false;
+                    }
+                    courant += pas;
                 }
-                courant += pas;
             }
+            return true;
         }
-        return true;
+        catch(e)
+        {
+            console.error(e);
+            return false;
+        }
     }
 }

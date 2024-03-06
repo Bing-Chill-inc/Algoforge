@@ -37,6 +37,7 @@ class AffichageErreur extends HTMLElement {
         
         // Création de l'élément p pour afficher le texte d'erreur
         const texteErreur = document.createElement('p');
+        texteErreur.classList.add('texte-erreur');
         texteErreur.textContent = 'Erreur: Ceci est un exemple d\'erreur.';
         
         // Création de la flèche gauche pour parcourir la liste des erreurs
@@ -69,6 +70,10 @@ class AffichageErreur extends HTMLElement {
             this.afficherSelectionErreur();
         });
 
+        //Ajout d'un texte pour afficher le numéro d'erreur ex: 1/5
+        const texteNumero = document.createElement('p');
+        texteNumero.classList.add('numero-erreur');
+
         
         // Création du bouton pour supprimer la div d'erreur
         const bouttonSupprimer = document.createElement('button');
@@ -82,6 +87,7 @@ class AffichageErreur extends HTMLElement {
         this._divErreur.appendChild(texteErreur);
         this._divErreur.appendChild(flecheGauche);
         this._divErreur.appendChild(flecheDroite);
+        this._divErreur.appendChild(texteNumero);
         this._divErreur.appendChild(document.createElement('br'));
         this._divErreur.appendChild(bouttonSupprimer);
         
@@ -94,16 +100,19 @@ class AffichageErreur extends HTMLElement {
     {
         if(!this._listeErreur)
         {
-            this.querySelector("p").textContent = "Aucune erreur trouvé";
-            
+            this.querySelector(".texte-erreur").textContent = "Aucune erreur trouvé";
+            this.querySelector(".numero-erreur").textContent = "(0/0)";
         }
         else if(this._listeErreur.length == 0)
         {
-            this.querySelector("p").textContent = "Aucune erreur trouvé";
+            this.querySelector(".texte-erreur").textContent = "Aucune erreur trouvé";
+            this.querySelector(".numero-erreur").textContent = "(0/0)";
+
         }
         else
         {
-            this.querySelector("p").textContent = this._listeErreur[this._courant].toString();
+            this.querySelector(".texte-erreur").textContent = this._listeErreur[this._courant].toString();
+            this.querySelector(".numero-erreur").textContent = "("+ (this._courant+1) + "/" + this._listeErreur.length + ")";
         }
     }
 

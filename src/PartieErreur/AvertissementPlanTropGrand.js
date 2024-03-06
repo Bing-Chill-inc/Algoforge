@@ -40,7 +40,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
      */
     static detecterAnomalie(unPlan) {
         try {
-        let distanceMax = 100;
+        let distanceMax = 10;
         let listeElementGraphique = unPlan.children;
         let elementHautGauche = listeElementGraphique[0];
         let elementBasDroite = listeElementGraphique[0];
@@ -53,6 +53,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
             }
         }
         let distance = AvertissementPlanTropGrand.calculerDistance(parseFloat(elementHautGauche._abscisse), parseFloat(elementHautGauche._ordonnee), parseFloat(elementBasDroite._abscisse), parseFloat(elementBasDroite._ordonnee));
+        console.log(distance);
         if(distance > distanceMax) {
             return true;
         }
@@ -60,6 +61,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel
         }
         catch(e) {
             console.error(e);
+            return true;
         }
     }
     /**
