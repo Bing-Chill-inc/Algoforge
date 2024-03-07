@@ -441,6 +441,20 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr.ajout {
     opacity: 0.75;
 }
 
+dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: var(--bgColor);
+    color: var(--fgColor);
+    font-size: 1vw;
+    cursor: pointer;
+}
+
+dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hover {
+    text-shadow: 0 0 0.5vw var(--fgColor);
+}
+
 menu-contextuel {
     position: fixed;
     width: 15vw;

@@ -7,7 +7,11 @@ class Condition extends HTMLElement {
     _maxLines = 4;
 
     // CONSTRUCTEUR
-    constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
+    constructor(
+        libelle = "",
+        elemParent = new ElementParent(),
+        structure = null
+    ) {
         super();
         this._elemParent = elemParent;
         this._structure = structure;
@@ -57,8 +61,8 @@ class Condition extends HTMLElement {
     afficher() {
         let buttonSupprimer = document.createElement("button");
         buttonSupprimer.className = "supprimer";
-        buttonSupprimer.innerHTML = "-"
-        buttonSupprimer.addEventListener('click', (e) => {
+        buttonSupprimer.innerHTML = "-";
+        buttonSupprimer.addEventListener("click", (e) => {
             this._structure.supprimerCondition(this);
         });
         this.appendChild(buttonSupprimer);
@@ -69,17 +73,24 @@ class Condition extends HTMLElement {
         this.divLibelle.contentEditable = "true";
         this.appendChild(this.divLibelle);
 
-        this.divLibelle.addEventListener('focusout', (e) => {
+        this.divLibelle.addEventListener("focusout", (e) => {
             if (this._ancienLib != this._libelle) {
-                this._editeur.ajouterEvenement(new EvenementEditionLibelleCondition(this, this._ancienLib, this._libelle));
+                this._editeur.ajouterEvenement(
+                    new EvenementEditionLibelleCondition(
+                        this,
+                        this._ancienLib,
+                        this._libelle
+                    )
+                );
                 this._ancienLib = this._libelle;
             }
         });
 
-        this.divLibelle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const lines = this.innerText.split('\n');
-                if (lines.length >= this._maxLines) { // Le nombre max de lignes est atteint
+        this.divLibelle.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                const lines = this.innerText.split("\n");
+                if (lines.length >= this._maxLines) {
+                    // Le nombre max de lignes est atteint
                     e.preventDefault(); // Empêche le retour à la ligne
                 }
             }
@@ -90,13 +101,13 @@ class Condition extends HTMLElement {
         divArrowsWrapper.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
         this.flecheGauche = document.createElement("span");
         this.flecheGauche.innerHTML = "← ";
-        this.flecheGauche.addEventListener('click', (e) => {
+        this.flecheGauche.addEventListener("click", (e) => {
             this._structure.decalerCondition(this, -1);
         });
 
         this.flecheDroite = document.createElement("span");
         this.flecheDroite.innerHTML = " →";
-        this.flecheDroite.addEventListener('click', (e) => {
+        this.flecheDroite.addEventListener("click", (e) => {
             this._structure.decalerCondition(this, 1);
         });
 
@@ -108,7 +119,7 @@ class Condition extends HTMLElement {
         this.divAjouterAGauche.className = "ajouterAGauche";
         this.divAjouterAGauche.innerHTML = "+";
         this.divAjouterAGauche.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
-        this.divAjouterAGauche.addEventListener('click', (e) => {
+        this.divAjouterAGauche.addEventListener("click", (e) => {
             this._structure.ajouterConditionParRapportA(this, -1);
         });
         this.appendChild(this.divAjouterAGauche);
@@ -117,14 +128,14 @@ class Condition extends HTMLElement {
         this.divAjouterADroite.className = "ajouterADroite";
         this.divAjouterADroite.innerHTML = "+";
         this.divAjouterADroite.classList.add("no-render"); // Empêche le rendu lors de l'exportation en image
-        this.divAjouterADroite.addEventListener('click', (e) => {
+        this.divAjouterADroite.addEventListener("click", (e) => {
             this._structure.ajouterConditionParRapportA(this, 1);
         });
         this.appendChild(this.divAjouterADroite);
 
-        this.style.animation = 'fall 0.2s ease-in';
+        this.style.animation = "fall 0.2s ease-in";
         setTimeout(() => {
-            this.style.animation = '';
+            this.style.animation = "";
         }, 200);
     }
 
@@ -138,7 +149,7 @@ class Condition extends HTMLElement {
         return {
             typeElement: this.constructor.name,
             libelle: this._libelle,
-            enfants: this._elemParent.toJSON()
+            enfants: this._elemParent.toJSON(),
         };
     }
 
@@ -146,15 +157,17 @@ class Condition extends HTMLElement {
         return {
             typeElement: this.constructor.name,
             libelle: this._libelle,
-            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+            enfants: this._elemParent.toJSONspecifier(
+                listeElemEnfantsAConcerver
+            ),
         };
     }
-    
+
     getTailleAbscisse() {
         let rect = this.getBoundingClientRect();
 
         // Calculez la largeur en unité vw
-        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth) * 100;
         return largeurEnVw;
     }
 
@@ -168,7 +181,7 @@ class Condition extends HTMLElement {
         }
         abscisse += this.getTailleAbscisse() / 2;
         let ordonnee = parseFloat(this._structure._ordonnee) + 5;
-        return {abscisse: abscisse, ordonnee: ordonnee - 0.7};
+        return { abscisse: abscisse, ordonnee: ordonnee - 0.7 };
     }
 
     peutEtreDecompose() {
@@ -177,10 +190,14 @@ class Condition extends HTMLElement {
 
     getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
-        for(let enfant of this._elemParent._listeElementsEnfants) {
+        for (let enfant of this._elemParent._listeElementsEnfants) {
             listeDesEnfants.push(enfant.element);
         }
-        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(
+            listeDesEnfants,
+            typeRechercher
+        );
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
-} window.customElements.define("condition-element", Condition);
+}
+window.customElements.define("condition-element", Condition);

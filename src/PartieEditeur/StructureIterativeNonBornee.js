@@ -10,8 +10,8 @@ class StructureIterativeNonBornee extends StructureIterative {
     // CONSTRUCTEUR
     /**
      * @constructor
-     * @param {string|number} abscisse 
-     * @param {string|number} ordonnee 
+     * @param {string|number} abscisse
+     * @param {string|number} ordonnee
      */
     constructor(abscisse, ordonnee) {
         super(abscisse, ordonnee);
@@ -30,30 +30,33 @@ class StructureIterativeNonBornee extends StructureIterative {
     /**
      * @description Recherche et renvoie la listes des anomalies de la boucle iterative bornée<br>
      * Liste des Erreurs :<br>
-     * 
-     * 10 : Boucle infinie, on vérifie que la boucle contient une sortie<br>  
+     *
+     * 10 : Boucle infinie, on vérifie que la boucle contient une sortie<br>
      * 12 : On vérifie que la boucle contient pas 7 sous-éléments ou plus
-     * 
+     *
      * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies récupéré par les enfants
      * @returns {Array<AnomalieConceptuelle>} la liste des anomalies précédante+ celle trouvé par la structure
      */
     rechercherAnomalies(listeAnomaliesPrecedent = []) {
         let listeAnomalies = listeAnomaliesPrecedent;
         // 10
-        if(ErreurBoucleSansSortie.detecterAnomalie(this)) {
+        if (ErreurBoucleSansSortie.detecterAnomalie(this)) {
             listeAnomalies.push(new ErreurBoucleSansSortie(this));
         }
         // 12
-        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0]) {
-            listeAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+        let tropDeSousElements =
+            AvertissementTropDeSousElements.detecterAnomalie(this);
+        if (tropDeSousElements[0]) {
+            listeAnomalies.push(
+                new AvertissementTropDeSousElements(this, tropDeSousElements[1])
+            );
         }
         return super.rechercherAnomalies(mesAnomalies);
     }
 
     /**
      * @description Renvoie le corp JSON de l'instance de la StructureItérative
-     * 
+     *
      * @returns {JSON} Le corps JSON de la StructureIterativeNonBornee
      * @type {ElementGraphique}
      * @property {ElementGraphique} typeElement Le type de la StructureIterativeNonBornee
@@ -66,16 +69,18 @@ class StructureIterativeNonBornee extends StructureIterative {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            enfants: this._elemParent.toJSON()
+            enfants: this._elemParent.toJSON(),
         };
-    } 
-    
+    }
+
     toJSONspecifier(listeElemEnfantsAConcerver) {
         return {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+            enfants: this._elemParent.toJSONspecifier(
+                listeElemEnfantsAConcerver
+            ),
         };
     }
 
@@ -83,21 +88,33 @@ class StructureIterativeNonBornee extends StructureIterative {
         let listeOptions = super.genererOptionsContextuelles(editeur);
 
         // Option d'ajout d'une condition d'arrêt
-        listeOptions.push(new ElementMenu('Ajouter une condition d\'arrêt', () => {
-            console.log('Ajouter une condition d\'arrêt');
-            let nouveauIf = new StructureSi(parseFloat(this._abscisse) - 3 + 'vw', parseFloat(this._ordonnee) + 10 + 'vw');
-            nouveauIf.setPosition();
-            nouveauIf.afficher();
-            this.parentNode.appendChild(nouveauIf);
+        listeOptions.push(
+            new ElementMenu("Ajouter une condition d'arrêt", () => {
+                console.log("Ajouter une condition d'arrêt");
+                let nouveauIf = new StructureSi(
+                    parseFloat(this._abscisse) - 3 + "vw",
+                    parseFloat(this._ordonnee) + 10 + "vw"
+                );
+                nouveauIf.setPosition();
+                nouveauIf.afficher();
+                this.parentNode.appendChild(nouveauIf);
 
-            let sortie = new ConditionSortie(parseFloat(this._abscisse) + 'vw', parseFloat(this._ordonnee) + 15 + 'vw');
-            sortie.setPosition();
-            sortie.afficher();
-            this.parentNode.appendChild(sortie);
+                let sortie = new ConditionSortie(
+                    parseFloat(this._abscisse) + "vw",
+                    parseFloat(this._ordonnee) + 15 + "vw"
+                );
+                sortie.setPosition();
+                sortie.afficher();
+                this.parentNode.appendChild(sortie);
 
-            this._elemParent.lierEnfant(nouveauIf);
-            nouveauIf.getCondition(0)._elemParent.lierEnfant(sortie);
-        }))
+                this._elemParent.lierEnfant(nouveauIf);
+                nouveauIf.getCondition(0)._elemParent.lierEnfant(sortie);
+            })
+        );
         return listeOptions;
     }
-} window.customElements.define("structure-iterative-non-bornee-element", StructureIterativeNonBornee);
+}
+window.customElements.define(
+    "structure-iterative-non-bornee-element",
+    StructureIterativeNonBornee
+);

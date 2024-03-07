@@ -22,7 +22,7 @@ class Editeur extends HTMLElement {
     _espacePrincipal = null;
     _selection = new Selection();
     _selectionRectangle = new SelectionRectangle();
-    _coordonneesSelection = {x: 0, y:0}
+    _coordonneesSelection = { x: 0, y: 0 };
     _isSelecting = false;
     _isDragging = false;
     _offsetX = 0;
@@ -30,6 +30,8 @@ class Editeur extends HTMLElement {
     _lastPosX = 0;
     _lastPosY = 0;
     _ancienPlusProche = null;
+
+    _curMousePos = { x: 0, y: 0 };
 
     _toucheMeta;
 
@@ -42,11 +44,12 @@ class Editeur extends HTMLElement {
         super();
 
         // Détection de la touche "Meta" (Cmd sur Mac, Ctrl sur Windows, Linux)
-        if (window.navigator.userAgent.match(/(Mac|Windows|Linux)/)[0] === 'Mac') {
-            this._toucheMeta = '⌘';
-        }
-        else {
-            this._toucheMeta = 'Ctrl + ';
+        if (
+            window.navigator.userAgent.match(/(Mac|Windows|Linux)/)[0] === "Mac"
+        ) {
+            this._toucheMeta = "⌘";
+        } else {
+            this._toucheMeta = "Ctrl + ";
         }
 
         this._dictionnaireDesDonnees.title = "Dictionnaire des données";
@@ -61,46 +64,86 @@ class Editeur extends HTMLElement {
         this._typesElements.push(ConditionSortie);
 
         // Référencement des éléments d'interface
-        this._espacePrincipal = document.querySelector('#espacePrincipal');
+        this._espacePrincipal = document.querySelector("#espacePrincipal");
         this._espacePrincipal.appendChild(this._selection);
         this._espacePrincipal.appendChild(this._selectionRectangle);
 
-        this._logoAlgoForge = document.querySelector('#logoAlgoForge');
-        this._themeSelect = document.querySelector('select#theme');
+        this._logoAlgoForge = document.querySelector("#logoAlgoForge");
+        this._themeSelect = document.querySelector("select#theme");
         this.appendChild(this._indicateurZoom);
 
-        this._boutonPointeur = document.querySelector('#boutonPointeur');
+        this._boutonPointeur = document.querySelector("#boutonPointeur");
 
-        this._listeTools.push(document.querySelector('#boutonProbleme'));
-        this._listeTools.push(document.querySelector('#boutonProcedure'));
-        this._listeTools.push(document.querySelector('#boutonStructureSi'));
-        this._listeTools.push(document.querySelector('#boutonStructureSwitch'));
-        this._listeTools.push(document.querySelector('#boutonStructureIterative'));
-        this._listeTools.push(document.querySelector('#boutonConditionSortie'));
-        this._listeTools.push(document.querySelector('#boutonLien'));
+        this._listeTools.push(document.querySelector("#boutonProbleme"));
+        this._listeTools.push(document.querySelector("#boutonProcedure"));
+        this._listeTools.push(document.querySelector("#boutonStructureSi"));
+        this._listeTools.push(document.querySelector("#boutonStructureSwitch"));
+        this._listeTools.push(
+            document.querySelector("#boutonStructureIterative")
+        );
+        this._listeTools.push(document.querySelector("#boutonConditionSortie"));
+        this._listeTools.push(document.querySelector("#boutonLien"));
 
-        this._undoButton = document.querySelector('#boutonUndo');
-        this._redoButton = document.querySelector('#boutonRedo');
+        this._undoButton = document.querySelector("#boutonUndo");
+        this._redoButton = document.querySelector("#boutonRedo");
 
-        this._menuDeroulantFichier = document.querySelector('#menuDeroulantFichier');
-        this._menuDeroulantEdition = document.querySelector('#menuDeroulantEdition');
-        this._menuDeroulantAide = document.querySelector('#menuDeroulantAide');
+        this._menuDeroulantFichier = document.querySelector(
+            "#menuDeroulantFichier"
+        );
+        this._menuDeroulantEdition = document.querySelector(
+            "#menuDeroulantEdition"
+        );
+        this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
 
-        this.querySelector('#titreAlgo').addEventListener('keydown', function(event) {
-            // On vérifie si la touche appuyée est "Entrée"
-            if (event.key === 'Enter') {
-                // On l'empêche pour éviter le saut de ligne, qui casse le design
-                event.preventDefault();
+        this.querySelector("#titreAlgo").addEventListener(
+            "keydown",
+            function (event) {
+                // On vérifie si la touche appuyée est "Entrée"
+                if (event.key === "Enter") {
+                    // On l'empêche pour éviter le saut de ligne, qui casse le design
+                    event.preventDefault();
+                }
             }
-        });
+        );
 
         // Ajouter les options de thème
-        this._themeSelect.appendChild(new ThemeEditeur('Thème Sombre', '#222222', '#838787', '#83878755', '#83878711', '#A6AAA9', '#8ABE5E', '#8ABE5E99', '#C82606', '#FFE989', '#34A5DA', 'assets/algoforgeLogo.png'));
-        this._themeSelect.appendChild(new ThemeEditeur('Thème Clair', '#FFFFFF', '#222222', '#22222255', '#22222222', '#A6AAA9', '#589129', '#58912999', '#C82606', '#b89f30', '#22759c', 'assets/algoforgeLogoThemeClair.png'));
+        this._themeSelect.appendChild(
+            new ThemeEditeur(
+                "Thème Sombre",
+                "#222222",
+                "#838787",
+                "#83878755",
+                "#83878711",
+                "#A6AAA9",
+                "#8ABE5E",
+                "#8ABE5E99",
+                "#C82606",
+                "#FFE989",
+                "#34A5DA",
+                "assets/algoforgeLogo.png"
+            )
+        );
+        this._themeSelect.appendChild(
+            new ThemeEditeur(
+                "Thème Clair",
+                "#FFFFFF",
+                "#222222",
+                "#22222255",
+                "#22222222",
+                "#A6AAA9",
+                "#589129",
+                "#58912999",
+                "#C82606",
+                "#b89f30",
+                "#22759c",
+                "assets/algoforgeLogoThemeClair.png"
+            )
+        );
 
         // Gestion des événements de thème
-        this._themeSelect.addEventListener('change', () => {
-            let theme = this._themeSelect.options[this._themeSelect.selectedIndex];
+        this._themeSelect.addEventListener("change", () => {
+            let theme =
+                this._themeSelect.options[this._themeSelect.selectedIndex];
             theme.appliquer();
         });
 
@@ -108,178 +151,266 @@ class Editeur extends HTMLElement {
 
         // Ajout des éléments de menu
         // Fichier
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Nouveau', () => {
-            console.log('Nouveau');
-        }));
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Créer une copie', () => {
-            console.log('Créer une copie');
-        }));
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Partager', () => {
-            console.log('Partager');
-        }));
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Renommer', () => {
-            console.log('Renommer');
-        }));
-        let exporter = new ElementMenuCompose('Exporter', () => {
-            console.log('Exporter');
-        })
+        this._menuDeroulantFichier.ajouterElementMenu(
+            new ElementMenu("Nouveau", () => {
+                console.log("Nouveau");
+            })
+        );
+        this._menuDeroulantFichier.ajouterElementMenu(
+            new ElementMenu("Créer une copie", () => {
+                console.log("Créer une copie");
+            })
+        );
+        this._menuDeroulantFichier.ajouterElementMenu(
+            new ElementMenu("Partager", () => {
+                console.log("Partager");
+            })
+        );
+        this._menuDeroulantFichier.ajouterElementMenu(
+            new ElementMenu("Renommer", () => {
+                console.log("Renommer");
+            })
+        );
+        let exporter = new ElementMenuCompose("Exporter", () => {
+            console.log("Exporter");
+        });
         this._menuDeroulantFichier.ajouterElementMenu(exporter);
 
-        let sousTitreGénéral = document.createElement('h3');
-        sousTitreGénéral.innerText = 'Tout';
+        let sousTitreGénéral = document.createElement("h3");
+        sousTitreGénéral.innerText = "Tout";
         exporter.ajouterElementMenu(sousTitreGénéral);
 
-        exporter.ajouterElementMenu(new ElementMenu('.json', () => {
-            console.log('Exporter en .json');
-            this.exporterJSON(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".json", () => {
+                console.log("Exporter en .json");
+                this.exporterJSON(
+                    JSON.stringify(this._espacePrincipal.exporterEnJSON())
+                );
+            })
+        );
 
-        let sousTitreAlgorithme = document.createElement('h3');
-        sousTitreAlgorithme.innerText = 'Algorithme';
+        let sousTitreAlgorithme = document.createElement("h3");
+        sousTitreAlgorithme.innerText = "Algorithme";
         exporter.ajouterElementMenu(sousTitreAlgorithme);
 
-        exporter.ajouterElementMenu(new ElementMenu('.png', () => {
-            console.log('Exporter en .png');
-            var svgStr = this.exporterSVG(this._espacePrincipal, false);
-            this.exportSVGAsPNG(svgStr, `${this.querySelector('#titreAlgo').innerText}.png`);
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".png", () => {
+                console.log("Exporter en .png");
+                var svgStr = this.exporterSVG(this._espacePrincipal, false);
+                this.exportSVGAsPNG(
+                    svgStr,
+                    `${this.querySelector("#titreAlgo").innerText}.png`
+                );
+            })
+        );
 
-        exporter.ajouterElementMenu(new ElementMenu('.jpg', () => {
-            console.log('Exporter en .jpg');
-            // const capture = async () => {
-            //     const canvas = document.createElement("canvas");
-            //     const context = canvas.getContext("2d");
-            //     const video = document.createElement("video");
-              
-            //     try {
-            //       const captureStream = await navigator.mediaDevices.getDisplayMedia();
-            //       video.srcObject = captureStream;
-            //       context.drawImage(video, 0, 0, window.width, window.height);
-            //       const frame = canvas.toDataURL("image/png");
-            //       captureStream.getTracks().forEach(track => track.stop());
-            //       window.location.href = frame;
-            //     } catch (err) {
-            //       console.error("Error: " + err);
-            //     }
-            //   };
-            capture();
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".jpg", () => {
+                console.log("Exporter en .jpg");
+                // const capture = async () => {
+                //     const canvas = document.createElement("canvas");
+                //     const context = canvas.getContext("2d");
+                //     const video = document.createElement("video");
 
-        exporter.ajouterElementMenu(new ElementMenu('.svg', () => {
-            console.log('Exporter en .svg');
-            this.exporterSVG(this._espacePrincipal);
-        }));
+                //     try {
+                //       const captureStream = await navigator.mediaDevices.getDisplayMedia();
+                //       video.srcObject = captureStream;
+                //       context.drawImage(video, 0, 0, window.width, window.height);
+                //       const frame = canvas.toDataURL("image/png");
+                //       captureStream.getTracks().forEach(track => track.stop());
+                //       window.location.href = frame;
+                //     } catch (err) {
+                //       console.error("Error: " + err);
+                //     }
+                //   };
+                capture();
+            })
+        );
 
-        exporter.ajouterElementMenu(new ElementMenu('.pdf', () => {
-            console.log('Exporter en .pdf');
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".svg", () => {
+                console.log("Exporter en .svg");
+                this.exporterSVG(this._espacePrincipal);
+            })
+        );
 
-        let sousTitreDictionnaire = document.createElement('h3');
-        sousTitreDictionnaire.innerText = 'Dictionnaire';
+        exporter.ajouterElementMenu(
+            new ElementMenu(".pdf", () => {
+                console.log("Exporter en .pdf");
+            })
+        );
+
+        let sousTitreDictionnaire = document.createElement("h3");
+        sousTitreDictionnaire.innerText = "Dictionnaire";
         exporter.ajouterElementMenu(sousTitreDictionnaire);
 
-        exporter.ajouterElementMenu(new ElementMenu('.xls', () => {
-            console.log('Exporter en .xls');
-            this._dictionnaireDesDonnees.exporter('xls');
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".xls", () => {
+                console.log("Exporter en .xls");
+                this._dictionnaireDesDonnees.exporter("xls");
+            })
+        );
 
-        exporter.ajouterElementMenu(new ElementMenu('.csv', () => {
-            console.log('Exporter en .csv');
-            this._dictionnaireDesDonnees.exporter('csv');
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".csv", () => {
+                console.log("Exporter en .csv");
+                this._dictionnaireDesDonnees.exporter("csv");
+            })
+        );
 
-        exporter.ajouterElementMenu(new ElementMenu('.md', () => {
-            console.log('Exporter en .md');
-            this._dictionnaireDesDonnees.exporter('md');
-        }));
+        exporter.ajouterElementMenu(
+            new ElementMenu(".md", () => {
+                console.log("Exporter en .md");
+                this._dictionnaireDesDonnees.exporter("md");
+            })
+        );
 
-        this._menuDeroulantFichier.ajouterElementMenu(new ElementMenu('Supprimer', () => {
-            console.log('Supprimer');
-        }));
+        this._menuDeroulantFichier.ajouterElementMenu(
+            new ElementMenu("Supprimer", () => {
+                console.log("Supprimer");
+            })
+        );
 
         // Edition
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenu('Importer', () => {
-            console.log('Importer');
-            this.importerJSON();
-        }));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenu("Importer", () => {
+                console.log("Importer");
+                this.importerJSON();
+            })
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Annuler', () => {
-            console.log('Annuler');
-            this.undo();
-        }, `${this._toucheMeta}Z`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Annuler",
+                () => {
+                    console.log("Annuler");
+                    this.undo();
+                },
+                `${this._toucheMeta}Z`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Rétablir', () => {
-            console.log('Rétablir');
-            this.redo();
-        }, `${this._toucheMeta}Y`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Rétablir",
+                () => {
+                    console.log("Rétablir");
+                    this.redo();
+                },
+                `${this._toucheMeta}Y`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Couper', () => {
-            console.log('Couper');
-            this.cut();
-        }, `${this._toucheMeta}X`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Couper",
+                () => {
+                    console.log("Couper");
+                    this.cut();
+                },
+                `${this._toucheMeta}X`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Copier', () => {
-            console.log('Copier');
-            this.copy();
-        }, `${this._toucheMeta}C`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Copier",
+                () => {
+                    console.log("Copier");
+                    this.copy();
+                },
+                `${this._toucheMeta}C`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Coller', () => {
-            console.log('Coller');
-            this.paste();
-        }, `${this._toucheMeta}V`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Coller",
+                () => {
+                    console.log("Coller");
+                    this.paste();
+                },
+                `${this._toucheMeta}V`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Sélectionner tout', () => {
-            console.log('Sélectionner tout');
-            this.selectAll();
-        }, `${this._toucheMeta}A`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Sélectionner tout",
+                () => {
+                    console.log("Sélectionner tout");
+                    this.selectAll();
+                },
+                `${this._toucheMeta}A`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Supprimer', () => {
-            console.log('Supprimer');
-            this.delete();
-        }, `Suppr / ${this._toucheMeta}⌫`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Supprimer",
+                () => {
+                    console.log("Supprimer");
+                    this.delete();
+                },
+                `Suppr / ${this._toucheMeta}⌫`
+            )
+        );
 
-        this._menuDeroulantEdition.ajouterElementMenu(new ElementMenuKeyboardTip('Rechercher', () => {
-            console.log('Rechercher');
-            this.search();
-        }, `${this._toucheMeta}F`));
+        this._menuDeroulantEdition.ajouterElementMenu(
+            new ElementMenuKeyboardTip(
+                "Rechercher",
+                () => {
+                    console.log("Rechercher");
+                    this.search();
+                },
+                `${this._toucheMeta}F`
+            )
+        );
 
         // Aide
-        this._menuDeroulantAide.ajouterElementMenu(new ElementMenu('Tutoriels', () => {
-            console.log('Tutoriels');
-        }));
+        this._menuDeroulantAide.ajouterElementMenu(
+            new ElementMenu("Tutoriels", () => {
+                console.log("Tutoriels");
+            })
+        );
 
-        this._menuDeroulantAide.ajouterElementMenu(new ElementMenu('Raccourcis clavier', () => {
-            console.log('Raccourcis clavier');
-        }));
+        this._menuDeroulantAide.ajouterElementMenu(
+            new ElementMenu("Raccourcis clavier", () => {
+                console.log("Raccourcis clavier");
+            })
+        );
 
         // Gestion des événements de l'interface
         this._listeTools.forEach((tool, index) => {
-            tool.addEventListener('click', () => {
+            tool.addEventListener("click", () => {
                 this.selectTool(index);
             });
 
-            tool.addEventListener('dragstart', (event) => {
+            tool.addEventListener("dragstart", (event) => {
                 if (verbose) console.log(event);
-                event.dataTransfer.setData('text/plain', this._typesElements[index].prototype.constructor.name);
+                event.dataTransfer.setData(
+                    "text/plain",
+                    this._typesElements[index].prototype.constructor.name
+                );
             });
         });
 
-        this._undoButton.addEventListener('click', () => {
+        this._undoButton.addEventListener("click", () => {
             this.undo();
         });
 
-        this._redoButton.addEventListener('click', () => {
+        this._redoButton.addEventListener("click", () => {
             this.redo();
         });
 
-        this._boutonPointeur.addEventListener('click', () => {
+        this._boutonPointeur.addEventListener("click", () => {
             this.selectTool(-1);
         });
 
         // Gestion des raccourcis clavier
-        document.body.addEventListener('keydown', (e) => {
+        document.body.addEventListener("keydown", (e) => {
             if (verbose) console.log(e);
-            if (e.key === 'Delete') {
+            if (e.key === "Delete") {
                 // Suppr
                 e.preventDefault();
                 this.delete();
@@ -328,50 +459,50 @@ class Editeur extends HTMLElement {
                     this.selectTool(6);
                 }
                 // Raccourcis clavier en Ctrl + ... pour l'édition
-                if (e.key.toLowerCase() === 'z') {
+                if (e.key.toLowerCase() === "z") {
                     // Ctrl + Z
                     e.preventDefault();
                     this.undo();
                 }
-                if (e.key.toLowerCase() ==='y') {
+                if (e.key.toLowerCase() === "y") {
                     // Ctrl + Y
                     e.preventDefault();
                     this.redo();
                 }
-                if (e.key.toLowerCase() === 'x') {
+                if (e.key.toLowerCase() === "x") {
                     // Ctrl + X
                     e.preventDefault();
                     this.cut();
                 }
-                if (e.key.toLowerCase() === 'c') {
+                if (e.key.toLowerCase() === "c") {
                     // Ctrl + C
                     e.preventDefault();
                     this.copy();
                 }
-                if (e.key.toLowerCase() === 'a') {
+                if (e.key.toLowerCase() === "a") {
                     // Ctrl + A
                     if (document.activeElement.isContentEditable) return;
                     e.preventDefault();
                     this.selectAll();
                 }
-                if (e.key === 'Backspace' || e.key === 'Delete') {
+                if (e.key === "Backspace" || e.key === "Delete") {
                     // Suppr
                     e.preventDefault();
                     this.delete();
                 }
-                if (e.key.toLowerCase() === 'f') {
+                if (e.key.toLowerCase() === "f") {
                     // Ctrl + F
                     e.preventDefault();
                     this.search();
                 }
 
                 // Gestion du zoom
-                if (e.key === '+' || e.key === '=') {
+                if (e.key === "+" || e.key === "=") {
                     // Ctrl + +
                     e.preventDefault();
                     this._indicateurZoom.zoomIn();
                 }
-                if (e.key === '-') {
+                if (e.key === "-") {
                     // Ctrl + -
                     e.preventDefault();
                     this._indicateurZoom.zoomOut();
@@ -379,20 +510,66 @@ class Editeur extends HTMLElement {
             }
         });
 
-        this.addEventListener('paste', ((e) => {
+        this.addEventListener("paste", (e) => {
             if (verbose) console.log(e);
-            if (verbose) console.log(e.clipboardData.getData('text/plain'));
+            if (verbose) console.log(e.clipboardData.getData("text/plain"));
             try {
-                var parsedData = JSON.parse(e.clipboardData.getData('text/plain'));
+                var parsedData = JSON.parse(
+                    e.clipboardData.getData("text/plain")
+                );
+
+                // Ajouter les coordonnées de la souris
+                const offsetYPlanTravailVW = 6; // En vw
+                const appliquerDecalage = (elem) => {
+                    if (verbose)
+                        console.log(
+                            `parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(
+                                elem.abscisse
+                            )} + ${this._curMousePos.x} + "vw"
+                            = ${
+                                parseFloat(elem.abscisse) +
+                                this._curMousePos.x +
+                                "vw"
+                            }`
+                        );
+                    if (verbose)
+                        console.log(
+                            `parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(
+                                elem.ordonnee
+                            )} + ${this._curMousePos.y} + "vw"
+                            = ${
+                                parseFloat(elem.ordonnee) +
+                                this._curMousePos.y +
+                                "vw"
+                            }`
+                        );
+                    elem.abscisse =
+                        parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
+                    elem.ordonnee =
+                        parseFloat(elem.ordonnee) +
+                        this._curMousePos.y -
+                        offsetYPlanTravailVW +
+                        "vw";
+                    if (elem.enfants) {
+                        elem.enfants.forEach((enfant) => {
+                            appliquerDecalage(enfant);
+                        });
+                    }
+                };
+
+                parsedData.forEach((elem) => {
+                    appliquerDecalage(elem);
+                });
+
                 this.chargerDepuisJSON(parsedData);
             } catch (error) {
                 console.error("Le fichier n'a pas été chargé correctement.");
                 console.error(error);
             }
-        }));
+        });
 
         // Gestion des clics sur l'éditeur
-        this.addEventListener('click', (e) => {
+        this.addEventListener("click", (e) => {
             // On supprime un éventuel menu contextuel
             let menuContextuel = document.querySelectorAll("menu-contextuel");
             for (let i = 0; i < menuContextuel.length; i++) {
@@ -406,10 +583,15 @@ class Editeur extends HTMLElement {
             // Remonter le DOM depuis e.target pour obtenir un élément utilisable
             let maTarget = e.target;
             // Gestion des clics  sur des éléments qui ne doivent pas être ciblés
-            if(e.target.classList.contains('nonCiblable')) {
+            if (e.target.classList.contains("nonCiblable")) {
                 return;
             }
-            while (!(maTarget instanceof ElementGraphique) && !(maTarget instanceof PlanTravail) && !(maTarget instanceof Condition) && maTarget !== null) {
+            while (
+                !(maTarget instanceof ElementGraphique) &&
+                !(maTarget instanceof PlanTravail) &&
+                !(maTarget instanceof Condition) &&
+                maTarget !== null
+            ) {
                 maTarget = maTarget.parentElement;
                 if (maTarget === null) {
                     return;
@@ -417,48 +599,92 @@ class Editeur extends HTMLElement {
                 // Gestion des clics  sur des éléments qui ne doivent pas être ciblés
                 if (verbose) console.log(maTarget);
                 if (verbose) console.log(maTarget.classList);
-                if (verbose) console.log(maTarget.classList.contains('nonCiblable'));
-                if(maTarget.classList.contains('nonCiblable')) {
+                if (verbose)
+                    console.log(maTarget.classList.contains("nonCiblable"));
+                if (maTarget.classList.contains("nonCiblable")) {
                     return;
                 }
             }
             if (verbose) console.log(maTarget);
-            if(maTarget instanceof PlanTravail) {
-                console.log('Clic sur le plan de travail');
-                if (verbose) console.log('currentTool = ' + this._currentTool + ' et typesElements.length = ' + this._typesElements.length);
-                if (this._currentTool !== null && this._currentTool < this._typesElements.length && this._currentTool >= 0) {
+            if (maTarget instanceof PlanTravail) {
+                console.log("Clic sur le plan de travail");
+                if (verbose)
+                    console.log(
+                        "currentTool = " +
+                            this._currentTool +
+                            " et typesElements.length = " +
+                            this._typesElements.length
+                    );
+                if (
+                    this._currentTool !== null &&
+                    this._currentTool < this._typesElements.length &&
+                    this._currentTool >= 0
+                ) {
                     let element = this._typesElements[this._currentTool];
-                    if (verbose) console.log('Création d\'un élément de type ' + element.name);
-                    maTarget.ajouterElement(element, e.offsetX, e.offsetY, false);
+                    if (verbose)
+                        console.log(
+                            "Création d'un élément de type " + element.name
+                        );
+                    maTarget.ajouterElement(
+                        element,
+                        e.offsetX,
+                        e.offsetY,
+                        false
+                    );
                 }
                 if (this._currentTool === 6) {
-                    if (verbose) console.log('Clic sur le plan de travail avec l\'outil lien');
+                    if (verbose)
+                        console.log(
+                            "Clic sur le plan de travail avec l'outil lien"
+                        );
                     if (this._pointePrecedementLien !== null) {
-                        this._pointePrecedementLien.classList.remove('pointePourLien');
+                        this._pointePrecedementLien.classList.remove(
+                            "pointePourLien"
+                        );
                         this._pointePrecedementLien = null;
                     }
                 }
-            } else if (maTarget instanceof ElementGraphique || maTarget instanceof Condition) {
-                console.log('Clic sur un élément graphique');
+            } else if (
+                maTarget instanceof ElementGraphique ||
+                maTarget instanceof Condition
+            ) {
+                console.log("Clic sur un élément graphique");
                 if (this._currentTool === 6) {
                     if (this._pointePrecedementLien === null) {
-                        if (verbose) console.log('Premier clic sur un élément, on le pointe s\il peut être décomposé');
+                        if (verbose)
+                            console.log(
+                                "Premier clic sur un élément, on le pointe sil peut être décomposé"
+                            );
                         if (maTarget.peutEtreDecompose()) {
                             this._pointePrecedementLien = maTarget;
-                            maTarget.classList.add('pointePourLien');
-                            if (verbose) console.log('On pointe l\'élément ' + this._pointePrecedementLien.constructor.name);
+                            maTarget.classList.add("pointePourLien");
+                            if (verbose)
+                                console.log(
+                                    "On pointe l'élément " +
+                                        this._pointePrecedementLien.constructor
+                                            .name
+                                );
                         }
                     } else {
                         if (this._pointePrecedementLien == maTarget) {
                             // Les éléments sont les mêmes, on ne fait rien
-                            this._pointePrecedementLien.classList.remove('pointePourLien');
+                            this._pointePrecedementLien.classList.remove(
+                                "pointePourLien"
+                            );
                             this._pointePrecedementLien = null;
                         } else {
                             // Les éléments sont différents, la connexion peut être faite
                             // Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
-                            if (verbose) console.log(`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`);
+                            if (verbose)
+                                console.log(
+                                    `this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`
+                                );
                             let parentRelation, enfantRelation;
-                            if (parseFloat(this._pointePrecedementLien._ordonnee) < parseFloat(maTarget._ordonnee)) {
+                            if (
+                                parseFloat(
+                                    this._pointePrecedementLien._ordonnee
+                                ) < parseFloat(maTarget._ordonnee)
+                            ) {
                                 parentRelation = this._pointePrecedementLien;
                                 enfantRelation = maTarget;
                             } else {
@@ -473,10 +699,14 @@ class Editeur extends HTMLElement {
                             }
 
                             // On crée le lien
-                            parentRelation._elemParent.lierEnfant(enfantRelation);
+                            parentRelation._elemParent.lierEnfant(
+                                enfantRelation
+                            );
 
                             if (!e.shiftKey) {
-                                this._pointePrecedementLien.classList.remove('pointePourLien');
+                                this._pointePrecedementLien.classList.remove(
+                                    "pointePourLien"
+                                );
                                 this._pointePrecedementLien = null;
                             }
                         }
@@ -485,9 +715,14 @@ class Editeur extends HTMLElement {
             }
         });
 
-        this.addEventListener('mousedown', function (e) {
+        this.addEventListener("mousedown", function (e) {
             let maTarget = e.target;
-            while (!(maTarget instanceof ElementGraphique) && !(maTarget instanceof PlanTravail) && !(maTarget instanceof Condition) && maTarget !== null) {
+            while (
+                !(maTarget instanceof ElementGraphique) &&
+                !(maTarget instanceof PlanTravail) &&
+                !(maTarget instanceof Condition) &&
+                maTarget !== null
+            ) {
                 maTarget = maTarget.parentElement;
                 if (maTarget === null) {
                     return;
@@ -495,8 +730,9 @@ class Editeur extends HTMLElement {
                 // Gestion des clics sur des éléments qui ne doivent pas être ciblés
                 if (verbose) console.log(maTarget);
                 if (verbose) console.log(maTarget.classList);
-                if (verbose) console.log(maTarget.classList.contains('nonCiblable'));
-                if(maTarget.classList.contains('nonCiblable')) {
+                if (verbose)
+                    console.log(maTarget.classList.contains("nonCiblable"));
+                if (maTarget.classList.contains("nonCiblable")) {
                     return;
                 }
             }
@@ -505,18 +741,23 @@ class Editeur extends HTMLElement {
             }
 
             if (!e.shiftKey && !this._selection.estSelectionne(maTarget)) {
-                if (verbose) console.log('Pas de shift, on désélectionne tout');
+                if (verbose) console.log("Pas de shift, on désélectionne tout");
                 this._selection.deselectionnerTout();
             }
 
-            if (maTarget instanceof ElementGraphique && !this._selection.estSelectionne(maTarget) && this._currentTool != 6) {
-                if (verbose) console.log('Sélection d\'un élément graphique');
+            if (
+                maTarget instanceof ElementGraphique &&
+                !this._selection.estSelectionne(maTarget) &&
+                this._currentTool != 6
+            ) {
+                if (verbose) console.log("Sélection d'un élément graphique");
                 this._selection.selectionnerElement(maTarget);
             } else if (e.shiftKey && this._selection.estSelectionne(maTarget)) {
                 this._selection.deselectionnerElement(maTarget);
             }
 
-            if (verbose) console.log(`this._currentTool = ${this._currentTool}`)
+            if (verbose)
+                console.log(`this._currentTool = ${this._currentTool}`);
 
             if (maTarget instanceof PlanTravail && this._currentTool == -1) {
                 this._isSelecting = true;
@@ -526,37 +767,67 @@ class Editeur extends HTMLElement {
                 this._isDragging = true;
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
-                this._evenementDeplacement = new EvenementDeplacementElementMultiples();
+                this._evenementDeplacement =
+                    new EvenementDeplacementElementMultiples();
                 for (let element of this._selection.getElementsSelectionnes()) {
-                    this._evenementDeplacement.ajouterElementDeplace(new EvenementDeplacementElement(element));
+                    this._evenementDeplacement.ajouterElementDeplace(
+                        new EvenementDeplacementElement(element)
+                    );
                 }
             }
         });
-        this.addEventListener('mouseup', function() {
+        this.addEventListener("mouseup", function () {
             if (this._evenementDeplacement != null) {
-                if (this._evenementDeplacement.estDecale() && this._isDragging) {
+                if (
+                    this._evenementDeplacement.estDecale() &&
+                    this._isDragging
+                ) {
                     this.ajouterEvenement(this._evenementDeplacement);
                 }
             }
             this._isDragging = false;
             this._isSelecting = false;
-            let listeElemsASelec = this._selectionRectangle.listerElementsGraphiques();
+            let listeElemsASelec =
+                this._selectionRectangle.listerElementsGraphiques();
             for (let elem of listeElemsASelec) {
                 this._selection.selectionnerElement(elem);
             }
             this._selectionRectangle.placer(0, 0, 0, 0);
         });
-        this.addEventListener('mousemove', function(e) {
+        this.addEventListener("mousemove", function (e) {
+            this._curMousePos = {
+                x:
+                    ((e.clientX / window.innerWidth) * 100) /
+                    this._indicateurZoom._zoom,
+                y:
+                    ((e.clientY / window.innerWidth) * 100) /
+                    this._indicateurZoom._zoom,
+            }; // En vw
             if (verbose) console.log(`mousemove avec ${this._isDragging}`);
+            if (verbose) console.log(this._curMousePos);
             if (this._isDragging) {
                 let abscisseEnPx = e.clientX;
                 let ordonneeEnPx = e.clientY;
                 let decalageXEnPx = abscisseEnPx - this._lastPosX;
                 let decalageYEnPx = ordonneeEnPx - this._lastPosY;
-                let decalageXEnVw = decalageXEnPx / window.innerWidth * 100 / parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
-                let decalageYEnVw = decalageYEnPx / window.innerWidth * 100 / parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
-                this._selection.moveAllSelectedElements(decalageXEnVw, decalageYEnVw);
-                if (verbose) console.log(`Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`);
+                let decalageXEnVw =
+                    ((decalageXEnPx / window.innerWidth) * 100) /
+                    parseFloat(
+                        document.body.style.getPropertyValue("--sizeModifier")
+                    );
+                let decalageYEnVw =
+                    ((decalageYEnPx / window.innerWidth) * 100) /
+                    parseFloat(
+                        document.body.style.getPropertyValue("--sizeModifier")
+                    );
+                this._selection.moveAllSelectedElements(
+                    decalageXEnVw,
+                    decalageYEnVw
+                );
+                if (verbose)
+                    console.log(
+                        `Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`
+                    );
                 this._lastPosX = e.clientX;
                 this._lastPosY = e.clientY;
             } else {
@@ -567,46 +838,80 @@ class Editeur extends HTMLElement {
                 // Adapter les coordonnees de la souris pour les comparer avec les coordonnees des éléments graphiques
                 // Convertir en vw
                 let coordSouris = {
-                    x: e.clientX / window.innerWidth * 100,
-                    y: e.clientY / window.innerWidth * 100
-                }
+                    x: (e.clientX / window.innerWidth) * 100,
+                    y: (e.clientY / window.innerWidth) * 100,
+                };
 
                 // Prendre en compte le zoom
-                coordSouris.x /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
-                coordSouris.y /= parseFloat(document.body.style.getPropertyValue('--sizeModifier'));
+                coordSouris.x /= parseFloat(
+                    document.body.style.getPropertyValue("--sizeModifier")
+                );
+                coordSouris.y /= parseFloat(
+                    document.body.style.getPropertyValue("--sizeModifier")
+                );
 
                 // Prendre en compte le scroll du plan de travail
-                coordSouris.x += this._espacePrincipal.scrollLeft / window.innerWidth * 100;
-                coordSouris.y += this._espacePrincipal.scrollTop / window.innerWidth * 100;
+                coordSouris.x +=
+                    (this._espacePrincipal.scrollLeft / window.innerWidth) *
+                    100;
+                coordSouris.y +=
+                    (this._espacePrincipal.scrollTop / window.innerWidth) * 100;
 
                 // Trouver l'élément le plus proche
                 for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
                     let coordCentreElem = elem.getCentre();
 
-                    let distance = Math.sqrt((coordSouris.x - coordCentreElem.x)**2 + (coordSouris.y - coordCentreElem.y)**2);
+                    let distance = Math.sqrt(
+                        (coordSouris.x - coordCentreElem.x) ** 2 +
+                            (coordSouris.y - coordCentreElem.y) ** 2
+                    );
                     if (distance < distanceMin) {
                         distanceMin = distance;
                         elemLePlusProche = elem;
                     }
                 }
                 if (verbose) console.log(elemLePlusProche);
-                if (elemLePlusProche != this._ancienPlusProche && elemLePlusProche != null) {
+                if (
+                    elemLePlusProche != this._ancienPlusProche &&
+                    elemLePlusProche != null
+                ) {
                     elemLePlusProche.parentNode.appendChild(elemLePlusProche);
                     this._ancienPlusProche = elemLePlusProche;
                 }
             }
             if (this._isSelecting) {
-                let abscisseEnPx = (e.clientX - this._espacePrincipal.getBoundingClientRect().left) / document.body.style.getPropertyValue('--sizeModifier');
-                let ordonneeEnPx = (e.clientY - this._espacePrincipal.getBoundingClientRect().top) / document.body.style.getPropertyValue('--sizeModifier');
-                let abscisseEnVw = abscisseEnPx / window.innerWidth * 100;
-                let ordonneeEnVw = ordonneeEnPx / window.innerWidth * 100;
-                let lastXenVw = (this._coordonneesSelection.x / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().left) / window.innerWidth * 100;
-                let lastYenVw = (this._coordonneesSelection.y / document.body.style.getPropertyValue('--sizeModifier') - this._espacePrincipal.getBoundingClientRect().top) / window.innerWidth * 100;
-                this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
+                let abscisseEnPx =
+                    (e.clientX -
+                        this._espacePrincipal.getBoundingClientRect().left) /
+                    document.body.style.getPropertyValue("--sizeModifier");
+                let ordonneeEnPx =
+                    (e.clientY -
+                        this._espacePrincipal.getBoundingClientRect().top) /
+                    document.body.style.getPropertyValue("--sizeModifier");
+                let abscisseEnVw = (abscisseEnPx / window.innerWidth) * 100;
+                let ordonneeEnVw = (ordonneeEnPx / window.innerWidth) * 100;
+                let lastXenVw =
+                    ((this._coordonneesSelection.x /
+                        document.body.style.getPropertyValue("--sizeModifier") -
+                        this._espacePrincipal.getBoundingClientRect().left) /
+                        window.innerWidth) *
+                    100;
+                let lastYenVw =
+                    ((this._coordonneesSelection.y /
+                        document.body.style.getPropertyValue("--sizeModifier") -
+                        this._espacePrincipal.getBoundingClientRect().top) /
+                        window.innerWidth) *
+                    100;
+                this._selectionRectangle.placer(
+                    abscisseEnVw,
+                    ordonneeEnVw,
+                    lastXenVw,
+                    lastYenVw
+                );
             }
         });
 
-        this.addEventListener('contextmenu', function(e) {
+        this.addEventListener("contextmenu", function (e) {
             e.preventDefault();
 
             // Calculer la position du menu contextuel
@@ -614,11 +919,13 @@ class Editeur extends HTMLElement {
             let ordonnee = e.clientY;
 
             // Transformer les coordonnées en vw
-            abscisse = abscisse / window.innerWidth * 100;
-            ordonnee = ordonnee / window.innerWidth * 100;
+            abscisse = (abscisse / window.innerWidth) * 100;
+            ordonnee = (ordonnee / window.innerWidth) * 100;
 
             // Créer le menu contextuel
-            this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection));
+            this.appendChild(
+                new MenuContextuel(abscisse, ordonnee, this._selection)
+            );
         });
     }
 
@@ -629,21 +936,22 @@ class Editeur extends HTMLElement {
     selectTool(idTool) {
         this._currentTool = idTool;
         this._listeTools.forEach((tool) => {
-            tool.classList.remove('selected');
-            this._boutonPointeur.classList.remove('selected');
+            tool.classList.remove("selected");
+            this._boutonPointeur.classList.remove("selected");
         });
         if (idTool != -1) {
-            this._listeTools[idTool].classList.add('selected');
-        } else { // Pointeur
-            this._boutonPointeur.classList.add('selected');
+            this._listeTools[idTool].classList.add("selected");
+        } else {
+            // Pointeur
+            this._boutonPointeur.classList.add("selected");
         }
 
-        if(idTool != 7 && this._pointePrecedementLien != null) { // Tout autre outil que le lien, on enlève la pointe de l'élément précédemment pointé
-            this._pointePrecedementLien.classList.remove('pointePourLien');
+        if (idTool != 7 && this._pointePrecedementLien != null) {
+            // Tout autre outil que le lien, on enlève la pointe de l'élément précédemment pointé
+            this._pointePrecedementLien.classList.remove("pointePourLien");
             this._pointePrecedementLien = null;
         }
     }
-
 
     // Outils d'édition
     undo() {
@@ -653,64 +961,153 @@ class Editeur extends HTMLElement {
         this.retablir();
     }
     cut() {
-        if (verbose) console.log('cut');
+        if (verbose) console.log("cut");
         this.copy();
         this.delete();
     }
     copy(toClipboard = true) {
-        if (verbose) console.log('copy'); 
+        if (verbose) console.log("copy");
         let elementsACopier = [];
         let elementsSelectionnees = this._selection.getElementsSelectionnes(); // Liste des éléments sélectionnés
         for (let elementGraphique of elementsSelectionnees) {
-            if (elementGraphique._parent == null || !elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire) == -1) {
+            if (
+                elementGraphique._parent == null ||
+                !elementsSelectionnees.indexOf(
+                    elementGraphique._parent._proprietaire
+                ) == -1
+            ) {
                 if (verbose) console.log(elementGraphique);
-                elementsACopier.push(elementGraphique.toJSONspecifier(elementsSelectionnees));
+                elementsACopier.push(
+                    elementGraphique.toJSONspecifier(elementsSelectionnees)
+                );
             }
         }
+
+        if (toClipboard) {
+            // Trouver le coin supérieur gauche de la sélection
+            let coinSupGauche = this._selection.coin("center");
+            if (verbose) console.log(coinSupGauche);
+
+            // Soustraire les coordonnées du coin supérieur gauche pour que les coordonnées soient relatives
+            const appliquerDecalage = (elem) => {
+                if (verbose)
+                    console.log(
+                        `parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(
+                            elem.abscisse
+                        )} - ${coinSupGauche.x} + "vw"
+                        = ${parseFloat(elem.abscisse) - coinSupGauche.x + "vw"}`
+                    );
+                if (verbose)
+                    console.log(
+                        `parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(
+                            elem.ordonnee
+                        )} - ${coinSupGauche.y} + "vw"
+                        = ${parseFloat(elem.ordonnee) - coinSupGauche.y + "vw"}`
+                    );
+                elem.abscisse =
+                    parseFloat(elem.abscisse) - coinSupGauche.x + "vw";
+                elem.ordonnee =
+                    parseFloat(elem.ordonnee) - coinSupGauche.y + "vw";
+                if (elem.enfants) {
+                    elem.enfants.forEach((enfant) => {
+                        appliquerDecalage(enfant);
+                    });
+                }
+            };
+
+            elementsACopier.forEach((elem) => {
+                appliquerDecalage(elem);
+            });
+        }
+
         if (verbose) console.log(elementsACopier);
-        if (toClipboard) navigator.clipboard.writeText(JSON.stringify(elementsACopier));
+        if (toClipboard)
+            navigator.clipboard.writeText(JSON.stringify(elementsACopier));
         return JSON.stringify(elementsACopier);
     }
     paste() {
-        if (verbose) console.log('paste');
+        if (verbose) console.log("paste");
         try {
             var parsedData = JSON.parse(readFromClipboard());
+
+            // Ajouter les coordonnées de la souris
+            const appliquerDecalage = (elem) => {
+                if (verbose)
+                    console.log(
+                        `parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(
+                            elem.abscisse
+                        )} + ${this._curMousePos.x} + "vw"
+                        = ${
+                            parseFloat(elem.abscisse) +
+                            this._curMousePos.x +
+                            "vw"
+                        }`
+                    );
+                if (verbose)
+                    console.log(
+                        `parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(
+                            elem.ordonnee
+                        )} + ${this._curMousePos.y} + "vw"
+                        = ${
+                            parseFloat(elem.ordonnee) +
+                            this._curMousePos.y +
+                            "vw"
+                        }`
+                    );
+                elem.abscisse =
+                    parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
+                elem.ordonnee =
+                    parseFloat(elem.ordonnee) + this._curMousePos.y + "vw";
+                if (elem.enfants) {
+                    elem.enfants.forEach((enfant) => {
+                        appliquerDecalage(enfant);
+                    });
+                }
+            };
+
+            parsedData.forEach((elem) => {
+                appliquerDecalage(elem);
+            });
+
             this.chargerDepuisJSON(parsedData);
         } catch (error) {
             console.error("Le fichier n'est pas au format JSON.");
         }
     }
     selectAll() {
-        console.log('selectAll');
+        console.log("selectAll");
         for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
-            if (elem instanceof ElementGraphique) this._selection.selectionnerElement(elem);
+            if (elem instanceof ElementGraphique)
+                this._selection.selectionnerElement(elem);
         }
     }
     delete() {
-        console.log('delete');
+        console.log("delete");
         this._selection.supprimerTout();
     }
     search() {
-        console.log('search');
+        console.log("search");
     }
 
     exporterJSON(jsonString) {
         // On crée un Blob avec le contenu JSON
-        var blob = new Blob([jsonString], { type: 'application/json' });
-    
+        var blob = new Blob([jsonString], { type: "application/json" });
+
         // On crée un URL pour le Blob
         var url = URL.createObjectURL(blob);
-    
+
         // On crée un élément <a> pour télécharger le fichier
-        var downloadLink = document.createElement('a');
+        var downloadLink = document.createElement("a");
         downloadLink.href = url;
-        downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.json`;
-    
+        downloadLink.download = `${
+            this.querySelector("#titreAlgo").innerText
+        }.json`;
+
         // Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
-    
+
         // On supprime le Blob et l'URL pour libérer de la mémoire
         setTimeout(() => URL.revokeObjectURL(url), 100);
     }
@@ -740,11 +1137,11 @@ class Editeur extends HTMLElement {
     // Imports
     importerJSON() {
         // On crée un input de type file pour que l'utilisateur puisse choisir un fichier
-        var fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.json';
-        fileInput.style.display = 'none';
-        fileInput.addEventListener('change', () => {
+        var fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".json";
+        fileInput.style.display = "none";
+        fileInput.addEventListener("change", () => {
             var reader = new FileReader();
             reader.onload = () => {
                 try {
@@ -754,16 +1151,15 @@ class Editeur extends HTMLElement {
                     alert("Le fichier n'a pas été chargé correctement.");
                     console.error(error);
                 }
-            }
+            };
             reader.readAsText(fileInput.files[0]);
         });
         fileInput.click();
     }
 
-
     // Exports
     exporterSVG(nodeToCopy, download = true, isJSON = false) {
-        console.log('exporterSVG() appelé');
+        console.log("exporterSVG() appelé");
         // On crée une balise style pour embarquer le style dans le fichier SVG
         var styleElement = document.createElement("style");
         var cssStyles = `
@@ -1369,7 +1765,7 @@ class Editeur extends HTMLElement {
 
         let planExport = new PlanTravail();
 
-        planExport.style.setProperty('--sizeModifier', 1);
+        planExport.style.setProperty("--sizeModifier", 1);
         planExport.insertBefore(styleElement, planExport.firstChild);
 
         document.body.appendChild(planExport);
@@ -1380,10 +1776,10 @@ class Editeur extends HTMLElement {
         }
         document.body.removeChild(planExport);
 
-        for (let imgBoucle of planExport.querySelectorAll('img.boucleSVG')) {
+        for (let imgBoucle of planExport.querySelectorAll("img.boucleSVG")) {
             if (verbose) console.log(imgBoucle);
             let element = imgBoucle.parentElement;
-            let svgBoucle = document.createElement('svg');
+            let svgBoucle = document.createElement("svg");
             element.insertBefore(svgBoucle, imgBoucle);
             element.removeChild(imgBoucle);
             svgBoucle.outerHTML = `<svg class="boucleSVG" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.51 386.63">
@@ -1409,9 +1805,11 @@ class Editeur extends HTMLElement {
             `;
         }
 
-        for (let conditionSortie of planExport.querySelectorAll('condition-sortie-element')) {
+        for (let conditionSortie of planExport.querySelectorAll(
+            "condition-sortie-element"
+        )) {
             if (verbose) console.log(conditionSortie);
-            let svgConditionSortie = document.createElement('svg');
+            let svgConditionSortie = document.createElement("svg");
             conditionSortie.appendChild(svgConditionSortie);
             svgConditionSortie.outerHTML = `<?xml version="1.0" encoding="utf-8"?>
             <!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -1434,12 +1832,14 @@ class Editeur extends HTMLElement {
 
         var serializer = new XMLSerializer();
         var svgString = serializer.serializeToString(planExport);
-        var blob = new Blob([svgString], { type: 'image/svg+xml' });
+        var blob = new Blob([svgString], { type: "image/svg+xml" });
         var url = URL.createObjectURL(blob);
         if (download) {
-            var downloadLink = document.createElement('a');
+            var downloadLink = document.createElement("a");
             downloadLink.href = url;
-            downloadLink.download = `${this.querySelector('#titreAlgo').innerText}.svg`;
+            downloadLink.download = `${
+                this.querySelector("#titreAlgo").innerText
+            }.svg`;
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
@@ -1448,47 +1848,48 @@ class Editeur extends HTMLElement {
     }
 
     exportSVGAsPNG(svgStr, outputFileName) {
-        var blob = new Blob([svgStr], { type: 'image/svg+xml' });
+        var blob = new Blob([svgStr], { type: "image/svg+xml" });
         var url = URL.createObjectURL(blob);
 
         // Create an image to load the SVG
         const img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             // Create a canvas element
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement("canvas");
             canvas.width = img.width;
             canvas.height = img.height;
-    
+
             // Draw the SVG onto the canvas
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-    
+
             // Convert the canvas to a PNG data URL
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 // Create a new URL for the blob
                 const pngUrl = URL.createObjectURL(blob);
-    
+
                 // Download the PNG image
-                const downloadLink = document.createElement('a');
+                const downloadLink = document.createElement("a");
                 downloadLink.href = pngUrl;
                 downloadLink.download = outputFileName;
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
-    
+
                 // Optionally, free up the memory by revoking the object URL
                 URL.revokeObjectURL(pngUrl);
-            }, 'image/png');
+            }, "image/png");
         };
-    
-        img.onerror = function(ev) {
+
+        img.onerror = function (ev) {
             console.error("Error loading SVG image.");
             console.error(ev);
             console.error(img.width);
             console.error(img.height);
         };
-    
+
         // Set the source of the image to the SVG data URL
         img.src = url;
     }
-} window.customElements.define('editeur-interface', Editeur);
+}
+window.customElements.define("editeur-interface", Editeur);

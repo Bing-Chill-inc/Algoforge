@@ -32,35 +32,80 @@ class LienCompositionProbleme extends Lien {
         let ancreParent = this._elemGraphiqueParent.getAncreDecomposition();
         let ancreEnfant = this._elemGraphiqueEnfant.getAncreComposition();
         if (this._elemGraphiqueParent._elemParent.nombreEnfants > 1) {
-            this._symboleDecomposition.setPointAncrage(ancreParent.abscisse, ancreParent.ordonnee);
+            this._symboleDecomposition.setPointAncrage(
+                ancreParent.abscisse,
+                ancreParent.ordonnee
+            );
             this._symboleDecomposition.style.display = "";
-            this._ligneH.setDebut(ancreParent.abscisse, ancreParent.ordonnee + 1.5);
-            this._ligneH.setFin(ancreEnfant.abscisse, ancreParent.ordonnee + 1.5);
-            this._ligneV.setDebut(ancreEnfant.abscisse, ancreParent.ordonnee + 1.5);
+            this._ligneH.setDebut(
+                ancreParent.abscisse,
+                ancreParent.ordonnee + 1.5
+            );
+            this._ligneH.setFin(
+                ancreEnfant.abscisse,
+                ancreParent.ordonnee + 1.5
+            );
+            this._ligneV.setDebut(
+                ancreEnfant.abscisse,
+                ancreParent.ordonnee + 1.5
+            );
             this._ligneV.setFin(ancreEnfant.abscisse, ancreEnfant.ordonnee);
         } else {
             // Il n'y a qu'un seul enfant, si il est suffisament proche nous traçons deux lignes droites
             // Calculons la distance entre les deux points
-            let distance = Math.sqrt(Math.pow(ancreEnfant.abscisse - ancreParent.abscisse, 2) + Math.pow(ancreEnfant.ordonnee - ancreParent.ordonnee, 2));
+            let distance = Math.sqrt(
+                Math.pow(ancreEnfant.abscisse - ancreParent.abscisse, 2) +
+                    Math.pow(ancreEnfant.ordonnee - ancreParent.ordonnee, 2)
+            );
 
             // Calculons l'angle entre les deux points
-            let angle = Math.atan2(ancreEnfant.ordonnee - ancreParent.ordonnee, ancreEnfant.abscisse - ancreParent.abscisse);
+            let angle = Math.atan2(
+                ancreEnfant.ordonnee - ancreParent.ordonnee,
+                ancreEnfant.abscisse - ancreParent.abscisse
+            );
 
             // Si la distance est supérieure à 15 ou l'angle est supérieur à 45°, on trace la ligne en forme de L normale
-            if (distance > 15 || !(angle > Math.PI / 4 && angle < 3 * Math.PI / 4)) {
-                this._symboleDecomposition.setPointAncrage(ancreParent.abscisse, ancreParent.ordonnee);
+            if (
+                distance > 15 ||
+                !(angle > Math.PI / 4 && angle < (3 * Math.PI) / 4)
+            ) {
+                this._symboleDecomposition.setPointAncrage(
+                    ancreParent.abscisse,
+                    ancreParent.ordonnee
+                );
                 this._symboleDecomposition.style.display = "";
-                this._ligneH.setDebut(ancreParent.abscisse, ancreParent.ordonnee + 1.5);
-                this._ligneH.setFin(ancreEnfant.abscisse, ancreParent.ordonnee + 1.5);
-                this._ligneV.setDebut(ancreEnfant.abscisse, ancreParent.ordonnee + 1.5);
+                this._ligneH.setDebut(
+                    ancreParent.abscisse,
+                    ancreParent.ordonnee + 1.5
+                );
+                this._ligneH.setFin(
+                    ancreEnfant.abscisse,
+                    ancreParent.ordonnee + 1.5
+                );
+                this._ligneV.setDebut(
+                    ancreEnfant.abscisse,
+                    ancreParent.ordonnee + 1.5
+                );
                 this._ligneV.setFin(ancreEnfant.abscisse, ancreEnfant.ordonnee);
             } else {
                 // Sinon, on cache la double barre et on trace deux ligne droite
                 this._symboleDecomposition.style.display = "none";
-                this._ligneH.setDebut(ancreParent.abscisse - 0.5, ancreParent.ordonnee);
-                this._ligneH.setFin(ancreEnfant.abscisse - 0.5, ancreEnfant.ordonnee);
-                this._ligneV.setDebut(ancreParent.abscisse + 0.5, ancreParent.ordonnee);
-                this._ligneV.setFin(ancreEnfant.abscisse + 0.5, ancreEnfant.ordonnee);
+                this._ligneH.setDebut(
+                    ancreParent.abscisse - 0.5,
+                    ancreParent.ordonnee
+                );
+                this._ligneH.setFin(
+                    ancreEnfant.abscisse - 0.5,
+                    ancreEnfant.ordonnee
+                );
+                this._ligneV.setDebut(
+                    ancreParent.abscisse + 0.5,
+                    ancreParent.ordonnee
+                );
+                this._ligneV.setFin(
+                    ancreEnfant.abscisse + 0.5,
+                    ancreEnfant.ordonnee
+                );
             }
         }
     }
