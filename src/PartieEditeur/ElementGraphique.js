@@ -11,6 +11,7 @@ class ElementGraphique extends HTMLElement {
     _ordonnee; // Entier
     _parent; // ElementParent
     _listeAnomalie; //List<AnomalieConceptuelle>
+    _elementGraphique;
     //_couleurPrimaire = "black"; // Couleur premiere
     //_etat= "Defaut"; // Etat de l'element graphique
 
@@ -26,6 +27,7 @@ class ElementGraphique extends HTMLElement {
         this._abscisse = abscisse;
         this._ordonnee = ordonnee;
         this._parent = parent;
+        this._elementGraphique = this;
         this.setPosition(abscisse, ordonnee);
     }
 
@@ -195,7 +197,7 @@ class ElementGraphique extends HTMLElement {
     getParent(typeRechercher = ElementGraphique) {
         if(this._parent)
         {
-            return this._parent._proprietaire instanceof typeRechercher ? this._parent._proprietaire:null;
+            return this._parent._proprietaire._elementGraphique instanceof typeRechercher ? this._parent._proprietaire._elementGraphique:null;
         }
         return null;
     }

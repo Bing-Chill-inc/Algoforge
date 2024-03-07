@@ -55,12 +55,27 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
      */
     static detecterAnomalie(unArret) {
         try {
-            const parent = unArret.getParent();
-            if (parent == null) {
+            const listeParent = unArret.getAntescedants(StructureAlternative);
+            if (listeParent.length == 0) {
                 return [false];
             }
-            const listeEnfantsDuParent = parent.getEnfants();
-            let tailleListe = listeEnfantsDuParent.length;
+            const parent = listeParent[0];
+            const listeEnfantsDuParent = parent.getEnfantsParCondition();
+            for(let lesEnfantsDeUneCondition of listeEnfantsDuParent)
+            {
+                for(let unElementGraphique of lesEnfantsDeUneCondition)
+                {
+                    if(unElementGraphique == unArret)
+                    {
+                        if(lesEnfantsDeUneCondition[lesEnfantsDeUneCondition.length - 1] != unArret)
+                        {
+                            return [true, lesEnfantsDeUneCondition];
+                        }
+                    }
+                }
+            }
+            return [false];
+            /*let tailleListe = listeEnfantsDuParent.length;
             if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
                 let courant = tailleListe - 1;
                 let elementsConcernes = [];
@@ -70,7 +85,7 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
                 }
                 return [true, elementsConcernes];
             }
-            return [false];
+            return [false];*/
         }
         catch(e) {
             console.error(e);

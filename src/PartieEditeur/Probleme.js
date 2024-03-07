@@ -378,7 +378,7 @@ class Probleme extends ElementGraphique {
             listeDesEnfants.push(enfant.element);
         }
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
-        return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
+        return PlanTravail.trierElementsGraphique(listeDesEnfants);
     }
 
     /**

@@ -78,7 +78,7 @@ class StructureAlternative extends ElementGraphique {
             }
         }
         listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);
-        return listeEnfants.sort((a, b) => a._abscisse - b._abscisse);
+        return PlanTravail.trierElementsGraphique(listeEnfants);
     }
 
     /**
@@ -204,14 +204,18 @@ class StructureAlternative extends ElementGraphique {
     }
 
     getEnfantsParCondition() {
-        let listeEnfants = [];
+        let listeConditionsEnfants = [];
         for(let condition of this._listeConditions.children)
         {
+            let listeEnfantsParCondition = [];
             for(let elem of condition._elemParent._listeElementsEnfants)
             {
-                listeEnfants.push([condition, elem.element]);
+                listeEnfantsParCondition.push(elem.element);
             }
+            listeEnfantsParCondition = PlanTravail.trierElementsGraphique(listeEnfantsParCondition);
+            listeConditionsEnfants.push(listeEnfantsParCondition);
+
         }
-        return listeEnfants;
+        return listeConditionsEnfants;
     }
 }

@@ -95,6 +95,25 @@ class PlanTravail extends HTMLElement {
         return nouvelleListe;
     }
 
+    static trierElementsGraphique(listeElementGraphique)
+    {
+        const n = listeElementGraphique.length;
+        for (let i = 0; i < n - 1; i++) {
+            let minIndex = i;
+            for (let j = i + 1; j < n; j++) {
+                if (listeElementGraphique[j].getCentre().x < listeElementGraphique[minIndex].getCentre().x) {
+                    minIndex = j;
+                }
+            }
+            if (minIndex !== i) {
+                // Échangez les éléments
+                let temp = listeElementGraphique[i];
+                listeElementGraphique[i] = listeElementGraphique[minIndex];
+                listeElementGraphique[minIndex] = temp;
+            }
+        }
+        return listeElementGraphique;
+    }
     /**
      * @description Renvoie les informations de l'instance du PlanTravail sous forme JSON
      *
