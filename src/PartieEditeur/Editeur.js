@@ -133,7 +133,7 @@ class Editeur extends HTMLElement {
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Thème Sombre",
+				"Thème AlgoForge",
 				"#222222",
 				"#838787",
 				"#83878755",
@@ -143,8 +143,7 @@ class Editeur extends HTMLElement {
 				"#8ABE5E99",
 				"#C82606",
 				"#FFE989",
-				"#34A5DA",
-				"assets/algoforgeLogo.png"
+				"#34A5DA"
 			)
 		);
 		this._themeSelect.appendChild(
@@ -159,10 +158,55 @@ class Editeur extends HTMLElement {
 				"#58912999",
 				"#C82606",
 				"#b89f30",
-				"#22759c",
-				"assets/algoforgeLogoThemeClair.png"
+				"#22759c"
 			)
 		);
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"Minuit",
+				"#020012",
+				"#838787",
+				"#83878755",
+				"#83878711",
+				"#A6AAA9",
+				"#8ABE5E",
+				"#8ABE5E99",
+				"#C82606",
+				"#FFE989",
+				"#FFFFFF"
+			)
+		);
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"H@ck3r",
+				"#001202",
+				"#79f784",
+				"#79f78455",
+				"#79f78411",
+				"#85f299",
+				"#00aaff",
+				"#00aaff99",
+				"#C82606",
+				"#FFE989",
+				"#FFFFFF"
+			)
+		);
+
+		// this._themeSelect.appendChild(
+		// 	new ThemeEditeur(
+		// 		nom,
+		// 		bgColor,
+		// 		fgColor,
+		// 		fgColorSemiTransparent,
+		// 		fgColorTransparent,
+		// 		fgColorForward,
+		// 		goodColor,
+		// 		goodColorTransparent,
+		// 		errorColor,
+		// 		warningColor,
+		// 		titleColor
+		// 	)
+		// );
 
 		// Gestion des événements de thème
 		this._themeSelect.addEventListener("change", () => {
@@ -170,7 +214,14 @@ class Editeur extends HTMLElement {
 			theme.appliquer();
 		});
 
-		this._themeSelect.options[0].appliquer();
+		let theme = this.getCookie("theme");
+		if (theme) {
+			this._themeSelect.value = theme;
+		} else {
+			this._themeSelect.selectedIndex = 0;
+		}
+
+		this._themeSelect.options[this._themeSelect.selectedIndex].appliquer();
 
 		// Ajout des éléments de menu
 		// Fichier
@@ -949,6 +1000,29 @@ class Editeur extends HTMLElement {
 			// Créer le menu contextuel
 			this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection));
 		});
+	}
+
+	setCookie(cname, cvalue, exdays) {
+		const d = new Date();
+		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+		let expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	getCookie(cname) {
+		let name = cname + "=";
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(";");
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
 	}
 
 	chargerDepuisJSON(json) {

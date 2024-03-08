@@ -1,3 +1,22 @@
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--bgColor);
+  }
+
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--fgColor);
+  }
+
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--titleColor);
+  }
+
+  * {
+    scrollbar-color: var(--fgColor) var(--bgColor); /* Firefox */
+  }
+
 body {
     margin: 0;
     padding: 0;

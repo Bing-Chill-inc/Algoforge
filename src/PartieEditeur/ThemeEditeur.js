@@ -10,9 +10,10 @@ class ThemeEditeur extends HTMLOptionElement {
 	errorColor;
 	warningColor;
 	titleColor;
-	pathLogo;
 
 	_logoAlgoForge = document.querySelector("#logoAlgoForge");
+
+	_editeur = document.querySelector("editeur-interface"); // Editeur
 
 	constructor(
 		nom,
@@ -25,8 +26,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		goodColorTransparent,
 		errorColor,
 		warningColor,
-		titleColor,
-		pathLogo
+		titleColor
 	) {
 		super();
 		this.nom = nom;
@@ -40,7 +40,6 @@ class ThemeEditeur extends HTMLOptionElement {
 		this.errorColor = errorColor;
 		this.warningColor = warningColor;
 		this.titleColor = titleColor;
-		this.pathLogo = pathLogo;
 
 		this.innerText = this.nom;
 	}
@@ -143,7 +142,9 @@ class ThemeEditeur extends HTMLOptionElement {
 			1
 		)}`;
 
-		this._logoAlgoForge.src = this.pathLogo;
+		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.php?fgColor=${this.fgColor.substring(1)}`;
+
+		this._editeur.setCookie("theme", this.nom, 365);
 	}
 }
 window.customElements.define("theme-editeur", ThemeEditeur, { extends: "option" });
