@@ -1,0 +1,30 @@
+[
+  {
+    "typeElement": "Probleme",
+    "abscisse": "30.148625911385313vw",
+    "ordonnee": "7.4270891755468265vw",
+    "libelle": "",
+    "listeDonnes": [""],
+    "listeResultats": [""],
+    "enfants": [
+      {
+        "typeElement": "Probleme",
+        "abscisse": "22.464946719012932vw",
+        "ordonnee": "16.34464385866516vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "38.50532809871vw",
+        "ordonnee": "16.45681435782389vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      }
+    ]
+  }
+]

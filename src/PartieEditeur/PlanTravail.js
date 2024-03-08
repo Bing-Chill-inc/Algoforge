@@ -14,31 +14,26 @@ class PlanTravail extends HTMLElement {
      */
     constructor() {
         super();
-        // this.addEventListener("paste", (event) => {
-        //     event.preventDefault();
-        //     let texte = event.clipboardData.getData("text/plain");
-        //     this.chargerFichier(texte);
+
+        // this.addEventListener("dragover", (event) => {
+        //     event.preventDefault(); // Necessary to allow a drop
         // });
 
-        this.addEventListener("dragover", (event) => {
-            event.preventDefault(); // Necessary to allow a drop
-        });
+        // this.addEventListener("drop", (event) => {
+        //     event.preventDefault();
 
-        this.addEventListener("drop", (event) => {
-            event.preventDefault();
+        //     // Get the id of the dragged element
+        //     const data = event.dataTransfer.getData("text/plain");
+        //     if (verbose) console.log("Dropped:", data);
 
-            // Get the id of the dragged element
-            const data = event.dataTransfer.getData("text/plain");
-            if (verbose) console.log("Dropped:", data);
+        //     // Get the X and Y coordinates
+        //     const x = event.layerX;
+        //     const y = event.layerY;
 
-            // Get the X and Y coordinates
-            const x = event.layerX;
-            const y = event.layerY;
-
-            if (verbose) console.log("Dropped at coordinates:", x, y);
-            if (verbose) console.log("eval(data) = " + eval(data));
-            this.ajouterElement(eval(data), x, y, false);
-        });
+        //     if (verbose) console.log("Dropped at coordinates:", x, y);
+        //     if (verbose) console.log("eval(data) = " + eval(data));
+        //     this.ajouterElement(eval(data), x, y, false);
+        // });
 
         // Une fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
         setInterval(() => {

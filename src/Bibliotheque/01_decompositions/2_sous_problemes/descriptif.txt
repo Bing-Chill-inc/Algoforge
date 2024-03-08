@@ -1,0 +1,1 @@
+Cette brique algorithmique représente un problème et sa décomposition en deux sous-problèmes plus simples.

@@ -459,6 +459,116 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hov
     text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
+bibliotheque-algorithmique {
+    position: fixed;
+    top: 10vw;
+    left: 0;
+    width: 5vw;
+    height: 5vw;
+    padding: 0.5vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0 1vw 1vw 0;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
+    overflow: hidden;
+    cursor: pointer;
+    transform-origin: left;
+    transition: 0.2s all ease;
+}
+
+bibliotheque-algorithmique > img {
+    width: 5vw;
+    height: 5vw;
+}
+
+bibliotheque-algorithmique:hover {
+    scale: 1.15 1;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
+bibliotheque-algorithmique.ouvert {
+    width: 25vw;
+    height: fit-content;
+    max-height: calc(80vh - 10vw);
+    min-height: 15vw;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+}
+
+bibliotheque-algorithmique.ouvert:hover {
+    scale: 1 1;
+}
+
+bibliotheque-algorithmique > span.fermeture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5vw;
+    font-size: 2vw;
+}
+
+bibliotheque-algorithmique > div.listeCategories {
+    width: 90%;
+    height: 99%;
+    margin-top: 1%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    scrollbar-width: none;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie {
+    width: 100%;
+    height: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    border-bottom: 0.1vw solid var(--fgColor);
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
+    width: 100%;
+    height: 2vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert {
+    height: fit-content;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie > div.listeAlgorithmes {
+    display: none;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque {
+    width: 5vw;
+    height: 5vw;
+    margin: 0.5vw;
+    cursor: pointer;
+    transition: 0.2s all ease;
+}
+
 menu-contextuel {
     position: fixed;
     width: 15vw;
