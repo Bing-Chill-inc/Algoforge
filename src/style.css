@@ -227,15 +227,22 @@ editeur-interface > header > div.zonePartage > button {
 } */ /* A remettre quand le compte sera fonctionnel */
 
 editeur-interface > header > select#theme {
+    appearance: none;
+    background: transparent;
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 70%;
+    background-size: 15%;
+    text-indent: 0%;
     width: 10%;
     height: 50%;
-    background: none;
+    background-image:url("assets/fleche.svg");
     border: var(--fgColor) solid 0.1vw;
     border-radius: 1vw;
     font-size: 1vw;
     color: var(--fgColor);
     cursor: pointer;
-
+    text-size-adjust: none;    
 }
 
 editeur-interface > div.barreOutilsHorizontale {
