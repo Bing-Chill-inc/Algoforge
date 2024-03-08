@@ -17,6 +17,10 @@ h1 {
     font-size: 1.5vw;
 }
 
+span {
+    display: inline-block;
+}
+
 canvas#canvas {
     position: absolute;
     top: 0;
@@ -1394,4 +1398,16 @@ ligne-element {
     100% {
         translate: 0 0;
     }
+}
+
+.rotate {
+    rotate: 360deg;
+}
+
+.move-right-2 {
+    translate: 2vw 0;
+}
+
+.crayon {
+    transition: all 0.5s ease;
 }

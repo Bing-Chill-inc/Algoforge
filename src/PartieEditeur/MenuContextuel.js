@@ -257,6 +257,57 @@ class MenuContextuel extends HTMLElement {
                     );
                 })
             );
+
+            let sousTitreDictionnaire = document.createElement("h3");
+            sousTitreDictionnaire.innerText = "Dictionnaire";
+            exporter.ajouterElementMenu(sousTitreDictionnaire);
+
+            exporter.ajouterElementMenu(
+                new ElementMenu(".csv", () => {
+                    console.log("Exporter en .csv");
+                    // On retire du plan de travail tout ce qui n'est pas dans la sélection
+                    // On garde une trace des éléments à rerajouter
+                    let listeElemSup = [];
+
+                    for (let elem of this._editeur._espacePrincipal.children) {
+                        if (
+                            !this._selection.estSelectionne(elem) &&
+                            elem != this &&
+                            elem instanceof ElementGraphique
+                        ) {
+                            listeElemSup.push(elem);
+                            elem.remove();
+                        }
+                    }
+
+                    // On effectue le dictionnaire
+                    this._editeur._espacePrincipal.effectuerDictionnaireDesDonnee();
+
+                    // On exporte le dictionnaire
+                    this._editeur._espacePrincipal.leDictionnaireDesDonnees.exporter(
+                        "csv"
+                    );
+
+                    // On remet les éléments retirés
+                    setTimeout(() => {
+                        for (let elem of listeElemSup) {
+                            this._editeur._espacePrincipal.appendChild(elem);
+                        }
+                    }, 1000);
+                })
+            );
+
+            exporter.ajouterElementMenu(
+                new ElementMenu(".xls", () => {
+                    console.log("Exporter en .xls");
+                })
+            );
+
+            exporter.ajouterElementMenu(
+                new ElementMenu(".md", () => {
+                    console.log("Exporter en .md");
+                })
+            );
         }
     }
 }

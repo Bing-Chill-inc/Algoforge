@@ -30,6 +30,7 @@ class Editeur extends HTMLElement {
     _lastPosX = 0;
     _lastPosY = 0;
     _ancienPlusProche = null;
+    MAX_CHAR_TITRE = 64;
 
     _curMousePos = { x: 0, y: 0 };
 
@@ -97,12 +98,52 @@ class Editeur extends HTMLElement {
 
         this.querySelector("#titreAlgo").addEventListener(
             "keydown",
-            function (event) {
+            (event) => {
                 // On vérifie si la touche appuyée est "Entrée"
                 if (event.key === "Enter") {
                     // On l'empêche pour éviter le saut de ligne, qui casse le design
                     event.preventDefault();
+
+                    // On enlève le focus de l'élément pour que le titre soit bien enregistré
+                    event.target.blur();
+
+                    // Petite animation sur le crayon
+                    event.target.nextElementSibling.classList.add("rotate");
+                    event.target.nextElementSibling.classList.add(
+                        "move-right-2"
+                    );
+                    setTimeout(() => {
+                        event.target.nextElementSibling.classList.remove(
+                            "rotate"
+                        );
+                        event.target.nextElementSibling.classList.remove(
+                            "move-right-2"
+                        );
+                    }, 500);
                 }
+
+                if (verbose)
+                    console.log(
+                        `Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
+                    );
+                // On vérifie si il y a trop de caractères
+                if (
+                    event.target.innerText.length >= this.MAX_CHAR_TITRE &&
+                    event.key !== "Backspace" &&
+                    event.key !== "Delete"
+                ) {
+                    if (verbose) console.log("Trop de caractères");
+                    // On empêche l'ajout de caractères
+                    event.preventDefault();
+                }
+            }
+        );
+
+        this.querySelector("#titreAlgo").nextElementSibling.addEventListener(
+            "click",
+            (event) => {
+                // On met le focus sur le titre
+                event.target.previousElementSibling.focus();
             }
         );
 

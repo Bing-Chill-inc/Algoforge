@@ -463,14 +463,39 @@ class DictionnaireDonnee extends HTMLElement {
     exporter(format) {
         switch (format.toLowerCase()) {
             case "xls":
-                // Code snippet de SheetJS
                 this.ouvrir();
-                /* Create worksheet from HTML DOM TABLE */
-                var wb = XLSX.utils.table_to_book(
-                    this.querySelector("table#tableDictionnaireDonnee")
-                );
+                // Code snippet de la doc de SheetJS
+                let aoa = [["Nom", "Type", "Signification"]];
+
+                this._mesInformations.forEach((info) => {
+                    aoa.push([
+                        info._nom,
+                        `${
+                            this._matchType[info._nom]
+                                ? this._matchType[info._nom]
+                                : info._type
+                        }`,
+                        this._matchSignification[info._nom]
+                            ? this._matchSignification[info._nom]
+                            : "",
+                    ]);
+                });
+                /* Create worksheet from Array of arrays */
+                var ws = XLSX.utils.aoa_to_sheet(aoa);
+
+                // Create a new workbook
+                var wb = XLSX.utils.book_new();
+
+                // Append the worksheet to the workbook
+                XLSX.utils.book_append_sheet(wb, ws, "Dictionnaire"); // "Dictionnaire" is the worksheet name
+
                 /* Export to file (start a download) */
-                XLSX.writeFile(wb, "SheetJSTable.xlsx");
+                XLSX.writeFile(
+                    wb,
+                    `${
+                        document.querySelector("#titreAlgo").innerText
+                    }Dictionnaire.xls`
+                );
                 this.fermer();
                 break;
             case "csv":
@@ -482,6 +507,8 @@ class DictionnaireDonnee extends HTMLElement {
                 this._mesInformations.forEach((info) => {
                     contenuTexte += `${info._nom};${info._type};${
                         this._matchSignification[info._nom]
+                            ? this._matchSignification[info._nom]
+                            : ""
                     }\n`;
                 });
 
@@ -509,6 +536,44 @@ class DictionnaireDonnee extends HTMLElement {
                 setTimeout(() => URL.revokeObjectURL(url), 100);
                 break;
             case "md":
+                // On crée le contenu du fichier
+                var contenuTexte = "Nom;Type;Signification\n";
+                this.ouvrir();
+                this.fermer();
+
+                this._mesInformations.forEach((info) => {
+                    contenuTexte += `${info._nom};${info._type};${
+                        this._matchSignification[info._nom]
+                            ? this._matchSignification[info._nom]
+                            : ""
+                    }\n`;
+                });
+
+                // On convertit le CSV en Markdown
+                contenuTexte = this.csvToMarkdown(contenuTexte);
+
+                // On crée un Blob avec le contenu Markdown
+                var blob = new Blob([contenuTexte], {
+                    type: "text/markdown",
+                });
+
+                // On crée un URL pour le Blob
+                var url = URL.createObjectURL(blob);
+
+                // On crée un élément <a> pour télécharger le fichier
+                var downloadLink = document.createElement("a");
+                downloadLink.href = url;
+                downloadLink.download = `${
+                    document.querySelector("#titreAlgo").innerText
+                }Dictionnaire.md`;
+
+                // Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                // On supprime le Blob et l'URL pour libérer de la mémoire
+                setTimeout(() => URL.revokeObjectURL(url), 100);
                 break;
             default:
                 break;
@@ -517,6 +582,27 @@ class DictionnaireDonnee extends HTMLElement {
 
     chargerDepuisJSON(json) {
         this._matchSignification = json.contenu;
+    }
+
+    csvToMarkdown(csvString) {
+        const rows = csvString.split("\n").filter((row) => row); // On sépare les lignes et ne gardons pas les lignes vides
+        let markdown = "";
+
+        rows.forEach((row, index) => {
+            const columns = row.split(";"); // On découpe les lignes par le délimiteur
+            // On entoure chaque colonne par des pipes pour les transformer en cellules de tableau
+            const markdownRow = `| ${columns.join(" | ")} |`;
+
+            markdown += markdownRow + "\n";
+
+            // On ajoute une ligne de séparation après la première ligne pour créer l'entête
+            if (index === 0) {
+                const separator = columns.map(() => "---").join(" | ");
+                markdown += `| ${separator} |\n`;
+            }
+        });
+
+        return markdown;
     }
 }
 window.customElements.define("dictionnaire-donnee", DictionnaireDonnee);

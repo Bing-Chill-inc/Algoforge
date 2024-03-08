@@ -685,6 +685,112 @@ class Probleme extends ElementGraphique {
             })
         );
 
+        let sousTitreDictionnaire = document.createElement("h3");
+        sousTitreDictionnaire.innerText = "Dictionnaire";
+        exporter.ajouterElementMenu(sousTitreDictionnaire);
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".csv", () => {
+                console.log("Exporter en .csv");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("csv");
+
+                // On remet les éléments retirés
+                for (let elem of listeElemSup) {
+                    this.parentNode.appendChild(elem);
+                }
+            })
+        );
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".xlsx", () => {
+                console.log("Exporter en .xlsx");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("xls");
+
+                // On remet les éléments retirés
+                for (let elem of listeElemSup) {
+                    this.parentNode.appendChild(elem);
+                }
+            })
+        );
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".md", () => {
+                console.log("Exporter en .md");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("md");
+
+                // On remet les éléments retirés
+                for (let elem of listeElemSup) {
+                    this.parentNode.appendChild(elem);
+                }
+            })
+        );
+
         return listeOptions;
     }
 }
