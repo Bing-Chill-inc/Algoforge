@@ -1,1 +1,40 @@
-[{"typeElement":"Probleme","abscisse":"30.381526104417656vw","ordonnee":"5.876362593230061vw","libelle":"Échanger","listeDonnes":["valeur1"," valeur2\n\n"],"listeResultats":["valeur1"," valeur2\n\n"],"enfants":[{"typeElement":"Probleme","abscisse":"18.333333333333357vw","ordonnee":"14.482214572575998vw","libelle":"copieValeur1 <- valeur 1","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"30.20940906483078vw","ordonnee":"14.367469879518099vw","libelle":"valeur1 <- valeur2","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"41.626506024096386vw","ordonnee":"14.424842226047032vw","libelle":"valeur2 <- copieValeur1","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]
+[
+  {
+    "typeElement": "Probleme",
+    "abscisse": "12.777777777777766vw",
+    "ordonnee": "9.497076023391822vw",
+    "libelle": "Échanger",
+    "listeDonnes": ["valeur1", " valeur2\n\n"],
+    "listeResultats": ["valeur1", " valeur2\n\n"],
+    "enfants": [
+      {
+        "typeElement": "Probleme",
+        "abscisse": "0.7295850066934709vw",
+        "ordonnee": "18.10292800273773vw",
+        "libelle": "copieValeur1 <- valeur 1",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "12.60566073819089vw",
+        "ordonnee": "17.98818330967983vw",
+        "libelle": "valeur1 <- valeur2",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "24.02275769745647vw",
+        "ordonnee": "18.045555656208762vw",
+        "libelle": "valeur2 <- copieValeur1",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      }
+    ]
+  },
+  { "typeElement": "DictionnaireDonnee", "contenu": {} }
+]

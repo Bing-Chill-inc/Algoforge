@@ -1,1 +1,20 @@
-[{"typeElement":"Probleme","abscisse":"37.159282108805414vw","ordonnee":"6.585810431856416vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSi","abscisse":"47.22378014582163vw","ordonnee":"12.301738642736952vw","conditions":[{"typeElement":"Condition","libelle":"","enfants":[]}]}]}]
+[
+  {
+    "typeElement": "Probleme",
+    "abscisse": "-6.695906432748538vw",
+    "ordonnee": "2.245614035087719vw",
+    "libelle": "",
+    "listeDonnes": [""],
+    "listeResultats": [""],
+    "enfants": [
+      {
+        "typeElement": "StructureSi",
+        "abscisse": "3.3101120721039026vw",
+        "ordonnee": "7.72762411731329vw",
+        "conditions": [
+          { "typeElement": "Condition", "libelle": "", "enfants": [] }
+        ]
+      }
+    ]
+  }
+]

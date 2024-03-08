@@ -1,1 +1,55 @@
-[{"typeElement":"Probleme","abscisse":"31.044864226682392vw","ordonnee":"6.118654073199529vw","libelle":"Saisie - Vérif avec message d'erreur","listeDonnes":[""],"listeResultats":["valeur vérifiant la propriété P\n\n"],"enfants":[{"typeElement":"StructureIterativeNonBornee","abscisse":"44.03778040141683vw","ordonnee":"13.164108618654067vw","enfants":[{"typeElement":"Probleme","abscisse":"7.6092089728453205vw","ordonnee":"19.69598583234948vw","libelle":"Saisir valeur","listeDonnes":[""],"listeResultats":["valeur"],"enfants":[]},{"typeElement":"StructureSi","abscisse":"41.08618654073201vw","ordonnee":"19.95985832349468vw","conditions":[{"typeElement":"Condition","libelle":"valeur vérifie P\n\n","enfants":[{"typeElement":"ConditionSortie","abscisse":"44.09681227863048vw","ordonnee":"25.501770956316427vw"}]}]},{"typeElement":"Probleme","abscisse":"48.223140495867824vw","ordonnee":"19.99114521841792vw","libelle":"Afficher un message d'erreur","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]}]
+[
+  {
+    "typeElement": "Probleme",
+    "abscisse": "31.044864226682392vw",
+    "ordonnee": "6.118654073199529vw",
+    "libelle": "Saisie - Vérif avec message d'erreur",
+    "listeDonnes": [""],
+    "listeResultats": ["valeur vérifiant la propriété P\n\n"],
+    "enfants": [
+      {
+        "typeElement": "StructureIterativeNonBornee",
+        "abscisse": "44.03778040141683vw",
+        "ordonnee": "13.164108618654067vw",
+        "enfants": [
+          {
+            "typeElement": "Probleme",
+            "abscisse": "7.6092089728453205vw",
+            "ordonnee": "19.69598583234948vw",
+            "libelle": "Saisir valeur",
+            "listeDonnes": [""],
+            "listeResultats": ["valeur"],
+            "enfants": []
+          },
+          {
+            "typeElement": "StructureSi",
+            "abscisse": "41.08618654073201vw",
+            "ordonnee": "19.95985832349468vw",
+            "conditions": [
+              {
+                "typeElement": "Condition",
+                "libelle": "valeur vérifie P\n\n",
+                "enfants": [
+                  {
+                    "typeElement": "ConditionSortie",
+                    "abscisse": "44.09681227863048vw",
+                    "ordonnee": "25.501770956316427vw"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "typeElement": "Probleme",
+            "abscisse": "48.223140495867824vw",
+            "ordonnee": "19.99114521841792vw",
+            "libelle": "Afficher un message d'erreur",
+            "listeDonnes": [""],
+            "listeResultats": [""],
+            "enfants": []
+          }
+        ]
+      }
+    ]
+  }
+]

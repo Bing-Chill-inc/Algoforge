@@ -296,7 +296,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo {
     align-items: center;
     justify-content: space-between;
     position: absolute;
-    left: 2%;
+    left: 6%;
 }
 
 editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
@@ -308,7 +308,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-right: 0.2vw;
 }
 
-dictionnaire-donnee {
+/* dictionnaire-donnee {
     position: fixed;
     top: 10vw;
     right: 0;
@@ -328,16 +328,37 @@ dictionnaire-donnee {
     cursor: pointer;
     transform-origin: right;
     transition: 0.2s all ease;
-}
+} */ /* Version à droite */
 
-dictionnaire-donnee > img {
+dictionnaire-donnee {
+    position: fixed;
+    top: 3.8vw;
+    right: 2vw;
+    width: 2vw;
+    height: 2vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
+    cursor: pointer;
+    transform-origin: left;
+    transition: 0.2s all ease;
+} /* Version en haut */
+
+dictionnaire-donnee > div.img {
     width: 5vw;
     height: 5vw;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 dictionnaire-donnee:hover {
     scale: 1.15 1;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+    transform-origin: center;
 }
 
 dictionnaire-donnee.ouvert {
@@ -346,6 +367,11 @@ dictionnaire-donnee.ouvert {
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+
+    /* Version en haut */
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    translate: 0 5vw;
 }
 
 dictionnaire-donnee.ouvert:hover {
@@ -459,7 +485,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hov
     text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
-bibliotheque-algorithmique {
+/* bibliotheque-algorithmique {
     position: fixed;
     top: 10vw;
     left: 0;
@@ -475,21 +501,48 @@ bibliotheque-algorithmique {
     justify-content: start;
     z-index: 2048;
     font-size: 1vw;
-    overflow: hidden;
+    cursor: pointer;
+    transform-origin: left;
+    transition: 0.2s all ease;
+} */ /* Version à gauche */
+
+bibliotheque-algorithmique {
+    position: fixed;
+    top: 3.8vw;
+    left: 2vw;
+    width: 2vw;
+    height: 2vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
     cursor: pointer;
     transform-origin: left;
     transition: 0.2s all ease;
 }
 
-bibliotheque-algorithmique > img {
+/* bibliotheque-algorithmique > img {
     width: 5vw;
     height: 5vw;
-}
+} */ /* Version à gauche */
+
+bibliotheque-algorithmique > div.img {
+    width: 1.8vw;
+    height: 1.8vw;
+} /* Version en haut */
+
+/* bibliotheque-algorithmique:hover {
+    scale: 1.15 1;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+} */
 
 bibliotheque-algorithmique:hover {
     scale: 1.15 1;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
-}
+    transform-origin: center;
+} /* Version en haut */
 
 bibliotheque-algorithmique.ouvert {
     width: 25vw;
@@ -497,6 +550,11 @@ bibliotheque-algorithmique.ouvert {
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+
+    /* Version en haut */
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    translate: 0 5vw;
 }
 
 bibliotheque-algorithmique.ouvert:hover {
@@ -516,6 +574,7 @@ bibliotheque-algorithmique > div.listeCategories {
     height: 99%;
     margin-top: 1%;
     overflow-y: scroll;
+    overflow-x: visible;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -536,12 +595,30 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie {
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
+    position: relative;
     width: 100%;
     height: 2vw;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 > div.flecheOuverture {
+    font-size: 1vw;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.2s all ease;
+    rotate: -90deg;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > h3 > div.flecheOuverture {
+    rotate: 0deg;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert {
@@ -558,7 +635,8 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.li
     flex-direction: row;
     flex-wrap: wrap;
     align-items: start;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 0.2vw;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque {
@@ -567,6 +645,48 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.li
     margin: 0.5vw;
     cursor: pointer;
     transition: 0.2s all ease;
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.75vw;
+    padding: 0.5vw;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque:hover {
+    border: 0.1vw solid var(--fgColorForward);
+    box-shadow: 0 0 0.5vw var(--fgColorSemiTransparent);
+}
+
+bibliotheque-algorithmique > div.previewAlgo {
+    width: 25vw;
+    height: fit-content;
+    position: absolute;
+    top: 0;
+    right: -27vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bgColorTransparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500000;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail {
+    width: 25vw;
+    height: 15vw;
+    border: none;
+    position: relative;
+    overflow: hidden;
 }
 
 menu-contextuel {
@@ -1408,9 +1528,12 @@ structure-iterative-non-bornee-element {
     transition: all var(--transitionTime) ease;
     z-index: 2;
 }
-    structure-iterative-non-bornee-element > img.boucleSVG {
+    structure-iterative-non-bornee-element > div.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
         height: calc(var(--sizeModifier) * 4vw);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
 structure-iterative-bornee-element {
@@ -1424,9 +1547,12 @@ structure-iterative-bornee-element {
     transition: all var(--transitionTime) ease;
     z-index: 2;
 }
-    structure-iterative-bornee-element > img.boucleSVG {
+    structure-iterative-bornee-element > div.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
         height: calc(var(--sizeModifier) * 4vw);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
     }
 
     structure-iterative-bornee-element > div.informationsBornes {
@@ -1437,7 +1563,6 @@ structure-iterative-bornee-element {
 
 condition-sortie-element {
     position: absolute;
-    background-image: url("assets/conditionSortie.svg");
     height: calc(var(--sizeModifier) * 4vw);
     width: calc(var(--sizeModifier) * 4vw);
     transition: all var(--transitionTime) ease;

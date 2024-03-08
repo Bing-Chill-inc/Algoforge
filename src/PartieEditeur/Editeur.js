@@ -154,7 +154,7 @@ class Editeur extends HTMLElement {
 				"#222222",
 				"#22222255",
 				"#22222222",
-				"#A6AAA9",
+				"#333333",
 				"#589129",
 				"#58912999",
 				"#C82606",
@@ -594,6 +594,14 @@ class Editeur extends HTMLElement {
 							appliquerDecalage(enfant);
 						});
 					}
+
+					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+						for (let condition of elem.conditions) {
+							condition.enfants.forEach((enfant) => {
+								appliquerDecalage(enfant);
+							});
+						}
+					}
 				};
 
 				parsedData.forEach((elem) => {
@@ -636,6 +644,14 @@ class Editeur extends HTMLElement {
 						elem.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
 						});
+					}
+
+					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+						for (let condition of elem.conditions) {
+							condition.enfants.forEach((enfant) => {
+								appliquerDecalage(enfant);
+							});
+						}
 					}
 				};
 
@@ -1013,6 +1029,14 @@ class Editeur extends HTMLElement {
 						appliquerDecalage(enfant);
 					});
 				}
+
+				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					for (let condition of elem.conditions) {
+						condition.enfants.forEach((enfant) => {
+							appliquerDecalage(enfant);
+						});
+					}
+				}
 			};
 
 			elementsACopier.forEach((elem) => {
@@ -1051,6 +1075,14 @@ class Editeur extends HTMLElement {
 					elem.enfants.forEach((enfant) => {
 						appliquerDecalage(enfant);
 					});
+				}
+
+				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					for (let condition of elem.conditions) {
+						condition.enfants.forEach((enfant) => {
+							appliquerDecalage(enfant);
+						});
+					}
 				}
 			};
 
