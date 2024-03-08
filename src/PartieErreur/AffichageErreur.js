@@ -3,13 +3,35 @@ class AffichageErreur extends HTMLElement {
     _listeErreur;
     _courant;
     _divErreur;
+    _imageTest;
     constructor() {
         super();
         this.afficherBoutton();
     }
 
     afficherBoutton() {
-        // Création du bouton
+        //<img src="assets/algoforgeLogo.png" alt="Logo AlgoForge" id="logoAlgoForge"></img>
+        this._imageTest = document.createElement('img');
+
+        // Ajouter l'attribut src
+        this._imageTest.src = "assets/erreur.svg";
+
+        // Ajouter l'attribut alt
+        this._imageTest.alt = "Rechercher anomalie(s)";
+
+        // Ajouter l'attribut id
+        this._imageTest.id = "RechercheAnomalie";
+        this._imageTest.addEventListener('click', () => {
+            if (this._divErreur) {
+                this.supprimerDivErreur();
+            }else {
+                this._listeErreur = document.querySelector("plan-travail").rechercherAnomalies();
+                this.creerDivErreur();
+            }
+
+        });
+        this.appendChild(this._imageTest);
+        /*// Création du bouton
         this._boutton = document.createElement('button');
         this._boutton.textContent = 'Afficher Erreur';
         
@@ -25,7 +47,7 @@ class AffichageErreur extends HTMLElement {
         });
         
         // Ajout du bouton à l'élément affichage-erreur-element
-        this.appendChild(this._boutton);
+        this.appendChild(this._boutton);*/
     }
 
     creerDivErreur() {
@@ -34,7 +56,7 @@ class AffichageErreur extends HTMLElement {
         // Création de la div pour afficher l'erreur
         this._divErreur = document.createElement('div');
         this._divErreur.classList.add('erreur-container');
-        
+
         // Création de l'élément p pour afficher le texte d'erreur
         const texteErreur = document.createElement('p');
         texteErreur.classList.add('texte-erreur');
@@ -42,7 +64,7 @@ class AffichageErreur extends HTMLElement {
         
         // Création de la flèche gauche pour parcourir la liste des erreurs
         const flecheGauche = document.createElement('span');
-        flecheGauche.textContent = '←';
+        flecheGauche.textContent = '← ';
         flecheGauche.classList.add('fleche');
         
         // Ajout d'un écouteur d'événements à la flèche
@@ -57,7 +79,7 @@ class AffichageErreur extends HTMLElement {
         });
         // Création de la flèche droite pour parcourir la liste des erreurs
         const flecheDroite = document.createElement('span');
-        flecheDroite.textContent = '→';
+        flecheDroite.textContent = '→  ';
         flecheDroite.classList.add('fleche');
         
         // Ajout d'un écouteur d'événements à la flèche
@@ -85,12 +107,11 @@ class AffichageErreur extends HTMLElement {
         
         // Ajout du texte, de la flèche et du bouton supprimer à la div d'erreur
         this._divErreur.appendChild(texteErreur);
+        this._divErreur.appendChild(document.createElement('br'));
         this._divErreur.appendChild(flecheGauche);
         this._divErreur.appendChild(flecheDroite);
         this._divErreur.appendChild(texteNumero);
-        this._divErreur.appendChild(document.createElement('br'));
         this._divErreur.appendChild(bouttonSupprimer);
-        
         // Ajout de la div d'erreur à l'élément affichage-erreur-element
         this.appendChild(this._divErreur);
         this.afficherSelectionErreur();
