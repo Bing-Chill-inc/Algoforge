@@ -717,9 +717,11 @@ class Probleme extends ElementGraphique {
                 this.parentNode.leDictionnaireDesDonnees.exporter("csv");
 
                 // On remet les éléments retirés
-                for (let elem of listeElemSup) {
-                    this.parentNode.appendChild(elem);
-                }
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
             })
         );
 
@@ -751,9 +753,11 @@ class Probleme extends ElementGraphique {
                 this.parentNode.leDictionnaireDesDonnees.exporter("xls");
 
                 // On remet les éléments retirés
-                for (let elem of listeElemSup) {
-                    this.parentNode.appendChild(elem);
-                }
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
             })
         );
 
@@ -785,9 +789,11 @@ class Probleme extends ElementGraphique {
                 this.parentNode.leDictionnaireDesDonnees.exporter("md");
 
                 // On remet les éléments retirés
-                for (let elem of listeElemSup) {
-                    this.parentNode.appendChild(elem);
-                }
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
             })
         );
 
