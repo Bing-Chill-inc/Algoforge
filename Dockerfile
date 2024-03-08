@@ -1,6 +1,10 @@
 # Installation de l'image de base PHP 7.2
 
-FROM httpd:2.4
+FROM php:7.2-apache
+
+# Nom du Dockerfile
+
+LABEL maintainer="Esteban BACKES" version="1.0" description="Dockerfile pour l'application algoforge"
 
 # Variable d'environnement
 
