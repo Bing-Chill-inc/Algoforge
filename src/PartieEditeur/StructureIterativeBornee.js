@@ -14,15 +14,22 @@ class StructureIterativeBornee extends StructureIterative {
     // CONSTRUCTEUR
     /**
      * @constructor
-     * @param {number|string} abscisse 
-     * @param {number|string} ordonnee 
+     * @param {number|string} abscisse
+     * @param {number|string} ordonnee
      * @type {Information}
-     * @param {Information} variableAIterer 
-     * @param {string} borneInferieure 
-     * @param {string} borneSuperieure 
-     * @param {string} pas 
+     * @param {Information} variableAIterer
+     * @param {string} borneInferieure
+     * @param {string} borneSuperieure
+     * @param {string} pas
      */
-    constructor(abscisse, ordonnee, variableAIterer = "", borneInferieure = "BORNE_INF", borneSuperieure = "BORNE_SUP", pas = "1") {
+    constructor(
+        abscisse,
+        ordonnee,
+        variableAIterer = "",
+        borneInferieure = "BORNE_INF",
+        borneSuperieure = "BORNE_SUP",
+        pas = "1"
+    ) {
         super(abscisse, ordonnee);
         this._variableAIterer = variableAIterer;
         this._borneInferieure = borneInferieure;
@@ -41,12 +48,13 @@ class StructureIterativeBornee extends StructureIterative {
 
     /**
      * @description Remplace la variables actuelle par une nouvelle
-     * @param {Information} value la variable qui remplacera l'ancienne 
+     * @param {Information} value la variable qui remplacera l'ancienne
      */
-    setVariableAIterer(value)
-    {
+    setVariableAIterer(value) {
         this._variableAIterer = value;
-        this.querySelector(".informationsBornes").innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`;
+        this.querySelector(
+            ".informationsBornes"
+        ).innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`;
     }
 
     /**
@@ -105,38 +113,39 @@ class StructureIterativeBornee extends StructureIterative {
         // Et des informations sur notre boucle bornée.
         let divInformationsBornes = document.createElement("div");
         divInformationsBornes.className = "informationsBornes";
-        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`
+        divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas de ${this._pas}`;
         this.appendChild(divInformationsBornes);
     }
-
 
     /**
      * @description Recherche et renvoie la listes des anomalies de la boucle iterative bornée<br>
      * Liste des Erreurs :<br>
-     * 
-     * 11 : Signe de la condition d’arrêt et du pas sont différents<br>  
+     *
+     * 11 : Signe de la condition d’arrêt et du pas sont différents<br>
      * 12 : On vérifie que la boucle contient pas 7 sous-éléments ou plus
-     * 
+     *
      * @returns {Array<AnomalieConceptuelle>} La liste des anomalies
      */
     rechercherAnomalies() {
         let mesAnomalies = [];
         // 11
-        if(ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
+        if (ErreurBoucleBorneeSansFin.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurBoucleBorneeSansFin(this));
         }
         // 12
-        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0]) {
-            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
-
+        let tropDeSousElements =
+            AvertissementTropDeSousElements.detecterAnomalie(this);
+        if (tropDeSousElements[0]) {
+            mesAnomalies.push(
+                new AvertissementTropDeSousElements(this, tropDeSousElements[1])
+            );
         }
         return super.rechercherAnomalies(mesAnomalies);
     }
 
     /**
      * @description Renvoie le corp JSON de l'instance de la StructureItérative
-     * 
+     *
      * @returns {JSON} Le corps JSON de la StructureIterativeBornee
      * @type {ElementGraphique}
      * @property {ElementGraphique} typeElement Le type de la StructureIterativeBornee
@@ -157,7 +166,7 @@ class StructureIterativeBornee extends StructureIterative {
             borneInferieure: this._borneInferieure,
             borneSuperieure: this._borneSuperieure,
             pas: this._pas,
-            enfants: this._elemParent.toJSON()
+            enfants: this._elemParent.toJSON(),
         };
     }
 
@@ -170,22 +179,22 @@ class StructureIterativeBornee extends StructureIterative {
             borneInferieure: this._borneInferieure,
             borneSuperieure: this._borneSuperieure,
             pas: this._pas,
-            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+            enfants: this._elemParent.toJSONspecifier(
+                listeElemEnfantsAConcerver
+            ),
         };
     }
 
     /**
      * @description Extrait les information de la StructureItérativeBornée
-     * 
+     *
      * @returns {Array}
      */
-    extraireInformation()
-    {
+    extraireInformation() {
         let i = new Information();
         i._nom = this._variableAIterer;
         i._type = "int";
-        if(i._nom == "")
-        {
+        if (i._nom == "") {
             return [];
         }
         return [i];
@@ -194,40 +203,44 @@ class StructureIterativeBornee extends StructureIterative {
      * @deprecated
      * @returns {}
      */
-    getInformationDonnee() 
-    {
+    getInformationDonnee() {
         return this.extraireInformation();
     }
     /**
      * @deprecated
      * @returns {}
      */
-    getInformationResultat() 
-    {
+    getInformationResultat() {
         return [];
     }
 
     /**
      * @description Recherche dans une chaine l'information demandé
-     * 
+     *
      * @param {string} nameInformation L'information Rechercher
      * @returns {string} L'information récupérer
      */
-    include(nameInformation)
-    {
-        return this._variableAIterer.includes(nameInformation) || this._pas.includes(nameInformation) || this._borneInferieure.includes(nameInformation) || this._borneSuperieure.includes(nameInformation);
+    include(nameInformation) {
+        return (
+            this._variableAIterer.includes(nameInformation) ||
+            this._pas.includes(nameInformation) ||
+            this._borneInferieure.includes(nameInformation) ||
+            this._borneSuperieure.includes(nameInformation)
+        );
     }
     /**
      * @description Renome le nom de la variables
-     * 
+     *
      * @param {string} ancienNom l'ancien Nom
      * @param {string} nouveauNom le nouveau Nom
      */
-    renameInformation(ancienNom, nouveauNom)
-    {
-        if(this._variableAIterer == ancienNom)
-        {
+    renameInformation(ancienNom, nouveauNom) {
+        if (this._variableAIterer == ancienNom) {
             this.setVariableAIterer(nouveauNom);
         }
     }
-} window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);
+}
+window.customElements.define(
+    "structure-iterative-bornee-element",
+    StructureIterativeBornee
+);

@@ -24,7 +24,14 @@ class Probleme extends ElementGraphique {
      * @param {Array<Information>} [listeResultats=[]] Pas Utilisé
      * @param {ElementParent} [elemParent=new ElementParent()] L'ElementParent du Probleme
      */
-    constructor(abscisse = 0, ordonnee = 0, libelle = "", listeDonnes = [], listeResultats = [], elemParent = new ElementParent()) {
+    constructor(
+        abscisse = 0,
+        ordonnee = 0,
+        libelle = "",
+        listeDonnes = [],
+        listeResultats = [],
+        elemParent = new ElementParent()
+    ) {
         super(abscisse, ordonnee);
         this._libelle = libelle;
         this._listeDonnes = listeDonnes;
@@ -34,7 +41,7 @@ class Probleme extends ElementGraphique {
             elemParent._proprietaire = this;
         }
 
-        this.addEventListener('mousemove', function(e) {
+        this.addEventListener("mousemove", function (e) {
             // update les liens vers les enfants
             this._elemParent._listeElementsEnfants.forEach((lien) => {
                 lien.ligne.update();
@@ -62,7 +69,7 @@ class Probleme extends ElementGraphique {
     /**
      * @description Renvoie la valeur de la variable _listeDonnes
      *
-     * 
+     *
      */
     get listeDonnes() {
         return this.divDonneesEditable.innerText.split(",");
@@ -70,7 +77,7 @@ class Probleme extends ElementGraphique {
 
     /**
      * @description Définie la valeur de la variable _listeDonnes par la valeur donné
-     * 
+     *
      * @deprecated
      */
     set listeDonnes(value) {
@@ -80,7 +87,7 @@ class Probleme extends ElementGraphique {
     /**
      * @description Renvoie la valeur de la variable _listeResultats
      *
-     * 
+     *
      */
     get listeResultats() {
         return this.divResultatsEditable.innerText.split(",");
@@ -88,7 +95,7 @@ class Probleme extends ElementGraphique {
 
     /**
      * @description Définie la valeur de la variable _listeResultats par la valeur donné
-     * 
+     *
      * @deprecated
      */
     set listeResultats(value) {
@@ -110,19 +117,24 @@ class Probleme extends ElementGraphique {
     set _elemParent(value) {
         this._elemParent = value;
     }
-    
+
     /**
      * @description Retourne le contenu du probleme Texte Principale
      *
      * @returns {string} Les information de la boîte
      */
-    
+
     getTexte() {
         return this.querySelector(".nom").textContent;
     }
 
     replaceTexte(chaineAChercher, chaineARemplacer) {
-        this.querySelector(".nom").textContent = this.querySelector(".nom").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
+        this.querySelector(".nom").textContent = this.querySelector(
+            ".nom"
+        ).textContent.replace(
+            new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+            chaineARemplacer
+        );
     }
 
     /**
@@ -137,7 +149,12 @@ class Probleme extends ElementGraphique {
         this.querySelector(".donneesEditable").textContent = value;
     }
     replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
-        this.querySelector(".donneesEditable").textContent = this.querySelector(".donneesEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
+        this.querySelector(".donneesEditable").textContent = this.querySelector(
+            ".donneesEditable"
+        ).textContent.replace(
+            new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+            chaineARemplacer
+        );
     }
     /**
      * @description Retourne les résultats du Probleme
@@ -148,32 +165,44 @@ class Probleme extends ElementGraphique {
         return this.querySelector(".resultatEditable").textContent;
     }
     setResultat(value) {
-       this.querySelector(".resultatEditable").textContent = value;
+        this.querySelector(".resultatEditable").textContent = value;
     }
     replaceTexteResultat(chaineAChercher, chaineARemplacer) {
-        this.querySelector(".resultatEditable").textContent = this.querySelector(".resultatEditable").textContent.replace(new RegExp('\\b' + chaineAChercher + '\\b', 'g'), chaineARemplacer);
+        this.querySelector(".resultatEditable").textContent =
+            this.querySelector(".resultatEditable").textContent.replace(
+                new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+                chaineARemplacer
+            );
     }
 
     updateAccolades() {
         if (this.divDonneesEditable.textContent == "") {
-            for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+            for (let accolade of this.getElementsByClassName(
+                "donnees"
+            )[0].getElementsByClassName("accolades")) {
                 accolade.style.display = "none";
                 if (verbose) console.log("cacher les accolades");
             }
         } else {
-            for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
+            for (let accolade of this.getElementsByClassName(
+                "donnees"
+            )[0].getElementsByClassName("accolades")) {
                 accolade.style.display = "";
                 if (verbose) console.log("afficher les accolades");
             }
         }
 
         if (this.divResultatsEditable.textContent == "") {
-            for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+            for (let accolade of this.getElementsByClassName(
+                "resultat"
+            )[0].getElementsByClassName("accolades")) {
                 accolade.style.display = "none";
                 if (verbose) console.log("cacher les accolades");
             }
         } else {
-            for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
+            for (let accolade of this.getElementsByClassName(
+                "resultat"
+            )[0].getElementsByClassName("accolades")) {
                 accolade.style.display = "";
                 if (verbose) console.log("afficher les accolades");
             }
@@ -181,7 +210,7 @@ class Probleme extends ElementGraphique {
     }
 
     // METHODES
-    
+
     /**
      * @description Affiche le Problème à l'écran
      */
@@ -190,143 +219,176 @@ class Probleme extends ElementGraphique {
         divContainerDPR.className = "containerDPR";
         this.appendChild(divContainerDPR);
 
-            let divDonnees = document.createElement("div");
-            divDonnees.className = "donnees";
-            divContainerDPR.appendChild(divDonnees);
+        let divDonnees = document.createElement("div");
+        divDonnees.className = "donnees";
+        divContainerDPR.appendChild(divDonnees);
 
-                let labelAccoladesGDonnes = document.createElement("label");
-                labelAccoladesGDonnes.className = "accolades";
-                labelAccoladesGDonnes.innerHTML = "{";
-                labelAccoladesGDonnes.style.display = "none";
-                divDonnees.appendChild(labelAccoladesGDonnes);
+        let labelAccoladesGDonnes = document.createElement("label");
+        labelAccoladesGDonnes.className = "accolades";
+        labelAccoladesGDonnes.innerHTML = "{";
+        labelAccoladesGDonnes.style.display = "none";
+        divDonnees.appendChild(labelAccoladesGDonnes);
 
-                this.divDonneesEditable = document.createElement("div");
-                this.divDonneesEditable.className = "donneesEditable";
-                this.divDonneesEditable.contentEditable = "true";
-                let donneesAAjouter = "";
-                this._listeDonnes.forEach((donnee) => {
-                    if(!donneesAAjouter == "") {
-                        donneesAAjouter += ",";
-                    }
-                    donneesAAjouter += donnee._nom;
-                });
-                this.divDonneesEditable.innerHTML = donneesAAjouter;
-                this._listeDonnes = this.divDonneesEditable.innerHTML;
-                divDonnees.appendChild(this.divDonneesEditable);
+        this.divDonneesEditable = document.createElement("div");
+        this.divDonneesEditable.className = "donneesEditable";
+        this.divDonneesEditable.contentEditable = "true";
+        let donneesAAjouter = "";
+        this._listeDonnes.forEach((donnee) => {
+            if (!donneesAAjouter == "") {
+                donneesAAjouter += ",";
+            }
+            donneesAAjouter += donnee._nom;
+        });
+        this.divDonneesEditable.innerHTML = donneesAAjouter;
+        this._listeDonnes = this.divDonneesEditable.innerHTML;
+        divDonnees.appendChild(this.divDonneesEditable);
 
-                let labelAccoladesDDonnes = document.createElement("label");
-                labelAccoladesDDonnes.className = "accolades";
-                labelAccoladesDDonnes.innerHTML = "}";
-                labelAccoladesDDonnes.style.display = "none";
-                divDonnees.appendChild(labelAccoladesDDonnes);
+        let labelAccoladesDDonnes = document.createElement("label");
+        labelAccoladesDDonnes.className = "accolades";
+        labelAccoladesDDonnes.innerHTML = "}";
+        labelAccoladesDDonnes.style.display = "none";
+        divDonnees.appendChild(labelAccoladesDDonnes);
 
-                this.divDonneesEditable.addEventListener("input", (e) => {
-                    if (verbose) console.log(e);
-                    if (this.divDonneesEditable.textContent == "") {
-                        for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
-                            accolade.style.display = "none";
-                            if (verbose) console.log("cacher les accolades");
-                        }
-                    } else {
-                        for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
-                            accolade.style.display = "";
-                            if (verbose) console.log("afficher les accolades");
-                        }
-                    }
-                });
-                this.divDonneesEditable.addEventListener("focusout", (e) => {
-                    if (this._listeDonnes == this.listeDonnes) return;
-                    this._editeur.ajouterEvenement(new EvenementEditionDonneesProbleme(this, this._listeDonnes, this.listeDonnes));
-                    this._listeDonnes = this.listeDonnes;
-                })
-                if (this.divDonneesEditable.textContent == "") {
-                    for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
-                        accolade.style.display = "none";
-                        if (verbose) console.log("cacher les accolades");
-                    }
-                } else {
-                    for (let accolade of this.getElementsByClassName('donnees')[0].getElementsByClassName('accolades')) {
-                        accolade.style.display = "";
-                        if (verbose) console.log("afficher les accolades");
-                    }
+        this.divDonneesEditable.addEventListener("input", (e) => {
+            if (verbose) console.log(e);
+            if (this.divDonneesEditable.textContent == "") {
+                for (let accolade of this.getElementsByClassName(
+                    "donnees"
+                )[0].getElementsByClassName("accolades")) {
+                    accolade.style.display = "none";
+                    if (verbose) console.log("cacher les accolades");
                 }
-
-            this.divNom = document.createElement("div");
-            this.divNom.className = "nom";
-            this.divNom.contentEditable = "true";
-            this.divNom.innerHTML = this._libelle;
-            divContainerDPR.appendChild(this.divNom);
-
-            this.divNom.addEventListener("focusout", (e) => {
-                if (this._libelle == this.libelle) return;
-                // Chercher dans le texte si il y a '<-' et si oui, le remplacer par '←'
-                this.libelle = this.libelle.replace('<-', '←');
-                if (verbose) console.log("Changement de libellé");
-                this._editeur.ajouterEvenement(new EvenementEditionLibelleProbleme(this, this._libelle, this.libelle));
-                this._libelle = this.libelle;
-            });
-
-            let divResultat = document.createElement("div");
-            divResultat.className = "resultat";
-            divContainerDPR.appendChild(divResultat);
-
-                let labelAccoladesGResultats = document.createElement("label");
-                labelAccoladesGResultats.className = "accolades";
-                labelAccoladesGResultats.innerHTML = "{";
-                labelAccoladesGResultats.style.display = "none";
-                divResultat.appendChild(labelAccoladesGResultats);
-
-                this.divResultatsEditable = document.createElement("div");
-                this.divResultatsEditable.className = "resultatEditable";
-                this.divResultatsEditable.contentEditable = "true";
-                let resultatsAAjouter = "";
-                this._listeResultats.forEach((resultat) => {
-                    if(!resultatsAAjouter == "")
-                    {
-                        resultatsAAjouter += ",";
-                    }
-                    resultatsAAjouter += resultat._nom;
-                });
-                this.divResultatsEditable.innerHTML = resultatsAAjouter;
-                this._listeResultats = this.divResultatsEditable.innerHTML;
-                divResultat.appendChild(this.divResultatsEditable);
-
-                let labelAccoladesDResultats = document.createElement("label");
-                labelAccoladesDResultats.className = "accolades";
-                labelAccoladesDResultats.innerHTML = "}";
-                labelAccoladesDResultats.style.display = "none";
-                divResultat.appendChild(labelAccoladesDResultats);
-
-                this.divResultatsEditable.addEventListener("input", (e) => {
-                    if (verbose) console.log(e);
-                    if (this.divResultatsEditable.textContent == "") {
-                        for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
-                            accolade.style.display = "none";
-                            if (verbose) console.log("cacher les accolades");
-                        }
-                    } else {
-                        for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
-                            accolade.style.display = "";
-                            if (verbose) console.log("afficher les accolades");
-                        }
-                    }
-                });
-                this.divResultatsEditable.addEventListener("focusout", (e) => {
-                    if (this._listeResultats == this.listeResultats) return;
-                    this._editeur.ajouterEvenement(new EvenementEditionResultatsProbleme(this, this._listeResultats, this.listeResultats));
-                    this._listeResultats = this.listeResultats;
-                });
-                if (this.divResultatsEditable.textContent == "") {
-                    for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
-                        accolade.style.display = "none";
-                        if (verbose) console.log("cacher les accolades");
-                    }
-                } else {
-                    for (let accolade of this.getElementsByClassName('resultat')[0].getElementsByClassName('accolades')) {
-                        accolade.style.display = "";
-                        if (verbose) console.log("afficher les accolades");
-                    }
+            } else {
+                for (let accolade of this.getElementsByClassName(
+                    "donnees"
+                )[0].getElementsByClassName("accolades")) {
+                    accolade.style.display = "";
+                    if (verbose) console.log("afficher les accolades");
                 }
+            }
+        });
+        this.divDonneesEditable.addEventListener("focusout", (e) => {
+            if (this._listeDonnes == this.listeDonnes) return;
+            this._editeur.ajouterEvenement(
+                new EvenementEditionDonneesProbleme(
+                    this,
+                    this._listeDonnes,
+                    this.listeDonnes
+                )
+            );
+            this._listeDonnes = this.listeDonnes;
+        });
+        if (this.divDonneesEditable.textContent == "") {
+            for (let accolade of this.getElementsByClassName(
+                "donnees"
+            )[0].getElementsByClassName("accolades")) {
+                accolade.style.display = "none";
+                if (verbose) console.log("cacher les accolades");
+            }
+        } else {
+            for (let accolade of this.getElementsByClassName(
+                "donnees"
+            )[0].getElementsByClassName("accolades")) {
+                accolade.style.display = "";
+                if (verbose) console.log("afficher les accolades");
+            }
+        }
+
+        this.divNom = document.createElement("div");
+        this.divNom.className = "nom";
+        this.divNom.contentEditable = "true";
+        this.divNom.innerHTML = this._libelle;
+        divContainerDPR.appendChild(this.divNom);
+
+        this.divNom.addEventListener("focusout", (e) => {
+            if (this._libelle == this.libelle) return;
+            // Chercher dans le texte si il y a '<-' et si oui, le remplacer par '←'
+            this.libelle = this.libelle.replace("<-", "←");
+            if (verbose) console.log("Changement de libellé");
+            this._editeur.ajouterEvenement(
+                new EvenementEditionLibelleProbleme(
+                    this,
+                    this._libelle,
+                    this.libelle
+                )
+            );
+            this._libelle = this.libelle;
+        });
+
+        let divResultat = document.createElement("div");
+        divResultat.className = "resultat";
+        divContainerDPR.appendChild(divResultat);
+
+        let labelAccoladesGResultats = document.createElement("label");
+        labelAccoladesGResultats.className = "accolades";
+        labelAccoladesGResultats.innerHTML = "{";
+        labelAccoladesGResultats.style.display = "none";
+        divResultat.appendChild(labelAccoladesGResultats);
+
+        this.divResultatsEditable = document.createElement("div");
+        this.divResultatsEditable.className = "resultatEditable";
+        this.divResultatsEditable.contentEditable = "true";
+        let resultatsAAjouter = "";
+        this._listeResultats.forEach((resultat) => {
+            if (!resultatsAAjouter == "") {
+                resultatsAAjouter += ",";
+            }
+            resultatsAAjouter += resultat._nom;
+        });
+        this.divResultatsEditable.innerHTML = resultatsAAjouter;
+        this._listeResultats = this.divResultatsEditable.innerHTML;
+        divResultat.appendChild(this.divResultatsEditable);
+
+        let labelAccoladesDResultats = document.createElement("label");
+        labelAccoladesDResultats.className = "accolades";
+        labelAccoladesDResultats.innerHTML = "}";
+        labelAccoladesDResultats.style.display = "none";
+        divResultat.appendChild(labelAccoladesDResultats);
+
+        this.divResultatsEditable.addEventListener("input", (e) => {
+            if (verbose) console.log(e);
+            if (this.divResultatsEditable.textContent == "") {
+                for (let accolade of this.getElementsByClassName(
+                    "resultat"
+                )[0].getElementsByClassName("accolades")) {
+                    accolade.style.display = "none";
+                    if (verbose) console.log("cacher les accolades");
+                }
+            } else {
+                for (let accolade of this.getElementsByClassName(
+                    "resultat"
+                )[0].getElementsByClassName("accolades")) {
+                    accolade.style.display = "";
+                    if (verbose) console.log("afficher les accolades");
+                }
+            }
+        });
+        this.divResultatsEditable.addEventListener("focusout", (e) => {
+            if (this._listeResultats == this.listeResultats) return;
+            this._editeur.ajouterEvenement(
+                new EvenementEditionResultatsProbleme(
+                    this,
+                    this._listeResultats,
+                    this.listeResultats
+                )
+            );
+            this._listeResultats = this.listeResultats;
+        });
+        if (this.divResultatsEditable.textContent == "") {
+            for (let accolade of this.getElementsByClassName(
+                "resultat"
+            )[0].getElementsByClassName("accolades")) {
+                accolade.style.display = "none";
+                if (verbose) console.log("cacher les accolades");
+            }
+        } else {
+            for (let accolade of this.getElementsByClassName(
+                "resultat"
+            )[0].getElementsByClassName("accolades")) {
+                accolade.style.display = "";
+                if (verbose) console.log("afficher les accolades");
+            }
+        }
     }
 
     /**
@@ -350,7 +412,7 @@ class Probleme extends ElementGraphique {
             libelle: this.libelle,
             listeDonnes: this.listeDonnes,
             listeResultats: this.listeResultats,
-            enfants: this._elemParent.toJSON()
+            enfants: this._elemParent.toJSON(),
         };
     }
 
@@ -362,7 +424,9 @@ class Probleme extends ElementGraphique {
             libelle: this.libelle,
             listeDonnes: this.listeDonnes,
             listeResultats: this.listeResultats,
-            enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver)
+            enfants: this._elemParent.toJSONspecifier(
+                listeElemEnfantsAConcerver
+            ),
         };
     }
 
@@ -375,18 +439,21 @@ class Probleme extends ElementGraphique {
      */
     getEnfants(typeRechercher = ElementGraphique) {
         let listeDesEnfants = [];
-        for(let enfant of this._elemParent._listeElementsEnfants) {
+        for (let enfant of this._elemParent._listeElementsEnfants) {
             listeDesEnfants.push(enfant.element);
         }
-        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(
+            listeDesEnfants,
+            typeRechercher
+        );
         return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
     }
 
     /**
      * @description Méthodes principales qui recherchent les erreurs dans l'instance de Problème<br>
      * Liste des Erreurs :<br>
-     * 1 : Sous-problème avec données magique<br> 
-     * 2 : Données uniquement sur les problèmes<br> 
+     * 1 : Sous-problème avec données magique<br>
+     * 2 : Données uniquement sur les problèmes<br>
      * 3 : Résultat non utilisé dans la suite de l’algorithme<br>
      * 9 : Pas un égal pour l’assignation mais une flèche<br>
      * 12 : Plus de sept actions à la suite<br>
@@ -398,37 +465,53 @@ class Probleme extends ElementGraphique {
         let mesAnomalies = [];
         // 1
         let donneesMagiques = ErreurDonneeMagique.detecterAnomalie(this);
-        if(donneesMagiques[0]) {
-            mesAnomalies.push(new ErreurDonneeMagique(this, donneesMagiques[1]));
+        if (donneesMagiques[0]) {
+            mesAnomalies.push(
+                new ErreurDonneeMagique(this, donneesMagiques[1])
+            );
         }
-        
+
         // 2
         let donneesInutilisees = ErreurDonneeInutilisee.detecterAnomalie(this);
-        if(donneesInutilisees[0]) {
-            mesAnomalies.push(new ErreurDonneeInutilisee(this, donneesInutilisees[1]));
+        if (donneesInutilisees[0]) {
+            mesAnomalies.push(
+                new ErreurDonneeInutilisee(this, donneesInutilisees[1])
+            );
         }
-        
+
         // 3
-        let resultatsInutilisees = ErreurResultatInutilisee.detecterAnomalie(this);
-        if(resultatsInutilisees[0]) {
-            mesAnomalies.push(new ErreurResultatInutilisee(this, resultatsInutilisees[1]));
+        let resultatsInutilisees =
+            ErreurResultatInutilisee.detecterAnomalie(this);
+        if (resultatsInutilisees[0]) {
+            mesAnomalies.push(
+                new ErreurResultatInutilisee(this, resultatsInutilisees[1])
+            );
         }
-        
+
         // 9
-        if(ErreurSyntaxeAssignation.detecterAnomalie(this)) {
+        if (ErreurSyntaxeAssignation.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurSyntaxeAssignation(this));
         }
-    
+
         // 12
-        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0]) {
-            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+        let tropDeSousElements =
+            AvertissementTropDeSousElements.detecterAnomalie(this);
+        if (tropDeSousElements[0]) {
+            mesAnomalies.push(
+                new AvertissementTropDeSousElements(this, tropDeSousElements[1])
+            );
         }
-    
+
         // 18
-        let donneesDynamiqumentTypee = AvertissementDonneeDynamiquementTypee.detecterAnomalie(this);
-        if(donneesDynamiqumentTypee[0]) {
-            mesAnomalies.push(new AvertissementDonneeDynamiquementTypee(this, donneesDynamiqumentTypee[1]));
+        let donneesDynamiqumentTypee =
+            AvertissementDonneeDynamiquementTypee.detecterAnomalie(this);
+        if (donneesDynamiqumentTypee[0]) {
+            mesAnomalies.push(
+                new AvertissementDonneeDynamiquementTypee(
+                    this,
+                    donneesDynamiqumentTypee[1]
+                )
+            );
         }
 
         return super.rechercherAnomalies(mesAnomalies);
@@ -443,15 +526,13 @@ class Probleme extends ElementGraphique {
     getInformationDonnee() {
         let listeDonnee = this.getDonnee().trim().split(",");
         let listeDonneeInformation = [];
-        for(let Donnee of listeDonnee)
-        {
-            if(Donnee == "")
-            {
+        for (let Donnee of listeDonnee) {
+            if (Donnee == "") {
                 continue;
             }
             let i = new Information();
             i._nom = Donnee.trim();
-            listeDonneeInformation.push(i);    
+            listeDonneeInformation.push(i);
         }
         return listeDonneeInformation;
     }
@@ -465,15 +546,13 @@ class Probleme extends ElementGraphique {
     getInformationResultat() {
         let listeDonnee = this.getResultat().trim().split(",");
         let listeDonneeInformation = [];
-        for(let Donnee of listeDonnee)
-        {
-            if(Donnee == "")
-            {
+        for (let Donnee of listeDonnee) {
+            if (Donnee == "") {
                 continue;
             }
             let i = new Information();
             i._nom = Donnee;
-            listeDonneeInformation.push(i);    
+            listeDonneeInformation.push(i);
         }
         return listeDonneeInformation;
     }
@@ -487,14 +566,18 @@ class Probleme extends ElementGraphique {
         let i = new Information();
         i._nom = "";
         const contenue = this.getTexte(); //' aa -> " a a " ';
-        if(contenue == "")
-        {
+        if (contenue == "") {
             return null;
         }
-        if(contenue.includes("<-"))
-        {
+        if (contenue.includes("<-")) {
             let nomDeVariable = contenue.split("<-")[0].trim();
             let contenueVariable = contenue.split("<-")[1].trim();
+            i._nom = nomDeVariable;
+            i._type = Type.DetecterLeType(contenueVariable);
+        }
+        if (contenue.includes("←")) {
+            let nomDeVariable = contenue.split("←")[0].trim();
+            let contenueVariable = contenue.split("←")[1].trim();
             i._nom = nomDeVariable;
             i._type = Type.DetecterLeType(contenueVariable);
         }
@@ -507,7 +590,7 @@ class Probleme extends ElementGraphique {
         this.querySelector(".nom").style.borderColor = this._couleurPrimaire;
     }
 
-    // Retourne les variables 
+    // Retourne les variables
     /**
      * @description Retourne les variables sous forme de liste
      *
@@ -521,12 +604,17 @@ class Probleme extends ElementGraphique {
     }
     extraireInformation() {
         let listeInformation = [];
-        if(this.extraireInformationTextes())
-        {
+        if (this.extraireInformationTextes()) {
             listeInformation.push(this.extraireInformationTextes());
         }
-        listeInformation = [...listeInformation,  ...this.getInformationDonnee()]; 
-        listeInformation = [...listeInformation, ...this.getInformationResultat()];
+        listeInformation = [
+            ...listeInformation,
+            ...this.getInformationDonnee(),
+        ];
+        listeInformation = [
+            ...listeInformation,
+            ...this.getInformationResultat(),
+        ];
         return listeInformation;
     }
     /**
@@ -535,12 +623,14 @@ class Probleme extends ElementGraphique {
      * @param {string} nameInformation La chaine de caractère à chercher
      * @returns {boolean} true si trouvé faux sinon
      */
-    include(nameInformation)
-    {
-        return this.getTexte().includes(nameInformation) || this.getDonnee().includes(nameInformation) || this.getResultat().includes(nameInformation);
+    include(nameInformation) {
+        return (
+            this.getTexte().includes(nameInformation) ||
+            this.getDonnee().includes(nameInformation) ||
+            this.getResultat().includes(nameInformation)
+        );
     }
-    renameInformation(ancienNom, nouveauNom)
-    {
+    renameInformation(ancienNom, nouveauNom) {
         this.replaceTexte(ancienNom, nouveauNom);
         this.replaceTexteDonnee(ancienNom, nouveauNom);
         this.replaceTexteResultat(ancienNom, nouveauNom);
@@ -556,4 +646,158 @@ class Probleme extends ElementGraphique {
         this.remove();
     }
 
-} window.customElements.define("probleme-element", Probleme);
+    genererOptionsContextuelles(editeur) {
+        let listeOptions = super.genererOptionsContextuelles(editeur);
+        let exporter = new ElementMenuCompose("Exporter le sous-arbre", () => {
+            console.log("Exporter le sous-arbre");
+        });
+        listeOptions.push(exporter);
+
+        let sousTitreGénéral = document.createElement("h3");
+        sousTitreGénéral.innerText = "Tout";
+        exporter.ajouterElementMenu(sousTitreGénéral);
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".json", () => {
+                console.log("Exporter en .json");
+                this._editeur.exporterJSON(JSON.stringify([this.toJSON()]));
+            })
+        );
+
+        let sousTitreAlgorithme = document.createElement("h3");
+        sousTitreAlgorithme.innerText = "Algorithme";
+        exporter.ajouterElementMenu(sousTitreAlgorithme);
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".png", () => {
+                console.log("Exporter en .png");
+            })
+        );
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".svg", () => {
+                console.log("Exporter en .svg");
+                this._editeur.exporterSVG(
+                    JSON.stringify([this.toJSON()]),
+                    true,
+                    true
+                );
+            })
+        );
+
+        let sousTitreDictionnaire = document.createElement("h3");
+        sousTitreDictionnaire.innerText = "Dictionnaire";
+        exporter.ajouterElementMenu(sousTitreDictionnaire);
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".csv", () => {
+                console.log("Exporter en .csv");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("csv");
+
+                // On remet les éléments retirés
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
+            })
+        );
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".xlsx", () => {
+                console.log("Exporter en .xlsx");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("xls");
+
+                // On remet les éléments retirés
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
+            })
+        );
+
+        exporter.ajouterElementMenu(
+            new ElementMenu(".md", () => {
+                console.log("Exporter en .md");
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                let listeElemEnfantsAConcerver = this.getDescendants();
+
+                // On garde une trace des éléments à rerajouter
+                let listeElemSup = [];
+
+                // On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
+                for (let elem of this.parentNode.children) {
+                    if (
+                        !listeElemEnfantsAConcerver.includes(elem) &&
+                        elem != this &&
+                        elem instanceof ElementGraphique
+                    ) {
+                        listeElemSup.push(elem);
+                        elem.remove();
+                    }
+                }
+
+                // On effectue le dictionnaire
+                this.parentNode.effectuerDictionnaireDesDonnee();
+
+                // On exporte le dictionnaire
+                this.parentNode.leDictionnaireDesDonnees.exporter("md");
+
+                // On remet les éléments retirés
+                setTimeout(() => {
+                    for (let elem of listeElemSup) {
+                        this.parentNode.appendChild(elem);
+                    }
+                }, 1000);
+            })
+        );
+
+        return listeOptions;
+    }
+}
+window.customElements.define("probleme-element", Probleme);
