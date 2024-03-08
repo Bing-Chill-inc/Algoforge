@@ -1,6 +1,6 @@
 # Installation de l'image de base PHP 7.2
 
-FROM php:7.2-apache
+FROM httpd:2.4
 
 # Variable d'environnement
 
@@ -9,7 +9,7 @@ ENV PATH_APP="src/"
 
 # Copie l'application dans le containeur
 
-COPY ${PATH_APP} /var/www/html/
+COPY ${PATH_APP} /usr/local/apache2/htdocs/
 
 # Ports de l'application
 
