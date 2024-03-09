@@ -687,6 +687,7 @@ bibliotheque-algorithmique > div.previewAlgo {
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    opacity: 0.75;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
@@ -705,6 +706,18 @@ bibliotheque-algorithmique > div.previewAlgo > plan-travail {
     border: none;
     position: relative;
     overflow: hidden;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element { 
+    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail  * {
+    font-size: calc(var(--sizeModifier) * 1vw) !important;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail  label.accolades {
+    font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 
 menu-contextuel {

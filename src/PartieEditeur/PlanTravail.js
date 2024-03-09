@@ -146,7 +146,7 @@ class PlanTravail extends HTMLElement {
 	 * @param {JSON} corpsJSON le corps JSON à charger sur le plan de travail
 	 * @returns {Array<ElementGraphique>} La liste des ElementGraphique chargés
 	 */
-	chargerDepuisJSON(corpsJSON) {
+	chargerDepuisJSON(corpsJSON, cancellable = true) {
 		if (corpsJSON == undefined) {
 			return [];
 		}
@@ -162,9 +162,9 @@ class PlanTravail extends HTMLElement {
 						probleme._listeResultats.push(new Information(resultat));
 					}
 					this.appendChild(probleme);
-					this._editeur.ajouterEvenement(new EvenementCreationElement(probleme, this));
-					for (let enfant of this.chargerDepuisJSON(element.enfants)) {
-						probleme._elemParent.lierEnfant(enfant);
+					if (cancellable) this._editeur.ajouterEvenement(new EvenementCreationElement(probleme, this));
+					for (let enfant of this.chargerDepuisJSON(element.enfants, cancellable)) {
+						probleme._elemParent.lierEnfant(enfant, !cancellable);
 					}
 					probleme.afficher();
 					probleme.setPosition();
@@ -179,9 +179,9 @@ class PlanTravail extends HTMLElement {
 						procedure._listeResultats.push(new Information(resultat));
 					}
 					this.appendChild(procedure);
-					this._editeur.ajouterEvenement(new EvenementCreationElement(procedure, this));
-					for (let enfant of this.chargerDepuisJSON(element.enfants)) {
-						procedure._elemParent.lierEnfant(enfant);
+					if (cancellable) this._editeur.ajouterEvenement(new EvenementCreationElement(procedure, this));
+					for (let enfant of this.chargerDepuisJSON(element.enfants, cancellable)) {
+						procedure._elemParent.lierEnfant(enfant, !cancellable);
 					}
 					procedure.afficher();
 					procedure.setPosition();
@@ -197,12 +197,12 @@ class PlanTravail extends HTMLElement {
 					structureSi.afficher();
 					structureSi.setPosition();
 					this.appendChild(structureSi);
-					this._editeur.ajouterEvenement(new EvenementCreationElement(structureSi, this));
+					if (cancellable) this._editeur.ajouterEvenement(new EvenementCreationElement(structureSi, this));
 					for (let condition of structureSi._listeConditions.children) {
 						if (verbose) console.log(condition);
-						for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
+						for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter, cancellable)) {
 							if (verbose) console.log(enfant);
-							condition._elemParent.lierEnfant(enfant);
+							condition._elemParent.lierEnfant(enfant, !cancellable);
 						}
 					}
 					listeElems.push(structureSi);
@@ -222,12 +222,13 @@ class PlanTravail extends HTMLElement {
 					structureSwitch.afficher();
 					structureSwitch.setPosition();
 					this.appendChild(structureSwitch);
-					this._editeur.ajouterEvenement(new EvenementCreationElement(structureSwitch, this));
+					if (cancellable)
+						this._editeur.ajouterEvenement(new EvenementCreationElement(structureSwitch, this));
 					for (let condition of structureSwitch._listeConditions.children) {
 						if (verbose) console.log(condition);
-						for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter)) {
+						for (let enfant of this.chargerDepuisJSON(condition.enfantsAAjouter, cancellable)) {
 							if (verbose) console.log(enfant);
-							condition._elemParent.lierEnfant(enfant);
+							condition._elemParent.lierEnfant(enfant, !cancellable);
 						}
 					}
 					listeElems.push(structureSwitch);
@@ -244,10 +245,11 @@ class PlanTravail extends HTMLElement {
 						element.ordonnee
 					);
 					this.appendChild(structureIterativeNonBornee);
-					for (let enfant of this.chargerDepuisJSON(element.enfants)) {
-						structureIterativeNonBornee._elemParent.lierEnfant(enfant);
+					for (let enfant of this.chargerDepuisJSON(element.enfants, cancellable)) {
+						structureIterativeNonBornee._elemParent.lierEnfant(enfant, !cancellable);
 					}
-					this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeNonBornee, this));
+					if (cancellable)
+						this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeNonBornee, this));
 					structureIterativeNonBornee.afficher();
 					structureIterativeNonBornee.setPosition();
 					listeElems.push(structureIterativeNonBornee);
@@ -262,10 +264,11 @@ class PlanTravail extends HTMLElement {
 						element.pas
 					);
 					this.appendChild(structureIterativeBornee);
-					for (let enfant of this.chargerDepuisJSON(element.enfants)) {
-						structureIterativeBornee._elemParent.lierEnfant(enfant);
+					for (let enfant of this.chargerDepuisJSON(element.enfants, cancellable)) {
+						structureIterativeBornee._elemParent.lierEnfant(enfant, !cancellable);
 					}
-					this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeBornee, this));
+					if (cancellable)
+						this._editeur.ajouterEvenement(new EvenementCreationElement(structureIterativeBornee, this));
 					structureIterativeBornee.afficher();
 					structureIterativeBornee.setPosition();
 					listeElems.push(structureIterativeBornee);
@@ -273,7 +276,8 @@ class PlanTravail extends HTMLElement {
 				case "ConditionSortie":
 					let conditionSortie = new ConditionSortie(element.abscisse, element.ordonnee);
 					this.appendChild(conditionSortie);
-					this._editeur.ajouterEvenement(new EvenementCreationElement(conditionSortie, this));
+					if (cancellable)
+						this._editeur.ajouterEvenement(new EvenementCreationElement(conditionSortie, this));
 					conditionSortie.afficher();
 					conditionSortie.setPosition();
 					listeElems.push(conditionSortie);
@@ -385,6 +389,8 @@ class PlanTravail extends HTMLElement {
 				element.setPosition();
 			}
 		}
+		// Actualiser tous les liens
+		this.updateAllLines();
 	}
 }
 window.customElements.define("plan-travail", PlanTravail);

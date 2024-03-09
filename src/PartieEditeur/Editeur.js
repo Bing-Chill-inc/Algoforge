@@ -1040,7 +1040,12 @@ class Editeur extends HTMLElement {
 	}
 
 	chargerDepuisJSON(json) {
-		this._espacePrincipal.chargerDepuisJSON(json);
+		let lesElements = this._espacePrincipal.chargerDepuisJSON(json);
+
+		// Sélectionner les éléments et leurs enfants
+		for (let elem of lesElements) {
+			this._selection.selectionnerArbre(elem);
+		}
 	}
 
 	selectTool(idTool) {
