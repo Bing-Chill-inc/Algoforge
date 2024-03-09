@@ -153,7 +153,8 @@ class Editeur extends HTMLElement {
 				"#8ABE5E99",
 				"#C82606",
 				"#FFE989",
-				"#34A5DA"
+				"#34A5DA",
+				"Roboto, sans-serif"
 			)
 		);
 		this._themeSelect.appendChild(
@@ -168,7 +169,8 @@ class Editeur extends HTMLElement {
 				"#58912999",
 				"#C82606",
 				"#b89f30",
-				"#22759c"
+				"#22759c",
+				"Roboto, sans-serif"
 			)
 		);
 		this._themeSelect.appendChild(
@@ -183,7 +185,8 @@ class Editeur extends HTMLElement {
 				"#8ABE5E99",
 				"#C82606",
 				"#FFE989",
-				"#FFFFFF"
+				"#FFFFFF",
+				"Roboto, sans-serif"
 			)
 		);
 		this._themeSelect.appendChild(
@@ -198,7 +201,8 @@ class Editeur extends HTMLElement {
 				"#00aaff99",
 				"#C82606",
 				"#FFE989",
-				"#FFFFFF"
+				"#FFFFFF",
+				'"Source Code Pro", monospace'
 			)
 		);
 

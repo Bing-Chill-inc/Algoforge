@@ -20,7 +20,6 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
     background-color: var(--bgColor);
     overflow: hidden;
     color: var(--fgColorForward);
@@ -896,8 +895,8 @@ probleme-element {
     }
 
         probleme-element > div.containerDPR > div.donnees {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -909,11 +908,14 @@ probleme-element {
             probleme-element > div.containerDPR > div.donnees > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -956,8 +958,8 @@ probleme-element {
         }
 
         probleme-element > div.containerDPR > div.resultat {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -969,11 +971,14 @@ probleme-element {
             probleme-element > div.containerDPR > div.resultat > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -1017,8 +1022,8 @@ procedure-element {
     }
 
         procedure-element > div.containerDPR > div.donnees {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -1030,11 +1035,14 @@ procedure-element {
             procedure-element > div.containerDPR > div.donnees > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -1099,8 +1107,8 @@ procedure-element {
         }
 
         procedure-element > div.containerDPR > div.resultat {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -1112,11 +1120,14 @@ procedure-element {
             procedure-element > div.containerDPR > div.resultat > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
