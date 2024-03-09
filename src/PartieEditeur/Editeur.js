@@ -52,6 +52,16 @@ class Editeur extends HTMLElement {
 			this._toucheMeta = "Ctrl + ";
 		}
 
+		window.addEventListener("beforeunload", (e) => {
+			if (this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) {
+				// Cancel the event
+				e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+				// Chrome requires returnValue to be set
+				e.returnValue = "Attention";
+				return "Attention";
+			}
+		});
+
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
 		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
