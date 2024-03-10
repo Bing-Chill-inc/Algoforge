@@ -45,6 +45,7 @@ class Editeur extends HTMLElement {
 
 	_transferForm = document.getElementById("transferForm");
 	_transferInput = document.getElementById("corpAlgo");
+	_transferNomFichier = document.getElementById("nomFichier");
 
 	constructor() {
 		super();
@@ -105,6 +106,13 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier = document.querySelector("#menuDeroulantFichier");
 		this._menuDeroulantEdition = document.querySelector("#menuDeroulantEdition");
 		this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
+
+		this.querySelector("#titreAlgo").addEventListener("input", (event) => {
+			// Update le titre de l'onglet
+			document.title = "Algoforge - " + event.target.innerText;
+		});
+
+		document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
 
 		this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
 			// On vérifie si la touche appuyée est "Entrée"
@@ -264,7 +272,11 @@ class Editeur extends HTMLElement {
 					var reader = new FileReader();
 					reader.onload = () => {
 						try {
-							this._transferInput.value = reader.result;
+							let nomFichier = fileInput.files[0].name;
+							// On retire l'extension
+							nomFichier = nomFichier.substring(0, nomFichier.length - 5);
+							this._transferInput.value = JSON.stringify(reader.result);
+							this._transferNomFichier.value = nomFichier;
 							this._transferForm.submit();
 						} catch (error) {
 							alert("Le fichier n'a pas été chargé correctement.");
@@ -281,6 +293,7 @@ class Editeur extends HTMLElement {
 				console.log("Créer une copie");
 				// On post le contenu de l'éditeur actuel dans un nouvel onglet
 				this._transferInput.value = JSON.stringify(this._espacePrincipal.exporterEnJSON());
+				this._transferNomFichier.value = this.querySelector("#titreAlgo").innerText + " - copie";
 				this._transferForm.submit();
 			})
 		);

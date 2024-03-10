@@ -71,6 +71,7 @@
         </editeur-interface>
         <form id="transferForm" method="post" target="_blank">
             <input type="hidden" name="corpAlgo" id="corpAlgo">
+            <input type="hidden" name="nomFichier" id="nomFichier">
         </form>
     </body>
     <!-- Externes -->
@@ -163,10 +164,16 @@
     <script>
         const editeur = document.querySelector("editeur-interface");
         const verbose = true;
+        let titreAlgo = document.getElementById("titreAlgo");
 
         <?php
         if (isset($_POST['corpAlgo'])) {
-            echo 'editeur._espacePrincipal.chargerDepuisJSON(' . $_POST['corpAlgo'] . ')';
+            echo 'editeur._espacePrincipal.chargerDepuisJSON(JSON.parse(\'' . $_POST['corpAlgo'] . '\'));';
+        }
+
+        if (isset($_POST['nomFichier'])) {
+            echo "titreAlgo.innerText = '" . addslashes($_POST['nomFichier']) . "';";
+            echo "document.title = 'Algoforge - ' + titreAlgo.innerText;";
         }
         ?>
     </script>
