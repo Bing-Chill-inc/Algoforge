@@ -148,6 +148,8 @@ class ThemeEditeur extends HTMLOptionElement {
 
 		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.php?fgColor=${this.fgColor.substring(1)}`;
 
+		this._editeur._bibliotheque.update();
+
 		this._editeur.setCookie("theme", this.nom, 365);
 	}
 }

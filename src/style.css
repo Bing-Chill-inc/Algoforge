@@ -670,7 +670,7 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.li
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque:hover {
     border: 0.1vw solid var(--fgColorForward);
-    box-shadow: 0 0 0.5vw var(--fgColorSemiTransparent);
+    box-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
@@ -717,6 +717,94 @@ bibliotheque-algorithmique > div.previewAlgo > plan-travail  * {
 }
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail  label.accolades {
+    font-size: calc(var(--sizeModifier) * 4vw) !important;
+}
+
+invite-nouvelle-bibliotheque {
+    position: fixed;
+    width: 30vw;
+    aspect-ratio: 1/1;
+    top: 50vh;
+    left: 50vw;
+    translate: -50% -50%;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    box-shadow: 0 0 1vw var(--fgColor);
+    border-radius: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2048;
+}
+
+invite-nouvelle-bibliotheque > input {
+    width: 80%;
+    height: 10%;
+    margin-top: 5%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    background-color: var(--bgColor);
+    color: var(--fgColor);
+}
+
+invite-nouvelle-bibliotheque > button {
+    width: 80%;
+    height: 10%;
+    margin-top: 5%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.1vw solid var(--bgColor);
+    border-radius: 0.5vw;
+    background-color: var(--fgColor);
+    color: var(--bgColor);
+    cursor: pointer;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo {
+    width: 25vw;
+    height: fit-content;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    opacity: 0.75;
+    position: relative;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > div.divTransparent {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bgColorTransparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500000;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail {
+    width: 25vw;
+    height: 15vw;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail > ligne-element { 
+    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  * {
+    font-size: calc(var(--sizeModifier) * 1vw) !important;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  label.accolades {
     font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 

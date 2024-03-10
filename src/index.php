@@ -142,6 +142,7 @@
     <script src="PartieEditeur/IndicateurZoom.js"></script>
     <script src="PartieEditeur/MenuContextuel.js"></script>
     <script src="PartieEditeur/Bilbiotheque.js"></script>
+    <script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
 
     <!--Gestion des évenement de l'éditeur-->
     <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>

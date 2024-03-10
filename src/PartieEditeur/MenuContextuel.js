@@ -301,6 +301,20 @@ class MenuContextuel extends HTMLElement {
 					}, 1000);
 				})
 			);
+
+			this.appendChild(
+				new ElementMenu("Ajouter à la bibliothèque", () => {
+					console.log("Ajouter à la bibliothèque custom");
+					// On récupère le JSON des éléments sélectionnés
+					let json = this._editeur.copy(false);
+
+					// On crée une InviteNouvelleBibliotheque
+					let invite = new InviteNouvelleBibliotheque(json);
+
+					// On l'ajoute à l'éditeur
+					this._editeur.appendChild(invite);
+				})
+			);
 		}
 	}
 }
