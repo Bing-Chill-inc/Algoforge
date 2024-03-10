@@ -43,6 +43,9 @@ class Editeur extends HTMLElement {
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
 
+	_transferForm = document.getElementById("transferForm");
+	_transferInput = document.getElementById("corpAlgo");
+
 	constructor() {
 		super();
 
@@ -249,8 +252,36 @@ class Editeur extends HTMLElement {
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
+			new ElementMenu("Ouvrir", () => {
+				console.log("Ouvrir");
+				// On importe
+				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
+				var fileInput = document.createElement("input");
+				fileInput.type = "file";
+				fileInput.accept = ".json";
+				fileInput.style.display = "none";
+				fileInput.addEventListener("change", () => {
+					var reader = new FileReader();
+					reader.onload = () => {
+						try {
+							this._transferInput.value = reader.result;
+							this._transferForm.submit();
+						} catch (error) {
+							alert("Le fichier n'a pas été chargé correctement.");
+							console.error(error);
+						}
+					};
+					reader.readAsText(fileInput.files[0]);
+				});
+				fileInput.click();
+			})
+		);
+		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Créer une copie", () => {
 				console.log("Créer une copie");
+				// On post le contenu de l'éditeur actuel dans un nouvel onglet
+				this._transferInput.value = JSON.stringify(this._espacePrincipal.exporterEnJSON());
+				this._transferForm.submit();
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(

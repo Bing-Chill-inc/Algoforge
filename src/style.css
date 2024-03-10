@@ -1667,6 +1667,10 @@ ligne-element {
     z-index: 0;
 }
 
+#transferForm {
+    display: none;
+}
+
 @keyframes jumpOverLeft {
     0% {
         translate: 0 0;
