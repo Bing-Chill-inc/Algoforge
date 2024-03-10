@@ -955,8 +955,8 @@ class Editeur extends HTMLElement {
 
 			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
 				this._isSelecting = true;
-				this._coordonneesSelection.x = e.clientX;
-				this._coordonneesSelection.y = e.clientY;
+				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
+				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
 			} else {
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
@@ -1046,21 +1046,21 @@ class Editeur extends HTMLElement {
 			}
 			if (this._isSelecting) {
 				let abscisseEnPx =
-					(e.clientX - this._planActif.getBoundingClientRect().left) /
-					document.body.style.getPropertyValue("--sizeModifier");
+					(this._curMousePos.x / 100) * window.innerWidth -
+					this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom;
 				let ordonneeEnPx =
-					(e.clientY - this._planActif.getBoundingClientRect().top) /
-					document.body.style.getPropertyValue("--sizeModifier");
+					(this._curMousePos.y / 100) * window.innerWidth -
+					this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom;
 				let abscisseEnVw = (abscisseEnPx / window.innerWidth) * 100;
 				let ordonneeEnVw = (ordonneeEnPx / window.innerWidth) * 100;
 				let lastXenVw =
-					((this._coordonneesSelection.x / document.body.style.getPropertyValue("--sizeModifier") -
-						this._planActif.getBoundingClientRect().left) /
+					((this._coordonneesSelection.x -
+						this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
 				let lastYenVw =
-					((this._coordonneesSelection.y / document.body.style.getPropertyValue("--sizeModifier") -
-						this._planActif.getBoundingClientRect().top) /
+					((this._coordonneesSelection.y -
+						this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
 				this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
