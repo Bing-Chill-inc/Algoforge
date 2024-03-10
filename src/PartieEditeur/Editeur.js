@@ -1940,7 +1940,7 @@ class Editeur extends HTMLElement {
 		if (isJSON) {
 			planExport.chargerDepuisJSON(JSON.parse(nodeToCopy));
 		} else {
-			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSON());
+			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(nodeToCopy.children));
 		}
 		document.body.removeChild(planExport);
 

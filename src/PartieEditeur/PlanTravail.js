@@ -134,6 +134,23 @@ class PlanTravail extends HTMLElement {
 		return corpsJSON;
 	}
 
+	exporterEnJSONSpecifier(listeElemEnfantsAConcerver) {
+		let listeElementsSansParents = [];
+		for (let element of this.children) {
+			if (element._parent == null && element instanceof ElementGraphique) {
+				listeElementsSansParents.push(element);
+			}
+		}
+
+		let corpsJSON = [];
+		listeElementsSansParents.forEach((element) => {
+			corpsJSON.push(element.toJSONspecifier(listeElemEnfantsAConcerver));
+		});
+
+		corpsJSON.push(this.leDictionnaireDesDonnees.toJSON());
+		return corpsJSON;
+	}
+
 	/**
 	 * @description Lis un fichier json et le charge en mémoire. Vérifie également si le fichier est bien un JSON
 	 *
