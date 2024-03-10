@@ -520,6 +520,22 @@ class Editeur extends HTMLElement {
 				e.preventDefault();
 				this.delete();
 			}
+
+			// Contrôle de la sélection avec les flèches
+			switch (e.key) {
+				case "ArrowUp":
+					this._selection.moveAllSelectedElements(0, -1);
+					break;
+				case "ArrowDown":
+					this._selection.moveAllSelectedElements(0, 1);
+					break;
+				case "ArrowLeft":
+					this._selection.moveAllSelectedElements(-1, 0);
+					break;
+				case "ArrowRight":
+					this._selection.moveAllSelectedElements(1, 0);
+					break;
+			}
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
 				if (e.keyCode === 64) {
@@ -1041,6 +1057,9 @@ class Editeur extends HTMLElement {
 
 	chargerDepuisJSON(json) {
 		let lesElements = this._espacePrincipal.chargerDepuisJSON(json);
+
+		// Désélectionner tout
+		this._selection.deselectionnerTout();
 
 		// Sélectionner les éléments et leurs enfants
 		for (let elem of lesElements) {
