@@ -20,6 +20,7 @@ class Editeur extends HTMLElement {
 	_menuDeroulantEdition = null;
 	_menuDeroulantAide = null;
 	_espacePrincipal = null;
+	_planActif = null;
 	_selection = new Selection();
 	_selectionRectangle = new SelectionRectangle();
 	_coordonneesSelection = { x: 0, y: 0 };
@@ -79,6 +80,7 @@ class Editeur extends HTMLElement {
 		this._espacePrincipal = document.querySelector("#espacePrincipal");
 		this._espacePrincipal.appendChild(this._selection);
 		this._espacePrincipal.appendChild(this._selectionRectangle);
+		this._planActif = this._espacePrincipal;
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
@@ -242,6 +244,8 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
 				console.log("Nouveau");
+				// On ouvre un nouvel onglet avec un éditeur vide
+				window.open(window.location.href, "_blank");
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
@@ -256,7 +260,10 @@ class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Renommer", () => {
-				console.log("Renommer");
+				if (verbose) console.log("Renommer");
+				let titre = this.querySelector("#titreAlgo");
+				// On met le focus sur le titre
+				titre.focus();
 			})
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
@@ -282,7 +289,7 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
 				console.log("Exporter en .png");
-				var svgStr = this.exporterSVG(this._espacePrincipal, false);
+				var svgStr = this.exporterSVG(this._planActif, false);
 				this.exportSVGAsPNG(svgStr, `${this.querySelector("#titreAlgo").innerText}.png`);
 			})
 		);
@@ -313,7 +320,7 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
 				console.log("Exporter en .svg");
-				this.exporterSVG(this._espacePrincipal);
+				this.exporterSVG(this._planActif);
 			})
 		);
 
@@ -932,8 +939,8 @@ class Editeur extends HTMLElement {
 		});
 		this.addEventListener("mousemove", function (e) {
 			this._curMousePos = {
-				x: ((e.clientX / window.innerWidth) * 100) / this._indicateurZoom._zoom,
-				y: ((e.clientY / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+				x: (((e.clientX + this._planActif.scrollLeft) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+				y: (((e.clientY + this._planActif.scrollTop) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
 			}; // En vw
 			if (verbose) console.log(`mousemove avec ${this._isDragging}`);
 			if (verbose) console.log(this._curMousePos);
@@ -972,11 +979,11 @@ class Editeur extends HTMLElement {
 				coordSouris.y /= parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
 
 				// Prendre en compte le scroll du plan de travail
-				coordSouris.x += (this._espacePrincipal.scrollLeft / window.innerWidth) * 100;
-				coordSouris.y += (this._espacePrincipal.scrollTop / window.innerWidth) * 100;
+				coordSouris.x += (this._planActif.scrollLeft / window.innerWidth) * 100;
+				coordSouris.y += (this._planActif.scrollTop / window.innerWidth) * 100;
 
 				// Trouver l'élément le plus proche
-				for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+				for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 					let coordCentreElem = elem.getCentre();
 
 					let distance = Math.sqrt(
@@ -995,21 +1002,21 @@ class Editeur extends HTMLElement {
 			}
 			if (this._isSelecting) {
 				let abscisseEnPx =
-					(e.clientX - this._espacePrincipal.getBoundingClientRect().left) /
+					(e.clientX - this._planActif.getBoundingClientRect().left) /
 					document.body.style.getPropertyValue("--sizeModifier");
 				let ordonneeEnPx =
-					(e.clientY - this._espacePrincipal.getBoundingClientRect().top) /
+					(e.clientY - this._planActif.getBoundingClientRect().top) /
 					document.body.style.getPropertyValue("--sizeModifier");
 				let abscisseEnVw = (abscisseEnPx / window.innerWidth) * 100;
 				let ordonneeEnVw = (ordonneeEnPx / window.innerWidth) * 100;
 				let lastXenVw =
 					((this._coordonneesSelection.x / document.body.style.getPropertyValue("--sizeModifier") -
-						this._espacePrincipal.getBoundingClientRect().left) /
+						this._planActif.getBoundingClientRect().left) /
 						window.innerWidth) *
 					100;
 				let lastYenVw =
 					((this._coordonneesSelection.y / document.body.style.getPropertyValue("--sizeModifier") -
-						this._espacePrincipal.getBoundingClientRect().top) /
+						this._planActif.getBoundingClientRect().top) /
 						window.innerWidth) *
 					100;
 				this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
@@ -1056,7 +1063,7 @@ class Editeur extends HTMLElement {
 	}
 
 	chargerDepuisJSON(json) {
-		let lesElements = this._espacePrincipal.chargerDepuisJSON(json);
+		let lesElements = this._planActif.chargerDepuisJSON(json);
 
 		// Désélectionner tout
 		this._selection.deselectionnerTout();
@@ -1209,7 +1216,7 @@ class Editeur extends HTMLElement {
 	}
 	selectAll() {
 		console.log("selectAll");
-		for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 			if (elem instanceof ElementGraphique) this._selection.selectionnerElement(elem);
 		}
 	}

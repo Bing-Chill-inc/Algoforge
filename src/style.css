@@ -886,6 +886,36 @@ plan-travail {
     overflow: scroll;
 }
 
+sous-plan-travail {
+    width: 100%;
+    height: calc(100vh - 6vw);
+    position: absolute;
+    top: 6vw;
+    left: 0;
+    overflow: scroll;
+    scale: 0;
+    background-color: var(--bgColor);
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+sous-plan-travail.ouvert {
+    scale: 1;
+}
+
+sous-plan-travail > span.fermeture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1vw;
+    font-size: 3vw;
+    cursor: pointer;
+}
+
+sous-plan-travail > span.fermeture:hover {
+    text-shadow: 0 0 0.5vw var(--fgColor);
+}
+
 probleme-element {
     display: flex;
     width: calc(var(--sizeModifier) * 30vw);
@@ -897,6 +927,22 @@ probleme-element {
     transition: all var(--transitionTime) ease;
     z-index: 2;
 }
+
+probleme-element > span.ouvrir {
+    position: absolute;
+    bottom: calc(var(--sizeModifier) * 0.5vw);
+    right: calc(var(--sizeModifier) * 10.5vw);
+    width: calc(var(--sizeModifier) * 0.75vw);
+    height: calc(var(--sizeModifier) * 0.75vw);
+    background-color: var(--fgColorTransparent);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: calc(var(--sizeModifier) * 0.25vw);
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
 
     probleme-element > div.containerDPR {
         width: 100%;

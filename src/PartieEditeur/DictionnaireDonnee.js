@@ -32,7 +32,7 @@ class DictionnaireDonnee extends HTMLElement {
 
 	// METHODES
 	ouvrir() {
-		document.querySelector("plan-travail").effectuerDictionnaireDesDonnee();
+		document.querySelector("editeur-interface")._planActif.effectuerDictionnaireDesDonnee();
 		if (this._estOuvert) return;
 		// Supprimer tout le contenu
 		this.innerHTML = "";
@@ -134,7 +134,9 @@ class DictionnaireDonnee extends HTMLElement {
 			tdNom.addEventListener("input", () => {
 				this._mesInformations.forEach((element) => {
 					if (element._nom == info._nom) {
-						document.querySelector("plan-travail").renameInformation(element._nom, tdNom.innerText);
+						document
+							.querySelector("editeur-interface")
+							._planActif.renameInformation(element._nom, tdNom.innerText);
 						this._matchSignification[tdNom.innerText] = this._matchSignification[element._nom];
 						this._matchSignification[element._nom] = undefined;
 						element._nom = tdNom.innerText;
@@ -424,7 +426,8 @@ class DictionnaireDonnee extends HTMLElement {
 	toJSON() {
 		return {
 			typeElement: "DictionnaireDonnee",
-			contenu: this._matchSignification,
+			types: this._matchType,
+			signification: this._matchSignification,
 		};
 	}
 
@@ -530,7 +533,8 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	chargerDepuisJSON(json) {
-		this._matchSignification = json.contenu;
+		this._matchType = json.types;
+		this._matchSignification = json.signification;
 	}
 
 	csvToMarkdown(csvString) {

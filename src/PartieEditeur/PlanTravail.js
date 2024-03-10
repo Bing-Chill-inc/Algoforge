@@ -63,7 +63,16 @@ class PlanTravail extends HTMLElement {
 	 * @returns {Probleme} Le premier problème du plan de travail
 	 */
 	getProblemePrincipal() {
-		return this.children[0];
+		let problemes = PlanTravail.FiltrerElementsGraphique(this.children, Probleme);
+
+		// Parcourir la liste des problèmes pour trouver le plus haut
+		let problemePrincipal = problemes[0];
+		for (let probleme of problemes) {
+			if (parseFloat(probleme._ordonnee) < parseFloat(problemePrincipal._ordonnee)) {
+				problemePrincipal = probleme;
+			}
+		}
+		return problemePrincipal;
 	}
 
 	/**
