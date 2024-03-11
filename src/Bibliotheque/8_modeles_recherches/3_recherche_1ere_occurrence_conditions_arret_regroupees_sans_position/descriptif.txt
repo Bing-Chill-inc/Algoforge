@@ -1,0 +1,20 @@
+Ce modèle est à utiliser lorsqu'on recherche, dans un ensemble d'élements, le premier élément satisfaisant une propriété particulière.
+
+Exemples :
+- déterminer si une valeur particulière se trouve dans un tableau d'entiers,
+- chercher la position de la 1ère valeur supérieure à 100 dans un tableau de valeurs...
+
+Le modèle se décline en différentes versions. Cette version :
+- détermine via un booléen trouve si l'élément cherché est dans la structure.
+- regroupe les conditions d'arrêt :
+   * Avantage : les conditions d'arrêt sont regroupées, le codage peut se faire via une structure itérative standard de type while.
+   * Inconvénient : la recherche n'est pas stoppée immédiatement dès que l'algorithme trouve l'élément recherché
+
+Pré-condition : Aucune
+
+Remarques :
+- les éléments de la structure peuvent être ordonnés ou pas.
+- la structure peut comporter des doublons ou pas.
+- le modèle d'algorithme est identique pour une structure à accès séquentiel et pour une structure à accès direct.
+- la première occurrence fait référence au 1er élément rencontré vérifiant la propriété recherchée. Ce 1er élément peut donc varier selon qu'on parcourt la structure du début vers la fin ou de la fin vers le début...
+
