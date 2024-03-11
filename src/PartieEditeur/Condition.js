@@ -71,8 +71,11 @@ class Condition extends HTMLElement {
 		this.divLibelle.innerText = this._libelle;
 		this.divLibelle.contentEditable = "true";
 		this.appendChild(this.divLibelle);
-
 		this.divLibelle.addEventListener("focusout", (e) => {
+			if(this._structure instanceof StructureSi) {
+				this.divLibelle.innerText = this.divLibelle.innerText.replace("&&", "ET");
+				this.divLibelle.innerText = this.divLibelle.innerText.replace("||", "OU"); 
+			}
 			if (this._ancienLib != this._libelle) {
 				this._editeur.ajouterEvenement(
 					new EvenementEditionLibelleCondition(this, this._ancienLib, this._libelle)

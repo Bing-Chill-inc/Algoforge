@@ -167,7 +167,7 @@
     <script src="PartieEditeur/Editeur.js"></script>
     <script>
         const editeur = document.querySelector("editeur-interface");
-        const verbose = true;
+        const verbose = false;
         let titreAlgo = document.getElementById("titreAlgo");
 
         <?php

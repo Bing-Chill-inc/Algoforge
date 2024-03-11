@@ -280,6 +280,42 @@ class Probleme extends ElementGraphique {
 			// Chercher dans le texte si il y a '<-' et si oui, le remplacer par '←'
 			this.libelle = this.libelle.replace("<-", "←");
 			if (verbose) console.log("Changement de libellé");
+			// chercher dans le texte s'il y'a un a+= v par un a <- a + v
+			let reg = /(\w+)\s*\+=\s*(\w+)/g;
+			let match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " + " + match[2]);
+			}
+			// chercher dans le texte s'il y'a un a-= v par un a <- a - v
+			reg = /(\w+)\s*-=\s*(\w+)/g;
+			match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " - " + match[2]);
+			}
+			// chercher dans le texte s'il y'a un a*= v par un a <- a * v
+			reg = /(\w+)\s*\*=\s*(\w+)/g;
+			match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " * " + match[2]);
+			}
+			// chercher dans le texte s'il y'a un a/= v par un a <- a / v*
+			reg = /(\w+)\/=\s*(\w+)/g;
+			match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " / " + match[2]);
+			}
+			// chercher dans le texte s'il y'a un a++ en a <- a + 1
+			reg = /(\w+)\+\+/g;
+			match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " + 1");
+			}
+			// chercher dans le texte s'il y'a un a-- en a <- a - 1
+			reg = /(\w+)--/g;
+			match = reg.exec(this.libelle);
+			if (match != null) {
+				this.libelle = this.libelle.replace(match[0], match[1] + " ← " + match[1] + " - 1");
+			}
 			this._editeur.ajouterEvenement(new EvenementEditionLibelleProbleme(this, this._libelle, this.libelle));
 			this._libelle = this.libelle;
 		});
