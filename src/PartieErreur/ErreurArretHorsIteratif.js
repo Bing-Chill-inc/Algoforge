@@ -27,7 +27,7 @@ class ErreurArretHorsIteratif extends ErreurConceptuelle
      * @description Renvoie un message indiquant que la condition de sortie est en dehors d'une boucle itérative.
      */
     toString() {            
-        return "L'arrêt en surbrillance est hors d'une boucle itérative et d'une structure alternative.";
+        return "L'arrêt en surbrillance est hors d'une boucle itérative et/ou d'une structure alternative.";
     }
     /**
      * @static

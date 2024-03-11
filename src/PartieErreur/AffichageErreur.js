@@ -121,12 +121,12 @@ class AffichageErreur extends HTMLElement {
     {
         if(!this._listeErreur)
         {
-            this.querySelector(".texte-erreur").textContent = "Aucune erreur trouvé";
+            this.querySelector(".texte-erreur").textContent = "Aucune anomalie trouvée";
             this.querySelector(".numero-erreur").textContent = "(0/0)";
         }
         else if(this._listeErreur.length == 0)
         {
-            this.querySelector(".texte-erreur").textContent = "Aucune erreur trouvé";
+            this.querySelector(".texte-erreur").textContent = "Aucune anomalie trouvée";
             this.querySelector(".numero-erreur").textContent = "(0/0)";
 
         }

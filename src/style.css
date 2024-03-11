@@ -1241,5 +1241,9 @@ affichage-erreur-element .erreur-container span, p {
 }
 affichage-erreur-element .numero-erreur
 {
-    margin-left: 10px;
+    margin-left: 1vw;
+}
+affichage-erreur-element .fleche, button, .numero-erreur
+{
+    user-select: none; /* désactive la possibilité de le selectionner */
 }
