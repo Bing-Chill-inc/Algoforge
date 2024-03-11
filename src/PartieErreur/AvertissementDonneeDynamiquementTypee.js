@@ -46,29 +46,37 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
      * @description La méthode detecterAnomalie cherche si il y a une variable qui est dynamiquement type dans un Probleme.
      */
     static detecterAnomalie(unProbleme) {
-        const lesInformations = unProbleme.extraireInformation();
-        let lesInformationsPasTypeCorrectement = lesInformations;
-        for(let information of lesInformations)
+        try
         {
-            if(document.getElementById('espace1').leDictionnaireDesDonnees.containInformation(information._nom))
+            const lesInformations = unProbleme.extraireInformation();
+            let lesInformationsPasTypeCorrectement = lesInformations;
+            for(let information of lesInformations)
             {
-                const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
-                const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
-                if(informationBienType)
+                if(unProbleme.getPlanTravail().leDictionnaireDesDonnees.containInformation(information._nom))
                 {
-                    lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom);
+                    const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
+                    const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
+                    if(informationBienType)
+                    {
+                        lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom);
+                    }
                 }
             }
-        }
-        if(lesInformationsPasTypeCorrectement.length != 0) {
-            let pasTypeCorrectement = [];
-            for(let information of lesInformationsPasTypeCorrectement)
-            {
-                pasTypeCorrectement.push(information._nom);
+            if(lesInformationsPasTypeCorrectement.length != 0) {
+                let pasTypeCorrectement = [];
+                for(let information of lesInformationsPasTypeCorrectement)
+                {
+                    pasTypeCorrectement.push(information._nom);
+                }
+                return [true, pasTypeCorrectement];
             }
-            return [true, pasTypeCorrectement];
+            else {
+                return [false];
+            }
         }
-        else {
+        catch(e)
+        {
+            console.error(e);
             return [false];
         }
     }

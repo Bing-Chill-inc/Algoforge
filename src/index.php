@@ -45,6 +45,8 @@
                 <div class="zonePartage">
                     <button class="partage">Partager</button>
                 </div>
+                <affichage-erreur-element>
+                </affichage-erreur-element>
                 <select id="theme">
 
                 </select>
@@ -105,6 +107,7 @@
     <script src="PartieErreur/ErreurSyntaxeComparaison.js"></script>
     <script src="PartieErreur/ErreurTypesInconsistantsAlternatif.js"></script>
     <script src="PartieErreur/ErreurVariableMagique.js"></script>
+    <script src="PartieErreur/AffichageErreur.js"></script>
 
     <!--Éléments utilisés par l'éditeur-->
     <script src="PartieEditeur/PlanTravail.js"></script>

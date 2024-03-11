@@ -56,11 +56,19 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle
      * @description La méthode detecterAnomalie cherche si dans une StructureSwitch il y a des comparaisons.
      */
     static detecterAnomalie(StructureSwitch){
+        try {
         for (let condition of StructureSwitch._listeConditions.children) {
             if (condition.querySelector('.libelle').textContent.includes("=")) {
                 return [true, StructureSwitch._expressionATester];
             }
         }
         return [false];
+        }
+        catch(e)
+        {
+            console.error(e);
+            return [false];
+        }
+
     }
 } 

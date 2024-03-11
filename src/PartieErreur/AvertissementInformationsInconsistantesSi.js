@@ -57,37 +57,58 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel
      * @description La méthode detecterAnomalie cherche si dans une StructureSi il y a des variables qui n'ont aucun lien entre eux.
      */
     static detecterAnomalie(StructureAlternative){
-        const conditions = StructureAlternative._listeConditions.children;
-        let variables = [];
+        try
+        {
+            /*
+            a = 3 | b = 5
+            a = 4 | b= 4 && a = 3 | b=3 && a = 3
+            */
+            const conditions = StructureAlternative._listeConditions.children;
 
-        const regex = /^(.*?)\s*([=!<>]=?)\s*(.*?)$/;
-        const premierLibelle = conditions[0].querySelector('.libelle').textContent;
-        const caracteresAvantEgal = premierLibelle.match(regex);
-        variables.push(caracteresAvantEgal[1]);
-    
-        let nbCondition = 0;
-        for (let condition of StructureAlternative._listeConditions.children) {
-            let libelle = condition.querySelector('.libelle').textContent;
-            const match = libelle.match(regex);
-            if(!match[1].includes(variables)){
-                variables.push(match[1]);
-            }
-            if(libelle =="sinon"){
-                if(nbCondition == StructureAlternative._listeConditions.children.length - 1){
-                    return [false];
+            //const regex = /^(.*?)\s*([=!<>]=?)\s*(.*?)$/;
+            // Expression régulière pour correspondre à tous les mots composés uniquement de caractères de "a" à "z"
+            var regex = /[a-z]+/gi;
+            let nbCondition = 0;
+            for (let condition of conditions) {
+                let libelle = condition.querySelector('.libelle').textContent;
+                if(libelle.trim().toLowerCase() == "sinon" || libelle.trim == "")
+                {
+                    continue;
                 }
-                else{
-                    return [true];
+                let mesVariables = libelle.match(regex);
+                for (let condition of conditions)
+                {
+                    let libelle2 = condition.querySelector('.libelle').textContent;
+                    if(libelle.trim().toLowerCase() == "sinon")
+                    {
+                        continue;
+                    }
+                    let mesVariables2 = libelle2.match(regex);
+                    if(libelle2.trim().toLowerCase() == "sinon")
+                    {
+                        continue;
+                    }
+                    if(!mesVariables || !mesVariables2)
+                    {
+                        continue;
+                    }
+                    // Vérifier si les listes ont des éléments en commun
+                    let ontEnCommun = mesVariables.some(variable => mesVariables2.includes(variable));
+                    if(!ontEnCommun)
+                    {
+                        return [true, mesVariables2];
+                    }
                 }
+                nbCondition=nbCondition+1;
             }
         
-            if (!match[1].trim().startsWith(caracteresAvantEgal[1])) {
-                return [true, variables]; 
-            }
-            nbCondition=nbCondition+1;
+            return [false];
         }
-    
-        return [false];
+        catch(e)
+        {
+            console.error(e);
+            return [false];
+        }
         
     }
 }

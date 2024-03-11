@@ -30,7 +30,13 @@ class ErreurSyntaxeAssignation extends ErreurConceptuelle {
      * @description Cette méthode vérifie que l'assignation dans un problème est correctement écrite.
      */
     static detecterAnomalie(unProbleme) {
+        try{
         return unProbleme.getTexte().includes('=') || unProbleme.getTexte().includes('->');
+        }
+        catch(e)
+        {
+            return false;
+        }
     }
     
     /**

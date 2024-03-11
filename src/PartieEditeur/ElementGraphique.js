@@ -6,28 +6,30 @@
  * @extends {HTMLElement}
  */
 class ElementGraphique extends HTMLElement {
-	// ATTRIBUTS
-	_abscisse; // Entier
-	_ordonnee; // Entier
-	_parent; // ElementParent
-	_listeAnomalie; //List<AnomalieConceptuelle>
-	//_couleurPrimaire = "black"; // Couleur premiere
-	//_etat= "Defaut"; // Etat de l'element graphique
+    // ATTRIBUTS
+    _abscisse; // Entier
+    _ordonnee; // Entier
+    _parent; // ElementParent
+    _listeAnomalie; //List<AnomalieConceptuelle>
+    _elementGraphique;
+    //_couleurPrimaire = "black"; // Couleur premiere
+    //_etat= "Defaut"; // Etat de l'element graphique
 
-	// CONSTRUCTEUR
-	/**
-	 * @constructor
-	 * @param {number} [abscisse=0] l'abscisse de l'ElementGraphique
-	 * @param {number} [ordonnee=0] l'ordonnée de l'ElementGraphique
-	 * @param {ElementParent} [parent=null] le père de l'Elementgraphique par défaut n'a pas de père
-	 */
-	constructor(abscisse = 0, ordonnee = 0, parent = null) {
-		super();
-		this._abscisse = abscisse;
-		this._ordonnee = ordonnee;
-		this._parent = parent;
-		this.setPosition(abscisse, ordonnee);
-	}
+    // CONSTRUCTEUR
+    /**
+     * @constructor
+     * @param {number} [abscisse=0] l'abscisse de l'ElementGraphique
+     * @param {number} [ordonnee=0] l'ordonnée de l'ElementGraphique
+     * @param {ElementParent} [parent=null] le père de l'Elementgraphique par défaut n'a pas de père
+     */
+    constructor(abscisse = 0, ordonnee = 0, parent = null) {
+        super();
+        this._abscisse = abscisse;
+        this._ordonnee = ordonnee;
+        this._parent = parent;
+        this._elementGraphique = this;
+        this.setPosition(abscisse, ordonnee);
+    }
 
 	// ENCAPSULATION
 	/**
@@ -90,10 +92,9 @@ class ElementGraphique extends HTMLElement {
 		return anchor;
 	}
 
-	// ENCAPSULATION
-
-	getTailleAbscisse() {
-		let rect = this.getBoundingClientRect();
+    // ENCAPSULATION
+    getTailleAbscisse() {
+        let rect = this.getBoundingClientRect();
 
 		// Calculez la largeur en unité vw
 		let largeurEnVw = ((rect.right - rect.left) / window.innerWidth) * 100;
@@ -187,19 +188,20 @@ class ElementGraphique extends HTMLElement {
 		return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
 	}
 
-	/**
-	 * @description Renvoie le parent de l'ElementGraphique du type rechercher
-	 *
-	 * @type {ElementGraphique}
-	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le parent de l'ElementGraphique du type rechercher
-	 * @returns {ElementGraphique} le parent
-	 */
-	getParent(typeRechercher = ElementGraphique) {
-		if (this._parent) {
-			return this._parent._proprietaire instanceof typeRechercher ? this._parent._proprietaire : null;
-		}
-		return null;
-	}
+    /**
+     * @description Renvoie le parent de l'ElementGraphique du type rechercher
+     *
+     * @type {ElementGraphique}
+     * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le parent de l'ElementGraphique du type rechercher
+     * @returns {ElementGraphique} le parent
+     */
+    getParent(typeRechercher = ElementGraphique) {
+        if(this._parent)
+        {
+            return this._parent._proprietaire._elementGraphique instanceof typeRechercher ? this._parent._proprietaire._elementGraphique:null;
+        }
+        return null;
+    }
 
 	/**
 	 * @description Renvoie la liste des antécédant d'ElementGraphique en fonction du type rechercher
@@ -230,103 +232,71 @@ class ElementGraphique extends HTMLElement {
 		return false;
 	}
 
-	/**
-	 * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
-	 *
-	 * <br>Est étendu dans les sous classes
-	 *
-	 * @returns {Array<Information>} Les information contenu dans résultat défini, dans Probleme
-	 */
-	getInformationResultat() {
-		console.log(
-			"get Information Resultat non défini dans ma classe abscisse" +
-				this._abscisse +
-				" ordonee " +
-				this._ordonnee
-		);
-		return [];
-	}
+    /**
+     * @description Comportement natif de getPlanTravail(), Retourne le plan de travail
+     * 
+     * <br>Est étendu dans les sous classes
+     *
+     * @returns {PlanTravail} Le Plan Travail appartenant au résultat défini, dans Probleme
+     */
+    getPlanTravail()
+    {
+        return this.parentElement;
+    }
 
-	/**
-	 * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
-	 *
-	 * <br>Est étendu dans les sous classes
-	 *
-	 * @returns {Array<Information>} Les informations contenu dans données défini, dans Probleme
-	 */
-	getInformationDonnee() {
-		console.log(
-			"get Information Donnée non défini dans ma classe je suis " + this._abscisse + " ordonee " + this._ordonnee
-		);
-		return [];
-	}
-	rechercherAnomalies(mesAnomalies) {
-		this._listeAnomalie = mesAnomalies;
-		let anomalieDeMesEnfantsEtLesMiennes = [];
-		let enfants = this.getEnfants();
-		for (let enfant of enfants) {
-			anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...enfant.rechercherAnomalies()];
-		}
-		anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
-		this.afficherErreur();
-		return anomalieDeMesEnfantsEtLesMiennes;
-	}
-	/* Partie Affichage */
-	colorierElement() {
-		//console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
-	}
-	signalerErreur() {
-		this._etat = "Erreur";
-		this._couleurPrimaire = "red";
-		this.colorierElement();
-	}
-	signalerAvertissement() {
-		this._etat = "Avertissement";
-		this._couleurPrimaire = "yellow";
-		this.colorierElement();
-	}
-	effacerSignalement() {
-		this._etat = "Defaut";
-		this._couleurPrimaire = "black";
-		this.colorierElement();
-	}
-	afficherErreur() {
-		this.effacerErreur();
-		if (this._listeAnomalie) {
-			if (this._listeAnomalie.length > 0) {
-				let EstUneErreur = false;
-				/*let divListeErreur = document.createElement("div");
-                divListeErreur.className = "divErreur";
-                this.appendChild(divListeErreur);
+    /**
+     * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     *
+     * <br>Est étendu dans les sous classes
+     *
+     * @returns {Array<Information>} Les information contenu dans résultat défini, dans Probleme
+     */
+    getInformationResultat() {
+        console.log(
+            "get Information Resultat non défini dans ma classe abscisse" +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
+        return [];
+    }
 
-                let listeErreur = document.createElement("ul");
-                divListeErreur.appendChild(listeErreur);*/
-				for (let anomalie of this._listeAnomalie) {
-					if (anomalie instanceof ErreurConceptuelle) {
-						EstUneErreur = true;
-					}
-					/*
-                    let erreur = document.createElement("li");
-                    erreur.textContent = probleme;
-                    listeErreur.appendChild(erreur);*/
-				}
-				if (EstUneErreur) {
-					this.signalerErreur();
-				} else {
-					this.signalerAvertissement();
-				}
-			}
-		}
-	}
-	effacerErreur() {
-		this.effacerSignalement();
-		const divErreur = this.querySelector(".divErreur");
-		if (divErreur) {
-			divErreur.remove();
-		}
-	}
-
-	renameInformation(ancienNom, nouveauNom) {}
+    /**
+     * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
+     *
+     * <br>Est étendu dans les sous classes
+     *
+     * @returns {Array<Information>} Les informations contenu dans données défini, dans Probleme
+     */
+    getInformationDonnee() {
+        console.log(
+            "get Information Donnée non défini dans ma classe je suis " +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
+        return [];
+    }
+    rechercherAnomalies(mesAnomalies) {
+        this._listeAnomalie = mesAnomalies;
+        let anomalieDeMesEnfantsEtLesMiennes = [];
+        let enfants = this.getEnfants();
+        for (let enfant of enfants) {
+            anomalieDeMesEnfantsEtLesMiennes = [
+                ...anomalieDeMesEnfantsEtLesMiennes,
+                ...enfant.rechercherAnomalies(),
+            ];
+        }
+        anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
+        return anomalieDeMesEnfantsEtLesMiennes;
+    }
+    /* Partie Affichage */
+    colorierElement() {
+        //console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+    }
+    renameInformation(ancienNom, nouveauNom) {
+        
+    }
 
 	getAncreDecomposition() {
 		let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
