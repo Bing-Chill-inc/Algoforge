@@ -1,1 +1,49 @@
-[{"typeElement":"Probleme","abscisse":"37.159282108805414vw","ordonnee":"6.585810431856416vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"Probleme","abscisse":"16.01514301738645vw","ordonnee":"14.88642736960178vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"30.485137408861405vw","ordonnee":"14.942512619181148vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"43.7212563095905vw","ordonnee":"14.774256870443073vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"56.39652271452617vw","ordonnee":"14.88642736960179vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]
+[
+  {
+    "typeElement": "Probleme",
+    "abscisse": "12.719298245614038vw",
+    "ordonnee": "4.116959064327488vw",
+    "libelle": "",
+    "listeDonnes": [""],
+    "listeResultats": [""],
+    "enfants": [
+      {
+        "typeElement": "Probleme",
+        "abscisse": "-8.42484084580493vw",
+        "ordonnee": "12.417576002072849vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "6.045153545670022vw",
+        "ordonnee": "12.473661251652217vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "19.281272446399132vw",
+        "ordonnee": "12.305405502914144vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      },
+      {
+        "typeElement": "Probleme",
+        "abscisse": "31.956538851334805vw",
+        "ordonnee": "12.417576002072863vw",
+        "libelle": "",
+        "listeDonnes": [""],
+        "listeResultats": [""],
+        "enfants": []
+      }
+    ]
+  },
+  { "typeElement": "DictionnaireDonnee", "contenu": {} }
+]

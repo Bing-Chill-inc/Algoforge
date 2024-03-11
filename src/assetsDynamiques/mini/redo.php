@@ -1,0 +1,29 @@
+<?php
+header('Content-Type: image/svg+xml');
+?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.44 548.57">
+    <defs>
+        <style>
+            .cls-1 {
+                fill: none;
+                stroke-width: 46px;
+            }
+
+            .cls-1,
+            .cls-2 {
+                stroke: #<?php echo $_GET['fgColor'] ?>;
+                stroke-linecap: round;
+                stroke-miterlimit: 10;
+            }
+
+            .cls-2 {
+                fill: #<?php echo $_GET['fgColor'] ?>;
+                stroke-width: 20px;
+            }
+        </style>
+    </defs>
+    <path class="cls-1"
+        d="M318.44,103.52H103.83c-37.32,0-67.57,26.19-67.57,58.51v320.3c0,32.32,30.25,58.51,67.57,58.51H473.7"
+        transform="translate(-13.26 -15.27)" />
+    <polygon class="cls-2" points="409.77 89.94 278.44 162.89 278.44 16.99 409.77 89.94" />
+</svg>

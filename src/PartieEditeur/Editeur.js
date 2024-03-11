@@ -20,6 +20,7 @@ class Editeur extends HTMLElement {
 	_menuDeroulantEdition = null;
 	_menuDeroulantAide = null;
 	_espacePrincipal = null;
+	_planActif = null;
 	_selection = new Selection();
 	_selectionRectangle = new SelectionRectangle();
 	_coordonneesSelection = { x: 0, y: 0 };
@@ -42,6 +43,10 @@ class Editeur extends HTMLElement {
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
 
+	_transferForm = document.getElementById("transferForm");
+	_transferInput = document.getElementById("corpAlgo");
+	_transferNomFichier = document.getElementById("nomFichier");
+
 	constructor() {
 		super();
 
@@ -51,6 +56,16 @@ class Editeur extends HTMLElement {
 		} else {
 			this._toucheMeta = "Ctrl + ";
 		}
+
+		window.addEventListener("beforeunload", (e) => {
+			if (this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) {
+				// Cancel the event
+				e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+				// Chrome requires returnValue to be set
+				e.returnValue = "Attention";
+				return "Attention";
+			}
+		});
 
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
 		this.appendChild(this._dictionnaireDesDonnees);
@@ -69,6 +84,7 @@ class Editeur extends HTMLElement {
 		this._espacePrincipal = document.querySelector("#espacePrincipal");
 		this._espacePrincipal.appendChild(this._selection);
 		this._espacePrincipal.appendChild(this._selectionRectangle);
+		this._planActif = this._espacePrincipal;
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
@@ -90,6 +106,13 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier = document.querySelector("#menuDeroulantFichier");
 		this._menuDeroulantEdition = document.querySelector("#menuDeroulantEdition");
 		this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
+
+		this.querySelector("#titreAlgo").addEventListener("input", (event) => {
+			// Update le titre de l'onglet
+			document.title = "Algoforge - " + event.target.innerText;
+		});
+
+		document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
 
 		this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
 			// On vérifie si la touche appuyée est "Entrée"
@@ -133,7 +156,7 @@ class Editeur extends HTMLElement {
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Thème Sombre",
+				"Thème AlgoForge",
 				"#222222",
 				"#838787",
 				"#83878755",
@@ -144,7 +167,7 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#FFE989",
 				"#34A5DA",
-				"assets/algoforgeLogo.png"
+				"Roboto, sans-serif"
 			)
 		);
 		this._themeSelect.appendChild(
@@ -154,15 +177,63 @@ class Editeur extends HTMLElement {
 				"#222222",
 				"#22222255",
 				"#22222222",
-				"#A6AAA9",
+				"#333333",
 				"#589129",
 				"#58912999",
 				"#C82606",
 				"#b89f30",
 				"#22759c",
-				"assets/algoforgeLogoThemeClair.png"
+				"Roboto, sans-serif"
 			)
 		);
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"Minuit",
+				"#020012",
+				"#838787",
+				"#83878755",
+				"#83878711",
+				"#A6AAA9",
+				"#8ABE5E",
+				"#8ABE5E99",
+				"#C82606",
+				"#FFE989",
+				"#FFFFFF",
+				"Roboto, sans-serif"
+			)
+		);
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"H@ck3r",
+				"#001202",
+				"#79f784",
+				"#79f78455",
+				"#79f78411",
+				"#85f299",
+				"#00aaff",
+				"#00aaff99",
+				"#C82606",
+				"#FFE989",
+				"#FFFFFF",
+				'"Source Code Pro", monospace'
+			)
+		);
+
+		// this._themeSelect.appendChild(
+		// 	new ThemeEditeur(
+		// 		nom,
+		// 		bgColor,
+		// 		fgColor,
+		// 		fgColorSemiTransparent,
+		// 		fgColorTransparent,
+		// 		fgColorForward,
+		// 		goodColor,
+		// 		goodColorTransparent,
+		// 		errorColor,
+		// 		warningColor,
+		// 		titleColor
+		// 	)
+		// );
 
 		// Gestion des événements de thème
 		this._themeSelect.addEventListener("change", () => {
@@ -170,18 +241,60 @@ class Editeur extends HTMLElement {
 			theme.appliquer();
 		});
 
-		this._themeSelect.options[0].appliquer();
+		let theme = this.getCookie("theme");
+		if (theme) {
+			this._themeSelect.value = theme;
+		} else {
+			this._themeSelect.selectedIndex = 0;
+		}
+
+		this._themeSelect.options[this._themeSelect.selectedIndex].appliquer();
 
 		// Ajout des éléments de menu
 		// Fichier
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
 				console.log("Nouveau");
+				// On ouvre un nouvel onglet avec un éditeur vide
+				window.open(window.location.href, "_blank");
+			})
+		);
+		this._menuDeroulantFichier.ajouterElementMenu(
+			new ElementMenu("Ouvrir", () => {
+				console.log("Ouvrir");
+				// On importe
+				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
+				var fileInput = document.createElement("input");
+				fileInput.type = "file";
+				fileInput.accept = ".json";
+				fileInput.style.display = "none";
+				fileInput.addEventListener("change", () => {
+					var reader = new FileReader();
+					reader.onload = () => {
+						try {
+							let nomFichier = fileInput.files[0].name;
+							// On retire l'extension
+							nomFichier = nomFichier.substring(0, nomFichier.length - 5);
+							this._transferInput.value = JSON.stringify(reader.result);
+							this._transferNomFichier.value = nomFichier;
+							this._transferForm.submit();
+						} catch (error) {
+							alert("Le fichier n'a pas été chargé correctement.");
+							console.error(error);
+						}
+					};
+					reader.readAsText(fileInput.files[0]);
+				});
+				fileInput.click();
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Créer une copie", () => {
 				console.log("Créer une copie");
+				// On post le contenu de l'éditeur actuel dans un nouvel onglet
+				this._transferInput.value = JSON.stringify(this._espacePrincipal.exporterEnJSON());
+				this._transferNomFichier.value = this.querySelector("#titreAlgo").innerText + " - copie";
+				this._transferForm.submit();
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
@@ -191,7 +304,10 @@ class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Renommer", () => {
-				console.log("Renommer");
+				if (verbose) console.log("Renommer");
+				let titre = this.querySelector("#titreAlgo");
+				// On met le focus sur le titre
+				titre.focus();
 			})
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
@@ -217,7 +333,7 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
 				console.log("Exporter en .png");
-				var svgStr = this.exporterSVG(this._espacePrincipal, false);
+				var svgStr = this.exporterSVG(this._planActif, false);
 				this.exportSVGAsPNG(svgStr, `${this.querySelector("#titreAlgo").innerText}.png`);
 			})
 		);
@@ -248,7 +364,7 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
 				console.log("Exporter en .svg");
-				this.exporterSVG(this._espacePrincipal);
+				this.exporterSVG(this._planActif);
 			})
 		);
 
@@ -455,6 +571,22 @@ class Editeur extends HTMLElement {
 				e.preventDefault();
 				this.delete();
 			}
+
+			// Contrôle de la sélection avec les flèches
+			switch (e.key) {
+				case "ArrowUp":
+					this._selection.moveAllSelectedElements(0, -1);
+					break;
+				case "ArrowDown":
+					this._selection.moveAllSelectedElements(0, 1);
+					break;
+				case "ArrowLeft":
+					this._selection.moveAllSelectedElements(-1, 0);
+					break;
+				case "ArrowRight":
+					this._selection.moveAllSelectedElements(1, 0);
+					break;
+			}
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
 				if (e.keyCode === 64) {
@@ -594,6 +726,14 @@ class Editeur extends HTMLElement {
 							appliquerDecalage(enfant);
 						});
 					}
+
+					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+						for (let condition of elem.conditions) {
+							condition.enfants.forEach((enfant) => {
+								appliquerDecalage(enfant);
+							});
+						}
+					}
 				};
 
 				parsedData.forEach((elem) => {
@@ -636,6 +776,14 @@ class Editeur extends HTMLElement {
 						elem.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
 						});
+					}
+
+					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+						for (let condition of elem.conditions) {
+							condition.enfants.forEach((enfant) => {
+								appliquerDecalage(enfant);
+							});
+						}
 					}
 				};
 
@@ -807,8 +955,8 @@ class Editeur extends HTMLElement {
 
 			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
 				this._isSelecting = true;
-				this._coordonneesSelection.x = e.clientX;
-				this._coordonneesSelection.y = e.clientY;
+				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
+				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
 			} else {
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
@@ -835,8 +983,8 @@ class Editeur extends HTMLElement {
 		});
 		this.addEventListener("mousemove", function (e) {
 			this._curMousePos = {
-				x: ((e.clientX / window.innerWidth) * 100) / this._indicateurZoom._zoom,
-				y: ((e.clientY / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+				x: (((e.clientX + this._planActif.scrollLeft) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+				y: (((e.clientY + this._planActif.scrollTop) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
 			}; // En vw
 			if (verbose) console.log(`mousemove avec ${this._isDragging}`);
 			if (verbose) console.log(this._curMousePos);
@@ -875,11 +1023,11 @@ class Editeur extends HTMLElement {
 				coordSouris.y /= parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
 
 				// Prendre en compte le scroll du plan de travail
-				coordSouris.x += (this._espacePrincipal.scrollLeft / window.innerWidth) * 100;
-				coordSouris.y += (this._espacePrincipal.scrollTop / window.innerWidth) * 100;
+				coordSouris.x += (this._planActif.scrollLeft / window.innerWidth) * 100;
+				coordSouris.y += (this._planActif.scrollTop / window.innerWidth) * 100;
 
 				// Trouver l'élément le plus proche
-				for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+				for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 					let coordCentreElem = elem.getCentre();
 
 					let distance = Math.sqrt(
@@ -898,21 +1046,21 @@ class Editeur extends HTMLElement {
 			}
 			if (this._isSelecting) {
 				let abscisseEnPx =
-					(e.clientX - this._espacePrincipal.getBoundingClientRect().left) /
-					document.body.style.getPropertyValue("--sizeModifier");
+					(this._curMousePos.x / 100) * window.innerWidth -
+					this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom;
 				let ordonneeEnPx =
-					(e.clientY - this._espacePrincipal.getBoundingClientRect().top) /
-					document.body.style.getPropertyValue("--sizeModifier");
+					(this._curMousePos.y / 100) * window.innerWidth -
+					this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom;
 				let abscisseEnVw = (abscisseEnPx / window.innerWidth) * 100;
 				let ordonneeEnVw = (ordonneeEnPx / window.innerWidth) * 100;
 				let lastXenVw =
-					((this._coordonneesSelection.x / document.body.style.getPropertyValue("--sizeModifier") -
-						this._espacePrincipal.getBoundingClientRect().left) /
+					((this._coordonneesSelection.x -
+						this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
 				let lastYenVw =
-					((this._coordonneesSelection.y / document.body.style.getPropertyValue("--sizeModifier") -
-						this._espacePrincipal.getBoundingClientRect().top) /
+					((this._coordonneesSelection.y -
+						this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
 				this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
@@ -935,8 +1083,39 @@ class Editeur extends HTMLElement {
 		});
 	}
 
+	setCookie(cname, cvalue, exdays) {
+		const d = new Date();
+		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+		let expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	getCookie(cname) {
+		let name = cname + "=";
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(";");
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+
 	chargerDepuisJSON(json) {
-		this._espacePrincipal.chargerDepuisJSON(json);
+		let lesElements = this._planActif.chargerDepuisJSON(json);
+
+		// Désélectionner tout
+		this._selection.deselectionnerTout();
+
+		// Sélectionner les éléments et leurs enfants
+		for (let elem of lesElements) {
+			this._selection.selectionnerArbre(elem);
+		}
 	}
 
 	selectTool(idTool) {
@@ -1013,6 +1192,14 @@ class Editeur extends HTMLElement {
 						appliquerDecalage(enfant);
 					});
 				}
+
+				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					for (let condition of elem.conditions) {
+						condition.enfants.forEach((enfant) => {
+							appliquerDecalage(enfant);
+						});
+					}
+				}
 			};
 
 			elementsACopier.forEach((elem) => {
@@ -1052,6 +1239,14 @@ class Editeur extends HTMLElement {
 						appliquerDecalage(enfant);
 					});
 				}
+
+				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					for (let condition of elem.conditions) {
+						condition.enfants.forEach((enfant) => {
+							appliquerDecalage(enfant);
+						});
+					}
+				}
 			};
 
 			parsedData.forEach((elem) => {
@@ -1065,7 +1260,7 @@ class Editeur extends HTMLElement {
 	}
 	selectAll() {
 		console.log("selectAll");
-		for (let elem of this._espacePrincipal.trouverToutLesElementsGraphiques()) {
+		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 			if (elem instanceof ElementGraphique) this._selection.selectionnerElement(elem);
 		}
 	}
@@ -1758,7 +1953,7 @@ class Editeur extends HTMLElement {
 		if (isJSON) {
 			planExport.chargerDepuisJSON(JSON.parse(nodeToCopy));
 		} else {
-			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSON());
+			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(nodeToCopy.children));
 		}
 		document.body.removeChild(planExport);
 
