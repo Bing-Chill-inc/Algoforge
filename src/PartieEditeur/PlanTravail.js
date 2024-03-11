@@ -70,6 +70,17 @@ class PlanTravail extends HTMLElement {
 		return listeElementsGraphiques;
 	}
 
+	getProblemeLePlusHaut() {
+		let listeProblemes = this.getProblemePrincipal();
+		let problemeLePlusHaut = listeProblemes[0];
+		for (let probleme of listeProblemes) {
+			if (parseFloat(probleme._ordonnee) < parseFloat(problemeLePlusHaut._ordonnee)) {
+				problemeLePlusHaut = probleme;
+			}
+		}
+		return problemeLePlusHaut;
+	}
+
 	/**
 	 * Recherche les erreurs dans le plan de travail<br>
 	 *
@@ -219,6 +230,9 @@ class PlanTravail extends HTMLElement {
 					probleme.afficher();
 					probleme.setPosition();
 					listeElems.push(probleme);
+					if (element.estDecomposeAilleurs) {
+						probleme.decomposerAutrePlan();
+					}
 					break;
 				case "Procedure":
 					let procedure = new Procedure(element.abscisse, element.ordonnee, element.libelle);

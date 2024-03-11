@@ -19,6 +19,17 @@ class IndicateurZoom extends HTMLElement {
 		this.display.className = "zoomDisplay";
 		this.display.innerText = `${Math.trunc(this._zoom * 100)}%`;
 		this.display.contentEditable = "true";
+
+		this.display.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				this.display.blur();
+			}
+			// Si la touche n'est pas un chiffre ou un point ou backsapce ou delete, on empêche l'écriture
+			if (!/[\d.]/.test(e.key) && e.key !== "Backspace" && e.key !== "Delete") {
+				e.preventDefault();
+			}
+		});
 		this.display.addEventListener("input", (e) => {
 			this._zoom = parseFloat(this.display.innerText) / 100;
 			this._editeur.setCookie("zoom", this._zoom, 365);

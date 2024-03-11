@@ -292,6 +292,15 @@ class Editeur extends HTMLElement {
 					reader.onload = () => {
 						try {
 							let nomFichier = fileInput.files[0].name;
+							if (verbose) console.log(fileInput.files[0].size);
+							if (fileInput.files[0].size > 5000000) {
+								alert("Le fichier est trop volumineux (maximum 5 MégaOctets).");
+								return;
+							}
+							if (nomFichier.substring(nomFichier.length - 5) !== ".json") {
+								alert("Le fichier doit être au format .json.");
+								return;
+							}
 							// On retire l'extension
 							nomFichier = nomFichier.substring(0, nomFichier.length - 5);
 							this._transferInput.value = JSON.stringify(reader.result);
@@ -1998,7 +2007,7 @@ class Editeur extends HTMLElement {
 		if (isJSON) {
 			planExport.chargerDepuisJSON(JSON.parse(nodeToCopy));
 		} else {
-			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(nodeToCopy.children));
+			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(Array.from(nodeToCopy.children)));
 		}
 		document.body.removeChild(planExport);
 
@@ -2014,7 +2023,7 @@ class Editeur extends HTMLElement {
 		// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
 		planExport.toutDeplacer(-tailles.coordMin.x + 2.5, -tailles.coordMin.y + 2.5);
 
-		for (let imgBoucle of planExport.querySelectorAll("img.boucleSVG")) {
+		for (let imgBoucle of planExport.querySelectorAll("div.boucleSVG")) {
 			if (verbose) console.log(imgBoucle);
 			let element = imgBoucle.parentElement;
 			let svgBoucle = document.createElement("svg");

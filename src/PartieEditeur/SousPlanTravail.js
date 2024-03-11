@@ -73,5 +73,37 @@ class SousPlanTravail extends PlanTravail {
 
 		this._editeur._planActif = this._proprietaire.parentNode;
 	}
+
+	getRelativeChildrenToTop(abscisseRelatif, ordonneeRelatif) {
+		let topProbleme = this.getProblemeLePlusHaut();
+		abscisseRelatif = parseFloat(abscisseRelatif);
+		ordonneeRelatif = parseFloat(ordonneeRelatif);
+
+		let json = topProbleme.toJSON().enfants;
+
+		const appliquerDecalage = (elem) => {
+			elem.abscisse = parseFloat(elem.abscisse) - parseFloat(topProbleme._abscisse) + abscisseRelatif + "vw";
+			elem.ordonnee = parseFloat(elem.ordonnee) - parseFloat(topProbleme._ordonnee) + ordonneeRelatif + "vw";
+			if (elem.enfants) {
+				elem.enfants.forEach((enfant) => {
+					appliquerDecalage(enfant);
+				});
+			}
+
+			if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+				for (let condition of elem.conditions) {
+					condition.enfants.forEach((enfant) => {
+						appliquerDecalage(enfant);
+					});
+				}
+			}
+		};
+
+		for (let elem of json) {
+			appliquerDecalage(elem);
+		}
+
+		return json;
+	}
 }
 window.customElements.define("sous-plan-travail", SousPlanTravail);

@@ -363,8 +363,8 @@ class Probleme extends ElementGraphique {
 	 */
 	toJSON() {
 		if (this._sousPlan != null) {
-			if (this._sousPlan.getProblemePrincipal() != null) {
-				if (this._sousPlan.getProblemePrincipal().toJSON instanceof Function) {
+			if (this._sousPlan.getProblemeLePlusHaut() != null) {
+				if (this._sousPlan.getProblemeLePlusHaut().toJSON instanceof Function) {
 					return {
 						typeElement: this.constructor.name,
 						abscisse: this._abscisse,
@@ -372,7 +372,8 @@ class Probleme extends ElementGraphique {
 						libelle: this.libelle,
 						listeDonnes: this.listeDonnes,
 						listeResultats: this.listeResultats,
-						enfants: this._sousPlan.getProblemePrincipal().toJSON().enfants,
+						enfants: this._sousPlan.getRelativeChildrenToTop(this._abscisse, this._ordonnee),
+						estDecomposeAilleurs: true,
 					};
 				}
 			}
@@ -582,7 +583,7 @@ class Probleme extends ElementGraphique {
 	}
 
 	peutEtreDecompose() {
-		return true;
+		return this._sousPlan == null;
 	}
 
 	supprimer() {
@@ -591,64 +592,67 @@ class Probleme extends ElementGraphique {
 		this.remove();
 	}
 
+	decomposerAutrePlan() {
+		if (verbose) console.log("Décomposer sur un autre plan");
+		if (this._sousPlan != null) {
+			this._sousPlan.ouvrir();
+		} else {
+			let buttonOuvrir = document.createElement("span");
+			buttonOuvrir.innerText = "+";
+			buttonOuvrir.classList.add("ouvrir");
+			buttonOuvrir.addEventListener("click", (e) => {
+				e.stopPropagation();
+				this._sousPlan.ouvrir();
+			});
+			this.appendChild(buttonOuvrir);
+			this._sousPlan = new SousPlanTravail(this);
+			editeur.appendChild(this._sousPlan);
+
+			let json = [this.toJSON()];
+
+			const appliquerDecalage = (elem) => {
+				elem.abscisse = parseFloat(elem.abscisse) - parseFloat(this._abscisse) + "vw";
+				elem.ordonnee = parseFloat(elem.ordonnee) - parseFloat(this._ordonnee) + "vw";
+				if (elem.enfants) {
+					elem.enfants.forEach((enfant) => {
+						appliquerDecalage(enfant);
+					});
+				}
+
+				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					for (let condition of elem.conditions) {
+						condition.enfants.forEach((enfant) => {
+							appliquerDecalage(enfant);
+						});
+					}
+				}
+			};
+
+			for (let elem of json) {
+				appliquerDecalage(elem);
+			}
+
+			this._sousPlan.chargerDepuisJSON(json, false);
+
+			this._sousPlan.toutDeplacer(35, 2);
+
+			// On retire le sous-arbre du plan de travail
+			let listeElemEnfantsARetirer = this.getDescendants();
+			for (let elem of listeElemEnfantsARetirer) {
+				if (elem != this && elem instanceof ElementGraphique) {
+					elem._parent.delierEnfant(elem);
+					elem.remove();
+				}
+			}
+		}
+	}
+
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 
 		if (this._sousPlan == null) {
 			let decomposerAutrePlan = new ElementMenu("Décomposer ailleurs", () => {
-				if (verbose) console.log("Décomposer sur un autre plan");
-				if (this._sousPlan != null) {
-					this._sousPlan.ouvrir();
-				} else {
-					let buttonOuvrir = document.createElement("span");
-					buttonOuvrir.innerText = "+";
-					buttonOuvrir.classList.add("ouvrir");
-					buttonOuvrir.addEventListener("click", (e) => {
-						e.stopPropagation();
-						this._sousPlan.ouvrir();
-					});
-					this.appendChild(buttonOuvrir);
-					this._sousPlan = new SousPlanTravail(this);
-					editeur.appendChild(this._sousPlan);
-					this._sousPlan.ouvrir();
-
-					let json = [this.toJSON()];
-
-					const appliquerDecalage = (elem) => {
-						elem.abscisse = parseFloat(elem.abscisse) - parseFloat(this._abscisse) + "vw";
-						elem.ordonnee = parseFloat(elem.ordonnee) - parseFloat(this._ordonnee) + "vw";
-						if (elem.enfants) {
-							elem.enfants.forEach((enfant) => {
-								appliquerDecalage(enfant);
-							});
-						}
-
-						if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
-							for (let condition of elem.conditions) {
-								condition.enfants.forEach((enfant) => {
-									appliquerDecalage(enfant);
-								});
-							}
-						}
-					};
-
-					for (let elem of json) {
-						appliquerDecalage(elem);
-					}
-
-					this._sousPlan.chargerDepuisJSON(json, false);
-
-					this._sousPlan.toutDeplacer(35, 2);
-
-					// On retire le sous-arbre du plan de travail
-					let listeElemEnfantsARetirer = this.getDescendants();
-					for (let elem of listeElemEnfantsARetirer) {
-						if (elem != this && elem instanceof ElementGraphique) {
-							elem._parent.delierEnfant(elem);
-							elem.remove();
-						}
-					}
-				}
+				this.decomposerAutrePlan();
 			});
 			listeOptions.push(decomposerAutrePlan);
 		} else {

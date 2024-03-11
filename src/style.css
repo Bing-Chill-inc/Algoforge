@@ -33,6 +33,11 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 1.5vw;
+    width: 100%;
+    height: 1.5vw;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 span {
@@ -999,6 +1004,7 @@ sous-plan-travail {
 
 sous-plan-travail.ouvert {
     scale: 1;
+    transform-origin: top;
 }
 
 sous-plan-travail > span.fermeture {
@@ -1853,6 +1859,18 @@ ligne-element {
         translate: 0 0;
     }
 }
+
+@keyframes zoomFromAbove {
+    0% {
+        scale: 0;
+        transform-origin: top;
+    }
+    100% {
+        scale: 1;
+        transform-origin: top;
+    }
+
+}
 affichage-erreur-element {
     position: relative;
     margin: 0;
@@ -1892,6 +1910,7 @@ affichage-erreur-element .erreur-container {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    animation: 0.2s ease-in-out zoomFromAbove;
 }
 
 affichage-erreur-element div.fleches {
