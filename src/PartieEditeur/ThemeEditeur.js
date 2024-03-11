@@ -11,6 +11,7 @@ class ThemeEditeur extends HTMLOptionElement {
 	warningColor;
 	titleColor;
 	fontFamily;
+	glowColor;
 
 	_logoAlgoForge = document.querySelector("#logoAlgoForge");
 
@@ -28,7 +29,8 @@ class ThemeEditeur extends HTMLOptionElement {
 		errorColor,
 		warningColor,
 		titleColor,
-		fontFamily
+		fontFamily,
+		glowColor
 	) {
 		super();
 		this.nom = nom;
@@ -43,6 +45,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		this.warningColor = warningColor;
 		this.titleColor = titleColor;
 		this.fontFamily = fontFamily;
+		this.glowColor = glowColor || "#00000000";
 
 		this.innerText = this.nom;
 	}
@@ -58,6 +61,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		document.body.style.setProperty("--errorColor", this.errorColor);
 		document.body.style.setProperty("--warningColor", this.warningColor);
 		document.body.style.setProperty("--titleColor", this.titleColor);
+		document.body.style.setProperty("--glowColor", this.glowColor);
 		document.body.style.fontFamily = this.fontFamily;
 
 		const sheet = document.styleSheets[0];

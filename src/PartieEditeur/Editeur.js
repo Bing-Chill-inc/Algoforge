@@ -26,6 +26,7 @@ class Editeur extends HTMLElement {
 	_coordonneesSelection = { x: 0, y: 0 };
 	_isSelecting = false;
 	_isDragging = false;
+	_isMoving = false;
 	_offsetX = 0;
 	_offsetY = 0;
 	_lastPosX = 0;
@@ -206,9 +207,9 @@ class Editeur extends HTMLElement {
 			new ThemeEditeur(
 				"H@ck3r",
 				"#001202",
-				"#79f784",
-				"#79f78455",
-				"#79f78411",
+				"#00ff00",
+				"#00ff0055",
+				"#00ff0011",
 				"#85f299",
 				"#00aaff",
 				"#00aaff99",
@@ -216,6 +217,24 @@ class Editeur extends HTMLElement {
 				"#FFE989",
 				"#FFFFFF",
 				'"Source Code Pro", monospace'
+			)
+		);
+
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"Cyberpunk",
+				"#000000",
+				"#FAFC06",
+				"#FAFC0655",
+				"#FAFC0611",
+				"#2BF0FB",
+				"#F2E307",
+				"#F2E30799",
+				"#C82606",
+				"#FFE989",
+				"#F2E307",
+				"Cyberpunk",
+				"#EB9EBB"
 			)
 		);
 
@@ -912,6 +931,14 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("mousedown", function (e) {
+			// Sur un click molette, on active le déplacement
+			if (e.button === 1) {
+				e.preventDefault();
+				this._isMoving = true;
+				_lastPosX = e.clientX;
+				_lastPosY = e.clientY;
+				return;
+			}
 			let maTarget = e.target;
 			while (
 				!(maTarget instanceof ElementGraphique) &&
@@ -975,6 +1002,7 @@ class Editeur extends HTMLElement {
 			}
 			this._isDragging = false;
 			this._isSelecting = false;
+			this._isMoving = false;
 			let listeElemsASelec = this._selectionRectangle.listerElementsGraphiques();
 			for (let elem of listeElemsASelec) {
 				this._selection.selectionnerElement(elem);
@@ -982,6 +1010,23 @@ class Editeur extends HTMLElement {
 			this._selectionRectangle.placer(0, 0, 0, 0);
 		});
 		this.addEventListener("mousemove", function (e) {
+			if (this._isMoving) {
+				if (e.clientX - this._lastPosX > 100 || e.clientX - this._lastPosX < -100) {
+					this._lastPosX = e.clientX;
+					this._lastPosY = e.clientY;
+					return;
+				}
+				if (e.clientY - this._lastPosY > 100 || e.clientY - this._lastPosY < -100) {
+					this._lastPosX = e.clientX;
+					this._lastPosY = e.clientY;
+					return;
+				}
+				this._planActif.scrollLeft -= e.clientX - this._lastPosX;
+				this._planActif.scrollTop -= e.clientY - this._lastPosY;
+				this._lastPosX = e.clientX;
+				this._lastPosY = e.clientY;
+				return;
+			}
 			this._curMousePos = {
 				x: (((e.clientX + this._planActif.scrollLeft) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
 				y: (((e.clientY + this._planActif.scrollTop) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
@@ -1956,6 +2001,18 @@ class Editeur extends HTMLElement {
 			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(nodeToCopy.children));
 		}
 		document.body.removeChild(planExport);
+
+		// Adapter la taille du plan pour que tout soit visible
+		let tailles = planExport.getCoordMinEtMax();
+		if (verbose) console.log(tailles);
+		// À partir des tailles, on peut déterminer la taille de la prévisualisation, et ainsi calculer le zoom à appliquer
+		let largeur = tailles.coordMax.x - tailles.coordMin.x;
+		let hauteur = tailles.coordMax.y - tailles.coordMin.y;
+		planExport.style.width = largeur + 5 + "vw";
+		planExport.style.height = hauteur + 5 + "vw";
+
+		// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
+		planExport.toutDeplacer(-tailles.coordMin.x + 2.5, -tailles.coordMin.y + 2.5);
 
 		for (let imgBoucle of planExport.querySelectorAll("img.boucleSVG")) {
 			if (verbose) console.log(imgBoucle);
