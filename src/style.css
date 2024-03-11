@@ -1850,6 +1850,10 @@ affichage-erreur-element {
     height: fit-content;
     
 }
+
+affichage-erreur-element > div.img {
+    width: 100%;
+}
 affichage-erreur-element button
 {
     display: block;
@@ -1858,9 +1862,9 @@ affichage-erreur-element button
     border-radius: 1vw;
     font-size: 1vw;
     color: var(--fgColor);
-    cursor: default;
+    cursor: pointer;
     margin: 0;
-    padding: 0.1vw;
+    padding: 0.75vw;
 }
 
 affichage-erreur-element .erreur-container {
@@ -1875,6 +1879,24 @@ affichage-erreur-element .erreur-container {
     width: 15vw;
     font-size: 1vw;
     padding-bottom: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+affichage-erreur-element div.fleches {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 1vw;
+    margin-bottom: 1vw;
+}
+
+affichage-erreur-element p.texte-erreur {
+    min-height: 2vw;
 }
 
 affichage-erreur-element .erreur-container .fleche {
@@ -1891,10 +1913,6 @@ affichage-erreur-element .erreur-container
 }
 affichage-erreur-element .erreur-container span, p {
     display: inline-block;
-}
-affichage-erreur-element .numero-erreur
-{
-    margin-left: 1vw;
 }
 affichage-erreur-element .fleche, button, .numero-erreur
 {

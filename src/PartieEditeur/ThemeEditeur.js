@@ -72,6 +72,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		const ruleSelectorBoucle2 = "structure-iterative-bornee-element > div.boucleSVG";
 		const ruleSelectorSortie = "condition-sortie-element";
 		const ruleSelectorDico = "dictionnaire-donnee > div.img";
+		const ruleSelectorErreur = "affichage-erreur-element > div.img";
 
 		for (let i = 0; i < sheet.cssRules.length; i++) {
 			if (sheet.cssRules[i].selectorText === ruleSelectoBibliotheque) {
@@ -101,6 +102,12 @@ class ThemeEditeur extends HTMLOptionElement {
 			if (sheet.cssRules[i].selectorText === ruleSelectorDico) {
 				ruleToEdit = sheet.cssRules[i];
 				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/DictionnaireDonnees.php?fgColor=${this.fgColor.substring(
+					1
+				)})`;
+			}
+			if (sheet.cssRules[i].selectorText === ruleSelectorErreur) {
+				ruleToEdit = sheet.cssRules[i];
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.php?fgColor=${this.fgColor.substring(
 					1
 				)})`;
 			}
