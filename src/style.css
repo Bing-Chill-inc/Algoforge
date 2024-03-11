@@ -130,6 +130,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-d
     transition: all 0.1s ease;
     transform-origin: top left;
     padding-right: 1vw;
+    box-shadow: 0 0 0.5vw var(--glowColor);
 }
 
 menu-deroulant > element-menu,
@@ -810,7 +811,7 @@ invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  label.accolades {
 
 menu-contextuel {
     position: fixed;
-    width: 15vw;
+    width: 20vw;
     height: fit-content;
     min-height: 2vw;
     background-color: var(--bgColor);
@@ -858,7 +859,7 @@ menu-contextuel > element-menu-compose:hover > span {
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant {
     scale: 1;
-    width: 10vw;
+    width: 15vw;
     height: fit-content;
     min-height: 2vw;
     background-color: var(--bgColor);
@@ -1058,6 +1059,7 @@ probleme-element > span.ouvrir {
                 height: calc(var(--sizeModifier) * 4vw);
                 width: calc(var(--sizeModifier) * 1.5vw);
                 line-height: 0.9;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
@@ -1074,6 +1076,7 @@ probleme-element > span.ouvrir {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             probleme-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
@@ -1098,10 +1101,13 @@ probleme-element > span.ouvrir {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
+            box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
         }
 
         probleme-element > div.containerDPR > div.nom:focus-visible {
             outline: none;
+            box-shadow: 0 0 calc(var(--sizeModifier) * 1.8vw) var(--glowColor);
         }
 
         probleme-element > div.containerDPR > div.resultat {
@@ -1121,6 +1127,7 @@ probleme-element > span.ouvrir {
                 height: calc(var(--sizeModifier) * 4vw);
                 width: calc(var(--sizeModifier) * 1.5vw);
                 line-height: 0.9;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
@@ -1137,6 +1144,7 @@ probleme-element > span.ouvrir {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             probleme-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
@@ -1185,6 +1193,7 @@ procedure-element {
                 height: calc(var(--sizeModifier) * 4vw);
                 width: calc(var(--sizeModifier) * 1.5vw);
                 line-height: 0.9;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
@@ -1201,6 +1210,7 @@ procedure-element {
                 flex-direction: column;
                 word-wrap: break-word;
                 overflow: hidden;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             procedure-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
@@ -1225,6 +1235,8 @@ procedure-element {
             word-wrap: break-word;
             overflow: hidden;
             background-color: var(--bgColor);
+            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+            box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
         }
 
         procedure-element > div.containerDPR > div.nom:focus-visible {
@@ -1262,6 +1274,7 @@ procedure-element {
             column-gap: calc(var(--sizeModifier) * 0.2vw);
             place-items: center;
             grid-column: 3;
+            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
         }
 
             procedure-element > div.containerDPR > div.resultat > label.accolades {
@@ -1270,6 +1283,7 @@ procedure-element {
                 height: calc(var(--sizeModifier) * 4vw);
                 width: calc(var(--sizeModifier) * 1.5vw);
                 line-height: 0.9;
+                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
             }
 
             procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
@@ -1304,6 +1318,7 @@ symbole-decomposition-element {
     border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
     border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
     border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 structure-si-element {
@@ -1317,6 +1332,7 @@ structure-si-element {
     place-items: center;
     transition: all var(--transitionTime) ease;
     z-index: 2;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 structure-si-element > div.triangle {
@@ -1328,10 +1344,12 @@ structure-si-element > div.triangle {
     font-size: 3vw;
     user-select: none;
     cursor: pointer;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
     structure-si-element > div.triangle:hover {
         color: var(--fgColorForward);
+        text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
     }
 
     structure-si-element > div.triangleGauche {
@@ -1399,6 +1417,7 @@ structure-switch-element {
     transition: all var(--transitionTime) ease;
     background-color: var(--bgColor);
     z-index: 2;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
     structure-switch-element > div.triangle {
@@ -1410,10 +1429,12 @@ structure-switch-element {
         font-size: 2vw;
         user-select: none;
         cursor: pointer;
+        box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
     }
 
     structure-switch-element > div.triangle:hover {
         color: var(--fgColorForward);
+        text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
     }
 
     structure-switch-element > div.triangleGauche {
@@ -1543,6 +1564,7 @@ condition-element > div.libelle {
     flex-direction: column;
     word-wrap: break-word;
     background-color: var(--bgColor);
+    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 condition-element > div.libelle:focus-visible {
@@ -1592,6 +1614,7 @@ condition-element > div.arrowsWrapper > span:hover {
     font-size: calc(var(--sizeModifier) * 1.2vw);
     transition: all 0.2s ease;
     background-color: var(--goodColorTransparent);
+    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 condition-element > div.ajouterAGauche {
@@ -1655,6 +1678,7 @@ invite-bornes-pour-si {
     place-items: center;
     padding: 1.5vw;
     z-index: 3;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > input {
@@ -1666,6 +1690,8 @@ invite-bornes-pour-si > input {
     font-size: calc(var(--sizeModifier) * 0.75vw);
     display: inline-block;
     width: 90%;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > label {
@@ -1675,6 +1701,7 @@ invite-bornes-pour-si > label {
     display: inline-block;
     white-space: nowrap;
     width: 100%;
+    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > button {
@@ -1744,6 +1771,7 @@ condition-sortie-element {
     width: calc(var(--sizeModifier) * 4vw);
     transition: all var(--transitionTime) ease;
     z-index: 2;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 ligne-element {
@@ -1753,6 +1781,7 @@ ligne-element {
     padding: 0;
     border: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
     z-index: 0;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 #transferForm {
@@ -1870,6 +1899,11 @@ affichage-erreur-element .numero-erreur
 affichage-erreur-element .fleche, button, .numero-erreur
 {
     user-select: none; /* désactive la possibilité de le selectionner */
+}
+
+@font-face {
+    font-family: "Cyberpunk";
+    src: url(assets/BladeLogicDemoRegular-ALnVD.otf);
 }
 
 .rotate {
