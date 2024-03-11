@@ -169,7 +169,7 @@
 
         <?php
         if (isset($_POST['corpAlgo'])) {
-            echo 'editeur._espacePrincipal.chargerDepuisJSON(JSON.parse(\'' . $_POST['corpAlgo'] . '\'));';
+            echo 'editeur._espacePrincipal.chargerDepuisJSON(JSON.parse(' . $_POST['corpAlgo'] . '));';
         }
 
         if (isset($_POST['nomFichier'])) {
