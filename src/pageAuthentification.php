@@ -21,15 +21,15 @@
             <br>
             <input type="password" class="boiteSaisie" name="motDePasse" placeholder="mot de passe" required>
             <br>
-<?php
-    if(isset($_GET['erreur']) && $_GET['erreur'] == 1) {
-        echo '<p class="invalid">Adresse e-mail ou mot de passe incorrect.</p>';
-    }
-?>
             <!--<input type="checkbox" id="myCheckbox" name="seSouvenir"> 
             <label for="myCheckbox">Se souvenir de moi</label> -->
             <button type="submit" class="btnInput boutton" id="btnConnexion">Se connecter</button>
         </form>
+<?php
+    if(isset($_GET['erreur']) && $_GET['erreur'] == 1) {
+        echo '<p class="erreur">Adresse e-mail et/ou mot de passe incorrect.</p>';
+    }
+?>
         <div id="traitLogin">
             <hr>
             <p class="centered-text">ou</p>
@@ -37,7 +37,12 @@
         <button class="discord-signin-button boutton" onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1199990152823578635&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%2FAlgoForge%2Fsrc%2FAuthentificationDiscord.php&scope=identify'">
             <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" alt="Se connecter avec Discord">
             <p>Se connecter avec Discord</p>
-        </button>      
+        </button>
+<?php
+    if(isset($_GET['erreur']) && $_GET['erreur'] == 2) {
+        echo '<p class="erreur">Une erreur est survenue lors de l\'authentification avec Discord. Veuillez réessayer.</p>';
+    }
+?>     
     </div>
     <div id="espacement">
         <img id="imgSeparateur" src="assets/separateurLoginInscription.svg">
@@ -51,25 +56,69 @@
             <br>
             <p class="cacher motDePasseAide"> Pour créer un mot de passe sécuriser, il doit contenir au moins: </p>
             <ul class="cacher motDePasseAide">
-                <li id="li-taille" class="invalid">- 8 caractères</li>
-                <li id="li-chiffre" class="invalid">- 1 chiffre</li>
-                <li id="li-maj" class="invalid">- 1 majuscule</li>
-                <li id="li-nomaj" class="invalid">- 1 minuscule</li>
-                <li id="li-special" class="invalid">- 1 caractère spécial</li>
+                <li id="li-taille" class="valid">- 8 caractères</li>
+                <li id="li-chiffre" class="valid">- 1 chiffre</li>
+                <li id="li-maj" class="valid">- 1 majuscule</li>
+                <li id="li-nomaj" class="valid">- 1 minuscule</li>
+                <li id="li-special" class="valid">- 1 caractère spécial</li>
             </ul>
             <input type="password" id="motDePasseConf" class="boiteSaisie" name="conf-motDePasse" placeholder="confirmer le mot de passe" onfocus="mdpConfSelect()" onblur="mdpConfDeSelect()" required>
             <ul class="cacher motDePasseConfAide">
                 <li id="li-mdpconf" class="invalid">- le mot de passe conf ne correspond pas au mot de passe</li>
             </ul>
             <br>
-<?php
-    if(isset($_GET['erreur']) && $_GET['erreur'] == 2) {
-        echo '<p class="invalid">Le compte associé à cette adresse e-mail existe déjà.</p>';
-    }
-?>
             <div class="g-recaptcha" data-sitekey="6LdNIl8pAAAAALIEBCwlcZnOi85CNc1UjSMh1Yug" data-action="LOGIN"></div>
-            <input type="submit" class="btnInput boutton" value="Créer le compte">
+            <input type="submit" class="btnInput boutton" value="Créer le compte"> 
         </form>
+<?php
+    if(isset($_GET['erreur'])) {
+        $erreur = $_GET['erreur'];
+        switch($erreur) {
+            case 3:
+                echo '<p class="erreur">Une erreur est survenue lors du traitement du captcha. Veuillez réessayer.</p>';
+                break;
+            case 4:
+                echo '<p class="erreur">L\'adresse e-mail fournie n\'est pas valide. Veuillez saisir une adresse e-mail correcte.</p>';
+                break;
+            case 5:
+                echo '<p class="erreur">Le mot de passe ne peut pas être vide. Veuillez saisir un mot de passe valide.</p>';
+                break;
+            case 5.1:
+                echo '<p class="erreur">Les mots de passe ne correspondent pas. Veuillez vous assurer de saisir le même mot de passe dans les deux champs.</p>';
+                break;
+            case 5.2:
+                echo '<p class="erreur">Le mot de passe doit contenir au moins 8 caractères. Veuillez choisir un mot de passe plus long.</p>';
+                break;
+            case 5.3:
+                echo '<p class="erreur">Le mot de passe doit contenir au moins un chiffre. Veuillez choisir un mot de passe contenant au moins un chiffre.</p>';
+                break;
+            case 5.4:
+                echo '<p class="erreur">Le mot de passe doit contenir au moins une majuscule. Veuillez choisir un mot de passe contenant au moins une majuscule.</p>';
+                break;
+            case 5.5:
+                echo '<p class="erreur">Le mot de passe doit contenir au moins une minuscule. Veuillez choisir un mot de passe contenant au moins une minuscule.</p>';
+                break;
+            case 5.6:
+                echo '<p class="erreur">Le mot de passe doit contenir au moins un caractère spécial. Veuillez choisir un mot de passe contenant au moins un caractère spécial.</p>';
+                break;
+            case 6:
+                echo '<p class="erreur">L\'adresse e-mail fournie est déjà utilisée. Veuillez saisir une autre adresse e-mail.</p>';
+                break;
+            case 7:
+                echo '<p class="erreur">Une erreur est survenue lors de l\'envoi du mail de vérification. Veuillez réessayer.</p>';
+                break;
+            case 8:
+                echo '<p class="erreur">Le code de vérification est invalide. Veuillez saisir un code de vérification valide.</p>';
+                break;
+            case 9:
+                echo '<p class="erreur">Une erreur est survenue avec le captcha. Veuillez réessayer.</p>';
+                break;
+            case 10:
+                echo '<p class="erreur">Veuillez cocher la case reCAPTCHA pour continuer.</p>';
+                break;
+        }
+    }
+?> 
         <script>
             function mdpConfSelect()
             {

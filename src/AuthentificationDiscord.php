@@ -3,7 +3,7 @@
     require_once('bd.php'); // Connexion à la base de données
     require_once('fonctions.php'); // Fonctions utiles
 
-    // Connection à Discord
+    /* Connection à Discord */
     // Configuration pour afficher les erreurs
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -11,7 +11,8 @@
 
     // Vérifie si le paramètre 'code' est présent dans la requête
     if (!isset($_GET['code'])) {
-        echo 'no code';
+        // Redirige vers la page d'authentification
+        header("Location: pageAuthentification.php?erreur=2");
         exit();
     }
 
@@ -49,7 +50,9 @@
 
     // Vérifie s'il y a des erreurs lors de la requête cURL
     if (!$result) {
-        echo curl_error($ch);
+        // Redirige vers la page d'authentification
+        header("Location: pageAuthentification.php?erreur=2");
+        exit();
     }
 
     // Décode la réponse JSON pour obtenir le jeton d'accès
@@ -76,7 +79,6 @@
     // Exécute la requête cURL pour obtenir les informations de l'utilisateur
     $result = curl_exec($ch);
 
-    echo $result;
     // Décode la réponse JSON pour obtenir les informations de l'utilisateur
     $result = json_decode($result, true);
 
@@ -84,9 +86,31 @@
     $idDiscord = $result['id'];
     $avatar = $result['avatar']; 
 
-    // Création de l'adresse mail fictive
+    // Création de l'adresse mail
     $adresseMail = $idDiscord.'@discord.com';
+    
+    /* PDO */
+    // Vérifier si l'utilisateur existe déjà
+    $requete = $connexion->prepare("SELECT adresseMail FROM utilisateur WHERE adresseMail = :adresseMail");
+    $requete->bindParam(":adresseMail", $adresseMail, PDO::PARAM_STR);
+    $requete->execute();
+    $verifUtilisateur = $requete->fetch(PDO::FETCH_ASSOC);
 
+    // Si l'utilisateur n'existe pas, on l'ajoute à la base de données
+    if (!$verifUtilisateur) {
+        // Création de l'image de profil
+        $imageProfil = 'https://cdn.discordapp.com/avatars/'.$idDiscord.'/'.$avatar.'.png';
+        // Ajout de l'utilisateur à la base de données
+        ajoutUtilisateur($adresseMail, NULL, $imageProfil);
+    }
+
+    // Fermer la requête
+    $requete->closeCursor();
+
+    // Fermer la connexion à la base de données
+    $connexion = null;
+
+    /* mysqli
     // Vérifier si l'utilisateur existe déjà
     $requete = $connexion->prepare("SELECT adresseMail FROM utilisateur WHERE adresseMail = ?");
     $requete->bind_param("s", $adresseMail);
@@ -100,6 +124,13 @@
         // Ajout de l'utilisateur à la base de données
         ajoutUtilisateur($adresseMail, NULL, $imageProfil);
     }
+
+    // Fermer la requête
+    $requete->close();
+
+    // Fermer la connexion à la base de données
+    $connexion->close();
+    */
 
     // Création du cookie
     creerCookie($adresseMail);

@@ -655,13 +655,16 @@ ul
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 4em;
-    color: var(--fgColorForward);
+    color: var(--titleColor);
 }
 #pageDauthentification .valid {
     display: none;
 }
 #pageDauthentification .invalid {
-    color: red;
+    color: var(--warningColor);
+}
+#pageDauthentification .erreur {
+    color: var(--errorColor);
 }
 #pageDauthentification #imgSeparateur
 {
@@ -693,4 +696,9 @@ ul
     padding: 0;
     margin: 0;
 
+}
+#pageDauthentification .g-recaptcha{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
