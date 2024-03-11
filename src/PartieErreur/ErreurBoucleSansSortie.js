@@ -43,7 +43,7 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle
     static detecterAnomalie(uneBoucleNonBornee) {
         let listeDescandants = uneBoucleNonBornee.getDescendants(ConditionSortie)
         for (let descendant of listeDescandants) {
-            if (descendant.getAntescendant(StructureIterativeNonBornee)[0] == uneBoucleNonBornee ) {
+            if (descendant.getAntescedants(StructureIterativeNonBornee)[0] == uneBoucleNonBornee ) {
                 return false;
             }
         }

@@ -37,31 +37,31 @@ class StructureIterative extends ElementGraphique {
 
 	// ENCAPSULATION -non-
 
-	// METHODES
-	/**
-	 * @description Affiche la StructureIterative sur le plan de travail
-	 */
-	afficher() {
-		let imgBoucleSVG = document.createElement("div");
-		imgBoucleSVG.className = "boucleSVG";
-		imgBoucleSVG.src = "assets/boucle.svg";
-		imgBoucleSVG.setAttribute("draggable", false);
-		this.appendChild(imgBoucleSVG);
-	}
-	/**
-	 * @description Renvoie une liste des enfants de la StructureIterative du type donnée
-	 *
-	 * @param {ElementGraphique} typeRechercher le type d'ElementGraphique rechercher
-	 * @returns {Array<ElementGraphique>} la liste des enfants du type donné
-	 */
-	getEnfants(typeRechercher = ElementGraphique) {
-		let listeDesEnfants = [];
-		for (let enfant of this._elemParent._listeElementsEnfants) {
-			listeDesEnfants.push(enfant.element);
-		}
-		listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
-		return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
-	}
+    // METHODES
+    /**
+     * @description Affiche la StructureIterative sur le plan de travail
+     */
+    afficher() {
+        let imgBoucleSVG = document.createElement("img");
+        imgBoucleSVG.className = "boucleSVG";
+        imgBoucleSVG.src = "assets/boucle.svg";
+        imgBoucleSVG.setAttribute("draggable", false);
+        this.appendChild(imgBoucleSVG);
+    }
+    /**
+     * @description Renvoie une liste des enfants de la StructureIterative du type donnée
+     *
+     * @param {ElementGraphique} typeRechercher le type d'ElementGraphique rechercher
+     * @returns {Array<ElementGraphique>} la liste des enfants du type donné
+     */
+    getEnfants(typeRechercher = ElementGraphique) {
+        let listeDesEnfants = [];
+        for (let enfant of this._elemParent._listeElementsEnfants) {
+            listeDesEnfants.push(enfant.element);
+        }
+        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+        return PlanTravail.trierElementsGraphique(listeDesEnfants);
+    }
 
 	getAncreDecomposition() {
 		let abscisse = parseFloat(this._abscisse) + 2;

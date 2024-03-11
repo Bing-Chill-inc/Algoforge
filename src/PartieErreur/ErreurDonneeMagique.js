@@ -71,7 +71,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
         // 1 - Regarder si il la un parent sinon y'a pas d'erreur
         // 2 - Regarder si les antescedents contient pas en donnée val
         // 3 - Regarder si les éléments précédents du probleme courant ne contient pas val 
-        
+        try {
         // Etape 1:
         if(!unProbleme.getParent()) {
             return [false];
@@ -123,6 +123,11 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
         else {
             return [false];
         }
+    }
+    catch(e) {
+        console.error(e);
+        return [false];
+    }
         
     }
 }

@@ -24,6 +24,9 @@ class Condition extends HTMLElement {
     }
 
     // ENCAPSULATION
+    get _elementGraphique() {
+        return this.parentNode.parentNode;
+    }
     get _libelle() {
         return this.divLibelle.innerText;
     }

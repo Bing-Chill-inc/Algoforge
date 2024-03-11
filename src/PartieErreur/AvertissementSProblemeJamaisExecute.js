@@ -54,21 +54,42 @@ class AvertissementSProblemeJamaisExecute extends AvertissementConceptuel {
      * @description La méthode detecterAnomalie cherche si le parent de la condition d'arrêt a des enfants qui sont après la condition d'arrêt. Si oui, la méthode renvoie un tableau avec le premier élément à exécuter après la condition d'arrêt, sinon renvoie un tableau vide.
      */
     static detecterAnomalie(unArret) {
-        const parent = unArret.getParent();
-        if (parent == null) {
+        try {
+            const listeParent = unArret.getAntescedants(StructureAlternative);
+            if (listeParent.length == 0) {
+                return [false];
+            }
+            const parent = listeParent[0];
+            const listeEnfantsDuParent = parent.getEnfantsParCondition();
+            for(let lesEnfantsDeUneCondition of listeEnfantsDuParent)
+            {
+                for(let unElementGraphique of lesEnfantsDeUneCondition)
+                {
+                    if(unElementGraphique == unArret)
+                    {
+                        if(lesEnfantsDeUneCondition[lesEnfantsDeUneCondition.length - 1] != unArret)
+                        {
+                            return [true, lesEnfantsDeUneCondition];
+                        }
+                    }
+                }
+            }
+            return [false];
+            /*let tailleListe = listeEnfantsDuParent.length;
+            if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
+                let courant = tailleListe - 1;
+                let elementsConcernes = [];
+                while (listeEnfantsDuParent[courant] != unArret){
+                    elementsConcernes.push(listeEnfantsDuParent[courant]);
+                    courant--;
+                }
+                return [true, elementsConcernes];
+            }
+            return [false];*/
+        }
+        catch(e) {
+            console.error(e);
             return [false];
         }
-        const listeEnfantsDuParent = parent.getEnfants();
-        let tailleListe = listeEnfantsDuParent.length;
-        if (listeEnfantsDuParent[tailleListe - 1] != unArret) {
-            let courant = tailleListe - 1;
-            let elementsConcernes = [];
-            while (listeEnfantsDuParent[courant] != unArret){
-                elementsConcernes.push(listeEnfantsDuParent[courant]);
-                courant--;
-            }
-            return [true, elementsConcernes];
-        }
-        return [false];
     }
 } 

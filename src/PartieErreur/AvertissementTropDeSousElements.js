@@ -52,10 +52,16 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel {
      * @description La méthode detecterAnomalie regarde si un ElementGraphique posède plus de 7 enfants.
      */
     static detecterAnomalie(unElementGraphique) {
+        try {
         if(unElementGraphique.getEnfants().length > 7){
             return [true, unElementGraphique.getEnfants()];
         }
         else{
+            return [false];
+        }
+        }
+        catch(e) {
+            console.error(e);
             return [false];
         }
     }

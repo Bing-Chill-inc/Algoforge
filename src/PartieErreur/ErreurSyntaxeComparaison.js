@@ -40,10 +40,17 @@ class ErreurSyntaxeComparaison extends ErreurConceptuelle
      * @description Cette méthode vérifie que chaque condition d'une StructureAlternative ne possède pas de double égal. Si une condition possède un double égal, elle renvoie true.
      */
     static detecterAnomalie(StructureAlternative){
+        try
+        {
         for (let condition of StructureAlternative._listeConditions.children) {
             if (condition.querySelector('.libelle').textContent.includes("==")) {
                 return true;
             }
+        }
+        }catch(e)
+        {
+            console.log(e);
+            return false;
         }
     }
 } 
