@@ -7,10 +7,7 @@
 class PlanTravail extends HTMLElement {
     // ATTRIBUTS
     _editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
-<<<<<<< HEAD
     leDictionnaireDesDonnees = new DictionnaireDonnee(); // Dictionnaire de donnée
-=======
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
 
     // CONSTRUCTEUR
     /**
@@ -91,17 +88,10 @@ class PlanTravail extends HTMLElement {
         if (AvertissementPlanTropGrand.detecterAnomalie(this)) {
             listeAnomalies.push(new AvertissementPlanTropGrand(this));
         }
-<<<<<<< HEAD
         for(let elementgraphique of this.getProblemePrincipal()) {
             listeAnomalies = [...listeAnomalies, ...elementgraphique.rechercherAnomalies()];
         }
-=======
-        listeAnomalies = [
-            ...listeAnomalies,
-            ...this.getProblemePrincipal().rechercherAnomalies(),
-        ];
         console.log(listeAnomalies);
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
         return listeAnomalies;
     }
 

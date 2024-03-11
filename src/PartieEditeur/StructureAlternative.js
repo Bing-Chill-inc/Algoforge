@@ -77,16 +77,8 @@ class StructureAlternative extends ElementGraphique {
                 listeEnfants.push(elem.element);
             }
         }
-<<<<<<< HEAD
         listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);
         return PlanTravail.trierElementsGraphique(listeEnfants);
-=======
-        listeEnfants = PlanTravail.FiltrerElementsGraphique(
-            listeEnfants,
-            typeRechercher
-        );
-        return listeEnfants.sort((a, b) => a._abscisse - b._abscisse);
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
     }
 
     /**
@@ -259,7 +251,6 @@ class StructureAlternative extends ElementGraphique {
     }
 
     getEnfantsParCondition() {
-<<<<<<< HEAD
         let listeConditionsEnfants = [];
         for(let condition of this._listeConditions.children)
         {
@@ -267,12 +258,6 @@ class StructureAlternative extends ElementGraphique {
             for(let elem of condition._elemParent._listeElementsEnfants)
             {
                 listeEnfantsParCondition.push(elem.element);
-=======
-        let listeEnfants = [];
-        for (let condition of this._listeConditions.children) {
-            for (let elem of condition._elemParent._listeElementsEnfants) {
-                listeEnfants.push([condition, elem.element]);
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
             }
             listeEnfantsParCondition = PlanTravail.trierElementsGraphique(listeEnfantsParCondition);
             listeConditionsEnfants.push(listeEnfantsParCondition);

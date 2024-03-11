@@ -441,16 +441,8 @@ class Probleme extends ElementGraphique {
         for (let enfant of this._elemParent._listeElementsEnfants) {
             listeDesEnfants.push(enfant.element);
         }
-<<<<<<< HEAD
         listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
         return PlanTravail.trierElementsGraphique(listeDesEnfants);
-=======
-        listeDesEnfants = PlanTravail.FiltrerElementsGraphique(
-            listeDesEnfants,
-            typeRechercher
-        );
-        return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
     }
 
     /**

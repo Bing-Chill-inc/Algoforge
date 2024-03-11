@@ -40,7 +40,6 @@ class StructureIterativeNonBornee extends StructureIterative {
     rechercherAnomalies() {
         let mesAnomalies = [];
         // 10
-<<<<<<< HEAD
         if(ErreurBoucleSansSortie.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurBoucleSansSortie(this));
         }
@@ -48,18 +47,6 @@ class StructureIterativeNonBornee extends StructureIterative {
         let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
         if(tropDeSousElements[0]) {
             mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
-=======
-        if (ErreurBoucleSansSortie.detecterAnomalie(this)) {
-            listeAnomalies.push(new ErreurBoucleSansSortie(this));
-        }
-        // 12
-        let tropDeSousElements =
-            AvertissementTropDeSousElements.detecterAnomalie(this);
-        if (tropDeSousElements[0]) {
-            listeAnomalies.push(
-                new AvertissementTropDeSousElements(this, tropDeSousElements[1])
-            );
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
         }
         return super.rechercherAnomalies(mesAnomalies);
     }

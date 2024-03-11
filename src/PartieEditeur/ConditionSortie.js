@@ -21,14 +21,8 @@ class ConditionSortie extends ElementGraphique {
         if (ErreurArretHorsIteratif.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurArretHorsIteratif(this));
         }
-<<<<<<< HEAD
         else{
             if(ErreurArretIteratifBornee.detecterAnomalie(this)){
-=======
-
-        if (mesAnomalies.length == 0) {
-            if (ErreurArretIteratifBornee.detecterAnomalie(this)) {
->>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
                 mesAnomalies.push(new ErreurArretIteratifBornee(this));
             }
         }
