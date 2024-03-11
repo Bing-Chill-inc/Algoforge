@@ -1,7 +1,25 @@
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--bgColor);
+  }
+
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--fgColor);
+  }
+
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--titleColor);
+  }
+
+  * {
+    scrollbar-color: var(--fgColor) var(--bgColor); /* Firefox */
+  }
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
     background-color: var(--bgColor);
     overflow: hidden;
     color: var(--fgColorForward);
@@ -296,7 +314,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo {
     align-items: center;
     justify-content: space-between;
     position: absolute;
-    left: 2%;
+    left: 6%;
 }
 
 editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
@@ -308,7 +326,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-right: 0.2vw;
 }
 
-dictionnaire-donnee {
+/* dictionnaire-donnee {
     position: fixed;
     top: 10vw;
     right: 0;
@@ -328,16 +346,37 @@ dictionnaire-donnee {
     cursor: pointer;
     transform-origin: right;
     transition: 0.2s all ease;
-}
+} */ /* Version à droite */
 
-dictionnaire-donnee > img {
+dictionnaire-donnee {
+    position: fixed;
+    top: 3.8vw;
+    right: 2vw;
+    width: 2vw;
+    height: 2vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
+    cursor: pointer;
+    transform-origin: left;
+    transition: 0.2s all ease;
+} /* Version en haut */
+
+dictionnaire-donnee > div.img {
     width: 5vw;
     height: 5vw;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 dictionnaire-donnee:hover {
     scale: 1.15 1;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+    transform-origin: center;
 }
 
 dictionnaire-donnee.ouvert {
@@ -346,6 +385,11 @@ dictionnaire-donnee.ouvert {
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+
+    /* Version en haut */
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    translate: 0 5vw;
 }
 
 dictionnaire-donnee.ouvert:hover {
@@ -459,7 +503,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hov
     text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
-bibliotheque-algorithmique {
+/* bibliotheque-algorithmique {
     position: fixed;
     top: 10vw;
     left: 0;
@@ -475,21 +519,48 @@ bibliotheque-algorithmique {
     justify-content: start;
     z-index: 2048;
     font-size: 1vw;
-    overflow: hidden;
+    cursor: pointer;
+    transform-origin: left;
+    transition: 0.2s all ease;
+} */ /* Version à gauche */
+
+bibliotheque-algorithmique {
+    position: fixed;
+    top: 3.8vw;
+    left: 2vw;
+    width: 2vw;
+    height: 2vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: start;
+    z-index: 2048;
+    font-size: 1vw;
     cursor: pointer;
     transform-origin: left;
     transition: 0.2s all ease;
 }
 
-bibliotheque-algorithmique > img {
+/* bibliotheque-algorithmique > img {
     width: 5vw;
     height: 5vw;
-}
+} */ /* Version à gauche */
+
+bibliotheque-algorithmique > div.img {
+    width: 1.8vw;
+    height: 1.8vw;
+} /* Version en haut */
+
+/* bibliotheque-algorithmique:hover {
+    scale: 1.15 1;
+    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+} */
 
 bibliotheque-algorithmique:hover {
     scale: 1.15 1;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
-}
+    transform-origin: center;
+} /* Version en haut */
 
 bibliotheque-algorithmique.ouvert {
     width: 25vw;
@@ -497,6 +568,11 @@ bibliotheque-algorithmique.ouvert {
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+
+    /* Version en haut */
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    translate: 0 5vw;
 }
 
 bibliotheque-algorithmique.ouvert:hover {
@@ -516,6 +592,7 @@ bibliotheque-algorithmique > div.listeCategories {
     height: 99%;
     margin-top: 1%;
     overflow-y: scroll;
+    overflow-x: visible;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -536,12 +613,30 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie {
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
+    position: relative;
     width: 100%;
     height: 2vw;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 > div.flecheOuverture {
+    font-size: 1vw;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.2s all ease;
+    rotate: -90deg;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > h3 > div.flecheOuverture {
+    rotate: 0deg;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert {
@@ -558,7 +653,8 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.li
     flex-direction: row;
     flex-wrap: wrap;
     align-items: start;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 0.2vw;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque {
@@ -567,6 +663,149 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.li
     margin: 0.5vw;
     cursor: pointer;
     transition: 0.2s all ease;
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.75vw;
+    padding: 0.5vw;
+}
+
+bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque:hover {
+    border: 0.1vw solid var(--fgColorForward);
+    box-shadow: 0 0 0.5vw var(--fgColor);
+}
+
+bibliotheque-algorithmique > div.previewAlgo {
+    width: 25vw;
+    height: fit-content;
+    position: absolute;
+    top: 0;
+    right: -27vw;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    opacity: 0.75;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bgColorTransparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500000;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail {
+    width: 25vw;
+    height: 15vw;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element { 
+    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail  * {
+    font-size: calc(var(--sizeModifier) * 1vw) !important;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > plan-travail  label.accolades {
+    font-size: calc(var(--sizeModifier) * 4vw) !important;
+}
+
+invite-nouvelle-bibliotheque {
+    position: fixed;
+    width: 30vw;
+    aspect-ratio: 1/1;
+    top: 50vh;
+    left: 50vw;
+    translate: -50% -50%;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    box-shadow: 0 0 1vw var(--fgColor);
+    border-radius: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2048;
+}
+
+invite-nouvelle-bibliotheque > input {
+    width: 80%;
+    height: 10%;
+    margin-top: 5%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    background-color: var(--bgColor);
+    color: var(--fgColor);
+}
+
+invite-nouvelle-bibliotheque > button {
+    width: 80%;
+    height: 10%;
+    margin-top: 5%;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border: 0.1vw solid var(--bgColor);
+    border-radius: 0.5vw;
+    background-color: var(--fgColor);
+    color: var(--bgColor);
+    cursor: pointer;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo {
+    width: 25vw;
+    height: fit-content;
+    background-color: var(--bgColor);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    opacity: 0.75;
+    position: relative;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > div.divTransparent {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bgColorTransparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500000;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail {
+    width: 25vw;
+    height: 15vw;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail > ligne-element { 
+    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  * {
+    font-size: calc(var(--sizeModifier) * 1vw) !important;
+}
+
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  label.accolades {
+    font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 
 menu-contextuel {
@@ -735,6 +974,36 @@ plan-travail {
     overflow: scroll;
 }
 
+sous-plan-travail {
+    width: 100%;
+    height: calc(100vh - 6vw);
+    position: absolute;
+    top: 6vw;
+    left: 0;
+    overflow: scroll;
+    scale: 0;
+    background-color: var(--bgColor);
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+sous-plan-travail.ouvert {
+    scale: 1;
+}
+
+sous-plan-travail > span.fermeture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1vw;
+    font-size: 3vw;
+    cursor: pointer;
+}
+
+sous-plan-travail > span.fermeture:hover {
+    text-shadow: 0 0 0.5vw var(--fgColor);
+}
+
 probleme-element {
     display: flex;
     width: calc(var(--sizeModifier) * 30vw);
@@ -747,6 +1016,22 @@ probleme-element {
     z-index: 2;
 }
 
+probleme-element > span.ouvrir {
+    position: absolute;
+    bottom: calc(var(--sizeModifier) * 0.5vw);
+    right: calc(var(--sizeModifier) * 10.5vw);
+    width: calc(var(--sizeModifier) * 0.75vw);
+    height: calc(var(--sizeModifier) * 0.75vw);
+    background-color: var(--fgColorTransparent);
+    border: 0.1vw solid var(--fgColor);
+    border-radius: calc(var(--sizeModifier) * 0.25vw);
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
+
     probleme-element > div.containerDPR {
         width: 100%;
         height: calc(var(--sizeModifier) * 4vw);
@@ -757,8 +1042,8 @@ probleme-element {
     }
 
         probleme-element > div.containerDPR > div.donnees {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -770,11 +1055,14 @@ probleme-element {
             probleme-element > div.containerDPR > div.donnees > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -817,8 +1105,8 @@ probleme-element {
         }
 
         probleme-element > div.containerDPR > div.resultat {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -830,11 +1118,14 @@ probleme-element {
             probleme-element > div.containerDPR > div.resultat > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -878,8 +1169,8 @@ procedure-element {
     }
 
         procedure-element > div.containerDPR > div.donnees {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -891,11 +1182,14 @@ procedure-element {
             procedure-element > div.containerDPR > div.donnees > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -960,8 +1254,8 @@ procedure-element {
         }
 
         procedure-element > div.containerDPR > div.resultat {
-            width: 100%;
-            height: 100%;
+            width: calc(var(--sizeModifier) * 10vw);
+            height: calc(var(--sizeModifier) * 4vw);
             display: grid;
             grid-template-columns: 1fr 5fr 1fr;
             grid-template-rows: 1fr;
@@ -973,11 +1267,14 @@ procedure-element {
             procedure-element > div.containerDPR > div.resultat > label.accolades {
                 font-size: calc(var(--sizeModifier) * 4vw);
                 transform: scaleX(0.75);
+                height: calc(var(--sizeModifier) * 4vw);
+                width: calc(var(--sizeModifier) * 1.5vw);
+                line-height: 0.9;
             }
 
             procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
                 width: calc(var(--sizeModifier) * 6.3vw);
-                height: 100%;
+                height: calc(var(--sizeModifier) * 4vw);
                 grid-column: 2;
                 resize: none;
                 border: none;
@@ -1408,9 +1705,12 @@ structure-iterative-non-bornee-element {
     transition: all var(--transitionTime) ease;
     z-index: 2;
 }
-    structure-iterative-non-bornee-element > img.boucleSVG {
+    structure-iterative-non-bornee-element > div.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
         height: calc(var(--sizeModifier) * 4vw);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
 structure-iterative-bornee-element {
@@ -1424,9 +1724,12 @@ structure-iterative-bornee-element {
     transition: all var(--transitionTime) ease;
     z-index: 2;
 }
-    structure-iterative-bornee-element > img.boucleSVG {
+    structure-iterative-bornee-element > div.boucleSVG {
         width: calc(var(--sizeModifier) * 4vw);
         height: calc(var(--sizeModifier) * 4vw);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
     }
 
     structure-iterative-bornee-element > div.informationsBornes {
@@ -1437,7 +1740,6 @@ structure-iterative-bornee-element {
 
 condition-sortie-element {
     position: absolute;
-    background-image: url("assets/conditionSortie.svg");
     height: calc(var(--sizeModifier) * 4vw);
     width: calc(var(--sizeModifier) * 4vw);
     transition: all var(--transitionTime) ease;
@@ -1451,6 +1753,10 @@ ligne-element {
     padding: 0;
     border: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
     z-index: 0;
+}
+
+#transferForm {
+    display: none;
 }
 
 @keyframes jumpOverLeft {
@@ -1550,7 +1856,10 @@ affichage-erreur-element #RechercheAnomalie {
     width: 2vw;
     height: 2vw;
 }
-
+affichage-erreur-element .erreur-container
+{
+    z-index: 9000;
+}
 affichage-erreur-element .erreur-container span, p {
     display: inline-block;
 }
