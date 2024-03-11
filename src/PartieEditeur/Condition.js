@@ -73,8 +73,8 @@ class Condition extends HTMLElement {
 		this.appendChild(this.divLibelle);
 		this.divLibelle.addEventListener("focusout", (e) => {
 			if(this._structure instanceof StructureSi) {
-				this.divLibelle.innerText = this.divLibelle.innerText.replace("&&", "ET");
-				this.divLibelle.innerText = this.divLibelle.innerText.replace("||", "OU"); 
+				this.divLibelle.innerText = this.divLibelle.innerText.replace(/&&/g, "ET");
+				this.divLibelle.innerText = this.divLibelle.innerText.replace(/\|\|/g, "OU");
 			}
 			if (this._ancienLib != this._libelle) {
 				this._editeur.ajouterEvenement(
