@@ -216,7 +216,7 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#FFE989",
 				"#FFFFFF",
-				'"Source Code Pro", monospace'
+				"White Rabbit"
 			)
 		);
 
@@ -1124,7 +1124,7 @@ class Editeur extends HTMLElement {
 			ordonnee = (ordonnee / window.innerWidth) * 100;
 
 			// Créer le menu contextuel
-			this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection));
+			this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection, e.target));
 		});
 	}
 

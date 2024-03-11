@@ -4,9 +4,10 @@ class MenuContextuel extends HTMLElement {
 	_y; // Position y
 	_selection; // Selection
 	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_target;
 
 	// CONSTRUCTEUR
-	constructor(x, y, selection) {
+	constructor(x, y, selection, target) {
 		super();
 		// Supprimer tout menu contextuel déjà ouvert
 		let menuContextuel = document.querySelectorAll("menu-contextuel");
@@ -28,10 +29,25 @@ class MenuContextuel extends HTMLElement {
 		this.style.left = `calc(var(--sizeModifier) * ${x}vw)`;
 		this.style.top = `calc(var(--sizeModifier) * ${y}vw)`;
 		this._selection = selection;
+		this._target = target;
 		this.genererOptions();
 	}
 
 	genererOptions() {
+		if (this._target instanceof Image) {
+			if (this._target.classList.contains("algorithmeBibliotheque") && this._target.estCustom) {
+				this.appendChild(
+					new ElementMenu("Supprimer de la bibliothèque", () => {
+						console.log("Supprimer de la bibliothèque");
+						this._target.supprimer();
+						this.remove();
+					})
+				);
+				return;
+			}
+			this.appendChild(new ElementMenu("Aucune action disponible.", () => {}));
+			return;
+		}
 		// Les options toujours disponibles
 		this.appendChild(
 			new ElementMenuKeyboardTip(

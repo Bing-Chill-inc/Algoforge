@@ -586,6 +586,7 @@ bibliotheque-algorithmique > span.fermeture {
     left: 0;
     padding: 0.5vw;
     font-size: 2vw;
+    rotate: 180deg;
 }
 
 bibliotheque-algorithmique > div.listeCategories {
@@ -689,6 +690,14 @@ bibliotheque-algorithmique > div.previewAlgo {
     align-items: center;
     justify-content: start;
     opacity: 0.75;
+    overflow: hidden;
+}
+
+bibliotheque-algorithmique > div.previewAlgo > h4,
+bibliotheque-algorithmique > div.previewAlgo > p {
+    white-space: wrap;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
@@ -1923,6 +1932,11 @@ affichage-erreur-element .fleche, button, .numero-erreur
     font-family: "Cyberpunk";
     src: url(assets/BladeLogicDemoRegular-ALnVD.otf);
 }
+
+@font-face {
+    font-family: 'White Rabbit';
+    src: url(assets/narrow-rectangle-7.ttf);
+  }
 
 .rotate {
     rotate: 360deg;

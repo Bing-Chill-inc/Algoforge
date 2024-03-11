@@ -364,15 +364,17 @@ class Probleme extends ElementGraphique {
 	toJSON() {
 		if (this._sousPlan != null) {
 			if (this._sousPlan.getProblemePrincipal() != null) {
-				return {
-					typeElement: this.constructor.name,
-					abscisse: this._abscisse,
-					ordonnee: this._ordonnee,
-					libelle: this.libelle,
-					listeDonnes: this.listeDonnes,
-					listeResultats: this.listeResultats,
-					enfants: this._sousPlan.getProblemePrincipal().toJSON().enfants,
-				};
+				if (this._sousPlan.getProblemePrincipal().toJSON instanceof Function) {
+					return {
+						typeElement: this.constructor.name,
+						abscisse: this._abscisse,
+						ordonnee: this._ordonnee,
+						libelle: this.libelle,
+						listeDonnes: this.listeDonnes,
+						listeResultats: this.listeResultats,
+						enfants: this._sousPlan.getProblemePrincipal().toJSON().enfants,
+					};
+				}
 			}
 		}
 		return {
@@ -592,62 +594,113 @@ class Probleme extends ElementGraphique {
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 
-		let decomposerAutrePlan = new ElementMenu("Décomposer ailleurs", () => {
-			if (verbose) console.log("Décomposer sur un autre plan");
-			if (this._sousPlan != null) {
-				this._sousPlan.ouvrir();
-			} else {
-				let buttonOuvrir = document.createElement("span");
-				buttonOuvrir.innerText = "+";
-				buttonOuvrir.classList.add("ouvrir");
-				buttonOuvrir.addEventListener("click", (e) => {
-					e.stopPropagation();
+		if (this._sousPlan == null) {
+			let decomposerAutrePlan = new ElementMenu("Décomposer ailleurs", () => {
+				if (verbose) console.log("Décomposer sur un autre plan");
+				if (this._sousPlan != null) {
 					this._sousPlan.ouvrir();
-				});
-				this.appendChild(buttonOuvrir);
-				this._sousPlan = new SousPlanTravail(this);
-				editeur.appendChild(this._sousPlan);
-				this._sousPlan.ouvrir();
+				} else {
+					let buttonOuvrir = document.createElement("span");
+					buttonOuvrir.innerText = "+";
+					buttonOuvrir.classList.add("ouvrir");
+					buttonOuvrir.addEventListener("click", (e) => {
+						e.stopPropagation();
+						this._sousPlan.ouvrir();
+					});
+					this.appendChild(buttonOuvrir);
+					this._sousPlan = new SousPlanTravail(this);
+					editeur.appendChild(this._sousPlan);
+					this._sousPlan.ouvrir();
 
-				let json = [this.toJSON()];
+					let json = [this.toJSON()];
 
-				const appliquerDecalage = (elem) => {
-					elem.abscisse = parseFloat(elem.abscisse) - parseFloat(this._abscisse) + "vw";
-					elem.ordonnee = parseFloat(elem.ordonnee) - parseFloat(this._ordonnee) + "vw";
-					if (elem.enfants) {
-						elem.enfants.forEach((enfant) => {
-							appliquerDecalage(enfant);
-						});
-					}
-
-					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
-						for (let condition of elem.conditions) {
-							condition.enfants.forEach((enfant) => {
+					const appliquerDecalage = (elem) => {
+						elem.abscisse = parseFloat(elem.abscisse) - parseFloat(this._abscisse) + "vw";
+						elem.ordonnee = parseFloat(elem.ordonnee) - parseFloat(this._ordonnee) + "vw";
+						if (elem.enfants) {
+							elem.enfants.forEach((enfant) => {
 								appliquerDecalage(enfant);
 							});
 						}
+
+						if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+							for (let condition of elem.conditions) {
+								condition.enfants.forEach((enfant) => {
+									appliquerDecalage(enfant);
+								});
+							}
+						}
+					};
+
+					for (let elem of json) {
+						appliquerDecalage(elem);
 					}
-				};
 
-				for (let elem of json) {
-					appliquerDecalage(elem);
-				}
+					this._sousPlan.chargerDepuisJSON(json, false);
 
-				this._sousPlan.chargerDepuisJSON(json, false);
+					this._sousPlan.toutDeplacer(35, 2);
 
-				this._sousPlan.toutDeplacer(35, 2);
-
-				// On retire le sous-arbre du plan de travail
-				let listeElemEnfantsARetirer = this.getDescendants();
-				for (let elem of listeElemEnfantsARetirer) {
-					if (elem != this && elem instanceof ElementGraphique) {
-						elem._parent.delierEnfant(elem);
-						elem.remove();
+					// On retire le sous-arbre du plan de travail
+					let listeElemEnfantsARetirer = this.getDescendants();
+					for (let elem of listeElemEnfantsARetirer) {
+						if (elem != this && elem instanceof ElementGraphique) {
+							elem._parent.delierEnfant(elem);
+							elem.remove();
+						}
 					}
 				}
-			}
-		});
-		listeOptions.push(decomposerAutrePlan);
+			});
+			listeOptions.push(decomposerAutrePlan);
+		} else {
+			let decomposerIci = new ElementMenu("Décomposer ici", () => {
+				if (verbose) console.log("Décomposer sur le même plan");
+				if (this._sousPlan == null) {
+					return;
+				} else {
+					this.querySelector("span.ouvrir").remove();
+
+					let json = this._sousPlan.exporterEnJSON();
+					this._sousPlan.remove();
+					this._sousPlan = null;
+					let probleme = json[0];
+
+					const appliquerDecalage = (elem) => {
+						elem.abscisse =
+							parseFloat(elem.abscisse) +
+							parseFloat(this._abscisse) -
+							parseFloat(probleme.abscisse) +
+							"vw";
+						elem.ordonnee =
+							parseFloat(elem.ordonnee) +
+							parseFloat(this._ordonnee) -
+							parseFloat(probleme.ordonnee) +
+							"vw";
+						if (elem.enfants) {
+							elem.enfants.forEach((enfant) => {
+								appliquerDecalage(enfant);
+							});
+						}
+
+						if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+							for (let condition of elem.conditions) {
+								condition.enfants.forEach((enfant) => {
+									appliquerDecalage(enfant);
+								});
+							}
+						}
+					};
+
+					for (let elem of probleme.enfants) {
+						appliquerDecalage(elem);
+					}
+
+					for (let enfant of this.parentNode.chargerDepuisJSON(probleme.enfants, false)) {
+						this._elemParent.lierEnfant(enfant);
+					}
+				}
+			});
+			listeOptions.push(decomposerIci);
+		}
 
 		let exporter = new ElementMenuCompose("Exporter le sous-arbre", () => {
 			console.log("Exporter le sous-arbre");

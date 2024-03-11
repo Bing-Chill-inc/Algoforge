@@ -55,57 +55,41 @@ class PlanTravail extends HTMLElement {
 		return this._editeur._dictionnaireDesDonnees;
 	}
 
-    // METHODES
-    /**
-     * @description Retourne lesProblèmes du plans de travail n'ayant pas de parent
-     *
-     * @type {Probleme}
-     * @returns {Probleme} Le premier problème du plan de travail
-     */
-    getProblemePrincipal() {
-        let listeElementsGraphiques = PlanTravail.FiltrerElementsGraphique(this.children, ElementGraphique);
-        listeElementsGraphiques = listeElementsGraphiques.filter((unElementGraphique) => unElementGraphique.getParent()==undefined);
-        return listeElementsGraphiques;
-    }
-
-    /**
-     * Recherche les erreurs dans le plan de travail<br>
-     *
-     * Liste des erreurs :<br>
-     *
-     * 13 : Algorithme trop grand
-     *
-     * @returns {Array<AnomalieConceptuelle>} La liste des problèmes de plan de travail (actuellement qu'une erreur)
-     */
-    rechercherAnomalies() {
-        let listeAnomalies = [];
-        if (AvertissementPlanTropGrand.detecterAnomalie(this)) {
-            listeAnomalies.push(new AvertissementPlanTropGrand(this));
-        }
-        for(let elementgraphique of this.getProblemePrincipal()) {
-            listeAnomalies = [...listeAnomalies, ...elementgraphique.rechercherAnomalies()];
-        }
-        console.log(listeAnomalies);
-        return listeAnomalies;
-    }
+	// METHODES
+	/**
+	 * @description Retourne lesProblèmes du plans de travail n'ayant pas de parent
+	 *
+	 * @type {Probleme}
+	 * @returns {Probleme} Le premier problème du plan de travail
+	 */
+	getProblemePrincipal() {
+		let listeElementsGraphiques = PlanTravail.FiltrerElementsGraphique(this.children, ElementGraphique);
+		listeElementsGraphiques = listeElementsGraphiques.filter(
+			(unElementGraphique) => unElementGraphique.getParent() == undefined
+		);
+		return listeElementsGraphiques;
+	}
 
 	/**
-     * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
-     *
-     * @static
-     * @param {Array<ElementGraphique>} listeElementGraphique La listes de tous les ElementsGraphiques
-     * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
-     * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
-     */
-		static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
-			let nouvelleListe = [];
-			for (let element of listeElementGraphique) {
-				if (element instanceof typeRechercher) {
-					nouvelleListe.push(element);
-				}
-			}
-			return nouvelleListe;
+	 * Recherche les erreurs dans le plan de travail<br>
+	 *
+	 * Liste des erreurs :<br>
+	 *
+	 * 13 : Algorithme trop grand
+	 *
+	 * @returns {Array<AnomalieConceptuelle>} La liste des problèmes de plan de travail (actuellement qu'une erreur)
+	 */
+	rechercherAnomalies() {
+		let listeAnomalies = [];
+		if (AvertissementPlanTropGrand.detecterAnomalie(this)) {
+			listeAnomalies.push(new AvertissementPlanTropGrand(this));
 		}
+		for (let elementgraphique of this.getProblemePrincipal()) {
+			listeAnomalies = [...listeAnomalies, ...elementgraphique.rechercherAnomalies()];
+		}
+		console.log(listeAnomalies);
+		return listeAnomalies;
+	}
 
 	/**
 	 * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
@@ -115,25 +99,42 @@ class PlanTravail extends HTMLElement {
 	 * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
 	 * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
 	 */
-    static trierElementsGraphique(listeElementGraphique)
-    {
-        const n = listeElementGraphique.length;
-        for (let i = 0; i < n - 1; i++) {
-            let minIndex = i;
-            for (let j = i + 1; j < n; j++) {
-                if (listeElementGraphique[j].getCentre().x < listeElementGraphique[minIndex].getCentre().x) {
-                    minIndex = j;
-                }
-            }
-            if (minIndex !== i) {
-                // Échangez les éléments
-                let temp = listeElementGraphique[i];
-                listeElementGraphique[i] = listeElementGraphique[minIndex];
-                listeElementGraphique[minIndex] = temp;
-            }
-        }
-        return listeElementGraphique;
-    }
+	static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
+		let nouvelleListe = [];
+		for (let element of listeElementGraphique) {
+			if (element instanceof typeRechercher) {
+				nouvelleListe.push(element);
+			}
+		}
+		return nouvelleListe;
+	}
+
+	/**
+	 * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
+	 *
+	 * @static
+	 * @param {Array<ElementGraphique>} listeElementGraphique La listes de tous les ElementsGraphiques
+	 * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
+	 * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
+	 */
+	static trierElementsGraphique(listeElementGraphique) {
+		const n = listeElementGraphique.length;
+		for (let i = 0; i < n - 1; i++) {
+			let minIndex = i;
+			for (let j = i + 1; j < n; j++) {
+				if (listeElementGraphique[j].getCentre().x < listeElementGraphique[minIndex].getCentre().x) {
+					minIndex = j;
+				}
+			}
+			if (minIndex !== i) {
+				// Échangez les éléments
+				let temp = listeElementGraphique[i];
+				listeElementGraphique[i] = listeElementGraphique[minIndex];
+				listeElementGraphique[minIndex] = temp;
+			}
+		}
+		return listeElementGraphique;
+	}
 
 	/**
 	 * @description Renvoie les informations de l'instance du PlanTravail sous forme JSON
@@ -284,7 +285,7 @@ class PlanTravail extends HTMLElement {
 					break;
 				case "Condition":
 					let condition = new Condition(element.libelle);
-					condition.afficher();
+					// condition.afficher();
 					condition.enfantsAAjouter = element.enfants;
 					listeElems.push(condition);
 					break;

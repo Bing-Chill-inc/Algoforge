@@ -62,7 +62,7 @@ class Bibliotheque extends HTMLElement {
 
 		// Ajout de la flèche de fermeture
 		let flecheFermeture = document.createElement("span");
-		flecheFermeture.innerHTML = "←";
+		flecheFermeture.innerHTML = "➔";
 		flecheFermeture.classList.add("fermeture");
 		flecheFermeture.addEventListener("click", (e) => {
 			e.stopPropagation();
@@ -283,6 +283,12 @@ class Bibliotheque extends HTMLElement {
 			for (let algorithme of this._arborescenceCustom) {
 				// Création de l'algorithme
 				let algorithmeElement = document.createElement("img");
+				algorithmeElement.estCustom = true;
+				algorithmeElement.supprimer = () => {
+					this._arborescenceCustom.splice(this._arborescenceCustom.indexOf(algorithme), 1);
+					this._editeur.setCookie("elementsPersonnalises", JSON.stringify(this._arborescenceCustom), 365);
+					this.update();
+				};
 				algorithmeElement.classList.add("algorithmeBibliotheque");
 				algorithmeElement.title = algorithme.nom;
 				algorithmeElement.contenu = algorithme.algo;
@@ -338,8 +344,9 @@ class Bibliotheque extends HTMLElement {
 				let descriptionAlgo = document.createElement("p");
 				descriptionAlgo.innerHTML = algorithmeElement.description;
 				algorithmeElement.preview.appendChild(descriptionAlgo);
-				algorithmeElement.src =
-					"Bibliotheque/icone.php?fgColor=" + document.body.style.getPropertyValue("--fgColor").substring(1);
+				algorithmeElement.src = `assetsDynamiques/bibliocustom.php?fgColor=${document.body.style
+					.getPropertyValue("--fgColor")
+					.substring(1)}&nom=${algorithme.nom}`;
 
 				// Appliquer une fonction pour transformer l'algorithme en relatif
 				let algoElements = JSON.parse(algorithme.algo);
