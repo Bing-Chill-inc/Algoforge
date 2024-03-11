@@ -18,7 +18,12 @@ class StructureSwitch extends StructureAlternative {
      * @param {Array<Condition>} listeConditions La liste des conditions
      * @param {string} expressionATester l'expression utilisé dans le switch
      */
-    constructor(abscisse, ordonnee, listeConditions = [], expressionATester = "") {
+    constructor(
+        abscisse,
+        ordonnee,
+        listeConditions = [],
+        expressionATester = ""
+    ) {
         super(abscisse, ordonnee, listeConditions);
         this._expressionATester = expressionATester;
         this._ancienneExpressionATester = expressionATester;
@@ -50,7 +55,7 @@ class StructureSwitch extends StructureAlternative {
         divTriangleGauche.className = "triangleGauche";
         divTriangleGauche.classList.add("triangle");
         divTriangleGauche.innerHTML = "<span>-<span>";
-        divTriangleGauche.addEventListener('click', (e) => {
+        divTriangleGauche.addEventListener("click", (e) => {
             this.supprimerCondition();
         });
         this.appendChild(divTriangleGauche);
@@ -61,9 +66,15 @@ class StructureSwitch extends StructureAlternative {
         this.divExpressionATester.innerText = this._expressionATester;
         this.appendChild(this.divExpressionATester);
 
-        this.divExpressionATester.addEventListener('focusout', (e) => {
+        this.divExpressionATester.addEventListener("focusout", (e) => {
             if (this._ancienneExpressionATester != this.expressionATester) {
-                this._editeur.ajouterEvenement(new EvenementEditionExpressionSwitch(this, this._ancienneExpressionATester, this.expressionATester));
+                this._editeur.ajouterEvenement(
+                    new EvenementEditionExpressionSwitch(
+                        this,
+                        this._ancienneExpressionATester,
+                        this.expressionATester
+                    )
+                );
                 this._ancienneExpressionATester = this.expressionATester;
             }
         });
@@ -76,18 +87,18 @@ class StructureSwitch extends StructureAlternative {
         divConditionContainer.className = "conditionContainer";
         this.appendChild(divConditionContainer);
 
-            for (let i = 0; i < this._listeConditions.length; i++) {
-                this._listeConditions[i]._structure = this;
-                divConditionContainer.appendChild(this._listeConditions[i]);
-            }
-        
-        this._listeConditions = divConditionContainer
+        for (let i = 0; i < this._listeConditions.length; i++) {
+            this._listeConditions[i]._structure = this;
+            divConditionContainer.appendChild(this._listeConditions[i]);
+        }
+
+        this._listeConditions = divConditionContainer;
 
         let divTriangleDroit = document.createElement("div");
         divTriangleDroit.className = "triangleDroit";
         divTriangleDroit.classList.add("triangle");
         divTriangleDroit.innerHTML = "<span>+<span>";
-        divTriangleDroit.addEventListener('click', (e) => {
+        divTriangleDroit.addEventListener("click", (e) => {
             this.ajouterCondition();
         });
         this.appendChild(divTriangleDroit);
@@ -100,8 +111,7 @@ class StructureSwitch extends StructureAlternative {
     /**
      * @description Enregistre les valeurs de la StructureSwitch dans une variables
      */
-    ExtraireVariables()
-    {
+    ExtraireVariables() {
         let nameVariable = this.querySelector(".expressionATester").textContent;
         let premiereCondition = this.querySelector(".conditionContainer");
 
@@ -110,7 +120,7 @@ class StructureSwitch extends StructureAlternative {
 
     /**
      * @description Renvoie le corp JSON des information contenu dans la StructureSwitch
-     * 
+     *
      * @returns {JSON} le corps json de la StructureSwitch
      * @property {ElementGraphique} typeElement Le type de la StructureSwitch (qui est StructureSwitch)
      * @property {string|number} abscisse l'abscisse
@@ -127,22 +137,26 @@ class StructureSwitch extends StructureAlternative {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            expressionATester: this.querySelector(".expressionATester").textContent,
-            conditions: conditions
+            expressionATester:
+                this.querySelector(".expressionATester").textContent,
+            conditions: conditions,
         };
     }
 
     toJSONspecifier(listeElemEnfantsAConcerver) {
         let conditions = [];
         for (let condition of this._listeConditions.children) {
-            conditions.push(condition.toJSONspecifier(listeElemEnfantsAConcerver));
+            conditions.push(
+                condition.toJSONspecifier(listeElemEnfantsAConcerver)
+            );
         }
         return {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
             ordonnee: this._ordonnee,
-            expressionATester: this.querySelector(".expressionATester").textContent,
-            conditions: conditions
+            expressionATester:
+                this.querySelector(".expressionATester").textContent,
+            conditions: conditions,
         };
     }
 
@@ -151,40 +165,51 @@ class StructureSwitch extends StructureAlternative {
      * Liste des Erreurs :<br>
      * 8 : Pas double égal dans une condition mais un égal <br>
      * 12 : Plus de sept actions à la suite <br>
-     * 16 : Comparaison dans un switch  
-     * 
+     * 16 : Comparaison dans un switch
+     *
      * @returns {Array<AnomalieConceptuelle>} La liste précédantes + les anomalies détecté par la StructureSwitch
      */
     rechercherAnomalies() {
         let mesAnomalies = [];
         //8
-        if(ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+        if (ErreurSyntaxeComparaison.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurSyntaxeComparaison(this));
         }
         //12
-        let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
-        if(tropDeSousElements[0]) {
-            mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+        let tropDeSousElements =
+            AvertissementTropDeSousElements.detecterAnomalie(this);
+        if (tropDeSousElements[0]) {
+            mesAnomalies.push(
+                new AvertissementTropDeSousElements(this, tropDeSousElements[1])
+            );
         }
         //16
         let comparaisonSwitch = ErreurComparaisonSwitch.detecterAnomalie(this);
-        if(comparaisonSwitch[0]) {
-            mesAnomalies.push(new ErreurComparaisonSwitch(this, comparaisonSwitch[1]));
+        if (comparaisonSwitch[0]) {
+            mesAnomalies.push(
+                new ErreurComparaisonSwitch(this, comparaisonSwitch[1])
+            );
         }
-        if(!comparaisonSwitch[0]) {
-            let typesInconsistantsAlternatif = ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
-            if(typesInconsistantsAlternatif[0]) {
-                mesAnomalies.push(new ErreurTypesInconsistantsAlternatif(this, typesInconsistantsAlternatif[1], typesInconsistantsAlternatif[2]));
+        if (!comparaisonSwitch[0]) {
+            let typesInconsistantsAlternatif =
+                ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+            if (typesInconsistantsAlternatif[0]) {
+                mesAnomalies.push(
+                    new ErreurTypesInconsistantsAlternatif(
+                        this,
+                        typesInconsistantsAlternatif[1],
+                        typesInconsistantsAlternatif[2]
+                    )
+                );
             }
         }
         return super.rechercherAnomalies(mesAnomalies);
     }
     extraireInformation() {
-        if(this._expressionATester.trim() == "")
-        {
-            return [new Information(this._expressionATester, Type.undefined)]
+        if (this._expressionATester.trim() == "") {
+            return [new Information(this._expressionATester, Type.undefined)];
         }
         return [];
-
     }
-} window.customElements.define("structure-switch-element", StructureSwitch);
+}
+window.customElements.define("structure-switch-element", StructureSwitch);

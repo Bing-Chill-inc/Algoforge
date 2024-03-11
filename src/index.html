@@ -11,7 +11,7 @@
         <header>
             <img src="assets/algoforgeLogo.png" alt="Logo AlgoForge" id="logoAlgoForge">
             <div class="titreEtMenu">
-                <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span> ✎</span></h1>
+                <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon"> ✎</span></h1>
                 <div class="menuButtons">
                     <button>
                         <span>Fichier</span>
@@ -43,17 +43,17 @@
             </select>
         </header>
         <div class="barreOutilsHorizontale">
-            <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected">
-            <img src="assets/mini/probleme.svg" id="boutonProbleme">
-            <img src="assets/mini/procedure.svg" id="boutonProcedure">
-            <img src="assets/mini/structureSi.svg" id="boutonStructureSi">
-            <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch">
-            <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative">
-            <img src="assets/mini/conditionSortie.svg" id="boutonConditionSortie">
-            <img src="assets/mini/lien.svg" id="boutonLien">
+            <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
+            <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
+            <img src="assets/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
+            <img src="assets/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
+            <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
+            <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative" title="Créer une Structure Itérative">
+            <img src="assets/mini/conditionSortie.svg" id="boutonConditionSortie" title="Créer une action d'arrêt">
+            <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
             <div class="undoRedo">
-                <img src="assets/mini/undo.svg" id="boutonUndo">
-                <img src="assets/mini/redo.svg" id="boutonRedo">
+                <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
+                <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
             </div>
         </div>
         <plan-travail id="espacePrincipal">
@@ -61,6 +61,9 @@
         </plan-travail>
     </editeur-interface>
 </body>
+<!-- Externes -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script> <!-- Pour la lecture et l'écriture de fichiers Excel -->
+
 <!-- Dictionnaire des données-->
 <script src="PartieEditeur/Type.js"></script>
 <script src="PartieEditeur/Information.js"></script>
@@ -124,6 +127,7 @@
 <script src="PartieEditeur/ThemeEditeur.js"></script>
 <script src="PartieEditeur/IndicateurZoom.js"></script>
 <script src="PartieEditeur/MenuContextuel.js"></script>
+<script src="PartieEditeur/Bilbiotheque.js"></script>
 
 <!--Gestion des évenement de l'éditeur-->
 <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>

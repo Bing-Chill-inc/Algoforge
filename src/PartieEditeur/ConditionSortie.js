@@ -18,17 +18,29 @@ class ConditionSortie extends ElementGraphique {
         let mesAnomalies = [];
 
         //5
-        if(ErreurArretHorsIteratif.detecterAnomalie(this)) {
+        if (ErreurArretHorsIteratif.detecterAnomalie(this)) {
             mesAnomalies.push(new ErreurArretHorsIteratif(this));
         }
+<<<<<<< HEAD
         else{
             if(ErreurArretIteratifBornee.detecterAnomalie(this)){
+=======
+
+        if (mesAnomalies.length == 0) {
+            if (ErreurArretIteratifBornee.detecterAnomalie(this)) {
+>>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
                 mesAnomalies.push(new ErreurArretIteratifBornee(this));
             }
         }
-        let problemeJamaisExecute = AvertissementSProblemeJamaisExecute.detecterAnomalie(this);
-        if(problemeJamaisExecute[0]){
-            mesAnomalies.push(new AvertissementSProblemeJamaisExecute(this, problemeJamaisExecute[1]));
+        let problemeJamaisExecute =
+            AvertissementSProblemeJamaisExecute.detecterAnomalie(this);
+        if (problemeJamaisExecute[0]) {
+            mesAnomalies.push(
+                new AvertissementSProblemeJamaisExecute(
+                    this,
+                    problemeJamaisExecute[1]
+                )
+            );
         }
         return super.rechercherAnomalies(mesAnomalies);
     }
@@ -41,7 +53,7 @@ class ConditionSortie extends ElementGraphique {
         return {
             typeElement: this.constructor.name,
             abscisse: this._abscisse,
-            ordonnee: this._ordonnee
+            ordonnee: this._ordonnee,
         };
     }
 
@@ -52,6 +64,7 @@ class ConditionSortie extends ElementGraphique {
     getAncreComposition() {
         let abscisse = parseFloat(this._abscisse) + 2;
         let ordonnee = parseFloat(this._ordonnee);
-        return {abscisse: abscisse, ordonnee: ordonnee};
+        return { abscisse: abscisse, ordonnee: ordonnee };
     }
-} window.customElements.define("condition-sortie-element", ConditionSortie);
+}
+window.customElements.define("condition-sortie-element", ConditionSortie);

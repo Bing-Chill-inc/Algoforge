@@ -6,7 +6,7 @@
  */
 class Selection extends HTMLElement {
     _dicoElementsSelectionnes; // Dictionnaire ayant pour clés les éléments graphiques sélectionnés et pour valeur la représentation graphique de la sélection.
-    _editeur = document.querySelector('editeur-interface'); // Editeur
+    _editeur = document.querySelector("editeur-interface"); // Editeur
 
     /**
      * @constructor
@@ -25,7 +25,10 @@ class Selection extends HTMLElement {
     }
 
     selectionnerElement(element) {
-        if (element instanceof ElementGraphique && !this.estSelectionne(element)) {
+        if (
+            element instanceof ElementGraphique &&
+            !this.estSelectionne(element)
+        ) {
             let rep = new RepresentationSelectionSimple(element, this);
             this.parentNode.appendChild(rep);
             this._listeElementsSelectionnes.push(rep);
@@ -40,7 +43,10 @@ class Selection extends HTMLElement {
             for (var selection of this._listeElementsSelectionnes) {
                 if (selection._element === element) {
                     selection.supprimer();
-                    this._listeElementsSelectionnes.splice(this._listeElementsSelectionnes.indexOf(selection), 1);
+                    this._listeElementsSelectionnes.splice(
+                        this._listeElementsSelectionnes.indexOf(selection),
+                        1
+                    );
                     break;
                 }
             }
@@ -62,7 +68,9 @@ class Selection extends HTMLElement {
 
     supprimerTout() {
         for (var selection of this._listeElementsSelectionnes) {
-            this._editeur.ajouterEvenement(new EvenementSuppressionElement(selection._element));
+            this._editeur.ajouterEvenement(
+                new EvenementSuppressionElement(selection._element)
+            );
             selection._element.supprimer();
             selection.supprimer();
         }
@@ -73,17 +81,132 @@ class Selection extends HTMLElement {
         this.style.top = "0vw";
     }
 
-    coordonneesMinEtMax() {
-        if (this._listeElementsSelectionnes.length == 0) return {coordonneesMin: {x: 0, y: 0}, coordonneesMax: {x: 0, y: 0}};
-        var coordonneesMin = {x: Number.MAX_VALUE, y: Number.MAX_VALUE};
-        var coordonneesMax = {x: Number.MIN_VALUE, y: Number.MIN_VALUE};
-        for (var selection of this._listeElementsSelectionnes) {;
-            if (parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) < coordonneesMin.x) coordonneesMin.x = parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length));
-            if (parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) < coordonneesMin.y) coordonneesMin.y = parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length));
-            if (parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) + parseFloat(selection.style.width.substring("calc(var(--sizeModifier) * ".length)) > coordonneesMax.x) coordonneesMax.x = parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) + parseFloat(selection.style.width.substring("calc(var(--sizeModifier) * ".length));
-            if (parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) + parseFloat(selection.style.height.substring("calc(var(--sizeModifier) * ".length)) > coordonneesMax.y) coordonneesMax.y = parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) + parseFloat(selection.style.height.substring("calc(var(--sizeModifier) * ".length));
+    coin(topOuBottom, leftOuRight) {
+        let coordonnees = this.coordonneesMinEtMax();
+        if (topOuBottom == "top") {
+            if (leftOuRight == "left") {
+                return {
+                    x: coordonnees.coordonneesMin.x,
+                    y: coordonnees.coordonneesMin.y,
+                };
+            } else if (leftOuRight == "right") {
+                return {
+                    x: coordonnees.coordonneesMax.x,
+                    y: coordonnees.coordonneesMin.y,
+                };
+            }
+        } else if (topOuBottom == "bottom") {
+            if (leftOuRight == "left") {
+                return {
+                    x: coordonnees.coordonneesMin.x,
+                    y: coordonnees.coordonneesMax.y,
+                };
+            } else if (leftOuRight == "right") {
+                return {
+                    x: coordonnees.coordonneesMax.x,
+                    y: coordonnees.coordonneesMax.y,
+                };
+            }
+        } else if (topOuBottom == "center") {
+            return {
+                x:
+                    (coordonnees.coordonneesMin.x +
+                        coordonnees.coordonneesMax.x) /
+                    2,
+                y:
+                    (coordonnees.coordonneesMin.y +
+                        coordonnees.coordonneesMax.y) /
+                    2,
+            };
         }
-        return {coordonneesMin: coordonneesMin, coordonneesMax: coordonneesMax};
+    }
+
+    coordonneesMinEtMax() {
+        if (this._listeElementsSelectionnes.length == 0)
+            return {
+                coordonneesMin: { x: 0, y: 0 },
+                coordonneesMax: { x: 0, y: 0 },
+            };
+        var coordonneesMin = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+        var coordonneesMax = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+        for (var selection of this._listeElementsSelectionnes) {
+            if (
+                parseFloat(
+                    selection.style.left.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                ) < coordonneesMin.x
+            )
+                coordonneesMin.x = parseFloat(
+                    selection.style.left.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                );
+            if (
+                parseFloat(
+                    selection.style.top.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                ) < coordonneesMin.y
+            )
+                coordonneesMin.y = parseFloat(
+                    selection.style.top.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                );
+            if (
+                parseFloat(
+                    selection.style.left.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                ) +
+                    parseFloat(
+                        selection.style.width.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    ) >
+                coordonneesMax.x
+            )
+                coordonneesMax.x =
+                    parseFloat(
+                        selection.style.left.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    ) +
+                    parseFloat(
+                        selection.style.width.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    );
+            if (
+                parseFloat(
+                    selection.style.top.substring(
+                        "calc(var(--sizeModifier) * ".length
+                    )
+                ) +
+                    parseFloat(
+                        selection.style.height.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    ) >
+                coordonneesMax.y
+            )
+                coordonneesMax.y =
+                    parseFloat(
+                        selection.style.top.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    ) +
+                    parseFloat(
+                        selection.style.height.substring(
+                            "calc(var(--sizeModifier) * ".length
+                        )
+                    );
+        }
+        return {
+            coordonneesMin: coordonneesMin,
+            coordonneesMax: coordonneesMax,
+        };
     }
 
     update() {
@@ -91,28 +214,50 @@ class Selection extends HTMLElement {
             selection.update();
         }
         let coordonnees = this.coordonneesMinEtMax();
-        this.style.left = "calc(var(--sizeModifier) * " + coordonnees.coordonneesMin.x + 'vw)';
-        this.style.top = "calc(var(--sizeModifier) * " + coordonnees.coordonneesMin.y + 'vw)';
-        this.style.width = "calc(var(--sizeModifier) * " + (coordonnees.coordonneesMax.x - coordonnees.coordonneesMin.x) + 'vw)';
-        this.style.height = "calc(var(--sizeModifier) * " + (coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y) + 'vw)';
+        this.style.left =
+            "calc(var(--sizeModifier) * " +
+            coordonnees.coordonneesMin.x +
+            "vw)";
+        this.style.top =
+            "calc(var(--sizeModifier) * " +
+            coordonnees.coordonneesMin.y +
+            "vw)";
+        this.style.width =
+            "calc(var(--sizeModifier) * " +
+            (coordonnees.coordonneesMax.x - coordonnees.coordonneesMin.x) +
+            "vw)";
+        this.style.height =
+            "calc(var(--sizeModifier) * " +
+            (coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y) +
+            "vw)";
     }
 
     moveAllSelectedElements(deplacementAbscisse, deplacementOrdonnee) {
         for (var selection of this._listeElementsSelectionnes) {
-            selection._element._abscisse = parseFloat(selection._element._abscisse) + deplacementAbscisse + 'vw';
-            selection._element._ordonnee = parseFloat(selection._element._ordonnee) + deplacementOrdonnee + 'vw';
+            selection._element._abscisse =
+                parseFloat(selection._element._abscisse) +
+                deplacementAbscisse +
+                "vw";
+            selection._element._ordonnee =
+                parseFloat(selection._element._ordonnee) +
+                deplacementOrdonnee +
+                "vw";
             selection._element.setPosition();
             selection.update();
-            if (selection._element instanceof Probleme ||
+            if (
+                selection._element instanceof Probleme ||
                 selection._element instanceof Procedure ||
-                selection._element instanceof StructureIterative) {
+                selection._element instanceof StructureIterative
+            ) {
                 selection._element._elemParent.updateAll();
             } else if (selection._element instanceof StructureAlternative) {
-                for (let condition of selection._element._listeConditions.children) {
+                for (let condition of selection._element._listeConditions
+                    .children) {
                     condition._elemParent.updateAll();
                 }
             }
-            if (selection._element._parent != null) selection._element._parent.updateAll();
+            if (selection._element._parent != null)
+                selection._element._parent.updateAll();
         }
         this.update();
     }
@@ -131,4 +276,5 @@ class Selection extends HTMLElement {
         }
         return listeElements;
     }
-} window.customElements.define('selection-editeur', Selection);
+}
+window.customElements.define("selection-editeur", Selection);

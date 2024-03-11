@@ -7,7 +7,7 @@
  */
 class ElementGraphique extends HTMLElement {
     // ATTRIBUTS
-    _abscisse; // Entier 
+    _abscisse; // Entier
     _ordonnee; // Entier
     _parent; // ElementParent
     _listeAnomalie; //List<AnomalieConceptuelle>
@@ -86,7 +86,7 @@ class ElementGraphique extends HTMLElement {
     }
 
     get selectAnchor() {
-        let anchor = {x: 0, y: 0};
+        let anchor = { x: 0, y: 0 };
         anchor.x = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
         anchor.y = parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2;
         return anchor;
@@ -97,19 +97,22 @@ class ElementGraphique extends HTMLElement {
         let rect = this.getBoundingClientRect();
 
         // Calculez la largeur en unité vw
-        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth * 100);
+        let largeurEnVw = ((rect.right - rect.left) / window.innerWidth) * 100;
         return largeurEnVw;
     }
     getTailleOrdonnee() {
         let rect = this.getBoundingClientRect();
-    
+
         // Calculez la hauteur en unité vh
-        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight * 100);
+        let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight) * 100;
         return hauteurEnVh;
     }
 
     getCentre() {
-        return {x: parseFloat(this._abscisse) + this.getTailleAbscisse() / 2, y: parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2};
+        return {
+            x: parseFloat(this._abscisse) + this.getTailleAbscisse() / 2,
+            y: parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2,
+        };
     }
 
     /**
@@ -120,8 +123,10 @@ class ElementGraphique extends HTMLElement {
      */
     setPosition(abscisse = -1, ordonnee = -1) {
         if (abscisse == -1 && ordonnee == -1) {
-            this.style.left = "calc(var(--sizeModifier) * " + this._abscisse + ")";
-            this.style.top = "calc(var(--sizeModifier) * " + this._ordonnee + ")";
+            this.style.left =
+                "calc(var(--sizeModifier) * " + this._abscisse + ")";
+            this.style.top =
+                "calc(var(--sizeModifier) * " + this._ordonnee + ")";
         } else {
             this.style.left = "calc(var(--sizeModifier) * " + abscisse + ")";
             this.style.top = "calc(var(--sizeModifier) * " + ordonnee + ")";
@@ -136,7 +141,7 @@ class ElementGraphique extends HTMLElement {
      * @property {number|string} ordonee l'ordonnée
      */
     getPosition() {
-        return {abscisse: this.style.left, ordonnee: this.style.top};
+        return { abscisse: this.style.left, ordonnee: this.style.top };
     }
 
     // METHODES
@@ -144,9 +149,11 @@ class ElementGraphique extends HTMLElement {
      * @description Affiche dans la console la position de l'ElementGraphique
      */
     afficher() {
-        console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
+        console.log(
+            `Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`
+        );
     }
-    
+
     /**
      * @description Comportement natif de getEnfants(), affiche dans la console une erreur d'initialisement et ça position<br>
      * <br>Est étendu dans les sous classes
@@ -154,7 +161,12 @@ class ElementGraphique extends HTMLElement {
      * @returns {Array<Information>} Une liste de classe Informations
      */
     extraireInformation() {
-        console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse +" ordonee " + this._ordonnee);
+        console.log(
+            "Extraire J'ai pas été initialisé abcisse " +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
         return [];
     }
 
@@ -165,8 +177,7 @@ class ElementGraphique extends HTMLElement {
      * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le type demandé
      * @returns {typeRechercher} La liste des enfants du type rechercher
      */
-    getEnfants(typeRechercher = ElementGraphique)
-    {
+    getEnfants(typeRechercher = ElementGraphique) {
         return [];
     }
 
@@ -180,11 +191,16 @@ class ElementGraphique extends HTMLElement {
     getDescendants(typeRechercher = ElementGraphique) {
         const listeDeMesEnfants = this.getEnfants();
         let listeDeMesDescendants = listeDeMesEnfants;
-        for(let enfant of listeDeMesEnfants)
-        {
-            listeDeMesDescendants = [...listeDeMesDescendants, ...enfant.getDescendants()];
+        for (let enfant of listeDeMesEnfants) {
+            listeDeMesDescendants = [
+                ...listeDeMesDescendants,
+                ...enfant.getDescendants(),
+            ];
         }
-        return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
+        return PlanTravail.FiltrerElementsGraphique(
+            listeDeMesDescendants,
+            typeRechercher
+        );
     }
 
     /**
@@ -195,9 +211,16 @@ class ElementGraphique extends HTMLElement {
      * @returns {ElementGraphique} le parent
      */
     getParent(typeRechercher = ElementGraphique) {
+<<<<<<< HEAD
         if(this._parent)
         {
             return this._parent._proprietaire._elementGraphique instanceof typeRechercher ? this._parent._proprietaire._elementGraphique:null;
+=======
+        if (this._parent) {
+            return this._parent._proprietaire instanceof typeRechercher
+                ? this._parent._proprietaire
+                : null;
+>>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
         }
         return null;
     }
@@ -211,28 +234,37 @@ class ElementGraphique extends HTMLElement {
     getAntescedants(typeRechercher = ElementGraphique) {
         const parent = this.getParent();
         let listeDeMesAntescedants = [];
-        if(parent !== null)
-        {
+        if (parent !== null) {
             listeDeMesAntescedants.push(parent);
-            listeDeMesAntescedants = [...listeDeMesAntescedants, ...parent.getAntescedants()];
+            listeDeMesAntescedants = [
+                ...listeDeMesAntescedants,
+                ...parent.getAntescedants(),
+            ];
         }
-        return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
-        
+        return PlanTravail.FiltrerElementsGraphique(
+            listeDeMesAntescedants,
+            typeRechercher
+        );
     }
 
     /**
      * @description Comportement natif de include(), affiche dans la console une erreur d'initialisement et ça position
-     * 
+     *
      * <br>Est étendu dans les sous classes
      *
      * @param {string} nameInformation Les information rechercher
-     * @returns {boolean} Renvoie false par défaut 
+     * @returns {boolean} Renvoie false par défaut
      */
     include(nameInformation) {
-        console.log("Include J'ai pas été initialisé je suis "  + this._abscisse +" ordonee " + this._ordonnee);
+        console.log(
+            "Include J'ai pas été initialisé je suis " +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
         return false;
     }
-    
+
     /**
      * @description Comportement natif de getPlanTravail(), Retourne le plan de travail
      * 
@@ -247,56 +279,133 @@ class ElementGraphique extends HTMLElement {
 
     /**
      * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
-     * 
+     *
      * <br>Est étendu dans les sous classes
      *
      * @returns {Array<Information>} Les information contenu dans résultat défini, dans Probleme
      */
     getInformationResultat() {
-        console.log("get Information Resultat non défini dans ma classe abscisse"  + this._abscisse +" ordonee " + this._ordonnee)
+        console.log(
+            "get Information Resultat non défini dans ma classe abscisse" +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
         return [];
     }
 
     /**
      * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisement et ça position
-     * 
+     *
      * <br>Est étendu dans les sous classes
      *
      * @returns {Array<Information>} Les informations contenu dans données défini, dans Probleme
      */
     getInformationDonnee() {
-        console.log("get Information Donnée non défini dans ma classe je suis " + this._abscisse +" ordonee " + this._ordonnee)
+        console.log(
+            "get Information Donnée non défini dans ma classe je suis " +
+                this._abscisse +
+                " ordonee " +
+                this._ordonnee
+        );
         return [];
     }
     rechercherAnomalies(mesAnomalies) {
         this._listeAnomalie = mesAnomalies;
         let anomalieDeMesEnfantsEtLesMiennes = [];
         let enfants = this.getEnfants();
-        for(let enfant of enfants)
-        {
-            anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes,...enfant.rechercherAnomalies()];
+        for (let enfant of enfants) {
+            anomalieDeMesEnfantsEtLesMiennes = [
+                ...anomalieDeMesEnfantsEtLesMiennes,
+                ...enfant.rechercherAnomalies(),
+            ];
         }
+<<<<<<< HEAD
         anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
+=======
+        anomalieDeMesEnfantsEtLesMiennes = [
+            ...anomalieDeMesEnfantsEtLesMiennes,
+            ...mesAnomalies,
+        ];
+        this.afficherErreur();
+>>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
         return anomalieDeMesEnfantsEtLesMiennes;
     }
     /* Partie Affichage */
     colorierElement() {
         //console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
     }
+<<<<<<< HEAD
     renameInformation(ancienNom, nouveauNom) {
         
     }
+=======
+    signalerErreur() {
+        this._etat = "Erreur";
+        this._couleurPrimaire = "red";
+        this.colorierElement();
+    }
+    signalerAvertissement() {
+        this._etat = "Avertissement";
+        this._couleurPrimaire = "yellow";
+        this.colorierElement();
+    }
+    effacerSignalement() {
+        this._etat = "Defaut";
+        this._couleurPrimaire = "black";
+        this.colorierElement();
+    }
+    afficherErreur() {
+        this.effacerErreur();
+        if (this._listeAnomalie) {
+            if (this._listeAnomalie.length > 0) {
+                let EstUneErreur = false;
+                /*let divListeErreur = document.createElement("div");
+                divListeErreur.className = "divErreur";
+                this.appendChild(divListeErreur);
+
+                let listeErreur = document.createElement("ul");
+                divListeErreur.appendChild(listeErreur);*/
+                for (let anomalie of this._listeAnomalie) {
+                    if (anomalie instanceof ErreurConceptuelle) {
+                        EstUneErreur = true;
+                    }
+                    /*
+                    let erreur = document.createElement("li");
+                    erreur.textContent = probleme;
+                    listeErreur.appendChild(erreur);*/
+                }
+                if (EstUneErreur) {
+                    this.signalerErreur();
+                } else {
+                    this.signalerAvertissement();
+                }
+            }
+        }
+    }
+    effacerErreur() {
+        this.effacerSignalement();
+        const divErreur = this.querySelector(".divErreur");
+        if (divErreur) {
+            divErreur.remove();
+        }
+    }
+
+    renameInformation(ancienNom, nouveauNom) {}
+>>>>>>> e4a12028c593ba76eab97127959ce71791c0f923
 
     getAncreDecomposition() {
-        let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+        let abscisse =
+            parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
         let ordonnee = parseFloat(this._ordonnee) + this.getTailleOrdonnee();
-        return {abscisse: abscisse, ordonnee: ordonnee - 0.7};
+        return { abscisse: abscisse, ordonnee: ordonnee - 0.7 };
     }
 
     getAncreComposition() {
-        let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+        let abscisse =
+            parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
         let ordonnee = parseFloat(this._ordonnee);
-        return {abscisse: abscisse, ordonnee: ordonnee};
+        return { abscisse: abscisse, ordonnee: ordonnee };
     }
 
     peutEtreDecompose() {
@@ -308,9 +417,31 @@ class ElementGraphique extends HTMLElement {
         this.remove();
     }
 
-    genererOptionsContextuelles(selection) {
+    genererOptionsContextuelles(editeur) {
         let lesOptions = [];
-        lesOptions.push();
+        if (this.peutEtreDecompose()) {
+            lesOptions.push(
+                new ElementMenu("Décomposer", () => {
+                    editeur.selectTool(6); // Outil de liaison
+                    editeur._pointePrecedementLien = this;
+                    this.classList.add("pointePourLien");
+                })
+            );
+            if (this._elemParent.nombreEnfants != 0) {
+                lesOptions.push(
+                    new ElementMenu("Délier tous les enfants", () => {
+                        this._elemParent.delierTousLesEnfants();
+                    })
+                );
+            }
+        }
+        if (this._parent != null) {
+            lesOptions.push(
+                new ElementMenu("Délier du parent", () => {
+                    this._parent.delierEnfant(this);
+                })
+            );
+        }
         return lesOptions;
     }
 }
