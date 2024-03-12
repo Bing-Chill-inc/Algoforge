@@ -175,18 +175,22 @@ class DictionnaireDonnee extends HTMLElement {
 				});
 			}
 
-			if (this._matchType[info._nom] != undefined) {
-				selectType.value = this._matchType[info._nom];
-			} else {
-				selectType.value = info._type;
-				if (info._type == undefined) {
-					selectType.value = "automatique";
+			if (this._matchType) {
+				if (this._matchType[info._nom] != undefined) {
+					selectType.value = this._matchType[info._nom];
+				} else {
+					selectType.value = info._type;
+					if (info._type == undefined) {
+						selectType.value = "automatique";
+					}
 				}
 			}
 			trContent.append(tdType);
 
 			let tdSignification = document.createElement("td");
-			tdSignification.textContent = this._matchSignification[info._nom];
+			if (this._matchSignification) {
+				tdSignification.textContent = this._matchSignification[info._nom];
+			}
 			tdSignification.setAttribute("contenteditable", "true");
 			trContent.append(tdSignification);
 			tdSignification.addEventListener("input", () => {

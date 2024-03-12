@@ -626,15 +626,19 @@ class Editeur extends HTMLElement {
 				switch (e.key) {
 					case "ArrowUp":
 						this._selection.moveAllSelectedElements(0, -1);
+						e.preventDefault();
 						break;
 					case "ArrowDown":
 						this._selection.moveAllSelectedElements(0, 1);
+						e.preventDefault();
 						break;
 					case "ArrowLeft":
 						this._selection.moveAllSelectedElements(-1, 0);
+						e.preventDefault();
 						break;
 					case "ArrowRight":
 						this._selection.moveAllSelectedElements(1, 0);
+						e.preventDefault();
 						break;
 				}
 			}
