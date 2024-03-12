@@ -1,6 +1,6 @@
 # Installation de l'image de base PHP 7.2
 
-FROM php:7.2-apache
+FROM php:8.2-apache
 
 # Variable d'environnement
 
