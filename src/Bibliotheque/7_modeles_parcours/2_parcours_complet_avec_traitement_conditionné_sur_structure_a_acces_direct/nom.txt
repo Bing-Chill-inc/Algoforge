@@ -1,0 +1,1 @@
+Parcours complet avec traitement conditionné sur structure à accès direct

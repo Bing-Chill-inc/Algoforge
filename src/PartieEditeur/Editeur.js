@@ -601,19 +601,22 @@ class Editeur extends HTMLElement {
 			}
 
 			// Contrôle de la sélection avec les flèches
-			switch (e.key) {
-				case "ArrowUp":
-					this._selection.moveAllSelectedElements(0, -1);
-					break;
-				case "ArrowDown":
-					this._selection.moveAllSelectedElements(0, 1);
-					break;
-				case "ArrowLeft":
-					this._selection.moveAllSelectedElements(-1, 0);
-					break;
-				case "ArrowRight":
-					this._selection.moveAllSelectedElements(1, 0);
-					break;
+			// vérifier si le curseur de l'utilisateur est dans un champ de texte
+			if (!document.activeElement.isContentEditable) {
+				switch (e.key) {
+					case "ArrowUp":
+						this._selection.moveAllSelectedElements(0, -1);
+						break;
+					case "ArrowDown":
+						this._selection.moveAllSelectedElements(0, 1);
+						break;
+					case "ArrowLeft":
+						this._selection.moveAllSelectedElements(-1, 0);
+						break;
+					case "ArrowRight":
+						this._selection.moveAllSelectedElements(1, 0);
+						break;
+				}
 			}
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
