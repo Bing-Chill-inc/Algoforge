@@ -1,4 +1,0 @@
-Cette brique algorithmique décompose un problème en envisageant trois situations possibles :
-- cas où la condition 1 est vérifiée
-- cas où la condition 2 est vérifiée
-- cas où aucune des conditions n'est vérifiée (le problème de départ est jugé résolu)

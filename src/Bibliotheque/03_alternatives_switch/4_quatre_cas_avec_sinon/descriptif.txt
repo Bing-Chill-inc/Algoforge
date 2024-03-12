@@ -1,0 +1,12 @@
+Cette brique algorithmique décompose un problème en envisageant quatre situations différenciables selon la valeur d'une expression :
+- cas où l'expression a pour valeur valeur1
+- cas où l'expression a pour valeur valeur2
+- cas où l'expression a pour valeur valeur3
+- cas où l'expression a une valeur autre que valeur1 valeur2 et valeur3, le problème de départ étant alors considéré comme résolu.
+
+Rappel : une expression peut prendre différentes formes :
+- une variable, par exemple : ageUtilisateur
+- une fonction, par exemple : max (age1, age2)
+- un calcul, par exemple : ageUtilisateur + 2 - max (age1, age2)
+
+

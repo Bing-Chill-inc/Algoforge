@@ -1,0 +1,4 @@
+Cette brique algorithmique décompose un problème en envisageant deux situations possibles :
+- cas où une condition A est vérifiée
+- cas où la condition A n'est pas vérifiée
+
