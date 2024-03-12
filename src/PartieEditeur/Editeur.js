@@ -173,7 +173,23 @@ class Editeur extends HTMLElement {
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Thème Clair",
+				"Pacifique", // nom
+				"#F7F3E2", // bg color
+				"#5B5847", // fg color
+				"#5B584755", // fg semi color transparent
+				"#cbcbcb22", // fg color transparent
+				"#7E7D73", // fg color forward
+				"#9E978E", // good color
+				"#9E978E99", // good color transparent
+				"#D85959", // error
+				"#FFAD5A", // warning
+				"#5B5847", // title
+				"Roboto, sans-serif"
+			)
+		);
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"Flashbang",
 				"#FFFFFF",
 				"#222222",
 				"#22222255",
@@ -266,8 +282,12 @@ class Editeur extends HTMLElement {
 		} else {
 			this._themeSelect.selectedIndex = 0;
 		}
-
-		this._themeSelect.options[this._themeSelect.selectedIndex].appliquer();
+		try {
+			this._themeSelect.options[this._themeSelect.selectedIndex].appliquer();
+		} catch (error) {
+			console.error("Le thème n'a pas pu être appliqué.");
+			this._themeSelect.options[0].appliquer();
+		}
 
 		// Ajout des éléments de menu
 		// Fichier
@@ -1144,7 +1164,7 @@ class Editeur extends HTMLElement {
 		const d = new Date();
 		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
 		let expires = "expires=" + d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
 	}
 
 	getCookie(cname) {

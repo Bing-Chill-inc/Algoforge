@@ -132,16 +132,22 @@ class DictionnaireDonnee extends HTMLElement {
 			});
 
 			tdNom.addEventListener("input", () => {
-				this._mesInformations.forEach((element) => {
-					if (element._nom == info._nom) {
-						document
-							.querySelector("editeur-interface")
-							._planActif.renameInformation(element._nom, tdNom.innerText);
-						this._matchSignification[tdNom.innerText] = this._matchSignification[element._nom];
-						this._matchSignification[element._nom] = undefined;
-						element._nom = tdNom.innerText;
-					}
-				});
+				document.querySelector("editeur-interface")._planActif.renameInformation(info._nom, tdNom.innerText);
+				this._matchSignification[tdNom.innerText] = this._matchSignification[info._nom];
+				this._matchSignification[info._nom] = undefined;
+				this._matchType[tdNom.innerText] = this._matchType[info._nom];
+				this._matchType[info._nom] = undefined;
+				info._nom = tdNom.innerText;
+				// this._mesInformations.forEach((element) => {
+				// 	if (element._nom == info._nom) {
+				// 		document
+				// 			.querySelector("editeur-interface")
+				// 			._planActif.renameInformation(element._nom, tdNom.innerText);
+				// 		this._matchSignification[tdNom.innerText] = this._matchSignification[element._nom];
+				// 		this._matchSignification[element._nom] = undefined;
+				// 		element._nom = tdNom.innerText;
+				// 	}
+				// });
 			});
 
 			let tdType = document.createElement("td");
