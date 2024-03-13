@@ -16,6 +16,12 @@ class FenetreModale extends HTMLElement {
 			this.fermer();
 		});
 		this.content.appendChild(this.fermerBouton);
+
+		this.addEventListener("click", (e) => {
+			if (e.target === this) {
+				this.fermer();
+			}
+		});
 	}
 
 	ouvrir() {
