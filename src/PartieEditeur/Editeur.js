@@ -1209,6 +1209,11 @@ class Editeur extends HTMLElement {
 		for (let elem of lesElements) {
 			this._selection.selectionnerArbre(elem);
 		}
+
+		// On ouvre une invite pour les éléments de type StructureIterativeBornee s'il y en a un seul
+		if (lesElements.length == 1 && lesElements[0] instanceof StructureIterativeBornee) {
+			lesElements[0].inviteBornes();
+		}
 	}
 
 	selectTool(idTool) {
