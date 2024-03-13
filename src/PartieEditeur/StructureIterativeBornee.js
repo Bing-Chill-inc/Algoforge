@@ -29,13 +29,15 @@ class StructureIterativeBornee extends StructureIterative {
 		variableAIterer = "i",
 		borneInferieure = "BORNE_INF",
 		borneSuperieure = "BORNE_SUP",
-		pas = "1"
+		pas = "1",
+		estCroissant = true
 	) {
 		super(abscisse, ordonnee);
 		this._variableAIterer = variableAIterer;
 		this._borneInferieure = borneInferieure;
 		this._borneSuperieure = borneSuperieure;
 		this._pas = pas;
+		this._estCroissant = estCroissant;
 	}
 
 	// ENCAPSULATION
@@ -123,7 +125,9 @@ class StructureIterativeBornee extends StructureIterative {
 		if (this.etatClassique()) {
 			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
-			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure} par pas croissant de ${this._pas}`;
+			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${
+				this._borneSuperieure
+			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${this._pas}`;
 		}
 		this.appendChild(divInformationsBornes);
 	}
@@ -191,6 +195,7 @@ class StructureIterativeBornee extends StructureIterative {
 			borneInferieure: this._borneInferieure,
 			borneSuperieure: this._borneSuperieure,
 			pas: this._pas,
+			croissant: this._estCroissant,
 			enfants: this._elemParent.toJSON(),
 		};
 	}
@@ -204,6 +209,7 @@ class StructureIterativeBornee extends StructureIterative {
 			borneInferieure: this._borneInferieure,
 			borneSuperieure: this._borneSuperieure,
 			pas: this._pas,
+			croissant: this._estCroissant,
 			enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver),
 		};
 	}

@@ -148,6 +148,7 @@
     <script src="PartieEditeur/MenuContextuel.js"></script>
     <script src="PartieEditeur/Bilbiotheque.js"></script>
     <script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
+    <script src="PartieEditeur/FenetreModale.js"></script>
 
     <!--Gestion des évenement de l'éditeur-->
     <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>
@@ -169,7 +170,7 @@
     <script src="PartieEditeur/Editeur.js"></script>
     <script>
         const editeur = document.querySelector("editeur-interface");
-        const verbose = false;
+        const verbose = true;
         let titreAlgo = document.getElementById("titreAlgo");
 
         <?php

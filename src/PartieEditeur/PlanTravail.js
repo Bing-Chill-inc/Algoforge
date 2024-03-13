@@ -325,7 +325,8 @@ class PlanTravail extends HTMLElement {
 						element.variableAIterer,
 						element.borneInferieure,
 						element.borneSuperieure,
-						element.pas
+						element.pas,
+						element.croissant
 					);
 					this.appendChild(structureIterativeBornee);
 					for (let enfant of this.chargerDepuisJSON(element.enfants, cancellable)) {

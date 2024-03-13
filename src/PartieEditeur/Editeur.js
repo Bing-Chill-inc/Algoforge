@@ -40,6 +40,7 @@ class Editeur extends HTMLElement {
 
 	_dictionnaireDesDonnees = new DictionnaireDonnee();
 	_bibliotheque = new Bibliotheque();
+	_modaleRaccourcisClavier;
 
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -57,6 +58,15 @@ class Editeur extends HTMLElement {
 		} else {
 			this._toucheMeta = "Ctrl + ";
 		}
+
+		fetch("modales/shortcuts.html").then((response) => {
+			response.text().then((text) => {
+				// Formater le texte pour remplacer les instances de '{metakey}' par la touche Meta
+				text = text.replaceAll("{metakey}", this._toucheMeta);
+				this._modaleRaccourcisClavier = new FenetreModale(text);
+				this.appendChild(this._modaleRaccourcisClavier);
+			});
+		});
 
 		window.addEventListener("beforeunload", (e) => {
 			if (this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) {
@@ -562,6 +572,7 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("Raccourcis clavier", () => {
 				console.log("Raccourcis clavier");
+				this._modaleRaccourcisClavier.ouvrir();
 			})
 		);
 
@@ -1253,9 +1264,12 @@ class Editeur extends HTMLElement {
 		let elementsACopier = [];
 		let elementsSelectionnees = this._selection.getElementsSelectionnes(); // Liste des éléments sélectionnés
 		for (let elementGraphique of elementsSelectionnees) {
+			if (verbose) console.log(elementGraphique._parent);
+			if (verbose && elementGraphique._parent)
+				console.log(elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire));
 			if (
 				elementGraphique._parent == null ||
-				!elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire) == -1
+				elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire) == -1
 			) {
 				if (verbose) console.log(elementGraphique);
 				elementsACopier.push(elementGraphique.toJSONspecifier(elementsSelectionnees));

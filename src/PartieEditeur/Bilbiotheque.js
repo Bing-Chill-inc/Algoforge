@@ -310,6 +310,7 @@ class Bibliotheque extends HTMLElement {
 					// À partir des tailles, on peut déterminer la taille de la prévisualisation, et ainsi calculer le zoom à appliquer
 					let largeur = tailles.coordMax.x - tailles.coordMin.x;
 					let hauteur = tailles.coordMax.y - tailles.coordMin.y;
+					if (verbose) console.log(`nom = ${algorithme.nom},largeur = ${largeur}, hauteur = ${hauteur}`);
 					// // La largeur et la hauteur multipliés par le zoom doivent être inférieurs à 25vw et 15vw respectivement
 					// let zoom = Math.min(25 / largeur, 15 / hauteur);
 
@@ -319,15 +320,16 @@ class Bibliotheque extends HTMLElement {
 					// planTravail.style.setProperty("--sizeModifier", zoom);
 					// if (verbose) console.log(`zoom = ${zoom}`);
 					// algorithmeElement.preview.appendChild(planTravail);
-					planTravail.style.width = largeur + 5 + "vw";
-					planTravail.style.height = hauteur + 5 + "vw";
+					// planTravail.style.width = largeur + 5 + "vw";
+					// planTravail.style.height = hauteur + 5 + "vw";
 
 					// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
 					planTravail.toutDeplacer(-tailles.coordMin.x, -tailles.coordMin.y);
 
 					// Compenser la taille avec un scale() pour obtenir du 25vw et 15vw
 					let scale = Math.min(25 / largeur, 15 / hauteur);
-					planTravail.style.transform = `scale(${scale})`;
+					planTravail.style.setProperty("--sizeModifier", scale);
+					//planTravail.style.transform = `scale(${scale})`;
 
 					algorithmeElement.preview.appendChild(planTravail);
 				} catch (e) {
