@@ -4,9 +4,24 @@ class AffichageErreur extends HTMLElement {
 	_courant;
 	_divErreur;
 	_imageTest;
+	_messagesAnomalies;
 	constructor() {
 		super();
 		this.afficherBoutton();
+		fetch("messageAnomalie.json")
+			.then((response) => {
+				if (!response.ok) {
+					// If the server response is not OK, throw an error
+					throw new Error("Network response was not ok");
+				}
+				return response.json(); // Parse the JSON from the response
+			})
+			.then((data) => {
+				this._messagesAnomalies = data.anomalies;
+			})
+			.catch((error) => {
+				console.error("There has been a problem with your fetch operation:", error);
+			});
 	}
 
 	afficherBoutton() {
@@ -125,10 +140,10 @@ class AffichageErreur extends HTMLElement {
 			this.querySelector(".texte-erreur").textContent = "Aucune anomalie détectée";
 			this.querySelector(".numero-erreur").textContent = "(0/0)";
 		} else {
-			this.querySelector(".texte-erreur").textContent = this._listeErreur[this._courant].toString();
+			this.querySelector(".texte-erreur").textContent = this._listeErreur[this._courant].toString(this);
 			this.querySelector(".numero-erreur").textContent =
 				"(" + (this._courant + 1) + "/" + this._listeErreur.length + ")";
-		}
+		}	
 	}
 
 	supprimerDivErreur() {
@@ -136,6 +151,27 @@ class AffichageErreur extends HTMLElement {
 			this.removeChild(this._divErreur);
 			this._divErreur = null;
 		}
+	}
+
+	getDescriptionAnomalie(typeAnomalie, id) {
+		if (this._messagesAnomalies) {
+			let anomalie = null;
+			switch (typeAnomalie) {
+				case "AvertissementConceptuel":
+					anomalie = this._messagesAnomalies.avertissements.find(avertissement => avertissement.id == id);
+					break;
+			
+				case "ErreurConceptuelle":
+					anomalie = this._messagesAnomalies.erreurs.find(erreur => erreur.id == id);
+					break;
+			}
+			console.log("tkt")
+			console.log(anomalie);
+			return anomalie ? anomalie.description : "Aucune description disponible pour cette anomalie.";
+		} else {
+			return "Le fichier de description des anomalies n'a pas été chargé. Veuillez réessayer plus tard.";
+		}
+	
 	}
 }
 

@@ -1,0 +1,93 @@
+{
+    "anomalies": {
+        "avertissements": [
+            {
+                "id": "1",
+                "nom": "Donnée dynamiquement typée",
+                "description": "$1 La donnée $DATA n'est pas utilisée. $2 Les données $DATA ne sont pas utilisées."
+            },  
+            {
+                "id": "2",
+                "nom": "Informations inconsistantes Si",
+                "description": "La structure conditionelle en surbrillance contient les variables suvantes qui ne sont pas consistantes : $DATA."
+            },
+            {
+                "id": "3",
+                "nom": "Plan trop grand",
+                "description": "Le plan est trop grand."
+            },
+            {
+                "id": "4",
+                "nom": "Problème jamais exécuté",
+                "description": "$1 L'élément en surbrillance n'est jamais exécuté. $2 Les éléments en surbrillances ne sont jamais exécutés."
+            },
+            {
+                "id": "5",
+                "nom": "Structure non optimale",
+                "description": "La structure conditionnel en surbrillance est mal utilisée. Un switch est préférable."
+            },
+            {
+                "id": "6",
+                "nom": "Trop de sous-éléments",
+                "description": "L'élément en surbrillance a trop de sous-éléments."
+            }
+        ],
+        "erreurs": [
+            {
+                "id": "1",
+                "nom": "Arrêt hors itératif",
+                "description": "L'arrêt en surbrillance est hors d'une boucle itérative."
+            },
+            {
+                "id": "2",
+                "nom": "Arrêt itératif borné",
+                "description": "L'arrêt en surbrillance est dans une boucle itérative bornée."
+            },
+            {
+                "id": "3",
+                "nom": "Boucle bornée sans fin",
+                "description": "La boucle en surbrillance est bornée mais n'a pas de fin."
+            },
+            {
+                "id": "4",
+                "nom": "Boucle sans sortie",
+                "description": "La boucle en surbrillance n'a pas de sortie."
+            },
+            {
+                "id": "5",
+                "nom": "Comparaison switch",
+                "description": "La structure conditionnelle 'switch' en surbrillance contient des comparaisons."
+            },
+            {
+                "id": "6",
+                "nom": "Donnée inutilisée",
+                "description": "$1 La donnée $DATA n'est pas utilisée. $2 Les données $DATA ne sont pas utilisées."
+            },
+            {
+                "id": "7",
+                "nom": "Donnée magique",
+                "description": "$1 La donnée $DATA ne provient de nulle part. $2 Les données $DATA ne proviennent de nulle part."
+            },
+            {
+                "id": "8",
+                "nom": "Résultat inutilisé",
+                "description": "$1 Le résultat $DATA n'est pas utilisé. $2 Les résultats $DATA ne sont pas utilisés."
+            },
+            {
+                "id": "9",
+                "nom": "Syntaxe assignation",
+                "description": "L'assignation en surbrillance n'est pas syntaxiquement correcte."
+            },
+            {
+                "id": "10",
+                "nom": "Syntaxe comparaison",
+                "description": "La comparaison en surbrillance n'est pas syntaxiquement correcte."
+            },
+            {
+                "id": "11",
+                "nom": "Types inconsistants alternatifs",
+                "description": "La variable $DATA est inconsistante"
+            }
+        ]
+    }
+}

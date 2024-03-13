@@ -84,23 +84,29 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
      * @returns {string}
      * @description Cette méthode renvoie un message indiquant que des variables sont dynamiquement typées.
      */
-    toString() {
-        if(this._nomsVariables.length == 1)
-        {
-            return "La variable " + this._nomsVariables[0] + " est dynamiquement typée.";
+    toString(affichageErreur) {
+        let description = affichageErreur.getDescriptionAnomalie("AvertissementConceptuel", 1);
+        console.log(description)
+        if(this._nomsVariables.length == 1){
+            description = description.slice(description.indexOf("$1") + 2, description.indexOf("$2") - 1);
+            description = description.replace("$DATA", this._nomsVariables[0]);
+            return description;
         }
         else {
-            let chaine = "Les variables ";
-            for(let i = 0; i < this._nomsVariables.length; i++) {
-                if(i == this._nomsVariables.length - 1) {
-                    chaine += this._nomsVariables[i] + " ";
+            let variables = "";
+            for(let i = 0; i < this._nomsVariables.length; i++)
+            {
+                if(i == this._nomsVariables.length - 1)
+                {
+                    variables += this._nomsVariables[i];
                 }
                 else {
-                    chaine += this._nomsVariables[i] + ", ";
+                    variables += this._nomsVariables[i] + ", ";
                 }
             }
-            chaine += "sont dynamiquement typées.";
-            return chaine;
+            description = description.slice(description.indexOf("$2") + 2);
+            description = description.replace("$DATA", variables);
+            return description;
         }
     }
 }
