@@ -420,6 +420,7 @@ class PlanTravail extends HTMLElement {
 		newElement.setPosition();
 		this.appendChild(newElement);
 		this._editeur.ajouterEvenement(new EvenementCreationElement(newElement, this));
+		return newElement;
 	}
 
 	updateAllLines() {

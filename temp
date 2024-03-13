@@ -1,0 +1,27 @@
++ _logoAlgoForge : HTMLElement
++ _themeSelect : HTMLSelectElement
++ _indicateurZoom : IndicateurZoom
++ _currentTool : Entier
++ _listeTools : Array<HTMLElement>
++ _typesElements : Array<Class>
++ _boutonPointeur : HTMLElement
++ _undoButton : HTMLElement
++ _redoButton : HTMLElement
++ _pointePrecedementLien : ElementGraphique
++ _menuDeroulantFichier : HTMLElement
++ _menuDeroulantEdition : HTMLElement
++ _menuDeroulantAide : HTMLElement
++ _espacePrincipal : PlanTravail
++ _planActif : PlanTravail
++ _selection : Selection
++ _selectionRectangle : new SelectionRectangle
++ _coordonneesSelection : {x: Entier, y: Entier}
++ _isSelecting : Booléen
++ _isDragging : Booléen
++ _isMoving : Booléen
++ _offsetX : Entier
++ _offsetY : Entier
++ _lastPosX : Entier
++ _lastPosY : Entier
++ _ancienPlusProche : ElementGraphique
++ MAX_CHAR_TITRE : Entier = 64;

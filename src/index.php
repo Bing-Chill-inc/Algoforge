@@ -59,6 +59,8 @@
                 <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
                 <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative"
                     title="Créer une Structure Itérative">
+                <img src="assets/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee" title="Créer une
+                    Structure Itérative Bornee">
                 <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
                     title="Créer une action d'arrêt">
                 <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">

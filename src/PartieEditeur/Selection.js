@@ -5,7 +5,7 @@
  * @extends {HTMLElement}
  */
 class Selection extends HTMLElement {
-	_dicoElementsSelectionnes; // Dictionnaire ayant pour clés les éléments graphiques sélectionnés et pour valeur la représentation graphique de la sélection.
+	_listeElementsSelectionnes;
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
 	/**

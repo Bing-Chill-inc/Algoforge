@@ -1680,7 +1680,7 @@ condition-element:hover > button.supprimer {
 }
 
 invite-bornes-pour-si {
-    width: calc(var(--sizeModifier) * 20vw);
+    min-width: calc(var(--sizeModifier) * 22vw);
     height: calc(var(--sizeModifier) * 8vw);
     border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
     border-radius: 0.5vw;
@@ -1716,6 +1716,19 @@ invite-bornes-pour-si > label {
     display: inline-block;
     white-space: nowrap;
     width: 100%;
+    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+invite-bornes-pour-si > select {
+    border: none;
+    border-bottom: 0.2vw solid var(--fgColor);
+    background: none;
+    color: var(--fgColorForward);
+    font-weight: bold;
+    font-size: calc(var(--sizeModifier) * 0.75vw);
+    display: inline-block;
+    width: 90%;
+    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
     text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 

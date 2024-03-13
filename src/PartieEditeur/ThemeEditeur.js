@@ -149,6 +149,12 @@ class ThemeEditeur extends HTMLOptionElement {
 			1
 		)}`;
 
+		document.querySelector(
+			"img#boutonStructureIterativeBornee"
+		).src = `assetsDynamiques/mini/structureIterativeBornee.php?fgColor=${this.fgColor.substring(
+			1
+		)}&bgColor=${this.bgColor.substring(1)}`;
+
 		document.querySelector("img#boutonUndo").src = `assetsDynamiques/mini/undo.php?fgColor=${this.fgColor.substring(
 			1
 		)}`;

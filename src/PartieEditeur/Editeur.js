@@ -80,6 +80,8 @@ class Editeur extends HTMLElement {
 		this._typesElements.push(StructureSwitch);
 		this._typesElements.push(StructureIterativeNonBornee);
 		this._typesElements.push(ConditionSortie);
+		this._typesElements.push(Lien);
+		this._typesElements.push(StructureIterativeBornee);
 
 		// Référencement des éléments d'interface
 		this._espacePrincipal = document.querySelector("#espacePrincipal");
@@ -100,6 +102,7 @@ class Editeur extends HTMLElement {
 		this._listeTools.push(document.querySelector("#boutonStructureIterative"));
 		this._listeTools.push(document.querySelector("#boutonConditionSortie"));
 		this._listeTools.push(document.querySelector("#boutonLien"));
+		this._listeTools.push(document.querySelector("#boutonStructureIterativeBornee"));
 
 		this._undoButton = document.querySelector("#boutonUndo");
 		this._redoButton = document.querySelector("#boutonRedo");
@@ -678,10 +681,15 @@ class Editeur extends HTMLElement {
 				if (e.keyCode === 54) {
 					// Ctrl + 6
 					e.preventDefault();
-					this.selectTool(5);
+					this.selectTool(7);
 				}
 				if (e.keyCode === 55) {
 					// Ctrl + 7
+					e.preventDefault();
+					this.selectTool(5);
+				}
+				if (e.keyCode === 56) {
+					// Ctrl + 8
 					e.preventDefault();
 					this.selectTool(6);
 				}
@@ -906,7 +914,11 @@ class Editeur extends HTMLElement {
 				) {
 					let element = this._typesElements[this._currentTool];
 					if (verbose) console.log("Création d'un élément de type " + element.name);
-					maTarget.ajouterElement(element, e.offsetX, e.offsetY, false);
+					let elemPose = maTarget.ajouterElement(element, e.offsetX, e.offsetY, false);
+					if (elemPose instanceof StructureIterativeBornee) {
+						elemPose.inviteBornes();
+						this.querySelector("invite-bornes-pour-si > input").focus();
+					}
 				}
 				if (this._currentTool === 6) {
 					if (verbose) console.log("Clic sur le plan de travail avec l'outil lien");

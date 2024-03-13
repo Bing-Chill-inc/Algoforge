@@ -173,7 +173,14 @@ class MenuContextuel extends HTMLElement {
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Structure itérative bornée", () => {
 					console.log("Ajouter une Structure itérative bornée");
-					this._editeur._planActif.ajouterElement(StructureIterativeBornee, this._x, this._y, true);
+					let struc = this._editeur._planActif.ajouterElement(
+						StructureIterativeBornee,
+						this._x,
+						this._y,
+						true
+					);
+					struc.inviteBornes();
+					this._editeur.querySelector("invite-bornes-pour-si > input").focus();
 					this.remove();
 				})
 			);
