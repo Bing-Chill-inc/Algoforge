@@ -951,7 +951,7 @@ selection-editeur {
     transition: all var(--transitionTime) ease;
     z-index: -1;
     transform: translate(-0.5vw, -0.5vw);
-    padding: 0.5vw;
+    padding: 0.75vw;
 }
 
 selection-simple {
@@ -962,7 +962,7 @@ selection-simple {
     transition: all var(--transitionTime) ease;
     z-index: -1;
     transform: translate(-0.5vw, -0.5vw);
-    padding: 0.5vw;
+    padding: 0.75vw;
 }
 
 selection-rectangle {
