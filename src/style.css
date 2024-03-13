@@ -1741,14 +1741,14 @@ invite-bornes-pour-si {
     grid-template-columns: 2fr 2fr 1fr 2fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     place-items: center;
-    padding: 1.5vw;
+    padding: calc(var(--sizeModifier) * 1.5vw);
     z-index: 3;
     box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > input {
     border: none;
-    border-bottom: 0.2vw solid var(--fgColor);
+    border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
     background: none;
     color: var(--fgColorForward);
     font-weight: bold;
@@ -1771,7 +1771,7 @@ invite-bornes-pour-si > label {
 
 invite-bornes-pour-si > select {
     border: none;
-    border-bottom: 0.2vw solid var(--fgColor);
+    border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
     background: none;
     color: var(--fgColorForward);
     font-weight: bold;
@@ -1780,11 +1780,12 @@ invite-bornes-pour-si > select {
     width: 90%;
     box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
     text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+    height: calc(var(--sizeModifier) * 1.5vw);
 }
 
 invite-bornes-pour-si > button {
     border: none;
-    border-radius: 0.5vw;
+    border-radius: calc(var(--sizeModifier) * 0.5vw);
     background-color: var(--goodColorTransparent);
     font-size: calc(var(--sizeModifier) * 0.75vw);
     display: inline-block;
