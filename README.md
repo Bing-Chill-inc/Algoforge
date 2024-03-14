@@ -35,16 +35,13 @@ mot avec Anne Hidalgo mais sachant qu’il ne fait en fait pas vraiment de sens 
 l’application et que cette boutade n’est intemporelle, nous avons opté pour ce
 nouveau nom que nous pensons plus élégant et qui dureras dans le temps.
 
-## Documentation
-
-### [Lien Vers la Documentations](https://bing-chill-inc.github.io/Algoforge/)
-
 ## Installation
 
 AlgoForge est utilisable de deux manière différent en ligne sur un navigateur ou en local sur un ordinateur.
 
 ### Utilisation en ligne :
-    -Pour utiliser AlgoForge en ligne il faut aller sur ce lien : https://algoforge.fr/
+
+Pour utiliser AlgoForge en ligne il faut aller sur ce lien : https://algoforge.fr/
 
 ### Utilisation en local avec docker:
 
@@ -57,11 +54,11 @@ AlgoForge est utilisable de deux manière différent en ligne sur un navigateur 
 
 #### Windows
 
-Lancé `install.bat`
+Lancer `install.bat`
 
 #### MacOS/Linux
 
-Lancé `install.sh`
+Lancer `install.sh`
 
 L’application est maintenant disponible ouvre un navigateur http://localhost:8000
 
@@ -72,7 +69,6 @@ L’application est maintenant disponible ouvre un navigateur http://localhost:8
 - Maxime JACOB-SAUSSEREAU : [**Fetnmax**](https://github.com/Fetnmax)
 - Fabien SPROCQ : [**Sprocq**](https://github.com/Sprocq)
 - Samuel CURRAN : [**SamuelCURRAN0**](https://github.com/SamuelCURRAN0)
-**N.B** : Samuel CURRAN n'a pas associé son compte github lors de ces commit donc il n'apparaisse pas sur github mais existe dans le log
 
 ## Structure des dossier :
 
@@ -80,10 +76,3 @@ L’application est maintenant disponible ouvre un navigateur http://localhost:8
 - Le dossier src héberge le Code de l'algorithme
 - Le dossier docs contient la documentation Doxygen pour le code source
 - Le dossier Images contient les différentes images utilisé pour le repo
-
-## Autres espaces de travail :
-
-**Trello** | **Teams** | **Onedrive**
-:---------------:|:----------------:|:--------------:
-[![Trello](Images/trelloLogo.png)](https://trello.com/w/algoforge/home)| [![Teams](Images/teamsLogo.png)](https://teams.microsoft.com/l/team/19%3aMgoWvm1M95WlcTVNCbh3ZAEO-zjjG5kbKQcYDohcK9E1%40thread.tacv2/conversations?groupId=8ea72385-9a9b-4a08-8b53-9d4267d1a470&tenantId=9bf80234-fabb-4f6c-b646-90604632947a)| [![Onedrive](Images/onedriveLogo.png)](https://iutbayonne-my.sharepoint.com/:f:/g/personal/ebackes_iutbayonne_univ-pau_fr/EnFFAbPLxbFDtrf2omOOtG0BXj7KEn7ogo1GgwEaPqBbfQ?e=OoHSwL)
-
