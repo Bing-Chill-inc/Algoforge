@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size: 1.5vw;
     width: 100%;
-    height: 1.5vw;
+    height: 2vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

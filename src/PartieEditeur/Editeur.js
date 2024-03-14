@@ -394,31 +394,20 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
 				console.log("Exporter en .png");
-				var svgStr = this.exporterSVG(this._planActif, false);
-				this.exportSVGAsPNG(svgStr, `${this.querySelector("#titreAlgo").innerText}.png`);
+				this.exportPNG(
+					JSON.stringify(this._planActif.exporterEnJSON()),
+					`${this.querySelector("#titreAlgo").innerText}`
+				);
 			})
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".jpg", () => {
 				console.log("Exporter en .jpg");
-				// const capture = async () => {
-				//     const canvas = document.createElement("canvas");
-				//     const context = canvas.getContext("2d");
-				//     const video = document.createElement("video");
-
-				//     try {
-				//       const captureStream = await navigator.mediaDevices.getDisplayMedia();
-				//       video.srcObject = captureStream;
-				//       context.drawImage(video, 0, 0, window.width, window.height);
-				//       const frame = canvas.toDataURL("image/png");
-				//       captureStream.getTracks().forEach(track => track.stop());
-				//       window.location.href = frame;
-				//     } catch (err) {
-				//       console.error("Error: " + err);
-				//     }
-				//   };
-				capture();
+				this.exportJPG(
+					JSON.stringify(this._planActif.exporterEnJSON()),
+					`${this.querySelector("#titreAlgo").innerText}`
+				);
 			})
 		);
 
@@ -2148,49 +2137,60 @@ class Editeur extends HTMLElement {
 		return svgString;
 	}
 
-	exportSVGAsPNG(svgStr, outputFileName) {
-		var blob = new Blob([svgStr], { type: "image/svg+xml" });
-		var url = URL.createObjectURL(blob);
+	exportPNG(json, outputFileName) {
+		// On fait une requête POST à l'API de conversion de SVG à PNG
+		if (verbose) console.log(json);
+		fetch("https://render.algoforge.fr/png", {
+			// Make sure this points to your server URL
+			method: "POST",
+			headers: {
+				"Content-Type": "text/plain",
+			},
+			body: json,
+		})
+			.then((response) => response.blob())
+			.then((blob) => {
+				// Create a URL for the blob object
+				const imageUrl = URL.createObjectURL(blob);
 
-		// Create an image to load the SVG
-		const img = new Image();
-		img.onload = function () {
-			// Create a canvas element
-			const canvas = document.createElement("canvas");
-			canvas.width = img.width;
-			canvas.height = img.height;
+				// Create a temporary anchor element and trigger a download
+				const a = document.createElement("a");
+				a.href = imageUrl;
+				a.download = `${outputFileName}.png`; // You can name the file anything you want
+				document.body.appendChild(a); // Append the anchor to the body
+				a.click(); // Simulate a click on the anchor
+				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
+				URL.revokeObjectURL(imageUrl); // Clean up the URL object
+			})
+			.catch((error) => console.error("Error:", error));
+	}
 
-			// Draw the SVG onto the canvas
-			const ctx = canvas.getContext("2d");
-			ctx.drawImage(img, 0, 0);
+	exportJPG(json, outputFileName) {
+		// On fait une requête POST à l'API de conversion de SVG à PNG
+		if (verbose) console.log(json);
+		fetch("http://localhost:3000/jpg", {
+			// Make sure this points to your server URL
+			method: "POST",
+			headers: {
+				"Content-Type": "text/plain",
+			},
+			body: json,
+		})
+			.then((response) => response.blob())
+			.then((blob) => {
+				// Create a URL for the blob object
+				const imageUrl = URL.createObjectURL(blob);
 
-			// Convert the canvas to a PNG data URL
-			canvas.toBlob(function (blob) {
-				// Create a new URL for the blob
-				const pngUrl = URL.createObjectURL(blob);
-
-				// Download the PNG image
-				const downloadLink = document.createElement("a");
-				downloadLink.href = pngUrl;
-				downloadLink.download = outputFileName;
-				document.body.appendChild(downloadLink);
-				downloadLink.click();
-				document.body.removeChild(downloadLink);
-
-				// Optionally, free up the memory by revoking the object URL
-				URL.revokeObjectURL(pngUrl);
-			}, "image/png");
-		};
-
-		img.onerror = function (ev) {
-			console.error("Error loading SVG image.");
-			console.error(ev);
-			console.error(img.width);
-			console.error(img.height);
-		};
-
-		// Set the source of the image to the SVG data URL
-		img.src = url;
+				// Create a temporary anchor element and trigger a download
+				const a = document.createElement("a");
+				a.href = imageUrl;
+				a.download = `${outputFileName}.jpg`; // You can name the file anything you want
+				document.body.appendChild(a); // Append the anchor to the body
+				a.click(); // Simulate a click on the anchor
+				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
+				URL.revokeObjectURL(imageUrl); // Clean up the URL object
+			})
+			.catch((error) => console.error("Error:", error));
 	}
 }
 window.customElements.define("editeur-interface", Editeur);
