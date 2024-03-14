@@ -48,31 +48,23 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel
     static detecterAnomalie(unProbleme) {
         try
         {
-            const lesInformations = unProbleme.extraireInformation();
-            let lesInformationsPasTypeCorrectement = lesInformations;
-            for(let information of lesInformations)
-            {
-                if(unProbleme.getPlanTravail().leDictionnaireDesDonnees.containInformation(information._nom))
+            let dictionnaireDonnee = document.querySelector("dictionnaire-donnee"); 
+            const uneInformation = unProbleme.extraireInformationTextes()
+            if (uneInformation != null) {
+                if(dictionnaireDonnee.containInformation(uneInformation._nom))
                 {
-                    const informationDictionnaire = document.getElementById('espace1').leDictionnaireDesDonnees.getInformation(information._nom);
-                    const informationBienType = document.getElementById('espace1').leDictionnaireDesDonnees.TypeCompatible(informationDictionnaire._type, information._type)
-                    if(informationBienType)
+                    const informationDictionnaire = dictionnaireDonnee.getInformation(uneInformation._nom);
+                    console.log(informationDictionnaire._type);
+                    console.log(uneInformation._type);
+                    const informationBienType = dictionnaireDonnee.TypeCompatible(informationDictionnaire._type, uneInformation._type)
+                    if(!informationBienType)
                     {
-                        lesInformationsPasTypeCorrectement = lesInformationsPasTypeCorrectement.filter((uneinformation) => uneinformation._nom != information._nom);
+                        return [true, uneInformation];
                     }
                 }
             }
-            if(lesInformationsPasTypeCorrectement.length != 0) {
-                let pasTypeCorrectement = [];
-                for(let information of lesInformationsPasTypeCorrectement)
-                {
-                    pasTypeCorrectement.push(information._nom);
-                }
-                return [true, pasTypeCorrectement];
-            }
-            else {
-                return [false];
-            }
+            return [false];
+
         }
         catch(e)
         {

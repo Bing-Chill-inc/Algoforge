@@ -42,6 +42,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
      * @description Renvoie un message indiquant les données magiques présentes dans l'algorithme.
      */
     toString() {
+        /*
         if(this._nomsDonnees.length == 1) {
             return "La donnée " + this._nomsDonnees[0] + " ne provient de nulle part.";
         }
@@ -56,7 +57,8 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
                 }
             }
             return "Les donnée " + chaine + " ne provient de nulle part.";
-        }
+        }*/
+        return 'Dans "' + this._elementEmetteur._libelle + '" ' + this._nomsDonnees + " est une donnée qui n'a pas été précédemment saisie / calculée / prédéfinie.";
     }
     
     /**

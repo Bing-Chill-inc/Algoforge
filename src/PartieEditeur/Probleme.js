@@ -474,10 +474,10 @@ class Probleme extends ElementGraphique {
 		}
 
 		// 2
-		let donneesInutilisees = ErreurDonneeInutilisee.detecterAnomalie(this);
+		/* let donneesInutilisees = ErreurDonneeInutilisee.detecterAnomalie(this);
 		if (donneesInutilisees[0]) {
 			mesAnomalies.push(new ErreurDonneeInutilisee(this, donneesInutilisees[1]));
-		}
+		}*/
 
 		// 3
 		let resultatsInutilisees = ErreurResultatInutilisee.detecterAnomalie(this);
