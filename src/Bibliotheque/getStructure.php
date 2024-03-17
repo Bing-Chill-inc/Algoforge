@@ -17,7 +17,7 @@ function explorerDossier($dossier)
     foreach ($sousDossiers as $sousDossier) {
         // Initialiser la structure pour ce dossier
         $structureDossier = [
-            'nom' => basename($sousDossier),
+            'nom' => lireContenuFichier($sousDossier . '/nom.txt'),
             'contenu' => []
         ];
 
