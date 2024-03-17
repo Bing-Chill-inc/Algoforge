@@ -76,8 +76,9 @@ class Selection extends HTMLElement {
 
 	supprimerTout() {
 		for (var selection of this._listeElementsSelectionnes) {
-			this._editeur.ajouterEvenement(new EvenementSuppressionElement(selection._element));
+			let event = new EvenementSuppressionElement(selection._element);
 			selection._element.supprimer();
+			this._editeur.ajouterEvenement(event);
 			selection.supprimer();
 		}
 		this._listeElementsSelectionnes = [];
