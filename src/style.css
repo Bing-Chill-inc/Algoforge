@@ -454,6 +454,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
     justify-content: start;
     border-right: 0.1vw solid var(--fgColor);
     margin-left: 1%;
+    color: var(--titleColor);
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td:last-child {
