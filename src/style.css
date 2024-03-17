@@ -751,6 +751,8 @@ invite-nouvelle-bibliotheque {
     align-items: center;
     justify-content: center;
     z-index: 2048;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
 }
 
 invite-nouvelle-bibliotheque > input {
@@ -776,6 +778,12 @@ invite-nouvelle-bibliotheque > button {
     background-color: var(--fgColor);
     color: var(--bgColor);
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+invite-nouvelle-bibliotheque > button:hover {
+    background-color: var(--fgColorForward);
+    box-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo {
