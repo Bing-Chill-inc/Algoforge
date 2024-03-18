@@ -207,7 +207,7 @@ class PlanTravail extends HTMLElement {
 	 * @param {JSON} corpsJSON le corps JSON à charger sur le plan de travail
 	 * @returns {Array<ElementGraphique>} La liste des ElementGraphique chargés
 	 */
-	chargerDepuisJSON(corpsJSON, cancellable = true) {
+	chargerDepuisJSON(corpsJSON, cancellable = true, dico = true) {
 		if (corpsJSON == undefined) {
 			return [];
 		}
@@ -348,7 +348,7 @@ class PlanTravail extends HTMLElement {
 					listeElems.push(conditionSortie);
 					break;
 				case "DictionnaireDonnee":
-					this.leDictionnaireDesDonnees.chargerDepuisJSON(element);
+					if (dico) this.leDictionnaireDesDonnees.chargerDepuisJSON(element);
 				default:
 					break;
 			}

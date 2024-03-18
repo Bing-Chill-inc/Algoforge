@@ -1,14 +1,14 @@
 class Type {
 	// Enum type
 	static Boolean = "Booléen";
-	static Char = "Charactère";
-	static String = "Chaine de caractère";
-	static double = "Double";
+	static Char = "Caractère";
+	static String = "Chaine de caractères";
+	static double = "Nombre décimal";
 	static unsigned_int = "Entier non signé";
 	static int = "Entier";
 	static undefined = undefined;
 
-	static allTypes = [Type.Boolean, Type.Char, Type.String, Type.double, Type.unsigned_int, Type.int];
+	static allTypes = [Type.Boolean, Type.Char, Type.String, Type.int, Type.unsigned_int, Type.double];
 
 	// CONSTRUCTEUR
 	constructor(nom) {

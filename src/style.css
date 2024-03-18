@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size: 1.5vw;
     width: 100%;
-    height: 1.5vw;
+    height: 2vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -454,6 +454,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
     justify-content: start;
     border-right: 0.1vw solid var(--fgColor);
     margin-left: 1%;
+    color: var(--titleColor);
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td:last-child {
@@ -751,6 +752,8 @@ invite-nouvelle-bibliotheque {
     align-items: center;
     justify-content: center;
     z-index: 2048;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
 }
 
 invite-nouvelle-bibliotheque > input {
@@ -776,6 +779,12 @@ invite-nouvelle-bibliotheque > button {
     background-color: var(--fgColor);
     color: var(--bgColor);
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+invite-nouvelle-bibliotheque > button:hover {
+    background-color: var(--fgColorForward);
+    box-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo {
@@ -951,7 +960,7 @@ selection-editeur {
     transition: all var(--transitionTime) ease;
     z-index: -1;
     transform: translate(-0.5vw, -0.5vw);
-    padding: 0.5vw;
+    padding: 0.75vw;
 }
 
 selection-simple {
@@ -962,7 +971,7 @@ selection-simple {
     transition: all var(--transitionTime) ease;
     z-index: -1;
     transform: translate(-0.5vw, -0.5vw);
-    padding: 0.5vw;
+    padding: 0.75vw;
 }
 
 selection-rectangle {
@@ -1011,6 +1020,7 @@ fenetre-modale > div.contenu {
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    overflow-y: scroll;
 }
 
 fenetre-modale > div.contenu > button.fermer {

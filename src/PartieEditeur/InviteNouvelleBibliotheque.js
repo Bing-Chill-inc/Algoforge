@@ -43,6 +43,7 @@ class InviteNouvelleBibliotheque extends HTMLElement {
 		this.appendChild(this.inputNom);
 		this.appendChild(this.inputDescription);
 		this.appendChild(this.boutonAjouter);
+		this.appendChild(this.boutonCancel);
 
 		this.inputNom.placeholder = "Nom de la bibliothèque";
 		this.inputDescription.placeholder = "Description de la bibliothèque";
