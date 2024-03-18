@@ -112,7 +112,7 @@ class MenuContextuel extends HTMLElement {
 				"Coller",
 				() => {
 					console.log("Coller");
-					this._editeur.paste();
+					this._editeur._modaleNoPaste.ouvrir();
 				},
 				`${this._editeur._toucheMeta}V`
 			)
