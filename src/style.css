@@ -1020,6 +1020,7 @@ fenetre-modale > div.contenu {
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    overflow-y: scroll;
 }
 
 fenetre-modale > div.contenu > button.fermer {

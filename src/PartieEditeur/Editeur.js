@@ -41,6 +41,7 @@ class Editeur extends HTMLElement {
 	_dictionnaireDesDonnees = new DictionnaireDonnee();
 	_bibliotheque = new Bibliotheque();
 	_modaleRaccourcisClavier;
+	_modaleAPropos;
 
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -65,6 +66,13 @@ class Editeur extends HTMLElement {
 				text = text.replaceAll("{metakey}", this._toucheMeta);
 				this._modaleRaccourcisClavier = new FenetreModale(text);
 				this.appendChild(this._modaleRaccourcisClavier);
+			});
+		});
+
+		fetch("modales/about.html").then((response) => {
+			response.text().then((text) => {
+				this._modaleAPropos = new FenetreModale(text);
+				this.appendChild(this._modaleAPropos);
 			});
 		});
 
@@ -562,6 +570,13 @@ class Editeur extends HTMLElement {
 			new ElementMenu("Raccourcis clavier", () => {
 				console.log("Raccourcis clavier");
 				this._modaleRaccourcisClavier.ouvrir();
+			})
+		);
+
+		this._menuDeroulantAide.ajouterElementMenu(
+			new ElementMenu("À propos", () => {
+				console.log("À propos");
+				this._modaleAPropos.ouvrir();
 			})
 		);
 
