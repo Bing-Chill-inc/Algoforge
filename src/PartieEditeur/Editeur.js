@@ -42,6 +42,7 @@ class Editeur extends HTMLElement {
 	_bibliotheque = new Bibliotheque();
 	_modaleRaccourcisClavier;
 	_modaleAPropos;
+	_modaleNoPaste;
 
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -73,6 +74,14 @@ class Editeur extends HTMLElement {
 			response.text().then((text) => {
 				this._modaleAPropos = new FenetreModale(text);
 				this.appendChild(this._modaleAPropos);
+			});
+		});
+
+		fetch("modales/nopaste.html").then((response) => {
+			response.text().then((text) => {
+				text = text.replaceAll("{metakey}", this._toucheMeta);
+				this._modaleNoPaste = new FenetreModale(text);
+				this.appendChild(this._modaleNoPaste);
 			});
 		});
 
@@ -520,7 +529,7 @@ class Editeur extends HTMLElement {
 				"Coller",
 				() => {
 					console.log("Coller");
-					this.paste();
+					this._modaleNoPaste.ouvrir();
 				},
 				`${this._toucheMeta}V`
 			)
