@@ -384,10 +384,14 @@ class Editeur extends HTMLElement {
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
-			new ElementMenu("Partager", () => {
-				console.log("Partager");
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				"Partager",
+				() => {
+					console.log("Partager");
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Renommer", () => {
@@ -418,25 +422,33 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(sousTitreAlgorithme);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(".png", () => {
-				console.log("Exporter en .png");
-				// this.exportPNG(
-				// 	JSON.stringify(this._planActif.exporterEnJSON()),
-				// 	`${this.querySelector("#titreAlgo").innerText}`
-				// );
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				".png",
+				() => {
+					console.log("Exporter en .png");
+					// this.exportPNG(
+					// 	JSON.stringify(this._planActif.exporterEnJSON()),
+					// 	`${this.querySelector("#titreAlgo").innerText}`
+					// );
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(".jpg", () => {
-				console.log("Exporter en .jpg");
-				// this.exportJPG(
-				// 	JSON.stringify(this._planActif.exporterEnJSON()),
-				// 	`${this.querySelector("#titreAlgo").innerText}`
-				// );
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				".jpg",
+				() => {
+					console.log("Exporter en .jpg");
+					// this.exportJPG(
+					// 	JSON.stringify(this._planActif.exporterEnJSON()),
+					// 	`${this.querySelector("#titreAlgo").innerText}`
+					// );
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 
 		exporter.ajouterElementMenu(
@@ -447,10 +459,14 @@ class Editeur extends HTMLElement {
 		);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(".pdf", () => {
-				console.log("Exporter en .pdf");
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				".pdf",
+				() => {
+					console.log("Exporter en .pdf");
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 
 		let sousTitreDictionnaire = document.createElement("h3");
@@ -479,10 +495,14 @@ class Editeur extends HTMLElement {
 		);
 
 		this._menuDeroulantFichier.ajouterElementMenu(
-			new ElementMenu("Supprimer", () => {
-				console.log("Supprimer");
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				"Supprimer",
+				() => {
+					console.log("Supprimer");
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 
 		// Edition
@@ -578,16 +598,21 @@ class Editeur extends HTMLElement {
 					// this.search();
 					this._modaleNonImp.ouvrir();
 				},
-				`${this._toucheMeta}F`
+				`${this._toucheMeta}F`,
+				false
 			)
 		);
 
 		// Aide
 		this._menuDeroulantAide.ajouterElementMenu(
-			new ElementMenu("Tutoriels", () => {
-				console.log("Tutoriels");
-				this._modaleNonImp.ouvrir();
-			})
+			new ElementMenu(
+				"Tutoriels",
+				() => {
+					console.log("Tutoriels");
+					this._modaleNonImp.ouvrir();
+				},
+				false
+			)
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(

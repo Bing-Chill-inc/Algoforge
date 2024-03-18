@@ -5,23 +5,24 @@
  * @extends {ElementMenu}
  */
 class ElementMenuKeyboardTip extends ElementMenu {
-    constructor(texte, action, tip) {
-        super(texte, action);
-    
-        let spanTip = document.createElement('span');
-        spanTip.innerText = tip;
-        this.appendChild(spanTip);
-    }
+	constructor(texte, action, tip, isActive = true) {
+		super(texte, action, isActive);
 
-    get _texte() {
-        return this.innerText;
-    }
+		let spanTip = document.createElement("span");
+		spanTip.innerText = tip;
+		this.appendChild(spanTip);
+	}
 
-    set _texte(value) {
-        this.innerText = value;
-    }
+	get _texte() {
+		return this.innerText;
+	}
 
-    set _action(value) {
-        this.addEventListener('click', value);
-    }
-} window.customElements.define('element-menu-keyboard-tip', ElementMenuKeyboardTip);
+	set _texte(value) {
+		this.innerText = value;
+	}
+
+	set _action(value) {
+		this.addEventListener("click", value);
+	}
+}
+window.customElements.define("element-menu-keyboard-tip", ElementMenuKeyboardTip);

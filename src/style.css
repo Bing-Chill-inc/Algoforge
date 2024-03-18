@@ -209,6 +209,13 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > 
     scale: 1
 }
 
+element-menu.disabled,
+element-menu-compose.disabled,
+element-menu-keyboard-tip.disabled {
+    cursor: not-allowed;
+    color: var(--fgColorSemiTransparent);
+}
+
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > span {
     color: var(--fgColorForward);
     font-weight: bold;
