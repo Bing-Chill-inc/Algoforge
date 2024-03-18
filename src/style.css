@@ -706,6 +706,10 @@ bibliotheque-algorithmique > div.previewAlgo > p {
     width: 100%;
 }
 
+bibliotheque-algorithmique > div.previewAlgo > p {
+    font-size: 0.8vw;
+}
+
 bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
     width: 100%;
     height: 100%;

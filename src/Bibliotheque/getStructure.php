@@ -37,7 +37,7 @@ function explorerDossier($dossier)
                 // Ici, lire le contenu des fichiers spécifiques dans ce sous-dossier
                 $structureFichier = [
                     'nom' => lireContenuFichier($cheminComplet . '/nom.txt'),
-                    'descriptif' => lireContenuFichier($cheminComplet . '/descriptif.txt'),
+                    'descriptif' => lireContenuFichier($cheminComplet . '/descriptif.html'),
                     'algo' => lireContenuFichier($cheminComplet . '/algo.json'),
                     'path' => $cheminComplet
                 ];

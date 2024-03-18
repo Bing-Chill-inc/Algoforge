@@ -1,4 +1,0 @@
-Cette brique algorithmique décompose un problème en répétant un certain nombre de fois la résolution d'un sous-problème.
-L'arrêt de la répétition prend fin lorsque la condition d'arrêt conditionA est vérifiée et cette condition d'arrêt est évaluée au début de chaque itération.
-
-Remarque : si la condition d'arrêt est vérifiée dès la première itération, le problème de départ est considéré résolu.
