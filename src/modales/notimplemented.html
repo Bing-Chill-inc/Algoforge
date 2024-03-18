@@ -1,0 +1,59 @@
+<style>
+    .notimplemented-content {
+        width: 100%;
+        color: var(--fgColor)
+    }
+
+    .notimplemented-progressbar {
+        width: 90%;
+        height: 2vw;
+        background-color: var(--bgColor);
+        border-radius: 999em;
+        border: 0.2vw solid var(--fgColor);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        box-shadow: 0 0 0.5vw var(--fgColor);
+    }
+
+    .notimplemented-progresscursor {
+        width: 0%;
+        height: 1.8vw;
+        background-color: var(--fgColor);
+        border-radius: 999em;
+        animation: progress 3s infinite;
+        margin-left: 0.1vw;
+        margin-right: 0.1vw;
+    }
+
+    .notimplemented-progressbar:hover > .notimplemented-progresscursor {
+        background-color: var(--fgColorForward);
+    }
+
+    .notimplemented-link {
+        color: var(--fgColorForward);
+    }
+
+    @keyframes progress {
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%;
+        }
+    }
+</style>
+
+<h3>Cette fonctionnalité n'a pas encore été implémentée</h3>
+<p class="notimplemented-content">
+    Mais n'ayez crainte, elle le sera bientôt !<br>
+    Nous travaillons sur notre temps libre pour vous offrir le meilleur service possible.
+</p>
+<div class="notimplemented-progressbar">
+    <div class="notimplemented-progresscursor"></div>
+</div>
+<p class="notimplemented-content">
+    En attendant, vous pouvez consulter le code source sur <a href="https://github.com/Bing-Chill-inc/Algoforge" class="notimplemented-link">notre GitHub</a><br>
+    Peut-être que vous pourrez nous aider à l'améliorer !
+</p>

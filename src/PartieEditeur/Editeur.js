@@ -43,6 +43,7 @@ class Editeur extends HTMLElement {
 	_modaleRaccourcisClavier;
 	_modaleAPropos;
 	_modaleNoPaste;
+	_modaleNonImp;
 
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
@@ -82,6 +83,13 @@ class Editeur extends HTMLElement {
 				text = text.replaceAll("{metakey}", this._toucheMeta);
 				this._modaleNoPaste = new FenetreModale(text);
 				this.appendChild(this._modaleNoPaste);
+			});
+		});
+
+		fetch("modales/notimplemented.html").then((response) => {
+			response.text().then((text) => {
+				this._modaleNonImp = new FenetreModale(text);
+				this.appendChild(this._modaleNonImp);
 			});
 		});
 
@@ -378,6 +386,7 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Partager", () => {
 				console.log("Partager");
+				this._modaleNonImp.ouvrir();
 			})
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
@@ -411,20 +420,22 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
 				console.log("Exporter en .png");
-				this.exportPNG(
-					JSON.stringify(this._planActif.exporterEnJSON()),
-					`${this.querySelector("#titreAlgo").innerText}`
-				);
+				// this.exportPNG(
+				// 	JSON.stringify(this._planActif.exporterEnJSON()),
+				// 	`${this.querySelector("#titreAlgo").innerText}`
+				// );
+				this._modaleNonImp.ouvrir();
 			})
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".jpg", () => {
 				console.log("Exporter en .jpg");
-				this.exportJPG(
-					JSON.stringify(this._planActif.exporterEnJSON()),
-					`${this.querySelector("#titreAlgo").innerText}`
-				);
+				// this.exportJPG(
+				// 	JSON.stringify(this._planActif.exporterEnJSON()),
+				// 	`${this.querySelector("#titreAlgo").innerText}`
+				// );
+				this._modaleNonImp.ouvrir();
 			})
 		);
 
@@ -438,6 +449,7 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".pdf", () => {
 				console.log("Exporter en .pdf");
+				this._modaleNonImp.ouvrir();
 			})
 		);
 
@@ -469,6 +481,7 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Supprimer", () => {
 				console.log("Supprimer");
+				this._modaleNonImp.ouvrir();
 			})
 		);
 
@@ -562,7 +575,8 @@ class Editeur extends HTMLElement {
 				"Rechercher",
 				() => {
 					console.log("Rechercher");
-					this.search();
+					// this.search();
+					this._modaleNonImp.ouvrir();
 				},
 				`${this._toucheMeta}F`
 			)
@@ -572,6 +586,7 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("Tutoriels", () => {
 				console.log("Tutoriels");
+				this._modaleNonImp.ouvrir();
 			})
 		);
 
