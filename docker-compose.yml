@@ -5,6 +5,41 @@ services:
     image: php:8.1-apache
     container_name: php-web-app
     ports:
-      - "5204:80"
+      - "5205:80"
     volumes:
       - ./src:/var/www/html
+    depends_on:
+      - db_postgres
+
+  db_postgres:
+    image: postgres:17
+    container_name: db_postgres
+    environment:  
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - db_network
+
+  pgmyadmin:
+    image: dpage/pgadmin4:8.12
+    container_name: pgmyadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - "5300:80"
+    networks:
+      - db_network
+    depends_on:
+      - db_postgres
+
+volumes:
+  db_data: {}
+
+networks:
+  db_network: {}
