@@ -107,6 +107,8 @@ class Editeur extends HTMLElement {
 		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
 		this.appendChild(this._bibliotheque);
+		document.getElementById("barreOutilsGauche").appendChild(this._bibliotheque);
+		document.getElementById("barreOutilsGauche").appendChild(this._dictionnaireDesDonnees);
 
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Probleme);

@@ -19,9 +19,11 @@ class DictionnaireDonnee extends HTMLElement {
 		this._mesInformations = listeVariable;
 
 		// Affichage
+		let barreOutilsGauche = document.getElementById("barreOutilsGauche");
 		let iconeDico = document.createElement("div");
 		iconeDico.classList.add("img");
 		this.appendChild(iconeDico);
+		barreOutilsGauche.appendChild(this);
 
 		this.addEventListener("click", () => {
 			this.ouvrir();
