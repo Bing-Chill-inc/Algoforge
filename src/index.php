@@ -52,21 +52,26 @@
                 </select>
             </header>
             <div class="barreOutilsHorizontale">
-                <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
-                <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
-                <img src="assets/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
-                <img src="assets/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
-                <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
-                <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative"
-                    title="Créer une Structure Itérative">
-                <img src="assets/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee" title="Créer une
-                    Structure Itérative Bornee">
-                <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
-                    title="Créer une action d'arrêt">
-                <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
-                <div class="undoRedo">
-                    <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
-                    <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
+                <div id="dicobiblioControl"></div>
+                <div id="itemsControl">
+                    <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
+                    <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
+                    <img src="assets/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
+                    <img src="assets/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
+                    <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
+                    <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative"
+                        title="Créer une Structure Itérative">
+                    <img src="assets/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee" title="Créer une
+                        Structure Itérative Bornee">
+                    <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
+                        title="Créer une action d'arrêt">
+                    <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
+                </div>
+                <div id="actionsControl">
+                    <div class="undoRedo">
+                        <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
+                        <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
+                    </div>
                 </div>
             </div>
             <div id="espacePrincipal_wrapper">

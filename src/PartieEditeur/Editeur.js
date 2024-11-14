@@ -105,9 +105,8 @@ class Editeur extends HTMLElement {
 		});
 
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
-		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
-		this.appendChild(this._bibliotheque);
+		
 
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Probleme);
@@ -127,8 +126,11 @@ class Editeur extends HTMLElement {
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
-		this._barreOutilHorizontale = document.querySelector(".barreOutilsHorizontale");
+		document.getElementById("dicobiblioControl").appendChild(this._bibliotheque);
+		document.getElementById("dicobiblioControl").appendChild(this._dictionnaireDesDonnees);
+		this._barreOutilHorizontale = document.querySelector("#actionsControl");
 		this._barreOutilHorizontale.appendChild(this._indicateurZoom);
+		
 
 		this._boutonPointeur = document.querySelector("#boutonPointeur");
 
@@ -812,10 +814,12 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("dragover", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 		});
 
 		this.addEventListener("drop", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 
 			try {
@@ -877,6 +881,7 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("paste", (e) => {
+			e.stopPropagation();
 			if (verbose) console.log(e);
 			if (verbose) console.log(e.clipboardData.getData("text/plain"));
 			try {
@@ -929,6 +934,8 @@ class Editeur extends HTMLElement {
 
 		// Gestion des clics sur l'éditeur
 		this.addEventListener("click", (e) => {
+			e.stopPropagation();
+			
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");
 			for (let i = 0; i < menuContextuel.length; i++) {
@@ -940,10 +947,10 @@ class Editeur extends HTMLElement {
 			}
 			if (verbose) console.log(e);
 			// Remonter le DOM depuis e.target pour obtenir un élément utilisable
-			let maTarget;
-			if (e.target.id === "espacePrincipal_wrapper") {
-				maTarget = document.getElementById("espacePrincipal");
-			} else { maTarget = e.target; }
+			let maTarget = e.target;
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
 			
 			// Gestion des clics  sur des éléments qui ne doivent pas être ciblés
 			if (e.target.classList.contains("nonCiblable")) {
@@ -998,7 +1005,7 @@ class Editeur extends HTMLElement {
 					}
 				}
 			} else if (maTarget instanceof ElementGraphique || maTarget instanceof Condition) {
-				console.log("Clic sur un élément graphique");
+				//console.log("Clic sur un élément graphique");
 				if (this._currentTool === 6) {
 					if (this._pointePrecedementLien === null) {
 						if (verbose) console.log("Premier clic sur un élément, on le pointe sil peut être décomposé");
@@ -1049,10 +1056,12 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("mousedown", function (e) {
-			let maTarget;
-			if (e.target.id === "espacePrincipal_wrapper") {
-				maTarget = document.getElementById("espacePrincipal");
-			} else { maTarget = e.target; }
+			e.stopPropagation();
+			let maTarget = e.target;
+
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
 			
 			// Sur un click molette, on active le déplacement
 			if (e.button === 1) {
@@ -1111,7 +1120,7 @@ class Editeur extends HTMLElement {
 				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
 				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
 			} else {
-				console.log("event 2");
+				//console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
@@ -1121,7 +1130,8 @@ class Editeur extends HTMLElement {
 				}
 			}
 		});
-		this.addEventListener("mouseup", function () {
+		this.addEventListener("mouseup", function (e) {
+			e.stopPropagation();
 			if (this._evenementDeplacement != null) {
 				if (this._evenementDeplacement.estDecale() && this._isDragging) {
 					this.ajouterEvenement(this._evenementDeplacement);
@@ -1137,6 +1147,7 @@ class Editeur extends HTMLElement {
 			this._selectionRectangle.placer(0, 0, 0, 0);
 		});
 		this.addEventListener("mousemove", function (e) {
+			e.stopPropagation();
 			if (this._isMoving) {
 				if (e.clientX - this._lastPosX > 100 || e.clientX - this._lastPosX < -100) {
 					this._lastPosX = e.clientX;
@@ -1240,6 +1251,7 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("contextmenu", function (e) {
+			e.stopPropagation();
 			e.preventDefault();
 
 			// Calculer la position du menu contextuel
