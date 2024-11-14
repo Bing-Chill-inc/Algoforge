@@ -52,17 +52,19 @@ canvas#canvas {
 }
 
 editeur-interface {
-    display: block;
-    width: 100vw;
-    height: 100vh;
+    /* display: block; */
+    width: calc(100vw - 30px);
+    height: calc(100vh - 15px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 15px 15px 15px;
 }
 
 editeur-interface > header {
     width: 100%;
     height: 4vw;
+    /* border: 0.1vw solid var(--fgColor); */
     background-color: var(--bgColor);
     display: flex;
     flex-direction: row;
@@ -88,7 +90,6 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons {
     width: fit-content;
     display: flex;
     flex-direction: row;
-    padding: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button {
@@ -270,23 +271,32 @@ editeur-interface > header > select#theme {
     font-size: 1vw;
     color: var(--fgColor);
     cursor: pointer;
-    display: none;
+
+}
+
+#boutonPointeur, #boutonProbleme, #boutonProcedure,
+#boutonStructureSi, #boutonStructureSwitch, #boutonStructureIterative,
+#boutonStructureIterativeBornee, #boutonConditionSortie, #boutonLien,
+#boutonUndo, #boutonRedo {
+    width: 24px;
+    height: 24px;
 }
 
 editeur-interface > div.barreOutilsHorizontale {
-    width: 99.9%;
-    height: 2vw;
-    border-top: none;
-    border-radius: 0 0 1vw 1vw;
+    width: calc(100vw - 60px);
+    height: 40px;
+    border: none;
+    border-radius: .6em;
     background-color: var(--bgColor);;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 2%;
-    position: fixed;
+    position: absolute;
     z-index: 4;
-    top: 4.2vw;
+    bottom: 46px;
+    left: 30px;
 }
 
 editeur-interface > div.barreOutilsHorizontale > img {
@@ -325,8 +335,14 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* position: absolute;
+    left: 6%; */
+}
+
+#titre_wrapper {
     position: absolute;
-    left: 6%;
+    top: 20vh;
+    left: 30px;
 }
 
 editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
@@ -916,17 +932,13 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
 }
 
 indicateur-zoom {
-    position: fixed;
-    bottom: 2vw;
-    right: 2vw;
     display: grid;
     place-items: center;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr;
     width: 10vw;
     height: 3vw;
-    background-color: var(--fgColorTransparent);
-    z-index: 258;
+    /* background-color: var(--fgColorTransparent); */
 }
 
 indicateur-zoom > .zoomDisplay {
@@ -935,7 +947,8 @@ indicateur-zoom > .zoomDisplay {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1vw;
+    font-size: 16px;
+    color: #f2fbff;
 }
 
 indicateur-zoom > button {
@@ -943,8 +956,9 @@ indicateur-zoom > button {
     height: 100%;
     background: none;
     border: none;
-    font-size: 2vw;
-    color: var(--fgColor);
+    font-size: 26px;
+    /* color: var(--fgColor); */
+    color: #f2fbff;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1052,11 +1066,39 @@ fenetre-modale > div.contenu > button.fermer:hover {
 }
 
 plan-travail {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    display: flex;
+    /* border: 0.1vw solid var(--fgColor); */
     position: relative;
     overflow: scroll;
+    scrollbar-width: 10;
+    scrollbar-color: var(--fgColor) transparent;
+    background-color:  #151b23;
+    /* border-radius: .8em; */
 }
+
+#espacePrincipal_wrapper {
+    width: 100%;
+    height: 100%;
+    border: 0.1vw solid var(--fgColor);
+    position: relative;
+    overflow: hidden;
+    background-color: #151b23;
+    /* background-color: transparent; */
+    border-radius: .8em;
+}
+
+/* plan-travail::before {
+    position: absolute;
+    content: "";
+    width: calc(90vw - 30px);
+    height: calc(90vh - 15px);
+    border: 0.1vw solid var(--fgColor);
+    background-color: #151b23;
+    overflow: hidden;
+    border-radius: .8em;
+} */
 
 sous-plan-travail {
     width: 100%;

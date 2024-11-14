@@ -33,6 +33,7 @@ class Editeur extends HTMLElement {
 	_lastPosY = 0;
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
+	_barreOutilHorizontale = null;
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -107,8 +108,6 @@ class Editeur extends HTMLElement {
 		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
 		this.appendChild(this._bibliotheque);
-		this.querySelector("#barreOutilsGauche").appendChild(this._bibliotheque);
-		this.querySelector("#barreOutilsGauche").appendChild(this._dictionnaireDesDonnees);
 
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Probleme);
@@ -128,7 +127,8 @@ class Editeur extends HTMLElement {
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
-		this.appendChild(this._indicateurZoom);
+		this._barreOutilHorizontale = document.querySelector(".barreOutilsHorizontale");
+		this._barreOutilHorizontale.appendChild(this._indicateurZoom);
 
 		this._boutonPointeur = document.querySelector("#boutonPointeur");
 
@@ -148,57 +148,57 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantEdition = document.querySelector("#menuDeroulantEdition");
 		this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
 
-		// this.querySelector("#titreAlgo").addEventListener("input", (event) => {
-		// 	// Update le titre de l'onglet
-		// 	document.title = "Algoforge - " + event.target.innerText;
-		// });
+		this.querySelector("#titreAlgo").addEventListener("input", (event) => {
+			// Update le titre de l'onglet
+			document.title = "Algoforge - " + event.target.innerText;
+		});
 
-		// document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
 
-		// this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
-		// 	// On vérifie si la touche appuyée est "Entrée"
-		// 	if (event.key === "Enter") {
-		// 		// On l'empêche pour éviter le saut de ligne, qui casse le design
-		// 		event.preventDefault();
+		this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
+			// On vérifie si la touche appuyée est "Entrée"
+			if (event.key === "Enter") {
+				// On l'empêche pour éviter le saut de ligne, qui casse le design
+				event.preventDefault();
 
-		// 		// On enlève le focus de l'élément pour que le titre soit bien enregistré
-		// 		event.target.blur();
+				// On enlève le focus de l'élément pour que le titre soit bien enregistré
+				event.target.blur();
 
-		// 		// Petite animation sur le crayon
-		// 		event.target.nextElementSibling.classList.add("rotate");
-		// 		event.target.nextElementSibling.classList.add("move-right-2");
-		// 		setTimeout(() => {
-		// 			event.target.nextElementSibling.classList.remove("rotate");
-		// 			event.target.nextElementSibling.classList.remove("move-right-2");
-		// 		}, 500);
-		// 	}
+				// Petite animation sur le crayon
+				event.target.nextElementSibling.classList.add("rotate");
+				event.target.nextElementSibling.classList.add("move-right-2");
+				setTimeout(() => {
+					event.target.nextElementSibling.classList.remove("rotate");
+					event.target.nextElementSibling.classList.remove("move-right-2");
+				}, 500);
+			}
 
-		// 	if (verbose)
-		// 		console.log(
-		// 			`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
-		// 		);
-		// 	// On vérifie si il y a trop de caractères
-		// 	if (
-		// 		event.target.innerText.length >= this.MAX_CHAR_TITRE &&
-		// 		event.key !== "Backspace" &&
-		// 		event.key !== "Delete"
-		// 	) {
-		// 		if (verbose) console.log("Trop de caractères");
-		// 		// On empêche l'ajout de caractères
-		// 		event.preventDefault();
-		// 	}
-		// });
+			if (verbose)
+				console.log(
+					`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
+				);
+			// On vérifie si il y a trop de caractères
+			if (
+				event.target.innerText.length >= this.MAX_CHAR_TITRE &&
+				event.key !== "Backspace" &&
+				event.key !== "Delete"
+			) {
+				if (verbose) console.log("Trop de caractères");
+				// On empêche l'ajout de caractères
+				event.preventDefault();
+			}
+		});
 
-		// this.querySelector("#titreAlgo").nextElementSibling.addEventListener("click", (event) => {
-		// 	// On met le focus sur le titre
-		// 	event.target.previousElementSibling.focus();
-		// });
+		this.querySelector("#titreAlgo").nextElementSibling.addEventListener("click", (event) => {
+			// On met le focus sur le titre
+			event.target.previousElementSibling.focus();
+		});
 
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
 				"Thème AlgoForge",
-				"#222222",
+				"#0d1117",
 				"#838787",
 				"#83878755",
 				"#83878711",
@@ -940,7 +940,11 @@ class Editeur extends HTMLElement {
 			}
 			if (verbose) console.log(e);
 			// Remonter le DOM depuis e.target pour obtenir un élément utilisable
-			let maTarget = e.target;
+			let maTarget;
+			if (e.target.id === "espacePrincipal_wrapper") {
+				maTarget = document.getElementById("espacePrincipal");
+			} else { maTarget = e.target; }
+			
 			// Gestion des clics  sur des éléments qui ne doivent pas être ciblés
 			if (e.target.classList.contains("nonCiblable")) {
 				return;
@@ -1045,6 +1049,11 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("mousedown", function (e) {
+			let maTarget;
+			if (e.target.id === "espacePrincipal_wrapper") {
+				maTarget = document.getElementById("espacePrincipal");
+			} else { maTarget = e.target; }
+			
 			// Sur un click molette, on active le déplacement
 			if (e.button === 1) {
 				e.preventDefault();
@@ -1053,7 +1062,7 @@ class Editeur extends HTMLElement {
 				_lastPosY = e.clientY;
 				return;
 			}
-			let maTarget = e.target;
+			
 			while (
 				!(maTarget instanceof ElementGraphique) &&
 				!(maTarget instanceof PlanTravail) &&
@@ -1072,6 +1081,7 @@ class Editeur extends HTMLElement {
 					return;
 				}
 			}
+			
 			if (maTarget instanceof Condition) {
 				maTarget = maTarget._structure;
 			}
@@ -1094,11 +1104,14 @@ class Editeur extends HTMLElement {
 
 			if (verbose) console.log(`this._currentTool = ${this._currentTool}`);
 
-			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
+			if (maTarget instanceof PlanTravail  && this._currentTool == -1) {
+				console.log("event 1");
+				
 				this._isSelecting = true;
 				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
 				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
 			} else {
+				console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
