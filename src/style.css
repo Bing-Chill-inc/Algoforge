@@ -60,14 +60,14 @@ editeur-interface {
     flex-direction: column;
     align-items: center;
     padding: 0 15px 15px 15px;
+    background-color: var(--bgColor);
 }
 
 editeur-interface > header {
     width: 100%;
     height: 4vw;
     /* border: 0.1vw solid var(--fgColor); */
-    /* background-color: var(--bgColor); */
-    background-color: #151b23;
+    background-color: var(--bgColor);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -85,7 +85,7 @@ editeur-interface > header > div.titreEtMenu {
     height: 90%;
     display: flex;
     flex-direction: column;
-    justify-content:space-between;
+    justify-content: center;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons {
@@ -273,6 +273,7 @@ editeur-interface > header > select#theme {
     font-size: 1vw;
     color: var(--fgColor);
     cursor: pointer;
+    display: none;
 
 }
 
@@ -303,12 +304,13 @@ editeur-interface > div.barreOutilsHorizontale {
     border: none;
     border-radius: .6em;
     /* background-color: var(--bgColor); */
-    background-color: #151b23dd;
+    background-color: var(--bgColor);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: .8em;
     padding: 0 1em 0 1em;
+
 }
 
 .undoRedo {
@@ -405,7 +407,7 @@ dictionnaire-donnee {
     padding: 0.5vw;
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: center;
     justify-content: start;
     /* z-index: 2048; */
     font-size: 1vw;
@@ -1002,7 +1004,7 @@ selection-editeur {
     border-style: dashed;
     border-radius: 0.5vw;
     transition: all var(--transitionTime) ease;
-    z-index: -1;
+    z-index: auto;
     transform: translate(-0.5vw, -0.5vw);
     padding: 0.75vw;
 }
@@ -1013,7 +1015,7 @@ selection-simple {
     border-style: dotted;
     border-radius: 0.5vw;
     transition: all var(--transitionTime) ease;
-    z-index: -1;
+    z-index: auto;
     transform: translate(-0.5vw, -0.5vw);
     padding: 0.75vw;
 }
@@ -1024,7 +1026,7 @@ selection-rectangle {
     border-style: dashed;
     border-radius: 0.1vw;
     transition: all var(--transitionTime) ease;
-    z-index: -1;
+    z-index: auto;
     padding: 0;
     background-color: var(--fgColorTransparent);
     box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
@@ -1095,17 +1097,17 @@ plan-travail {
     scrollbar-width: 10;
     scrollbar-color: var(--fgColor) transparent;
     /* background-color:  #151b23; */
-    background-color: #0d1117;
+    /* background-color: var(--bgColorSecondary); */
     /* border-radius: .8em; */
 }
 
 #espacePrincipal_wrapper {
     width: 100%;
     height: 100%;
-    border: 0.1vw solid var(--fgColor);
+    border: 0.1vw solid var(--borderColor);
     position: relative;
     overflow: hidden;
-    background-color: #151b23;
+    background-color: var(--bgColorSecondary);
     /* background-color: transparent; */
     border-radius: .8em;
 }
