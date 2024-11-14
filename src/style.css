@@ -88,6 +88,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons {
     width: fit-content;
     display: flex;
     flex-direction: row;
+    padding: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button {
@@ -269,7 +270,7 @@ editeur-interface > header > select#theme {
     font-size: 1vw;
     color: var(--fgColor);
     cursor: pointer;
-
+    display: none;
 }
 
 editeur-interface > div.barreOutilsHorizontale {

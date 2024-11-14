@@ -107,8 +107,8 @@ class Editeur extends HTMLElement {
 		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
 		this.appendChild(this._bibliotheque);
-		document.getElementById("barreOutilsGauche").appendChild(this._bibliotheque);
-		document.getElementById("barreOutilsGauche").appendChild(this._dictionnaireDesDonnees);
+		this.querySelector("#barreOutilsGauche").appendChild(this._bibliotheque);
+		this.querySelector("#barreOutilsGauche").appendChild(this._dictionnaireDesDonnees);
 
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Probleme);
@@ -148,51 +148,51 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantEdition = document.querySelector("#menuDeroulantEdition");
 		this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
 
-		this.querySelector("#titreAlgo").addEventListener("input", (event) => {
-			// Update le titre de l'onglet
-			document.title = "Algoforge - " + event.target.innerText;
-		});
+		// this.querySelector("#titreAlgo").addEventListener("input", (event) => {
+		// 	// Update le titre de l'onglet
+		// 	document.title = "Algoforge - " + event.target.innerText;
+		// });
 
-		document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		// document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
 
-		this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
-			// On vérifie si la touche appuyée est "Entrée"
-			if (event.key === "Enter") {
-				// On l'empêche pour éviter le saut de ligne, qui casse le design
-				event.preventDefault();
+		// this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
+		// 	// On vérifie si la touche appuyée est "Entrée"
+		// 	if (event.key === "Enter") {
+		// 		// On l'empêche pour éviter le saut de ligne, qui casse le design
+		// 		event.preventDefault();
 
-				// On enlève le focus de l'élément pour que le titre soit bien enregistré
-				event.target.blur();
+		// 		// On enlève le focus de l'élément pour que le titre soit bien enregistré
+		// 		event.target.blur();
 
-				// Petite animation sur le crayon
-				event.target.nextElementSibling.classList.add("rotate");
-				event.target.nextElementSibling.classList.add("move-right-2");
-				setTimeout(() => {
-					event.target.nextElementSibling.classList.remove("rotate");
-					event.target.nextElementSibling.classList.remove("move-right-2");
-				}, 500);
-			}
+		// 		// Petite animation sur le crayon
+		// 		event.target.nextElementSibling.classList.add("rotate");
+		// 		event.target.nextElementSibling.classList.add("move-right-2");
+		// 		setTimeout(() => {
+		// 			event.target.nextElementSibling.classList.remove("rotate");
+		// 			event.target.nextElementSibling.classList.remove("move-right-2");
+		// 		}, 500);
+		// 	}
 
-			if (verbose)
-				console.log(
-					`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
-				);
-			// On vérifie si il y a trop de caractères
-			if (
-				event.target.innerText.length >= this.MAX_CHAR_TITRE &&
-				event.key !== "Backspace" &&
-				event.key !== "Delete"
-			) {
-				if (verbose) console.log("Trop de caractères");
-				// On empêche l'ajout de caractères
-				event.preventDefault();
-			}
-		});
+		// 	if (verbose)
+		// 		console.log(
+		// 			`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
+		// 		);
+		// 	// On vérifie si il y a trop de caractères
+		// 	if (
+		// 		event.target.innerText.length >= this.MAX_CHAR_TITRE &&
+		// 		event.key !== "Backspace" &&
+		// 		event.key !== "Delete"
+		// 	) {
+		// 		if (verbose) console.log("Trop de caractères");
+		// 		// On empêche l'ajout de caractères
+		// 		event.preventDefault();
+		// 	}
+		// });
 
-		this.querySelector("#titreAlgo").nextElementSibling.addEventListener("click", (event) => {
-			// On met le focus sur le titre
-			event.target.previousElementSibling.focus();
-		});
+		// this.querySelector("#titreAlgo").nextElementSibling.addEventListener("click", (event) => {
+		// 	// On met le focus sur le titre
+		// 	event.target.previousElementSibling.focus();
+		// });
 
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(

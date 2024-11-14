@@ -19,8 +19,8 @@
             <header>
                 <img alt="Logo AlgoForge" id="logoAlgoForge">
                 <div class="titreEtMenu">
-                    <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon">
-                            ✎</span></h1>
+                    <!-- <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon">
+                            ✎</span></h1> -->
                     <div class="menuButtons">
                         <button>
                             <span>Fichier</span>
@@ -45,11 +45,9 @@
                 <div class="zonePartage">
                     <button class="partage">Partager</button>
                 </div>
-                <affichage-erreur-element>
-                </affichage-erreur-element>
                 <select id="theme">
-
                 </select>
+                <img src="assets/LogoCompte.svg" alt="Logo du compte">
             </header>
             <plan-travail id="espacePrincipal">
 
