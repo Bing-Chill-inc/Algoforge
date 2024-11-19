@@ -24,8 +24,6 @@ class DictionnaireDonnee extends HTMLElement {
 		this.appendChild(iconeDico);
 
 		document.getElementById("dico_btn").addEventListener("click", () => {
-			// document.getElementById("dico_wrapper").style.zIndex = 200;
-			// document.getElementById("biblio_btn").setAttribute("disabled", true);
 			this.ouvrir();
 		});
 	}
@@ -47,7 +45,7 @@ class DictionnaireDonnee extends HTMLElement {
 
 		// Ajout de la flèche de fermeture
 		let flecheFermeture = document.createElement("span");
-		flecheFermeture.innerHTML = "➔";
+		flecheFermeture.innerHTML = "x";
 		flecheFermeture.classList.add("fermeture");
 		flecheFermeture.addEventListener("click", (e) => {
 			e.stopPropagation();

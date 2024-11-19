@@ -66,7 +66,7 @@ class Bibliotheque extends HTMLElement {
 
 		// Ajout de la flèche de fermeture
 		let flecheFermeture = document.createElement("span");
-		flecheFermeture.innerHTML = "➔";
+		flecheFermeture.innerHTML = "x";
 		flecheFermeture.classList.add("fermeture");
 		flecheFermeture.addEventListener("click", (e) => {
 			e.stopPropagation();

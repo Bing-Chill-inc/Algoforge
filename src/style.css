@@ -14,14 +14,13 @@
   }
 
   * {
-    scrollbar-color: var(--fgColor) var(--bgColor); /* Firefox */
+    scrollbar-color: var(--fgColor) var(--bgColorSecondary); /* Firefox */
   }
 
 body {
     margin: 0;
     padding: 0;
-    /* background-color: var(--bgColor); */
-    background-color: #151b23;
+    background-color: var(--bgColor);
     overflow: hidden;
     color: var(--fgColorForward);
 }
@@ -71,13 +70,13 @@ editeur-interface > header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* justify-content: space-evenly; */
+    justify-content: space-evenly;
 }
 
 editeur-interface > header > img {
     height: 80%;
     aspect-ratio: 1/1;
-    /* margin-left: 2%; */
+    margin-left: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu {
@@ -86,7 +85,6 @@ editeur-interface > header > div.titreEtMenu {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons {
@@ -230,7 +228,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > 
 }
 
 editeur-interface > header > div.zonePartage {
-    width: 100%;
+    width: 20%;
     height: 90%;
     display: flex;
     flex-direction: column;
@@ -305,13 +303,16 @@ editeur-interface > div.barreOutilsHorizontale {
     border: none;
     border-radius: .6em;
     /* background-color: var(--bgColor); */
-    background-color: var(--bgColor);
+    /* background-color: var(--bgColor); */
     display: flex;
     align-items: center;
     justify-content: center;
     gap: .8em;
     padding: 0 1em 0 1em;
-
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    outline: 1px solid #1f2b38;
 }
 
 .undoRedo {
@@ -384,8 +385,8 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 
 #dico_wrapper, #biblio_wrapper {
     position: absolute;
-    top: 10px;
-    left: 30px;
+    top: 20px;
+    left: 20px;
     border: none;
     border-radius: .8em;
 }
@@ -448,13 +449,14 @@ dictionnaire-donnee.ouvert {
     height: fit-content;
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
-    /* box-shadow: 0 0 1vw var(--fgColorSemiTransparent); */
 
     /* Version en haut */
     background-color: var(--bgColor);
-    /* border: 0.1vw solid var(--fgColor); */
     border-radius: .8em;
-    translate: 0 5vw;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    outline: 1px solid #1f2b38;
 }
 
 dictionnaire-donnee.ouvert:hover {
@@ -464,9 +466,9 @@ dictionnaire-donnee.ouvert:hover {
 dictionnaire-donnee > span.raffraichir {
     position: absolute;
     top: 0;
-    right: 3.5vw;
-    padding: 0.5vw;
-    font-size: 2vw;
+    right: 30px;
+    padding: 10px;
+    font-size: 18px;
     transition: 0.2s all ease;
 }
 
@@ -478,8 +480,8 @@ dictionnaire-donnee > span.fermeture {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 0.5vw;
-    font-size: 3vw;
+    padding: 10px;
+    font-size: 18px;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee {
@@ -501,7 +503,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.1vw solid var(--fgColor);
+    border-bottom: 0.1vw solid #1f2b38;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
@@ -511,9 +513,10 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    border-right: 0.1vw solid var(--fgColor);
+    border-right: 0.1vw solid #1f2b38;
     margin-left: 1%;
-    color: var(--titleColor);
+    color: var(--fgColor);
+    font-weight: 500;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td:last-child {
@@ -633,13 +636,14 @@ bibliotheque-algorithmique.ouvert {
     height: fit-content;
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
-    /* box-shadow: 0 0 1vw var(--fgColorSemiTransparent); */
 
     /* Version en haut */
     background-color: var(--bgColor);
-    /* border: 0.1vw solid var(--fgColor); */
     border-radius: .8em;
-    translate: 0 5vw;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    outline: 1px solid #1f2b38;
 }
 
 bibliotheque-algorithmique.ouvert:hover {
@@ -650,8 +654,8 @@ bibliotheque-algorithmique > span.fermeture {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 0.5vw;
-    font-size: 2vw;
+    padding: 10px;
+    font-size: 18px;
     rotate: 180deg;
 }
 
@@ -1140,18 +1144,17 @@ plan-travail {
 } */
 
 sous-plan-travail {
-    width: calc(100vw - 28px);
-    height: calc(100vh - 15px - 4vw);
+    width: calc(100vw - 34px);
+    height: calc(100vh - 25px - 4vw);
     position: absolute;
-    top: 4vw;
-    left: 14px;
+    top: calc(4vw + 4px);
+    left: 16px;
     overflow: scroll;
     scale: 0;
     background-color: var(--bgColorSecondary);
     transition: all 0.2s ease;
     z-index: 2;
     border-radius: .8em;
-    border: 0.1vw solid var(--borderColor);
 }
 
 sous-plan-travail.ouvert {
