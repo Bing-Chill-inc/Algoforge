@@ -7,7 +7,9 @@ class Bibliotheque extends HTMLElement {
 	constructor() {
 		super();
 
-		this.addEventListener("click", () => {
+		document.getElementById("biblio_btn").addEventListener("click", () => {
+			
+			// document.getElementById("dico_btn").setAttribute("disabled", true);
 			this.ouvrir();
 		});
 
@@ -50,6 +52,8 @@ class Bibliotheque extends HTMLElement {
 	}
 
 	ouvrir() {
+		document.querySelector("dictionnaire-donnee").fermer();
+		document.getElementById("biblio_wrapper").style.zIndex = 300;
 		if (this._estOuvert) {
 			return;
 		}
@@ -425,6 +429,8 @@ class Bibliotheque extends HTMLElement {
 	}
 
 	fermer() {
+		document.getElementById("biblio_wrapper").style.zIndex = -300;
+		// document.getElementById("dico_btn").removeAttribute("disabled");
 		if (!this._estOuvert) {
 			return;
 		}
