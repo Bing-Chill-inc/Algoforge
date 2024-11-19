@@ -1140,16 +1140,18 @@ plan-travail {
 } */
 
 sous-plan-travail {
-    width: 100%;
-    height: calc(100vh - 6vw);
+    width: calc(100vw - 28px);
+    height: calc(100vh - 15px - 4vw);
     position: absolute;
-    top: 6vw;
-    left: 0;
+    top: 4vw;
+    left: 14px;
     overflow: scroll;
     scale: 0;
     background-color: var(--bgColorSecondary);
     transition: all 0.2s ease;
     z-index: 2;
+    border-radius: .8em;
+    border: 0.1vw solid var(--borderColor);
 }
 
 sous-plan-travail.ouvert {
