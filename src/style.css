@@ -281,7 +281,7 @@ editeur-interface > header > select#theme {
 #boutonPointeur, #boutonProbleme, #boutonProcedure,
 #boutonStructureSi, #boutonStructureSwitch, #boutonStructureIterative,
 #boutonStructureIterativeBornee, #boutonConditionSortie, #boutonLien,
-#boutonUndo, #boutonRedo {
+#boutonUndo, #boutonRedo, #dico_btn > img, #biblio_btn > img {
     width: 24px;
     height: 24px;
 }
@@ -377,6 +377,19 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
     padding-right: 0.2vw;
 }
 
+#biblio_btn, #dico_btn {
+    background-color: transparent;
+    border: none;
+}
+
+#dico_wrapper, #biblio_wrapper {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    border: none;
+    border-radius: .8em;
+}
+
 /* dictionnaire-donnee {
     position: fixed;
     top: 10vw;
@@ -435,11 +448,12 @@ dictionnaire-donnee.ouvert {
     height: fit-content;
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+    /* box-shadow: 0 0 1vw var(--fgColorSemiTransparent); */
 
     /* Version en haut */
     background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    /* border: 0.1vw solid var(--fgColor); */
+    border-radius: .8em;
     translate: 0 5vw;
 }
 
@@ -619,11 +633,12 @@ bibliotheque-algorithmique.ouvert {
     height: fit-content;
     max-height: calc(80vh - 10vw);
     min-height: 15vw;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+    /* box-shadow: 0 0 1vw var(--fgColorSemiTransparent); */
 
     /* Version en haut */
     background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    /* border: 0.1vw solid var(--fgColor); */
+    border-radius: .8em;
     translate: 0 5vw;
 }
 

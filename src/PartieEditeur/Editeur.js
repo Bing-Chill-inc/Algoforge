@@ -126,8 +126,8 @@ class Editeur extends HTMLElement {
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
-		document.getElementById("dicobiblioControl").appendChild(this._bibliotheque);
-		document.getElementById("dicobiblioControl").appendChild(this._dictionnaireDesDonnees);
+		document.getElementById("biblio_wrapper").appendChild(this._bibliotheque);
+		document.getElementById("dico_wrapper").appendChild(this._dictionnaireDesDonnees);
 		this._barreOutilHorizontale = document.querySelector("#actionsControl");
 		this._barreOutilHorizontale.appendChild(this._indicateurZoom);
 		

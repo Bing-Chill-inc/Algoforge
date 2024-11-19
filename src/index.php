@@ -24,21 +24,15 @@
                     <div class="menuButtons">
                         <button>
                             <span>Fichier</span>
-                            <menu-deroulant id="menuDeroulantFichier">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantFichier"></menu-deroulant>
                         </button>
                         <button>
                             <span>Édition</span>
-                            <menu-deroulant id="menuDeroulantEdition">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantEdition"></menu-deroulant>
                         </button>
                         <button>
                             <span>Aide</span>
-                            <menu-deroulant id="menuDeroulantAide">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantAide"></menu-deroulant>
                         </button>
                     </div>
                 </div>
@@ -47,12 +41,17 @@
                 </div>
                 <affichage-erreur-element>
                 </affichage-erreur-element>
-                <select id="theme">
-
-                </select>
+                <select id="theme"></select>
             </header>
             <div class="barreOutilsHorizontale">
-                <div id="dicobiblioControl"></div>
+                <div id="dicobiblioControl">
+                    <button id="biblio_btn">
+                        <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
+                    </button>
+                    <button id="dico_btn">
+                        <img src="./assetsDynamiques/DictionnaireDonnees.php" alt="" srcset="">
+                    </button>
+                </div>
                 <div id="itemsControl">
                     <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
                     <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
@@ -82,6 +81,9 @@
             <input type="hidden" name="corpAlgo" id="corpAlgo">
             <input type="hidden" name="nomFichier" id="nomFichier">
         </form>
+
+        <div id="dico_wrapper" style="z-index: -200;"></div>
+        <div id="biblio_wrapper" style="z-index: -300;"></div>
     </body>
     <!-- Externes -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>

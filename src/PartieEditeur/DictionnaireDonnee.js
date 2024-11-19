@@ -23,7 +23,9 @@ class DictionnaireDonnee extends HTMLElement {
 		iconeDico.classList.add("img");
 		this.appendChild(iconeDico);
 
-		this.addEventListener("click", () => {
+		document.getElementById("dico_btn").addEventListener("click", () => {
+			// document.getElementById("dico_wrapper").style.zIndex = 200;
+			// document.getElementById("biblio_btn").setAttribute("disabled", true);
 			this.ouvrir();
 		});
 	}
@@ -32,6 +34,8 @@ class DictionnaireDonnee extends HTMLElement {
 
 	// METHODES
 	ouvrir() {
+		document.querySelector("bibliotheque-algorithmique").fermer();
+		document.getElementById("dico_wrapper").style.zIndex = 200;
 		document.querySelector("editeur-interface")._planActif.effectuerDictionnaireDesDonnee();
 		if (this._estOuvert) return;
 		// Supprimer tout le contenu
@@ -69,6 +73,8 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	fermer() {
+		document.getElementById("dico_wrapper").style.zIndex = -200;
+		document.getElementById("biblio_btn").removeAttribute("disabled");
 		// Supprimer tout le contenu
 		this.innerHTML = "";
 
