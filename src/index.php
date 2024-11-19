@@ -75,15 +75,14 @@
             </div>
             <div id="espacePrincipal_wrapper">
                 <plan-travail id="espacePrincipal"></plan-travail>
+                <div id="dico_wrapper" style="z-index: -200;"></div>
+                <div id="biblio_wrapper" style="z-index: -300;"></div>
             </div>
         </editeur-interface>
         <form id="transferForm" method="post" target="_blank">
             <input type="hidden" name="corpAlgo" id="corpAlgo">
             <input type="hidden" name="nomFichier" id="nomFichier">
         </form>
-
-        <div id="dico_wrapper" style="z-index: -200;"></div>
-        <div id="biblio_wrapper" style="z-index: -300;"></div>
     </body>
     <!-- Externes -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
