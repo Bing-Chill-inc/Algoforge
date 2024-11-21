@@ -70,13 +70,12 @@ editeur-interface > header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
 }
 
 editeur-interface > header > img {
     height: 80%;
     aspect-ratio: 1/1;
-    margin-left: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu {
@@ -85,6 +84,7 @@ editeur-interface > header > div.titreEtMenu {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-left: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons {
@@ -228,7 +228,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > 
 }
 
 editeur-interface > header > div.zonePartage {
-    width: 20%;
+    width: 100%;
     height: 90%;
     display: flex;
     flex-direction: column;
@@ -751,16 +751,19 @@ bibliotheque-algorithmique > div.previewAlgo {
     position: absolute;
     top: 0;
     right: -27vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
+    /* background-color: var(--bgColor); */
     padding: 0.5vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    opacity: 0.95;
+    /* opacity: 0.95; */
     overflow: hidden;
+    border-radius: .8em;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    outline: 1px solid #1f2b38;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > h4,
@@ -774,7 +777,7 @@ bibliotheque-algorithmique > div.previewAlgo > p {
     font-size: 0.8vw;
 }
 
-bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
+/* bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
     width: 100%;
     height: 100%;
     background-color: var(--bgColorTransparent);
@@ -782,7 +785,7 @@ bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
     top: 0;
     left: 0;
     z-index: 500000;
-}
+} */
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail {
     width: 25vw;
