@@ -77,37 +77,37 @@ class ThemeEditeur extends HTMLOptionElement {
 		for (let i = 0; i < sheet.cssRules.length; i++) {
 			if (sheet.cssRules[i].selectorText === ruleSelectoBibliotheque) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/BibliothequeAlgo.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
 					1
 				)})`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorBoucle) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.svg?fgColor=${this.fgColor.substring(
 					1
 				)}&bgColor=${this.bgColor.substring(1)}`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorBoucle2) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.svg?fgColor=${this.fgColor.substring(
 					1
 				)}&bgColor=${this.bgColor.substring(1)}`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorSortie) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/conditionSortie.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/conditionSortie.svg?fgColor=${this.fgColor.substring(
 					1
 				)})`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorDico) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/DictionnaireDonnees.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/DictionnaireDonnees.svg?fgColor=${this.fgColor.substring(
 					1
 				)})`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorErreur) {
 				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.php?fgColor=${this.fgColor.substring(
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
 					1
 				)})`;
 			}
@@ -115,55 +115,55 @@ class ThemeEditeur extends HTMLOptionElement {
 
 		document.querySelector(
 			"img#boutonPointeur"
-		).src = `assetsDynamiques/mini/pointeur.php?fgColor=${this.fgColor.substring(
+		).src = `assetsDynamiques/mini/pointeur.svg?fgColor=${this.fgColor.substring(
 			1
 		)}&bgColor=${this.bgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonProbleme"
-		).src = `assetsDynamiques/mini/probleme.php?fgColor=${this.fgColor.substring(1)}`;
+		).src = `assetsDynamiques/mini/probleme.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonProcedure"
-		).src = `assetsDynamiques/mini/procedure.php?fgColor=${this.fgColor.substring(1)}`;
+		).src = `assetsDynamiques/mini/procedure.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonStructureSi"
-		).src = `assetsDynamiques/mini/structureSi.php?fgColor=${this.fgColor.substring(1)}`;
+		).src = `assetsDynamiques/mini/structureSi.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonStructureSwitch"
-		).src = `assetsDynamiques/mini/structureSwitch.php?fgColor=${this.fgColor.substring(1)}`;
+		).src = `assetsDynamiques/mini/structureSwitch.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonStructureIterative"
-		).src = `assetsDynamiques/mini/structureIterative.php?fgColor=${this.fgColor.substring(
+		).src = `assetsDynamiques/mini/structureIterative.svg?fgColor=${this.fgColor.substring(
 			1
 		)}&bgColor=${this.bgColor.substring(1)}`;
 
 		document.querySelector(
 			"img#boutonConditionSortie"
-		).src = `assetsDynamiques/mini/conditionSortie.php?fgColor=${this.fgColor.substring(1)}`;
+		).src = `assetsDynamiques/mini/conditionSortie.svg?fgColor=${this.fgColor.substring(1)}`;
 
-		document.querySelector("img#boutonLien").src = `assetsDynamiques/mini/lien.php?fgColor=${this.fgColor.substring(
+		document.querySelector("img#boutonLien").src = `assetsDynamiques/mini/lien.svg?fgColor=${this.fgColor.substring(
 			1
 		)}`;
 
 		document.querySelector(
 			"img#boutonStructureIterativeBornee"
-		).src = `assetsDynamiques/mini/structureIterativeBornee.php?fgColor=${this.fgColor.substring(
+		).src = `assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${this.fgColor.substring(
 			1
 		)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector("img#boutonUndo").src = `assetsDynamiques/mini/undo.php?fgColor=${this.fgColor.substring(
+		document.querySelector("img#boutonUndo").src = `assetsDynamiques/mini/undo.svg?fgColor=${this.fgColor.substring(
 			1
 		)}`;
 
-		document.querySelector("img#boutonRedo").src = `assetsDynamiques/mini/redo.php?fgColor=${this.fgColor.substring(
+		document.querySelector("img#boutonRedo").src = `assetsDynamiques/mini/redo.svg?fgColor=${this.fgColor.substring(
 			1
 		)}`;
 
-		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.php?fgColor=${this.fgColor.substring(1)}`;
+		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		this._editeur._bibliotheque.update();
 

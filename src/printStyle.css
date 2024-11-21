@@ -1,0 +1,47 @@
+html,
+body {
+	--bgColor: #ffffff !important;
+	--fgColor: #000000 !important;
+	--fgColorSemiTransparent: #000000aa !important;
+	--fgColorTransparent: #00000055 !important;
+	--fgColorForward: #000000 !important;
+	--goodColor: #00ff00 !important;
+	--goodColorTransparent: #00ff0055 !important;
+	--errorColor: #ff0000 !important;
+	--warningColor: #ffa500 !important;
+	--titleColor: #000000 !important;
+	--glowColor: #00000000 !important;
+}
+
+header,
+div.barreOutilsHorizontale,
+indicateur-zoom,
+selection-simple,
+selection-editeur,
+div.img,
+span.fermeture {
+	display: none !important;
+}
+
+div.boucleSVG {
+	background-image: url(assetsDynamiques/boucle.svg?fgColor=000000) !important;
+}
+
+condition-sortie-element {
+	background-image: url(assetsDynamiques/conditionSortie.svg?fgColor=000000) !important;
+}
+
+sous-plan-travail {
+	position: relative !important;
+	scale: 1 !important;
+	page-break-inside: avoid !important;
+	border-top: 1px solid #000000 !important;
+}
+
+plan-travail {
+	position: relative !important;
+	border: none !important;
+	page-break-inside: avoid !important;
+	width: 100%;
+	padding-bottom: 150px;
+}

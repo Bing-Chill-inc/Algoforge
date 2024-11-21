@@ -19,7 +19,7 @@ class Bibliotheque extends HTMLElement {
 
 		// Construire le contenu de la bibliothèque
 		// On commence par récupérer la structure de la bibliothèque
-		fetch("Bibliotheque/getStructure.php")
+		fetch("/Bibliotheque/getStructure")
 			.then((response) => {
 				if (!response.ok) {
 					// If the server response is not OK, throw an error
@@ -183,7 +183,7 @@ class Bibliotheque extends HTMLElement {
 				let descriptionAlgo = document.createElement("p");
 				descriptionAlgo.innerHTML = algorithmeElement.description;
 				algorithmeElement.preview.appendChild(descriptionAlgo);
-				algorithmeElement.src = `Bibliotheque/${algorithme.path}/icone.php?fgColor=${document.body.style
+				algorithmeElement.src = `Bibliotheque/${algorithme.path}/icone.svg?fgColor=${document.body.style
 					.getPropertyValue("--fgColor")
 					.substring(1)}`;
 
@@ -348,7 +348,7 @@ class Bibliotheque extends HTMLElement {
 				let descriptionAlgo = document.createElement("p");
 				descriptionAlgo.innerHTML = algorithmeElement.description;
 				algorithmeElement.preview.appendChild(descriptionAlgo);
-				algorithmeElement.src = `assetsDynamiques/bibliocustom.php?fgColor=${document.body.style
+				algorithmeElement.src = `assetsDynamiques/bibliocustom.svg?fgColor=${document.body.style
 					.getPropertyValue("--fgColor")
 					.substring(1)}&nom=${algorithme.nom}`;
 
