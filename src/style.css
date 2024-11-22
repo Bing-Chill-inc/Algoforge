@@ -45,6 +45,7 @@ h1 {
     position: absolute;
     top: 15px;
     left: 15px;
+    z-index: 200;
 }
 
 #titreAlgo_wrapper > span {
@@ -137,7 +138,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-d
     min-height: 1vw;
     background-color: var(--bgColor);
     border: 0.1vw solid var(--fgColor);
-    border-radius: 0 0 0.2vw 0.2vw;
+    /* border-radius: 0 0 0.2vw 0.2vw; */
     display: flex;
     flex-direction: column;
     justify-content: center;
