@@ -43,7 +43,7 @@
                 </affichage-erreur-element>
                 <select id="theme"></select>
             </header>
-            <div class="barreOutilsHorizontale">
+            <div data-glow-tools class="barreOutilsHorizontale">
                 <div id="dicobiblioControl">
                     <button id="biblio_btn">
                         <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
@@ -73,8 +73,8 @@
                     </div>
                 </div>
             </div>
-            <div id="espacePrincipal_wrapper">
-                <plan-travail id="espacePrincipal"></plan-travail>
+            <div data-glow id="espacePrincipal_wrapper">
+                <plan-travail data-glow id="espacePrincipal"></plan-travail>
                 <div id="dico_wrapper" style="z-index: -200;"></div>
                 <div id="biblio_wrapper" style="z-index: -300;"></div>
             </div>
@@ -189,6 +189,45 @@
             echo "document.title = 'Algoforge - ' + titreAlgo.innerText;";
         }
         ?>
+
+        const box = document.querySelector("[data-glow]");
+
+        box.addEventListener("mouseenter", () => {
+        box.classList.add("active");
+        });
+
+        box.addEventListener("mouseleave", () => {
+        box.classList.remove("active");
+        });
+
+        const syncPointer = ({ x, y }) => {
+        document.documentElement.style.setProperty("--x", x.toFixed(2));
+        document.documentElement.style.setProperty(
+            "--xp",
+            (x / window.innerWidth).toFixed(2)
+        );
+        document.documentElement.style.setProperty("--y", y.toFixed(2));
+        document.documentElement.style.setProperty(
+            "--yp",
+            (y / window.innerHeight).toFixed(2)
+        );
+        };
+        document.body.addEventListener("pointermove", syncPointer);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const parentDiv = document.querySelector("[data-glow]");
+            const childDiv = document.querySelector(".barreOutilsHorizontale");
+
+            childDiv.addEventListener("mouseenter", () => {
+                parentDiv.classList.add("active");;
+            });
+
+            childDiv.addEventListener("mouseleave", () => {
+                parentDiv.classList.remove("active");;
+            });
+        });
+
+        
     </script>
 
 </html>
