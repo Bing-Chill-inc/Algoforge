@@ -42,11 +42,13 @@
                 <select id="theme"></select>
             </header>
             <div class="barreOutilsHorizontale">
-                <div id="actionsControl">
-                    <div class="undoRedo">
-                        <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
-                        <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
-                    </div>
+                <div id="dicobiblioControl">
+                    <button id="biblio_btn">
+                        <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
+                    </button>
+                    <button id="dico_btn">
+                        <img src="./assetsDynamiques/DictionnaireDonnees.php" alt="" srcset="">
+                    </button>
                 </div>
                 <div id="itemsControl">
                     <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
@@ -62,13 +64,11 @@
                         title="Créer une action d'arrêt">
                     <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
                 </div>
-                <div id="dicobiblioControl">
-                    <button id="biblio_btn">
-                        <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
-                    </button>
-                    <button id="dico_btn">
-                        <img src="./assetsDynamiques/DictionnaireDonnees.php" alt="" srcset="">
-                    </button>
+                <div id="actionsControl">
+                    <div class="undoRedo">
+                        <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
+                        <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
+                    </div>
                 </div>
             </div>
             <div id="espacePrincipal_wrapper">

@@ -43,7 +43,7 @@ h1 {
 
 #titreAlgo_wrapper {
     position: absolute;
-    top: 15px;
+    top: 10px;
     left: 15px;
     z-index: 200;
 }
@@ -136,9 +136,9 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-d
     min-width: 1vw;
     height: fit-content;
     min-height: 1vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    /* border-radius: 0 0 0.2vw 0.2vw; */
+    background-color: rgba(28, 39, 51, 0.35);
+    border: 1px solid rgb(31, 43, 56);
+    border-radius: .8em;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -203,8 +203,8 @@ element-menu-compose > menu-deroulant {
     min-width: 1vw;
     height: fit-content;
     min-height: 1vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    background-color: rgba(28, 39, 51, 0.35);
+    border: 1px solid var(--borderColor);
     color: var(--fgColor);
     border-radius: 0 0 0.2vw 0.2vw;
     display: flex;
@@ -233,9 +233,6 @@ element-menu-keyboard-tip.disabled {
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > span {
     color: var(--fgColorForward);
     font-weight: bold;
-    border: 0.1vw solid var(--fgColor);
-    border-bottom: none;
-    border-radius: 0.2vw 0.2vw 0 0;
     z-index: 1;
 }
 
@@ -397,8 +394,8 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 
 #dico_wrapper, #biblio_wrapper {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 45px;
+    left: 20px;
     border: none;
     border-radius: .8em;
 }
@@ -920,8 +917,8 @@ menu-contextuel {
     width: 20vw;
     height: fit-content;
     min-height: 2vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    background-color: rgba(28, 39, 51, 0.35);
+    border: 1px solid rgb(31, 43, 56);
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
@@ -941,6 +938,7 @@ element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
     text-align: left;
     white-space: nowrap;
     position: relative;
+    color: var(--fgColor);
 }
 
 menu-contextuel > element-menu:hover,
@@ -1145,6 +1143,7 @@ plan-travail {
     background-color: var(--bgColorSecondary);
     /* background-color: transparent; */
     border-radius: .8em;
+    padding: 30px 0 0 0;
 }
 
 /* plan-travail::before {
@@ -2151,4 +2150,9 @@ affichage-erreur-element .fleche, button, .numero-erreur
 
 .crayon {
     transition: all 0.5s ease;
+}
+
+menu-deroulant {
+    background-color: rgba(28, 39, 51, 0.35);
+    border: 1px solid var(--borderColor);
 }
