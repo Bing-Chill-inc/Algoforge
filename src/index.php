@@ -19,8 +19,6 @@
             <header>
                 <img alt="Logo AlgoForge" id="logoAlgoForge">
                 <div class="titreEtMenu">
-                    <!-- <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon">
-                            ✎</span></h1> -->
                     <div class="menuButtons">
                         <button>
                             <span>Fichier</span>
@@ -74,6 +72,7 @@
                 </div>
             </div>
             <div data-glow id="espacePrincipal_wrapper">
+                <h1 id="titreAlgo_wrapper"><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon">✎</span></h1>
                 <plan-travail data-glow id="espacePrincipal"></plan-travail>
                 <div id="dico_wrapper" style="z-index: -200;"></div>
                 <div id="biblio_wrapper" style="z-index: -300;"></div>
