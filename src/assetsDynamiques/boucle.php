@@ -1,25 +1,14 @@
 <?php
-
 header('Content-Type: image/svg+xml');
-echo '<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.51 386.63">
-    <defs>
-        <style>
-            .cls-1 {
-                fill: #ffffff00;
-                stroke: #' . $_GET['fgColor'] . ';
-                stroke-miterlimit: 10;
-                stroke-width: 10px;
-            }
-            .cls-2 {
-                fill: #' . $_GET['bgColor'] . ';
-                stroke: #' . $_GET['fgColor'] . ';
-                stroke-miterlimit: 10;
-                stroke-width: 10px;
-            }
-        </style>
-    </defs>
-    <circle class="cls-1 " cx="193.31" cy="193.31" r="190.81"/>
-    <polygon class="cls-2" points="377.88 154.61 334.58 229.61 421.18 229.61 377.88 154.61"/>
-</svg>';
-
 ?>
+<svg version="1.1" id="Boucle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 550.4 512" style="enable-background:new 0 0 550.4 512;" xml:space="preserve">
+<g>
+	<path fill="#<?php echo htmlspecialchars($_GET['fgColor'], ENT_QUOTES, 'UTF-8'); ?>" d="M546.8,312.6c-4.7,7.8-13.1,12.6-22.2,12.6h-22c-1.9,6.8-4.1,13.5-6.5,20C459.8,442.6,366,512,256,512
+		C114.6,512,0,397.4,0,256C0,114.6,114.6,0,256,0c108.8,0,201.8,67.9,238.8,163.6c-6.5-3.3-13.7-5.1-21-5.1c-10.2,0-20,3.4-28,9.5
+		c-10.2-22-24.3-42.3-42-59.9c-39.5-39.5-92-61.2-147.9-61.2c-55.9,0-108.4,21.8-147.9,61.2s-61.2,92-61.2,147.9
+		c0,55.8,21.8,108.4,61.2,147.9s92,61.2,147.9,61.2c55.8,0,108.4-21.8,147.9-61.2c17.3-17.3,31.2-37.1,41.4-58.7
+		c3.1-6.5,5.8-13.2,8.2-20h-30.4c-9.1,0-17.5-4.8-22.2-12.6c-4.7-7.8-4.9-17.5-0.6-25.5l50.8-94.9c0.8-1.5,1.8-2.9,2.8-4.2
+		c4.9-5.9,12.2-9.4,20-9.4c4.8,0,9.3,1.3,13.3,3.7s7.3,5.8,9.5,10l12.1,22.6l38.7,72.3C551.7,295.1,551.4,304.8,546.8,312.6z"/>
+</g>
+</svg>

@@ -1,5 +1,14 @@
 <?php
 header('Content-Type: image/svg+xml');
-
-echo '<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 401 575.43"><defs><style>.cls-1{fill:none;stroke:#' . $_GET['fgColor'] . ';stroke-miterlimit:10;stroke-width:20px;}.cls-2{isolation:isolate;font-size:409.84px;fill:#' . $_GET['fgColor'] . ';font-family:SnellRoundhand-Bold, Snell Roundhand;font-weight:700;}</style></defs><path class="cls-1" d="M352,75.3V525.9H248v.1H49v13.3a29,29,0,0,0,29,29H391V75.3Z" transform="translate(0 -2.87)"/><path class="cls-1" d="M39,525.2a29,29,0,0,1-29-29V61.2a29,29,0,0,1,29-29H352v493H39" transform="translate(0 -2.87)"/><text class="cls-2" transform="translate(70.75 352.87) scale(0.92 1)">x</text></svg>'
-    ?>
+?>
+<svg version="1.1" id="DictionnaireDonnee" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 448 512" style="enable-background:new 0 0 448 512;" xml:space="preserve">
+<path fill="white" d="M439.1,453.3c-4.2-15.4-4.2-59.3,0-74.7c5.4-4.3,8.9-11.1,8.9-18.6V24c0-13.3-10.7-24-24-24H96C43,0,0,43,0,96v320
+	c0,53,43,96,96,96h328c13.3,0,24-10.7,24-24C448.1,476.4,449.7,460.8,439.1,453.3z M147.5,231.8c7.8-6.6,9.3-11,16.3-14.8
+	c8.9-2.7,9,1.3,17.2,2.4c5.1-0.3,23.4-19.8,34.8-41.8c-5.1-12.8-13-37.4-21.2-47c-1.1,0.9-2.9,3.3-4.8,8.5
+	c-4.3,13.3-25.4,9.8-25.1-4.2c0-8.8,4.3-17.8,13.2-27.7c25.6-29.4,50.5-12.2,65.3,28.8c18.3-25.6,34.5-49.6,65.2-41.6
+	c8.9,2.3,12.4,14.3,6.1,21c-0.3,0.4-16.5,17.2-16.9,17.6c-15.9-2.4-25.1,6.8-42,35.2c6.2,15.1,15,43.1,25,51.5
+	c3.4-1.7,9.5-16,17.5-14.6c5.5-0.1,10.8,3.5,12.4,8.8c3.6,12.8-6.2,22.1-14.1,29.5c-31.6,29.2-53.7,4.7-67.6-33.5
+	c-17,26-34.4,46.2-58.8,46.2c-5.8,0-12.6-1.2-19.1-3.8C143.2,248.9,141.3,237.7,147.5,231.8z M381.4,448H96c-17.7,0-32-14.3-32-32
+	c0-17.6,14.4-32,32-32h285.4C379.5,401.1,379.5,430.9,381.4,448z"/>
+</svg>
