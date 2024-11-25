@@ -51,23 +51,23 @@
                     </button>
                 </div>
                 <div id="itemsControl">
-                    <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
-                    <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
-                    <img src="assets/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
-                    <img src="assets/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
-                    <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
-                    <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative"
+                    <img src="assetsDynamiques/mini/pointeur.php" id="boutonPointeur" class="selected" title="Sélectionner">
+                    <img src="assetsDynamiques/mini/lien.php" id="boutonLien" title="Lier des éléments">
+                    <img src="assetsDynamiques/mini/probleme.php" id="boutonProbleme" title="Créer un Problème">
+                    <img src="assetsDynamiques/mini/procedure.php" id="boutonProcedure" title="Créer une Procédure">
+                    <img src="assetsDynamiques/mini/structureSi.php" id="boutonStructureSi" title="Créer un 'SI'">
+                    <img src="assetsDynamiques/mini/structureSwitch.php" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
+                    <img src="assetsDynamiques/mini/structureIterative.php" id="boutonStructureIterative"
                         title="Créer une Structure Itérative">
-                    <img src="assets/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee" title="Créer une
+                    <img src="assetsDynamiques/mini/structureIterativeBornee.php" id="boutonStructureIterativeBornee" title="Créer une
                         Structure Itérative Bornee">
                     <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
                         title="Créer une action d'arrêt">
-                    <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
                 </div>
                 <div id="actionsControl">
                     <div class="undoRedo">
-                        <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
-                        <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
+                        <img src="assetsDynamiques/mini/undo.php" id="boutonUndo" title="Annuler">
+                        <img src="assetsDynamiques/mini/redo.php" id="boutonRedo" title="Refaire">
                     </div>
                 </div>
             </div>
@@ -225,8 +225,8 @@
                 parentDiv.classList.remove("active");;
             });
         });
-
         
+        document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src}), auto`;
     </script>
 
 </html>
