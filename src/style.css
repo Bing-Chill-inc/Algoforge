@@ -1191,8 +1191,8 @@ sous-plan-travail > span.fermeture {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 1vw;
-    font-size: 3vw;
+    padding: 15px;
+    font-size: 1.2em;
     cursor: pointer;
 }
 
