@@ -929,13 +929,18 @@ menu-contextuel {
     width: 20vw;
     height: fit-content;
     min-height: 2vw;
-    background-color: rgba(28, 39, 51, 0.35);
+    background-color: var(--bgColor);
     border: 1px solid rgb(31, 43, 56);
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
     z-index: 2048;
     font-size: 1vw;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    outline: 1px solid #1f2b38;
+    color: var(--fgColor);
 }
 menu-contextuel > element-menu,
 menu-contextuel > element-menu-compose,
@@ -950,7 +955,8 @@ element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
     text-align: left;
     white-space: nowrap;
     position: relative;
-    color: var(--fgColor);
+    /* color: var(--fgColor); */
+    
 }
 
 menu-contextuel > element-menu:hover,
@@ -979,7 +985,7 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     height: fit-content;
     min-height: 2vw;
     background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    /* border: 0.1vw solid var(--fgColor); */
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
@@ -987,6 +993,10 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     gap: 0;
     padding: 0;
     overflow: hidden;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    border: 1px solid #1f2b38;
 }
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
@@ -2256,7 +2266,4 @@ affichage-erreur-element .fleche, button, .numero-erreur
     inset: calc(var(--border-size) * -1);
     border-width: calc(var(--border-size) * 1);
   } */
-menu-deroulant {
-    background-color: rgba(28, 39, 51, 0.35);
-    border: 1px solid var(--borderColor);
-}
+
