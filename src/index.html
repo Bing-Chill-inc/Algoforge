@@ -83,6 +83,19 @@
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Pour la lecture et l'écriture de fichiers Excel -->
 
+    <script>
+        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+            alert('Utilisez un vrai navigateur comme Chrome ou Firefox pour une expérience optimale.');
+            window.location.href = "https://www.mozilla.org/fr/firefox/new/";
+        }
+
+        const isExam = false;
+
+        const editeur = document.querySelector("editeur-interface");
+        const verbose = true;
+        let titreAlgo = document.getElementById("titreAlgo");
+    </script>
+
     <!-- Dictionnaire des données-->
     <script src="PartieEditeur/Type.js"></script>
     <script src="PartieEditeur/Information.js"></script>
@@ -169,15 +182,5 @@
     <script src="PartieEditeur/EvenementEdition/EvenementEditionStructureIterative.js"></script>
 
     <script src="PartieEditeur/Editeur.js"></script>
-    <script>
-        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-            alert('Utilisez un vrai navigateur comme Chrome ou Firefox pour une expérience optimale.');
-            window.location.href = "https://www.mozilla.org/fr/firefox/new/";
-        }
-
-        const editeur = document.querySelector("editeur-interface");
-        const verbose = true;
-        let titreAlgo = document.getElementById("titreAlgo");
-    </script>
 
 </html>

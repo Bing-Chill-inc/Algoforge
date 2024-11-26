@@ -106,7 +106,7 @@ class Editeur extends HTMLElement {
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
 		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
-		this.appendChild(this._bibliotheque);
+		if (!isExam) this.appendChild(this._bibliotheque);
 
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Probleme);
@@ -1248,19 +1248,23 @@ class Editeur extends HTMLElement {
 	}
 
 	getCookie(cname) {
-		let name = cname + "=";
-		let decodedCookie = decodeURIComponent(document.cookie);
-		let ca = decodedCookie.split(";");
-		for (let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == " ") {
-				c = c.substring(1);
+		try {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(";");
+			for (let i = 0; i < ca.length; i++) {
+				let c = ca[i];
+				while (c.charAt(0) == " ") {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
 			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
+			return "";
+		} catch (error) {
+			return "";
 		}
-		return "";
 	}
 
 	chargerDepuisJSON(json) {
