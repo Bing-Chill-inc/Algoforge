@@ -41,13 +41,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 1.3vw;
-    width: 100%;
-    height: 2vw;
+    font-size: 16px;
+    width: 90%;
+    height: 3vh;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: 400;
+    display: flex;
+    align-items: center;
 }
 
 #titreAlgo_wrapper {
@@ -138,13 +140,13 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button > span {
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-deroulant {
     position: absolute;
-    top: 1.15vw;
+    top: 1.8vw;
     left: -0.025vw; /* -0.025vw pour compenser le border */
     width: fit-content;
     min-width: 1vw;
     height: fit-content;
     min-height: 1vw;
-    background-color: rgba(28, 39, 51, 0.35);
+    background-color: var(--bgColor);
     border: 1px solid rgb(31, 43, 56);
     border-radius: .8em;
     display: flex;
@@ -630,6 +632,22 @@ bibliotheque-algorithmique {
     cursor: pointer;
     transform-origin: left;
     transition: 0.2s all ease;
+
+    /* On ne met plus directement le backdrop-filter ici */
+    position: relative; /* Nécessaire pour positionner le pseudo-élément correctement */
+}
+
+bibliotheque-algorithmique::before {
+    content: ''; /* Création du pseudo-élément */
+    position: absolute; /* Position absolue par rapport au parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px); /* Flou appliqué ici */
+    -webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+    z-index: -1; /* Place le pseudo-élément derrière le contenu */
+    border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
 }
 
 /* bibliotheque-algorithmique > img {
@@ -662,8 +680,8 @@ bibliotheque-algorithmique.ouvert {
     background-color: var(--bgColor);
     border-radius: .8em;
     background: rgba( 28, 39, 51, 0.35 );
-    backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px );
+    /* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
     outline: 1px solid #1f2b38;
 }
 
@@ -937,11 +955,24 @@ menu-contextuel {
     z-index: 2048;
     font-size: 1vw;
     background: rgba( 28, 39, 51, 0.35 );
-    backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px );
+    /* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
     outline: 1px solid #1f2b38;
     color: var(--fgColor);
 }
+menu-contextuel::before {
+    content: ''; /* Création du pseudo-élément */
+    position: absolute; /* Position absolue par rapport au parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px); /* Flou appliqué ici */
+    -webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+    z-index: -1; /* Place le pseudo-élément derrière le contenu */
+    border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
+}
+
 menu-contextuel > element-menu,
 menu-contextuel > element-menu-compose,
 menu-contextuel > element-menu-keyboard-tip,
@@ -1009,11 +1040,11 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
 }
 
 indicateur-zoom {
-    display: grid;
-    place-items: center;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr;
-    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1px;
+    width: 10vw;
     height: 3vw;
     /* background-color: var(--fgColorTransparent); */
 }
@@ -1165,7 +1196,7 @@ plan-travail {
     background-color: var(--bgColorSecondary);
     /* background-color: transparent; */
     border-radius: .8em;
-    padding: 30px 0 0 0;
+    padding: 34px 0 0 0;
 }
 
 /* plan-travail::before {
@@ -1180,11 +1211,11 @@ plan-travail {
 } */
 
 sous-plan-travail {
-    width: calc(100vw - 34px);
-    height: calc(100vh - 25px - 6vw);
+    width: calc(100vw - 38px);
+    height: calc(100vh - 4vw - 56px);
     position: absolute;
-    top: calc(6vw + 4px);
-    left: 16px;
+    top: calc(36px + 4vw);
+    left: 19px;
     overflow: scroll;
     scale: 0;
     background-color: var(--bgColorSecondary);
@@ -2257,4 +2288,33 @@ affichage-erreur-element .fleche, button, .numero-erreur
     inset: calc(var(--border-size) * -1);
     border-width: calc(var(--border-size) * 1);
   } */
+menu-deroulant {
+    background-color: rgba(28, 39, 51, 0.35);
+    border: 1px solid var(--borderColor);
+}
 
+@media screen and (max-width: 780px) {
+    #boutonPointeur, #boutonProbleme, #boutonProcedure,
+    #boutonStructureSi, #boutonStructureSwitch, #boutonStructureIterative,
+    #boutonStructureIterativeBornee, #boutonConditionSortie, #boutonLien,
+    #boutonUndo, #boutonRedo, #dico_btn > img, #biblio_btn > img {
+        width: 16px;
+        height: 16px;
+    }
+
+    indicateur-zoom > .zoomDisplay {
+        font-size: 14px;
+    }
+
+    indicateur-zoom > button {
+        font-size: 18px;
+    }
+
+    h1 { 
+        font-size: 12px;
+    }
+
+    sous-plan-travail > span.fermeture {
+        font-size: 14px;
+    }
+}
