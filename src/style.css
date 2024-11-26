@@ -1,12 +1,9 @@
 :root {
-    --backdrop: hsl(0 0% 60% / 0.12);
-    --radius: 14;
-    --border: 1;
-    --backup-border: var(--backdrop);
-    --size: 200;
+    --border: 2;
+    --size: 400;
     --bg-spot-opacity: 0.022;
-    --base: 220;
-	--spread: 30;
+    --base: 225;
+	--spread: 20;
 	--outer: 1;
 }
 
@@ -84,7 +81,7 @@ editeur-interface {
     flex-direction: column;
     align-items: center;
     padding: 0 15px 15px 15px;
-    background-color: var(--bgColor);
+    background-color: var(--bgColor);   
 }
 
 editeur-interface > header {
@@ -298,16 +295,24 @@ editeur-interface > header > select#theme {
 
 }
 
-#boutonPointeur, #boutonProbleme, #boutonProcedure,
-#boutonStructureSi, #boutonStructureSwitch, #boutonStructureIterative,
-#boutonStructureIterativeBornee, #boutonConditionSortie, #boutonLien,
+#boutonPointeur, #boutonStructureIterative, #boutonConditionSortie, #boutonLien,
 #boutonUndo, #boutonRedo, #dico_btn > img, #biblio_btn > img {
     width: 24px;
     height: 24px;
 }
+#boutonProbleme, #boutonProcedure,
+#boutonStructureSi, #boutonStructureSwitch {
+    width: 34px;
+    height: 34px;
+}
+#boutonStructureIterativeBornee {
+    width: 28px;
+    height: 28px;
+}
+
 
 editeur-interface > div.barreOutilsHorizontale {
-    width: calc(100vw - 60px);
+    width: fit-content;
     height: 40px;
     display: flex;
     flex-direction: row;
@@ -317,7 +322,6 @@ editeur-interface > div.barreOutilsHorizontale {
     position: absolute;
     z-index: 4;
     bottom: 46px;
-    left: 30px;
 }
 
 #itemsControl, #actionsControl, #dicobiblioControl { 
@@ -329,7 +333,7 @@ editeur-interface > div.barreOutilsHorizontale {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .8em;
+    gap: 1em;
     padding: 0 1em 0 1em;
     background: rgba( 28, 39, 51, 0.35 );
     backdrop-filter: blur( 5px );
@@ -354,23 +358,20 @@ editeur-interface > div.barreOutilsHorizontale > img {
     padding-right: 0.2vw;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img.dragging {
+img.dragging {
     scale: 1.5; /* Make it 50% larger */
     /* You can add more styles here */
   }
-editeur-interface > div.barreOutilsHorizontale > img.selected {
-    border-bottom: 0.4vw solid var(--goodColor);
+img.selected {
     border-radius: 0.3vw;
     scale: 1.2;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img:hover {
-    border-bottom: 0.2vw solid var(--goodColorTransparent);
+img:hover {
     scale: 1.1;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img.selected:hover {
-    border-bottom: 0.4vw solid var(--goodColorTransparent);
+img.selected:hover {
     scale: 1.2;
 }
 
@@ -631,6 +632,22 @@ bibliotheque-algorithmique {
     cursor: pointer;
     transform-origin: left;
     transition: 0.2s all ease;
+
+    /* On ne met plus directement le backdrop-filter ici */
+    position: relative; /* Nécessaire pour positionner le pseudo-élément correctement */
+}
+
+bibliotheque-algorithmique::before {
+    content: ''; /* Création du pseudo-élément */
+    position: absolute; /* Position absolue par rapport au parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px); /* Flou appliqué ici */
+    -webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+    z-index: -1; /* Place le pseudo-élément derrière le contenu */
+    border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
 }
 
 /* bibliotheque-algorithmique > img {
@@ -663,8 +680,8 @@ bibliotheque-algorithmique.ouvert {
     background-color: var(--bgColor);
     border-radius: .8em;
     background: rgba( 28, 39, 51, 0.35 );
-    backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px );
+    /* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
     outline: 1px solid #1f2b38;
 }
 
@@ -930,14 +947,32 @@ menu-contextuel {
     width: 20vw;
     height: fit-content;
     min-height: 2vw;
-    background-color: rgba(28, 39, 51, 0.35);
+    background-color: var(--bgColor);
     border: 1px solid rgb(31, 43, 56);
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
     z-index: 2048;
     font-size: 1vw;
+    background: rgba( 28, 39, 51, 0.35 );
+    /* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
+    outline: 1px solid #1f2b38;
+    color: var(--fgColor);
 }
+menu-contextuel::before {
+    content: ''; /* Création du pseudo-élément */
+    position: absolute; /* Position absolue par rapport au parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px); /* Flou appliqué ici */
+    -webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+    z-index: -1; /* Place le pseudo-élément derrière le contenu */
+    border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
+}
+
 menu-contextuel > element-menu,
 menu-contextuel > element-menu-compose,
 menu-contextuel > element-menu-keyboard-tip,
@@ -951,7 +986,8 @@ element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
     text-align: left;
     white-space: nowrap;
     position: relative;
-    color: var(--fgColor);
+    /* color: var(--fgColor); */
+    
 }
 
 menu-contextuel > element-menu:hover,
@@ -980,7 +1016,7 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     height: fit-content;
     min-height: 2vw;
     background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
+    /* border: 0.1vw solid var(--fgColor); */
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
@@ -988,6 +1024,10 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     gap: 0;
     padding: 0;
     overflow: hidden;
+    background: rgba( 28, 39, 51, 0.35 );
+    backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px );
+    border: 1px solid #1f2b38;
 }
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
@@ -2166,18 +2206,9 @@ affichage-erreur-element .fleche, button, .numero-erreur
 }
 
 /* Glow specific styles */
-/* [data-glow] {
-    background-color: var(--backdrop, transparent);
-    background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
-    background-position: 50% 50%;
-    background-attachment: fixed;
-    border: var(--border-size) solid var(--backup-border);
-    position: relative;
-    touch-action: none;
-  } */
   
   [data-glow].active {
-      --border-size: calc(var(--border, 2) * 1px);
+    --border-size: calc(var(--border, 2) * 1px);
     --spotlight-size: calc(var(--size, 150) * 1px);
     --hue: calc(var(--base) + (var(--xp, 0) * var(--spread, 0)));
     background-image: radial-gradient(
@@ -2195,7 +2226,7 @@ affichage-erreur-element .fleche, button, .numero-erreur
     position: absolute;
     inset: calc(var(--border-size) * -1);
     border: var(--border-size) solid transparent;
-    border-radius: calc(var(--radius) * 1px);
+    border-radius: .8em;
     background-attachment: fixed;
     background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
     background-repeat: no-repeat;
@@ -2215,7 +2246,7 @@ affichage-erreur-element .fleche, button, .numero-erreur
       calc(var(--y, 0) * 1px),
       hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
     );
-    filter: brightness(2);
+    filter: brightness(1.5);
   }
   /* This is the spotlight */
   [data-glow].active::after {

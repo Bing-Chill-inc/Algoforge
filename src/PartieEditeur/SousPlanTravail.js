@@ -43,8 +43,8 @@ class SousPlanTravail extends PlanTravail {
 		selectionEditeur.deselectionnerTout();
 
 		// Ajout du sous-titre
-		// this._spanSousTitre.innerText = " > " + this._proprietaire._libelle;
-		// this._editeur.querySelector("#titreAlgo").parentNode.appendChild(this._spanSousTitre);
+		this._spanSousTitre.innerText = " > " + this._proprietaire._libelle;
+		this._editeur.querySelector("#titreAlgo").parentNode.appendChild(this._spanSousTitre);
 
 		this._editeur._planActif = this;
 	}

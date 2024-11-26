@@ -1,17 +1,13 @@
 <?php
 header('Content-Type: image/svg+xml');
 ?>
-<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 571.17 328.77">
-    <defs>
-        <style>
-            .cls-1 {
-                fill: none;
-                stroke: #<?php echo $_GET['fgColor'] ?>;
-                stroke-miterlimit: 10;
-                stroke-width: 25px;
-            }
-        </style>
-    </defs>
-    <rect class="cls-1" x="5" y="5" width="561.17" height="318.32" rx="22.77" />
-    <rect class="cls-1" x="50.12" y="5.45" width="471.04" height="318.32" rx="14.65" />
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 571.2 328.8" style="enable-background:new 0 0 571.2 328.8;" xml:space="preserve" width="32" height="32">
+     <g id="Procedure" fill="#<?php echo htmlspecialchars($_GET['fgColor'], ENT_QUOTES, 'UTF-8'); ?>">	<path d="M80.6,300.9c0.8,0.3,1.7,0.4,2.6,0.4h404.7c0.9,0,1.8-0.1,2.6-0.4H80.6z"/>
+	<path d="M46.4,300.9h-3c-8.9,0-16.2-7.2-16.2-16.2V43.4c0-8.9,7.2-16.2,16.2-16.2h3c1.7,0,3.2,1.4,3.2,3.2v267.3
+		C49.6,299.4,48.1,300.9,46.4,300.9z M498.2,288.3c0,6.1-3.4,11.2-8.1,12.6c-0.8,0.3-1.7,0.4-2.6,0.4H82.8c-0.9,0-1.8-0.1-2.6-0.4
+		c-4.7-1.4-8.1-6.5-8.1-12.6V40.7c0-7.2,4.8-13,10.7-13h404.7c5.9,0,10.7,5.8,10.7,13V288.3z M543.9,284.7c0,8.9-7.2,16.2-16.2,16.2
+		h-3.8c-1.7,0-3.2-1.4-3.2-3.2V30.4c0-1.7,1.4-3.2,3.2-3.2h3.8c8.9,0,16.2,7.2,16.2,16.2V284.7z M548,0H23.2C10.4,0,0,10.5,0,23.5
+		v281.7c0,13,10.4,23.5,23.2,23.5H548c12.8,0,23.2-10.5,23.2-23.5V23.5C571.2,10.5,560.8,0,548,0z"/>
+</g>
 </svg>
