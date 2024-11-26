@@ -6,6 +6,7 @@ class AffichageErreur extends HTMLElement {
 	_imageTest;
 	constructor() {
 		super();
+		if (isExam) return;
 		this.afficherBoutton();
 	}
 
