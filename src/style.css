@@ -1106,7 +1106,6 @@ selection-editeur {
     transition: all var(--transitionTime) ease;
     z-index: auto;
     transform: translate(-0.5vw, -0.5vw);
-    padding: 0.75vw;
 }
 
 selection-simple {
