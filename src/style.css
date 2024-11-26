@@ -2276,6 +2276,13 @@ menu-deroulant {
     border: 1px solid var(--borderColor);
 }
 
+/* Dock animation style */
+.dock-item{
+  cursor: pointer; 
+  transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+  transform-origin: bottom;
+}
+
 @media screen and (max-width: 780px) {
     #boutonPointeur, #boutonProbleme, #boutonProcedure,
     #boutonStructureSi, #boutonStructureSwitch, #boutonStructureIterative,

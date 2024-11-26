@@ -50,19 +50,19 @@
                         <img src="./assetsDynamiques/DictionnaireDonnees.php" alt="" srcset="">
                     </button>
                 </div>
-                <div id="itemsControl">
-                    <img src="assetsDynamiques/mini/pointeur.php" id="boutonPointeur" class="selected" title="Sélectionner">
-                    <img src="assetsDynamiques/mini/lien.php" id="boutonLien" title="Lier des éléments">
-                    <img src="assetsDynamiques/mini/probleme.php" id="boutonProbleme" title="Créer un Problème">
-                    <img src="assetsDynamiques/mini/procedure.php" id="boutonProcedure" title="Créer une Procédure">
-                    <img src="assetsDynamiques/mini/structureSi.php" id="boutonStructureSi" title="Créer un 'SI'">
-                    <img src="assetsDynamiques/mini/structureSwitch.php" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
+                <div id="itemsControl" class="dock">
+                    <img src="assetsDynamiques/mini/pointeur.php" id="boutonPointeur" class="selected dock-item" title="Sélectionner">
+                    <img src="assetsDynamiques/mini/lien.php" id="boutonLien" title="Lier des éléments" class="dock-item">
+                    <img src="assetsDynamiques/mini/probleme.php" id="boutonProbleme" title="Créer un Problème" class="dock-item">
+                    <img src="assetsDynamiques/mini/procedure.php" id="boutonProcedure" title="Créer une Procédure" class="dock-item">
+                    <img src="assetsDynamiques/mini/structureSi.php" id="boutonStructureSi" title="Créer un 'SI'" class="dock-item">
+                    <img src="assetsDynamiques/mini/structureSwitch.php" id="boutonStructureSwitch" title="Créer un 'SWITCH'" class="dock-item">
                     <img src="assetsDynamiques/mini/structureIterative.php" id="boutonStructureIterative"
-                        title="Créer une Structure Itérative">
+                        title="Créer une Structure Itérative" class="dock-item">
                     <img src="assetsDynamiques/mini/structureIterativeBornee.php" id="boutonStructureIterativeBornee" title="Créer une
-                        Structure Itérative Bornee">
+                        Structure Itérative Bornee" class="dock-item">
                     <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
-                        title="Créer une action d'arrêt">
+                        title="Créer une action d'arrêt" class="dock-item">
                 </div>
                 <div id="actionsControl">
                     <div class="undoRedo">
@@ -227,6 +227,39 @@
         });
         
         document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src}), auto`;
+
+        const dock = document.querySelector('.dock');
+        const icons = document.querySelectorAll('.dock-item');
+
+        function updateDock() {
+        icons.forEach((icon) => {
+            let scale = 1;
+            let margin = '1px';
+            const updateIcon = (s,m) => (scale = s) && (margin = m);
+            icon.isHover && updateIcon(1.5,'.6em');
+            icon.isNext && updateIcon(1.25,'.6em');
+            icon.style.transform = `scale(${scale})`;
+            icon.style.margin = `0 ${margin}`;
+        });
+        }
+
+        function reset() {
+        icons.forEach((icon) => icon.isHover = icon.isNext = false); 
+        updateDock();
+        }
+
+        function activate(e) {
+        if (e.target.matches('.dock-item')) {
+            icons.forEach((icon) => {
+            icon.isHover = icon === e.target;
+            icon.isNext = Math.abs([...icons].indexOf(icon) - [...icons].indexOf(e.target)) === 1;
+            });
+            updateDock();
+        }
+        }
+
+        dock.addEventListener('pointermove',activate,false);
+        dock.addEventListener('pointerleave',reset,false);
     </script>
 
 </html>
