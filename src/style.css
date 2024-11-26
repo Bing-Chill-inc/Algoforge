@@ -147,7 +147,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-d
     height: fit-content;
     min-height: 1vw;
     background-color: var(--bgColor);
-    border: 1px solid rgb(31, 43, 56);
+    border: 1px solid var(--borderColor2);
     border-radius: .8em;
     display: flex;
     flex-direction: column;
@@ -213,10 +213,10 @@ element-menu-compose > menu-deroulant {
     min-width: 1vw;
     height: fit-content;
     min-height: 1vw;
-    background-color: rgba(28, 39, 51, 0.35);
-    border: 1px solid var(--borderColor);
+    background-color: var(--bgColorTertiary);
+    border: 1px solid var(--borderColor2);
     color: var(--fgColor);
-    border-radius: 0 0 0.2vw 0.2vw;
+    border-radius: .8em;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -226,7 +226,7 @@ element-menu-compose > menu-deroulant {
     padding-bottom: 1vw;
     transition: all 0.1s ease;
     transform-origin: top left;
-    padding-right: 1vw;
+    padding: 6px;
 }
 element-menu-compose:hover > menu-deroulant,
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > menu-deroulant {
@@ -328,17 +328,15 @@ editeur-interface > div.barreOutilsHorizontale {
     height: 100%;
     border: none;
     border-radius: .6em;
-    /* background-color: var(--bgColor); */
-    /* background-color: var(--bgColor); */
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1em;
     padding: 0 1em 0 1em;
-    background: rgba( 28, 39, 51, 0.35 );
+    background: var(--bgColorTertiary);
     backdrop-filter: blur( 5px );
     -webkit-backdrop-filter: blur( 5px );
-    outline: 1px solid #1f2b38;
+    outline: 1px solid var(--borderColor2);
 }
 
 .undoRedo {
@@ -476,10 +474,10 @@ dictionnaire-donnee.ouvert {
     /* Version en haut */
     background-color: var(--bgColor);
     border-radius: .8em;
-    background: rgba( 28, 39, 51, 0.35 );
+    background: var(--bgColorTertiary);
     backdrop-filter: blur( 5px );
     -webkit-backdrop-filter: blur( 5px );
-    outline: 1px solid #1f2b38;
+    outline: 1px solid var(--borderColor2);
 }
 
 dictionnaire-donnee.ouvert:hover {
@@ -526,7 +524,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.1vw solid #1f2b38;
+    border-bottom: 0.1vw solid var(--borderColor2);
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
@@ -536,7 +534,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    border-right: 0.1vw solid #1f2b38;
+    border-right: 0.1vw solid var(--borderColor2);
     margin-left: 1%;
     color: var(--fgColor);
     font-weight: 500;
@@ -677,12 +675,9 @@ bibliotheque-algorithmique.ouvert {
     min-height: 15vw;
 
     /* Version en haut */
-    background-color: var(--bgColor);
     border-radius: .8em;
-    background: rgba( 28, 39, 51, 0.35 );
-    /* backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px ); */
-    outline: 1px solid #1f2b38;
+    background: var(--bgColorTertiary);
+    outline: 1px solid var(--borderColor2);
 }
 
 bibliotheque-algorithmique.ouvert:hover {
@@ -790,7 +785,6 @@ bibliotheque-algorithmique > div.previewAlgo {
     position: absolute;
     top: 0;
     right: -27vw;
-    /* background-color: var(--bgColor); */
     padding: 0.5vw;
     display: flex;
     flex-direction: column;
@@ -799,10 +793,10 @@ bibliotheque-algorithmique > div.previewAlgo {
     /* opacity: 0.95; */
     overflow: hidden;
     border-radius: .8em;
-    background: rgba( 28, 39, 51, 0.35 );
+    background: var(--bgColorTertiary);
     backdrop-filter: blur( 5px );
     -webkit-backdrop-filter: blur( 5px );
-    outline: 1px solid #1f2b38;
+    outline: 1px solid var(--borderColor2);
 }
 
 bibliotheque-algorithmique > div.previewAlgo > h4,
@@ -947,17 +941,15 @@ menu-contextuel {
     width: 20vw;
     height: fit-content;
     min-height: 2vw;
-    background-color: var(--bgColor);
-    border: 1px solid rgb(31, 43, 56);
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
     z-index: 2048;
     font-size: 1vw;
-    background: rgba( 28, 39, 51, 0.35 );
+    background: var(--bgColorTertiary);
     /* backdrop-filter: blur( 5px );
     -webkit-backdrop-filter: blur( 5px ); */
-    outline: 1px solid #1f2b38;
+    outline: 1px solid var(--borderColor2);
     color: var(--fgColor);
 }
 menu-contextuel::before {
@@ -1015,8 +1007,6 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     width: 15vw;
     height: fit-content;
     min-height: 2vw;
-    background-color: var(--bgColor);
-    /* border: 0.1vw solid var(--fgColor); */
     border-radius: 0.5vw;
     display: flex;
     flex-direction: column;
@@ -1024,10 +1014,10 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
     gap: 0;
     padding: 0;
     overflow: hidden;
-    background: rgba( 28, 39, 51, 0.35 );
+    background: var(--bgColorTertiary);
     backdrop-filter: blur( 5px );
     -webkit-backdrop-filter: blur( 5px );
-    border: 1px solid #1f2b38;
+    border: 1px solid var(--borderColor2);
 }
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {

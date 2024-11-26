@@ -34,7 +34,9 @@ class ThemeEditeur extends HTMLOptionElement {
     warningColor,
     titleColor,
     fontFamily,
-    glowColor
+    glowColor,
+    borderColor2,
+    bgColorTertiary
   ) {
     super();
     this.nom = nom;
@@ -52,6 +54,8 @@ class ThemeEditeur extends HTMLOptionElement {
     this.titleColor = titleColor;
     this.fontFamily = fontFamily;
     this.glowColor = glowColor || "#00000000";
+    this.borderColor2 = borderColor2;
+    this.bgColorTertiary = bgColorTertiary;
 
     this.innerText = this.nom;
   }
@@ -82,6 +86,8 @@ class ThemeEditeur extends HTMLOptionElement {
     document.body.style.setProperty("--warningColor", this.warningColor);
     document.body.style.setProperty("--titleColor", this.titleColor);
     document.body.style.setProperty("--glowColor", this.glowColor);
+    document.body.style.setProperty("--borderColor2", this.borderColor2);
+    document.body.style.setProperty("--bgColorTertiary", this.bgColorTertiary);
     document.body.style.fontFamily = this.fontFamily;
 
     const sheet = document.styleSheets[0];
