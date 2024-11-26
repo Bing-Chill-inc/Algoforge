@@ -41,7 +41,7 @@
                 </affichage-erreur-element>
                 <select id="theme"></select>
             </header>
-            <div data-glow-tools class="barreOutilsHorizontale">
+            <div class="barreOutilsHorizontale">
                 <div id="dicobiblioControl">
                     <button id="biblio_btn">
                         <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
@@ -218,11 +218,11 @@
             const childDiv = document.querySelector(".barreOutilsHorizontale");
 
             childDiv.addEventListener("mouseenter", () => {
-                parentDiv.classList.add("active");;
+                parentDiv.classList.add("active");
             });
 
             childDiv.addEventListener("mouseleave", () => {
-                parentDiv.classList.remove("active");;
+                parentDiv.classList.remove("active");
             });
         });
         
