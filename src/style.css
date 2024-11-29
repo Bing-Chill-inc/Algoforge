@@ -1,250 +1,309 @@
-/* Track */
-::-webkit-scrollbar-track {
-    background: var(--bgColor);
-  }
-
-  /* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--fgColor);
-  }
-
-  /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: var(--titleColor);
-  }
-
-  * {
-    scrollbar-color: var(--fgColor) var(--bgColor); /* Firefox */
-  }
-
-body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bgColor);
-    overflow: hidden;
-    color: var(--fgColorForward);
+:root {
+	--border: 2;
+	--size: 400;
+	--bg-spot-opacity: 0.022;
+	--base: 225;
+	--spread: 20;
+	--outer: 1;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin: 0;
-    padding: 0;
-    color: var(--titleColor);
+/* Track */
+::-webkit-scrollbar-track {
+	background: var(--bgColor);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: var(--fgColor);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: var(--titleColor);
+}
+
+* {
+	scrollbar-color: var(--fgColor) var(--bgColorSecondary); /* Firefox */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--bgColor);
+	overflow: hidden;
+	color: var(--fgColorForward);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	color: var(--titleColor);
 }
 
 h1 {
-    font-size: 1.5vw;
-    width: 100%;
-    height: 2vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	font-size: 16px;
+	width: 90%;
+	height: 3vh;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 400;
+	display: flex;
+	align-items: center;
+}
+
+#titreAlgo_wrapper {
+	position: absolute;
+	top: 10px;
+	left: 15px;
+}
+
+#titreAlgo_wrapper > span {
+	margin: 0 5px 0 0;
+}
+
+#titreAlgo_wrapper > span.sous-titre {
+	color: var(--fgColorForward);
 }
 
 span {
-    display: inline-block;
+	display: inline-block;
 }
 
 canvas#canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+
+/* logoAlgoForge */
+#logoAlgoForge {
+	cursor: pointer;
+}
+#logoAlgoForge:hover {
+	scale: none;
+}
+#logoAlgoForge:active {
+	scale: 0.9;
 }
 
 editeur-interface {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	/* display: block; */
+	width: calc(100vw - 30px);
+	height: calc(100vh - 15px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 15px 15px 15px;
+	background-color: var(--bgColor);
 }
 
 editeur-interface > header {
-    width: 100%;
-    height: 4vw;
-    border: 0.1vw solid var(--fgColor);
-    background-color: var(--bgColor);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
+	width: 100%;
+	height: 4vw;
+	/* border: 0.1vw solid var(--fgColor); */
+	background-color: var(--bgColor);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/* justify-content: space-evenly; */
 }
 
 editeur-interface > header > img {
-    height: 80%;
-    aspect-ratio: 1/1;
-    margin-left: 2%;
+	height: 80%;
+	aspect-ratio: 1/1;
 }
 
 editeur-interface > header > div.titreEtMenu {
-    width: 60%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content:space-between;
+	width: 60%;
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: 2%;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons {
-    width: fit-content;
-    display: flex;
-    flex-direction: row;
+	width: fit-content;
+	display: flex;
+	flex-direction: row;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button {
-    background: none;
-    border: none;
-    font-size: 1vw;
-    color: var(--fgColor);
-    cursor: pointer;
-    position: relative;
-    padding: 0;
-    padding-right: 2vw;
-    z-index: 50;
+	background: none;
+	border: none;
+	font-size: 1vw;
+	color: var(--fgColor);
+	cursor: pointer;
+	position: relative;
+	padding: 0;
+	padding-right: 2vw;
+	z-index: 50;
 }
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button > span {
-    background-color: var(--bgColor);
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding-left: 0.1vw;
-    padding-right: 0.1vw;
-    padding-top: 0.05vw;
-    padding-bottom: 0.05vw;
+	background-color: var(--bgColor);
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding-left: 0.1vw;
+	padding-right: 0.1vw;
+	padding-top: 0.05vw;
+	padding-bottom: 0.05vw;
 }
 
-editeur-interface > header > div.titreEtMenu > div.menuButtons > button > menu-deroulant {
-    position: absolute;
-    top: 1.15vw;
-    left: -0.025vw; /* -0.025vw pour compenser le border */
-    width: fit-content;
-    min-width: 1vw;
-    height: fit-content;
-    min-height: 1vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0 0 0.2vw 0.2vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scale: 0;
-    gap: 0.1vw;
-    padding-top: 1vw;
-    padding-bottom: 1vw;
-    transition: all 0.1s ease;
-    transform-origin: top left;
-    padding-right: 1vw;
-    box-shadow: 0 0 0.5vw var(--glowColor);
+editeur-interface
+	> header
+	> div.titreEtMenu
+	> div.menuButtons
+	> button
+	> menu-deroulant {
+	position: absolute;
+	top: 1.8vw;
+	left: -0.025vw;
+	width: fit-content;
+	min-width: 1vw;
+	height: fit-content;
+	min-height: 1vw;
+	background-color: var(--bgColor);
+	border: 1px solid var(--borderColor2);
+	border-radius: 0.8em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	scale: 0;
+	transition: all 0.1s ease;
+	transform-origin: top left;
+	padding: 6px;
+	box-shadow: 0 0 0.5vw var(--glowColor);
 }
 
 menu-deroulant > element-menu,
 menu-deroulant > element-menu-compose,
 menu-deroulant > element-menu-keyboard-tip {
-    padding-right: 1vw;
-    padding-left: 2%;
-    width: 100%;
-    text-align: left;
-    white-space: nowrap;
-    position: relative;
+	padding-left: 2px;
+	padding-top: 0.5vw;
+	padding-bottom: 0.5vw;
+	width: 100%;
+	text-align: left;
+	white-space: nowrap;
+	position: relative;
+	border-radius: 0.5em;
 }
 
-menu-deroulant > element-menu-keyboard-tip {
+menu-deroulant > element-menu-keyboard-tip > span {
+	width: fit-content;
+}
+
+/* menu-deroulant > element-menu-keyboard-tip {
     padding-right: 3vw;
 }
 
 menu-deroulant:has(> element-menu-keyboard-tip) {
     padding-right: 3vw !important;
-}
+} */
 
 menu-deroulant > element-menu:hover,
 menu-deroulant > element-menu-compose:hover,
 menu-deroulant > element-menu-keyboard-tip:hover {
-    background-color: var(--fgColor);
-    color: var(--bgColor);
+	background-color: var(--fgColor);
+	color: var(--bgColor);
 }
 
 element-menu-compose > span,
 menu-deroulant > element-menu-keyboard-tip > span {
-    transition: all 0.5s ease;
-    position: absolute;
-    right: 5%;
+	transition: all 0.5s ease;
+	position: absolute;
+	right: 5%;
 }
 
 element-menu-keyboard-tip > span {
-    opacity: 60%;
+	opacity: 60%;
 }
 
 element-menu-compose:hover > span {
-    position: absolute;
-    right: 2%;
-    rotate: 90deg;
+	position: absolute;
+	right: 2%;
+	rotate: 90deg;
 }
 
 element-menu-compose > menu-deroulant {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: fit-content;
-    min-width: 1vw;
-    height: fit-content;
-    min-height: 1vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    color: var(--fgColor);
-    border-radius: 0 0 0.2vw 0.2vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scale: 0;
-    gap: 0.1vw;
-    padding-top: 1vw;
-    padding-bottom: 1vw;
-    transition: all 0.1s ease;
-    transform-origin: top left;
-    padding-right: 1vw;
+	position: absolute;
+	top: 0;
+	left: 100%;
+	width: fit-content;
+	min-width: 1vw;
+	height: fit-content;
+	min-height: 1vw;
+	background-color: var(--bgColorTertiary);
+	border: 1px solid var(--borderColor2);
+	color: var(--fgColor);
+	border-radius: 0.8em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	scale: 0;
+	gap: 0.1vw;
+	/* padding-top: 1vw;
+    padding-bottom: 1vw; */
+	transition: all 0.1s ease;
+	transform-origin: top left;
+	padding: 6px;
 }
 element-menu-compose:hover > menu-deroulant,
-editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > menu-deroulant {
-    scale: 1
+editeur-interface
+	> header
+	> div.titreEtMenu
+	> div.menuButtons
+	> button:hover
+	> menu-deroulant {
+	scale: 1;
 }
 
 element-menu.disabled,
 element-menu-compose.disabled,
 element-menu-keyboard-tip.disabled {
-    cursor: not-allowed;
-    color: var(--fgColorSemiTransparent);
+	cursor: not-allowed;
+	color: var(--fgColorDisabled);
 }
 
-editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > span {
-    color: var(--fgColorForward);
-    font-weight: bold;
-    border: 0.1vw solid var(--fgColor);
-    border-bottom: none;
-    border-radius: 0.2vw 0.2vw 0 0;
-    z-index: 1;
+editeur-interface
+	> header
+	> div.titreEtMenu
+	> div.menuButtons
+	> button:hover
+	> span {
+	color: var(--fgColorHover);
+	font-weight: bold;
+	z-index: 1;
 }
 
 editeur-interface > header > div.zonePartage {
-    width: 20%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    cursor: default;
+	width: 100%;
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	cursor: default;
 }
 
 editeur-interface > header > div.zonePartage > button {
-    width: 50%;
-    height: 50%;
-    background: none;
-    border: var(--fgColor) solid 0.1vw;
-    border-radius: 1vw;
-    font-size: 1vw;
-    color: var(--fgColor);
-    cursor: default;
+	width: 50%;
+	height: 50%;
+	background: none;
+	border: var(--fgColor) solid 0.1vw;
+	border-radius: 1vw;
+	font-size: 1vw;
+	color: var(--fgColor);
+	cursor: default;
 }
 
 /* editeur-interface > header > div.compte {
@@ -261,82 +320,145 @@ editeur-interface > header > div.zonePartage > button {
     justify-content: center;
 } */ /* A remettre quand le compte sera fonctionnel */
 
-editeur-interface > header > select#theme {
-    width: 10%;
-    height: 50%;
-    background: none;
-    border: var(--fgColor) solid 0.1vw;
-    border-radius: 1vw;
-    font-size: 1vw;
-    color: var(--fgColor);
-    cursor: pointer;
+select#theme {
+	width: 10%;
+	height: 50%;
+	background: none;
+	border: var(--fgColor) solid 0.1vw;
+	border-radius: 1vw;
+	font-size: 1vw;
+	color: var(--fgColor);
+	cursor: pointer;
+	display: none;
+}
 
+#boutonPointeur,
+#boutonStructureIterative,
+#boutonConditionSortie,
+#boutonLien,
+#boutonUndo,
+#boutonRedo,
+#dico_btn > img,
+#biblio_btn > img {
+	width: 24px;
+	height: 24px;
+}
+#boutonProbleme,
+#boutonProcedure,
+#boutonAccount,
+#boutonStructureSi,
+#boutonStructureSwitch {
+	width: 34px;
+	height: 34px;
+}
+#boutonStructureIterativeBornee {
+	width: 28px;
+	height: 28px;
 }
 
 editeur-interface > div.barreOutilsHorizontale {
-    width: 99.9%;
-    height: 2vw;
-    border: 0.1vw solid var(--fgColor);
-    border-top: none;
-    border-radius: 0 0 1vw 1vw;
-    background-color: var(--bgColor);;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 2%;
-    position: fixed;
-    z-index: 4;
-    top: 4.2vw;
+	width: fit-content;
+	height: 40px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 4%;
+	position: absolute;
+	z-index: 4;
+	bottom: 46px;
+}
+
+#itemsControl,
+#actionsControl,
+#dicobiblioControl {
+	height: 100%;
+	border: none;
+	border-radius: 0.6em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+	padding: 0 1em 0 1em;
+	background: var(--bgColorTertiary);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	outline: 1px solid var(--borderColor2);
+}
+
+.undoRedo {
+	display: flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.8em;
 }
 
 editeur-interface > div.barreOutilsHorizontale > img {
-    height: 90%;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-    overflow: visible;
-    padding-left: 0.2vw;
-    padding-right: 0.2vw;
+	height: 90%;
+	aspect-ratio: 1/1;
+	cursor: pointer;
+	overflow: visible;
+	padding-left: 0.2vw;
+	padding-right: 0.2vw;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img.dragging {
-    scale: 1.5; /* Make it 50% larger */
-    /* You can add more styles here */
-  }
-editeur-interface > div.barreOutilsHorizontale > img.selected {
-    border-bottom: 0.4vw solid var(--goodColor);
-    border-radius: 0.3vw;
-    scale: 1.2;
+img.dragging {
+	scale: 1.5; /* Make it 50% larger */
+	/* You can add more styles here */
+}
+img.selected {
+	border-radius: 0.3vw;
+	scale: 1.2;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img:hover {
-    border-bottom: 0.2vw solid var(--goodColorTransparent);
-    scale: 1.1;
+img:hover {
+	scale: 1.1;
 }
 
-editeur-interface > div.barreOutilsHorizontale > img.selected:hover {
-    border-bottom: 0.4vw solid var(--goodColorTransparent);
-    scale: 1.2;
+img.selected:hover {
+	scale: 1.2;
 }
 
 editeur-interface > div.barreOutilsHorizontale > div.undoRedo {
-    width: 5%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    left: 6%;
+	width: 5%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	/* position: absolute;
+    left: 6%; */
+}
+
+#titre_wrapper {
+	position: absolute;
+	top: 20vh;
+	left: 30px;
 }
 
 editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
-    height: 80%;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-    overflow: visible;
-    padding-left: 0.2vw;
-    padding-right: 0.2vw;
+	height: 80%;
+	aspect-ratio: 1/1;
+	cursor: pointer;
+	overflow: visible;
+	padding-left: 0.2vw;
+	padding-right: 0.2vw;
+}
+
+#biblio_btn,
+#dico_btn {
+	background-color: transparent;
+	border: none;
+}
+
+#dico_wrapper,
+#biblio_wrapper {
+	position: absolute;
+	top: 45px;
+	left: 20px;
+	border: none;
+	border-radius: 0.8em;
 }
 
 /* dictionnaire-donnee {
@@ -362,159 +484,166 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 } */ /* Version à droite */
 
 dictionnaire-donnee {
-    position: fixed;
+	/* position: fixed;
     top: 3.8vw;
-    right: 2vw;
-    width: 2vw;
-    height: 2vw;
-    padding: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: start;
-    z-index: 2048;
-    font-size: 1vw;
-    cursor: pointer;
-    transform-origin: left;
-    transition: 0.2s all ease;
+    right: 2vw; */
+	width: 2vw;
+	height: 2vw;
+	padding: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	/* z-index: 2048; */
+	font-size: 1vw;
+	cursor: pointer;
+	transform-origin: left;
+	transition: 0.2s all ease;
 } /* Version en haut */
 
 dictionnaire-donnee > div.img {
-    width: 5vw;
-    height: 5vw;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+	width: 5vw;
+	height: 5vw;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
 }
 
 dictionnaire-donnee:hover {
-    scale: 1.15 1;
-    transform-origin: center;
+	scale: 1.15 1;
+	transform-origin: center;
 }
 
 dictionnaire-donnee.ouvert {
-    width: 40vw;
-    height: fit-content;
-    max-height: calc(80vh - 10vw);
-    min-height: 15vw;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+	width: 40vw;
+	height: fit-content;
+	max-height: calc(80vh - 10vw);
+	min-height: 15vw;
 
-    /* Version en haut */
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    translate: 0 5vw;
+	/* Version en haut */
+	background-color: var(--bgColor);
+	border-radius: 0.8em;
+	background: var(--bgColorTertiary);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	outline: 1px solid var(--borderColor2);
 }
 
 dictionnaire-donnee.ouvert:hover {
-    scale: 1 1;
+	scale: 1 1;
 }
 
 dictionnaire-donnee > span.raffraichir {
-    position: absolute;
-    top: 0;
-    right: 3.5vw;
-    padding: 0.5vw;
-    font-size: 2vw;
-    transition: 0.2s all ease;
+	position: absolute;
+	top: 0;
+	right: 30px;
+	padding: 10px;
+	font-size: 18px;
+	transition: 0.2s all ease;
 }
 
 dictionnaire-donnee > span.raffraichir.rotation {
-    rotate: 360deg;
+	rotate: 360deg;
 }
 
 dictionnaire-donnee > span.fermeture {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5vw;
-    font-size: 3vw;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 10px;
+	font-size: 18px;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    scrollbar-width: none;
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	scrollbar-width: none;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th {
-    width: 95%;
-    height: 5vw;
-    min-height: 5vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 0.1vw solid var(--fgColor);
+	width: 95%;
+	height: 5vw;
+	min-height: 5vw;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 0.1vw solid var(--borderColor2);
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    border-right: 0.1vw solid var(--fgColor);
-    margin-left: 1%;
-    color: var(--titleColor);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	border-right: 0.1vw solid var(--borderColor2);
+	margin-left: 1%;
+	color: var(--fgColor);
+	font-weight: 500;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > th > td:last-child {
-    border-right: none;
-    width: 150%;
+	border-right: none;
+	width: 150%;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > tr {
-    width: 95%;
-    height: 3vw;
-    min-height: 3vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 0.1vw solid var(--fgColorSemiTransparent);
+	width: 95%;
+	height: 3vw;
+	min-height: 3vw;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 0.1vw solid var(--fgColorSemiTransparent);
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > tr > td {
-    width: 100%;
-    height: 100%;
-    margin-left: 1%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    border-right: 0.1vw solid var(--fgColor);
-    cursor: text;
-    overflow-x: hidden;
-    word-wrap: anywhere;
+	width: 100%;
+	height: 100%;
+	margin-left: 1%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	border-right: 0.1vw solid var(--fgColor);
+	cursor: text;
+	overflow-x: hidden;
+	word-wrap: anywhere;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > tr > td:last-child {
-    border-right: none;
-    width: 150%;
+	border-right: none;
+	width: 150%;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > tr.ajout {
-    opacity: 0.75;
+	opacity: 0.75;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType {
-    width: 100%;
-    height: 100%;
-    border: none;
-    background-color: var(--bgColor);
-    color: var(--fgColor);
-    font-size: 1vw;
-    cursor: pointer;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: var(--bgColor);
+	color: var(--fgColor);
+	font-size: 1vw;
+	cursor: pointer;
 }
 
-dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hover {
-    text-shadow: 0 0 0.5vw var(--fgColor);
+dictionnaire-donnee
+	> #tableDictionnaireDonnee
+	> tr
+	> td
+	> select.selectType:hover {
+	text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 /* bibliotheque-algorithmique {
@@ -539,21 +668,37 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType:hov
 } */ /* Version à gauche */
 
 bibliotheque-algorithmique {
-    position: fixed;
+	/* position: fixed;
     top: 3.8vw;
-    left: 2vw;
-    width: 2vw;
-    height: 2vw;
-    padding: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: start;
-    z-index: 2048;
-    font-size: 1vw;
-    cursor: pointer;
-    transform-origin: left;
-    transition: 0.2s all ease;
+    left: 2vw; */
+	width: 2vw;
+	height: 2vw;
+	padding: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	justify-content: start;
+	/* z-index: 2048; */
+	font-size: 1vw;
+	cursor: pointer;
+	transform-origin: left;
+	transition: 0.2s all ease;
+
+	/* On ne met plus directement le backdrop-filter ici */
+	position: relative; /* Nécessaire pour positionner le pseudo-élément correctement */
+}
+
+bibliotheque-algorithmique::before {
+	content: ""; /* Création du pseudo-élément */
+	position: absolute; /* Position absolue par rapport au parent */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(5px); /* Flou appliqué ici */
+	-webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+	z-index: -1; /* Place le pseudo-élément derrière le contenu */
+	border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
 }
 
 /* bibliotheque-algorithmique > img {
@@ -562,8 +707,8 @@ bibliotheque-algorithmique {
 } */ /* Version à gauche */
 
 bibliotheque-algorithmique > div.img {
-    width: 1.8vw;
-    height: 1.8vw;
+	width: 1.8vw;
+	height: 1.8vw;
 } /* Version en haut */
 
 /* bibliotheque-algorithmique:hover {
@@ -572,152 +717,175 @@ bibliotheque-algorithmique > div.img {
 } */
 
 bibliotheque-algorithmique:hover {
-    scale: 1.15 1;
-    transform-origin: center;
+	scale: 1.15 1;
+	transform-origin: center;
 } /* Version en haut */
 
 bibliotheque-algorithmique.ouvert {
-    width: 25vw;
-    height: fit-content;
-    max-height: calc(80vh - 10vw);
-    min-height: 15vw;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+	width: 25vw;
+	height: fit-content;
+	max-height: calc(80vh - 10vw);
+	min-height: 15vw;
 
-    /* Version en haut */
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    translate: 0 5vw;
+	/* Version en haut */
+	border-radius: 0.8em;
+	background: var(--bgColorTertiary);
+	outline: 1px solid var(--borderColor2);
 }
 
 bibliotheque-algorithmique.ouvert:hover {
-    scale: 1 1;
+	scale: 1 1;
 }
 
 bibliotheque-algorithmique > span.fermeture {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0.5vw;
-    font-size: 2vw;
-    rotate: 180deg;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	font-size: 18px;
+	rotate: 180deg;
 }
 
 bibliotheque-algorithmique > div.listeCategories {
-    width: 90%;
-    height: 99%;
-    margin-top: 1%;
-    overflow-y: scroll;
-    overflow-x: visible;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    scrollbar-width: none;
+	width: 90%;
+	height: 99%;
+	margin-top: 1%;
+	overflow-y: scroll;
+	overflow-x: visible;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+	scrollbar-width: none;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie {
-    width: 100%;
-    height: 2vw;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    border-bottom: 0.1vw solid var(--fgColor);
-    cursor: pointer;
-    transition: 0.2s all ease;
+	width: 100%;
+	height: 2vw;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+	border-bottom: 0.1vw solid var(--fgColor);
+	cursor: pointer;
+	transition: 0.2s all ease;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
-    position: relative;
-    width: 100%;
-    height: 2vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* Internet Explorer/Edge */
-    user-select: none;         /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+	position: relative;
+	width: 100%;
+	height: 2vw;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 > div.flecheOuverture {
-    font-size: 1vw;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: 0.2s all ease;
-    rotate: -90deg;
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie
+	> h3
+	> div.flecheOuverture {
+	font-size: 1vw;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: 0.2s all ease;
+	rotate: -90deg;
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > h3 > div.flecheOuverture {
-    rotate: 0deg;
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie.ouvert
+	> h3
+	> div.flecheOuverture {
+	rotate: 0deg;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert {
-    height: fit-content;
+	height: fit-content;
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie > div.listeAlgorithmes {
-    display: none;
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie
+	> div.listeAlgorithmes {
+	display: none;
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: start;
-    justify-content: start;
-    gap: 0.2vw;
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie.ouvert
+	> div.listeAlgorithmes {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: start;
+	justify-content: start;
+	gap: 0.2vw;
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque {
-    width: 5vw;
-    height: 5vw;
-    margin: 0.5vw;
-    cursor: pointer;
-    transition: 0.2s all ease;
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.75vw;
-    padding: 0.5vw;
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie.ouvert
+	> div.listeAlgorithmes
+	> img.algorithmeBibliotheque {
+	width: 5vw;
+	height: 5vw;
+	margin: 0.5vw;
+	cursor: pointer;
+	transition: 0.2s all ease;
+	border: 0.1vw solid var(--fgColor);
+	border-radius: 0.75vw;
+	padding: 0.5vw;
 }
 
-bibliotheque-algorithmique > div.listeCategories > div.categorie.ouvert > div.listeAlgorithmes > img.algorithmeBibliotheque:hover {
-    border: 0.1vw solid var(--fgColorForward);
-    box-shadow: 0 0 0.5vw var(--fgColor);
+bibliotheque-algorithmique
+	> div.listeCategories
+	> div.categorie.ouvert
+	> div.listeAlgorithmes
+	> img.algorithmeBibliotheque:hover {
+	border: 0.1vw solid var(--fgColorForward);
+	box-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
-    width: 25vw;
-    height: fit-content;
-    position: absolute;
-    top: 0;
-    right: -27vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    padding: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    opacity: 0.95;
-    overflow: hidden;
+	width: 25vw;
+	height: fit-content;
+	position: absolute;
+	top: 0;
+	right: -27vw;
+	padding: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	/* opacity: 0.95; */
+	overflow: hidden;
+	border-radius: 0.8em;
+	background: var(--bgColorTertiary);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	outline: 1px solid var(--borderColor2);
 }
 
 bibliotheque-algorithmique > div.previewAlgo > h4,
 bibliotheque-algorithmique > div.previewAlgo > p {
-    white-space: wrap;
-    word-wrap: break-word;
-    width: 100%;
+	white-space: wrap;
+	word-wrap: break-word;
+	width: 100%;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > p {
-    font-size: 0.8vw;
+	font-size: 0.8vw;
 }
 
-bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
+/* bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
     width: 100%;
     height: 100%;
     background-color: var(--bgColorTransparent);
@@ -725,1331 +893,1560 @@ bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
     top: 0;
     left: 0;
     z-index: 500000;
-}
+} */
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail {
-    width: 25vw;
-    height: 15vw;
-    border: none;
-    position: relative;
-    overflow: hidden;
+	width: 25vw;
+	height: 15vw;
+	border: none;
+	position: relative;
+	overflow: hidden;
 }
 
-bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element { 
-    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element {
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 }
 
-bibliotheque-algorithmique > div.previewAlgo > plan-travail  * {
-    font-size: calc(var(--sizeModifier) * 1vw) !important;
+bibliotheque-algorithmique > div.previewAlgo > plan-travail * {
+	font-size: calc(var(--sizeModifier) * 1vw) !important;
 }
 
-bibliotheque-algorithmique > div.previewAlgo > plan-travail  label.accolades {
-    font-size: calc(var(--sizeModifier) * 4vw) !important;
+bibliotheque-algorithmique > div.previewAlgo > plan-travail label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 
 invite-nouvelle-bibliotheque {
-    position: fixed;
-    width: 30vw;
-    aspect-ratio: 1/1;
-    top: 50vh;
-    left: 50vw;
-    translate: -50% -50%;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    box-shadow: 0 0 1vw var(--fgColor);
-    border-radius: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 2048;
-    padding-top: 1vw;
-    padding-bottom: 1vw;
+	position: fixed;
+	width: 30vw;
+	aspect-ratio: 1/1;
+	top: 50vh;
+	left: 50vw;
+	translate: -50% -50%;
+	background-color: var(--bgColor);
+	border: 0.1vw solid var(--fgColor);
+	box-shadow: 0 0 1vw var(--fgColor);
+	border-radius: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 2048;
+	padding-top: 1vw;
+	padding-bottom: 1vw;
 }
 
 invite-nouvelle-bibliotheque > input {
-    width: 80%;
-    height: 10%;
-    margin-top: 5%;
-    font-size: 1vw;
-    padding: 0.5vw;
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    background-color: var(--bgColor);
-    color: var(--fgColor);
+	width: 80%;
+	height: 10%;
+	margin-top: 5%;
+	font-size: 1vw;
+	padding: 0.5vw;
+	border: 0.1vw solid var(--fgColor);
+	border-radius: 0.5vw;
+	background-color: var(--bgColor);
+	color: var(--fgColor);
 }
 
 invite-nouvelle-bibliotheque > button {
-    width: 80%;
-    height: 10%;
-    margin-top: 5%;
-    font-size: 1vw;
-    padding: 0.5vw;
-    border: 0.1vw solid var(--bgColor);
-    border-radius: 0.5vw;
-    background-color: var(--fgColor);
-    color: var(--bgColor);
-    cursor: pointer;
-    transition: all 0.2s ease;
+	width: 80%;
+	height: 10%;
+	margin-top: 5%;
+	font-size: 1vw;
+	padding: 0.5vw;
+	border: 0.1vw solid var(--bgColor);
+	border-radius: 0.5vw;
+	background-color: var(--fgColor);
+	color: var(--bgColor);
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 invite-nouvelle-bibliotheque > button:hover {
-    background-color: var(--fgColorForward);
-    box-shadow: 0 0 0.5vw var(--fgColor);
+	background-color: var(--fgColorForward);
+	box-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo {
-    width: 25vw;
-    height: fit-content;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    padding: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    opacity: 0.75;
-    position: relative;
+	width: 25vw;
+	height: fit-content;
+	background-color: var(--bgColor);
+	border: 0.1vw solid var(--fgColor);
+	border-radius: 0.5vw;
+	padding: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	opacity: 0.75;
+	position: relative;
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo > div.divTransparent {
-    width: 100%;
-    height: 100%;
-    background-color: var(--bgColorTransparent);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 500000;
+	width: 100%;
+	height: 100%;
+	background-color: var(--bgColorTransparent);
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 500000;
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail {
-    width: 25vw;
-    height: 15vw;
-    border: none;
-    position: relative;
-    overflow: hidden;
+	width: 25vw;
+	height: 15vw;
+	border: none;
+	position: relative;
+	overflow: hidden;
 }
 
-invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail > ligne-element { 
-    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor); 
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail > ligne-element {
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 }
 
-invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  * {
-    font-size: calc(var(--sizeModifier) * 1vw) !important;
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail * {
+	font-size: calc(var(--sizeModifier) * 1vw) !important;
 }
 
-invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail  label.accolades {
-    font-size: calc(var(--sizeModifier) * 4vw) !important;
+invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 
 menu-contextuel {
-    position: fixed;
-    width: 20vw;
-    height: fit-content;
-    min-height: 2vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    z-index: 2048;
-    font-size: 1vw;
+	position: fixed;
+	width: 20vw;
+	height: fit-content;
+	min-height: 2vw;
+	border-radius: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	z-index: 2048;
+	font-size: 1vw;
+	background: var(--bgColorTertiary);
+	/* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
+	outline: 1px solid var(--borderColor2);
+	color: var(--fgColor);
+	padding: 6px;
 }
+menu-contextuel::before {
+	content: ""; /* Création du pseudo-élément */
+	position: absolute; /* Position absolue par rapport au parent */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(5px); /* Flou appliqué ici */
+	-webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
+	z-index: -1; /* Place le pseudo-élément derrière le contenu */
+	border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
+}
+
 menu-contextuel > element-menu,
 menu-contextuel > element-menu-compose,
 menu-contextuel > element-menu-keyboard-tip,
 element-menu-compose:hover > menu-deroulant > element-menu,
 element-menu-compose:hover > menu-deroulant > element-menu-compose,
 element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
-    padding-left: 5%;
+	/* padding-left: 5%;
     width: 95%;
     padding-top: 0.5vw;
     padding-bottom: 0.5vw;
     text-align: left;
     white-space: nowrap;
     position: relative;
+    
+    border-radius: .5em;
+    display: flex;
+    gap: 1em; */
 }
 
 menu-contextuel > element-menu:hover,
 menu-contextuel > element-menu-compose:hover,
 menu-contextuel > element-menu-keyboard-tip:hover {
-    background-color: var(--fgColor);
-    color: var(--bgColor);
+	background-color: var(--fgColor);
+	color: var(--bgColor);
 }
 
-menu-contextuel >element-menu-compose > span,
+menu-contextuel > element-menu-compose > span,
 menu-contextuel > element-menu-keyboard-tip > span {
-    transition: all 0.5s ease;
-    position: absolute;
-    right: 5%;
+	transition: all 0.5s ease;
+	position: absolute;
+	right: 5%;
 }
 
 menu-contextuel > element-menu-compose:hover > span {
-    position: absolute;
-    right: 2%;
-    rotate: 90deg;
+	position: absolute;
+	right: 2%;
+	rotate: 90deg;
 }
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant {
-    scale: 1;
-    width: 15vw;
-    height: fit-content;
-    min-height: 2vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    z-index: 2048;
-    gap: 0;
-    padding: 0;
-    overflow: hidden;
+	scale: 1;
+	width: 15vw;
+	height: fit-content;
+	min-height: 2vw;
+	border-radius: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	z-index: 2048;
+	gap: 0;
+	padding: 0;
+	overflow: hidden;
+	background: var(--bgColorTertiary);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid var(--borderColor2);
+	padding: 6px;
 }
 
 menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
-    padding-left: 5%;
-    width: 95%;
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
-    text-align: left;
-    white-space: nowrap;
+	padding-left: 5%;
+	width: 95%;
+	padding-top: 0.5vw;
+	padding-bottom: 0.5vw;
+	text-align: left;
+	white-space: nowrap;
 }
 
 indicateur-zoom {
-    position: fixed;
-    bottom: 2vw;
-    right: 2vw;
-    display: grid;
-    place-items: center;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr;
-    width: 10vw;
-    height: 3vw;
-    background-color: var(--fgColorTransparent);
-    z-index: 258;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	gap: 1px;
+	width: 10vw;
+	height: 3vw;
+	/* background-color: var(--fgColorTransparent); */
 }
 
 indicateur-zoom > .zoomDisplay {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1vw;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	color: #f2fbff;
 }
 
 indicateur-zoom > button {
-    width: 100%;
-    height: 100%;
-    background: none;
-    border: none;
-    font-size: 2vw;
-    color: var(--fgColor);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+	width: 100%;
+	height: 100%;
+	background: none;
+	border: none;
+	font-size: 26px;
+	/* color: var(--fgColor); */
+	color: #f2fbff;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
 }
 
 indicateur-zoom > button:hover {
-    color: var(--fgColorForward);
-    scale: 1.1;
+	color: var(--fgColorForward);
+	scale: 1.1;
 }
 
 .pointePourLien {
-    border-bottom: 5px solid var(--goodColorTransparent) !important;
-    padding-bottom: 10px;
+	border-bottom: 5px solid var(--goodColorTransparent) !important;
+	padding-bottom: 10px;
 }
 
 selection-editeur {
-    position: absolute;
-    border: 0.1vw solid var(--fgColorForward);
-    border-style: dashed;
-    border-radius: 0.5vw;
-    transition: all var(--transitionTime) ease;
-    z-index: -1;
-    transform: translate(-0.5vw, -0.5vw);
-    padding: 0.75vw;
+	position: absolute;
+	border: 0.1vw solid var(--fgColorForward);
+	border-style: dashed;
+	border-radius: 0.5vw;
+	transition: all var(--transitionTime) ease;
+	z-index: auto;
+	transform: translate(-0.5vw, -0.5vw);
 }
 
 selection-simple {
-    position: absolute;
-    border: 0.1vw solid var(--fgColorForward);
-    border-style: dotted;
-    border-radius: 0.5vw;
-    transition: all var(--transitionTime) ease;
-    z-index: -1;
-    transform: translate(-0.5vw, -0.5vw);
-    padding: 0.75vw;
+	position: absolute;
+	border: 0.1vw solid var(--fgColorForward);
+	border-style: dotted;
+	border-radius: 0.5vw;
+	transition: all var(--transitionTime) ease;
+	z-index: auto;
+	transform: translate(-0.5vw, -0.5vw);
+	padding: 0.75vw;
 }
 
 selection-rectangle {
-    position: absolute;
-    border: 0.1vw solid var(--fgColorForward);
-    border-style: dashed;
-    border-radius: 0.1vw;
-    transition: all var(--transitionTime) ease;
-    z-index: -1;
-    padding: 0;
-    background-color: var(--fgColorTransparent);
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
+	position: absolute;
+	border: 0.1vw solid var(--fgColorForward);
+	border-style: dashed;
+	border-radius: 0.1vw;
+	transition: all var(--transitionTime) ease;
+	z-index: auto;
+	padding: 0;
+	background-color: var(--fgColorTransparent);
+	box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
 }
 
-[contenteditable="true"] { /* Pour empêcher le navigateur de supprimer les espaces */
-    white-space: pre-wrap;
+[contenteditable="true"] {
+	/* Pour empêcher le navigateur de supprimer les espaces */
+	white-space: pre-wrap;
 }
 
 fenetre-modale {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--fgColorSemiTransparent);
-    opacity: 0.9;
-    z-index: 4294967296;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--fgColorSemiTransparent);
+	opacity: 0.9;
+	z-index: 4294967296;
 }
 
 fenetre-modale > div.contenu {
-    min-width: 25vw;
-    max-width: 75vw;
-    width: fit-content;
-    min-height: 25vh;
-    max-height: 75vh;
-    height: fit-content;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    background-color: var(--bgColor);
-    padding: 2vw;
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0.5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    overflow-y: scroll;
+	min-width: 25vw;
+	max-width: 75vw;
+	width: fit-content;
+	min-height: 25vh;
+	max-height: 75vh;
+	height: fit-content;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+	background-color: var(--bgColor);
+	padding: 2vw;
+	border: 0.1vw solid var(--fgColor);
+	border-radius: 0.5vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	overflow-y: scroll;
 }
 
 fenetre-modale > div.contenu > button.fermer {
-    position: absolute;
-    top: 0.2vw;
-    right: 0.2vw;
-    font-size: 1vw;
-    cursor: pointer;
-    background-color: var(--fgColor);
-    border: none;
-    border-radius: 0.5vw;
-    color: var(--bgColor);
-    width: 2vw;
-    height: 2vw;
+	position: absolute;
+	top: 0.2vw;
+	right: 0.2vw;
+	font-size: 1vw;
+	cursor: pointer;
+	background-color: var(--fgColor);
+	border: none;
+	border-radius: 0.5vw;
+	color: var(--bgColor);
+	width: 2vw;
+	height: 2vw;
 }
 
 fenetre-modale > div.contenu > button.fermer:hover {
-    background-color: var(--fgColorForward);
+	background-color: var(--fgColorForward);
 }
 
 plan-travail {
-    width: 100%;
-    height: 100%;
-    border: 0.1vw solid var(--fgColor);
-    position: relative;
-    overflow: scroll;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	display: flex;
+	/* border: 0.1vw solid var(--fgColor); */
+	position: relative;
+	overflow: scroll;
+	scrollbar-width: 10;
+	scrollbar-color: var(--fgColor) transparent;
+	/* background-color:  #151b23; */
+	/* background-color: var(--bgColorSecondary); */
+	/* border-radius: .8em; */
 }
 
-sous-plan-travail {
-    width: 100%;
-    height: calc(100vh - 6vw);
+#espacePrincipal_wrapper {
+	width: 100%;
+	height: 100%;
+	border: 0.1vw solid var(--borderColor);
+	position: relative;
+	/* overflow: hidden; */
+	background-color: var(--bgColorSecondary);
+	/* background-color: transparent; */
+	border-radius: 0.8em;
+	padding: 34px 0 0 0;
+}
+
+/* plan-travail::before {
     position: absolute;
-    top: 6vw;
-    left: 0;
-    overflow: scroll;
-    scale: 0;
-    background-color: var(--bgColor);
-    transition: all 0.2s ease;
-    z-index: 2;
+    content: "";
+    width: calc(90vw - 30px);
+    height: calc(90vh - 15px);
+    border: 0.1vw solid var(--fgColor);
+    background-color: #151b23;
+    overflow: hidden;
+    border-radius: .8em;
+} */
+
+sous-plan-travail {
+	width: calc(100vw - 38px);
+	height: calc(100vh - 4vw - 56px);
+	position: absolute;
+	top: calc(36px + 4vw);
+	left: 19px;
+	overflow: scroll;
+	scale: 0;
+	background-color: var(--bgColorSecondary);
+	transition: all 0.2s ease;
+	z-index: 2;
+	border-radius: 0.8em;
 }
 
 sous-plan-travail.ouvert {
-    scale: 1;
-    transform-origin: top;
+	scale: 1;
+	transform-origin: top;
 }
 
 sous-plan-travail > span.fermeture {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 1vw;
-    font-size: 3vw;
-    cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 15px;
+	font-size: 1.2em;
+	cursor: pointer;
 }
 
 sous-plan-travail > span.fermeture:hover {
-    text-shadow: 0 0 0.5vw var(--fgColor);
+	text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
 probleme-element {
-    display: flex;
-    width: calc(var(--sizeModifier) * 30vw);
-    height: fit-content;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
+	display: flex;
+	width: calc(var(--sizeModifier) * 30vw);
+	height: fit-content;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
 }
 
 probleme-element > span.ouvrir {
-    position: absolute;
-    bottom: calc(var(--sizeModifier) * 0.5vw);
-    right: calc(var(--sizeModifier) * 10.5vw);
-    width: calc(var(--sizeModifier) * 0.75vw);
-    height: calc(var(--sizeModifier) * 0.75vw);
-    background-color: var(--fgColorTransparent);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: calc(var(--sizeModifier) * 0.25vw);
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}   
+	position: absolute;
+	bottom: calc(var(--sizeModifier) * 0.5vw);
+	right: calc(var(--sizeModifier) * 10.5vw);
+	width: calc(var(--sizeModifier) * 0.75vw);
+	height: calc(var(--sizeModifier) * 0.75vw);
+	background-color: var(--fgColorTransparent);
+	border: 0.1vw solid var(--fgColor);
+	border-radius: calc(var(--sizeModifier) * 0.25vw);
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
-    probleme-element > div.containerDPR {
-        width: 100%;
-        height: calc(var(--sizeModifier) * 4vw);
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        column-gap: calc(var(--sizeModifier) * 0.2vw);
-        place-items: center;
-    }
+probleme-element > div.containerDPR {
+	width: 100%;
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+}
 
-        probleme-element > div.containerDPR > div.donnees {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            display: grid;
-            grid-template-columns: 1fr 5fr 1fr;
-            grid-template-rows: 1fr;
-            column-gap: calc(var(--sizeModifier) * 0.2vw);
-            place-items: center;
-            grid-column: 1;
-        }
+probleme-element > div.containerDPR > div.donnees {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	grid-template-rows: 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 1;
+}
 
-            probleme-element > div.containerDPR > div.donnees > label.accolades {
-                font-size: calc(var(--sizeModifier) * 4vw);
-                transform: scaleX(0.75);
-                height: calc(var(--sizeModifier) * 4vw);
-                width: calc(var(--sizeModifier) * 1.5vw);
-                line-height: 0.9;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+probleme-element > div.containerDPR > div.donnees > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
-                width: calc(var(--sizeModifier) * 6.3vw);
-                height: calc(var(--sizeModifier) * 4vw);
-                grid-column: 2;
-                resize: none;
-                border: none;
-                background: none;
-                font-size: calc(var(--sizeModifier) * 0.75vw);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                word-wrap: break-word;
-                overflow: hidden;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
+	width: calc(var(--sizeModifier) * 6.3vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            probleme-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
-                outline: none;
-            }
+probleme-element
+	> div.containerDPR
+	> div.donnees
+	> div.donneesEditable:focus-visible {
+	outline: none;
+}
 
-            probleme-element > div.containerDPR > div.donnees:hover >  label.accolades {
-                display: block !important;
-            }
+probleme-element > div.containerDPR > div.donnees:hover > label.accolades {
+	display: block !important;
+}
 
-        probleme-element > div.containerDPR > div.nom {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            grid-column: 2;
-            border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            text-align: center;
-            font-size: calc(var(--sizeModifier) * 0.75vw);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            word-wrap: break-word;
-            overflow: hidden;
-            background-color: var(--bgColor);
-            box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-        }
+probleme-element > div.containerDPR > div.nom {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	background-color: var(--bgColor);
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-        probleme-element > div.containerDPR > div.nom:focus-visible {
-            outline: none;
-            box-shadow: 0 0 calc(var(--sizeModifier) * 1.8vw) var(--glowColor);
-        }
+probleme-element > div.containerDPR > div.nom:focus-visible {
+	outline: none;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.8vw) var(--glowColor);
+}
 
-        probleme-element > div.containerDPR > div.resultat {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            display: grid;
-            grid-template-columns: 1fr 5fr 1fr;
-            grid-template-rows: 1fr;
-            column-gap: calc(var(--sizeModifier) * 0.2vw);
-            place-items: center;
-            grid-column: 3;
-        }
+probleme-element > div.containerDPR > div.resultat {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	grid-template-rows: 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 3;
+}
 
-            probleme-element > div.containerDPR > div.resultat > label.accolades {
-                font-size: calc(var(--sizeModifier) * 4vw);
-                transform: scaleX(0.75);
-                height: calc(var(--sizeModifier) * 4vw);
-                width: calc(var(--sizeModifier) * 1.5vw);
-                line-height: 0.9;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+probleme-element > div.containerDPR > div.resultat > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
-                width: calc(var(--sizeModifier) * 6.3vw);
-                height: calc(var(--sizeModifier) * 4vw);
-                grid-column: 2;
-                resize: none;
-                border: none;
-                background: none;
-                font-size: calc(var(--sizeModifier) * 0.75vw);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                word-wrap: break-word;
-                overflow: hidden;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
+	width: calc(var(--sizeModifier) * 6.3vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            probleme-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
-                outline: none;
-            }
+probleme-element
+	> div.containerDPR
+	> div.resultat
+	> div.resultatEditable:focus-visible {
+	outline: none;
+}
 
-            probleme-element > div.containerDPR > div.resultat:hover >  label.accolades {
-                display: block !important;
-            }
+probleme-element > div.containerDPR > div.resultat:hover > label.accolades {
+	display: block !important;
+}
 
 procedure-element {
-    display: flex;
-    width: calc(var(--sizeModifier) * 30vw);
-    height: fit-content;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
+	display: flex;
+	width: calc(var(--sizeModifier) * 30vw);
+	height: fit-content;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
 }
-    
-    procedure-element > div.containerDPR {
-        width: 100%;
-        height: calc(var(--sizeModifier) * 4vw);
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        column-gap: calc(var(--sizeModifier) * 0.2vw);
-        place-items: center;
-    }
 
-        procedure-element > div.containerDPR > div.donnees {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            display: grid;
-            grid-template-columns: 1fr 5fr 1fr;
-            grid-template-rows: 1fr;
-            column-gap: calc(var(--sizeModifier) * 0.2vw);
-            place-items: center;
-            grid-column: 1;
-        }
+procedure-element > div.containerDPR {
+	width: 100%;
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+}
 
-            procedure-element > div.containerDPR > div.donnees > label.accolades {
-                font-size: calc(var(--sizeModifier) * 4vw);
-                transform: scaleX(0.75);
-                height: calc(var(--sizeModifier) * 4vw);
-                width: calc(var(--sizeModifier) * 1.5vw);
-                line-height: 0.9;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+procedure-element > div.containerDPR > div.donnees {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	grid-template-rows: 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 1;
+}
 
-            procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
-                width: calc(var(--sizeModifier) * 6.3vw);
-                height: calc(var(--sizeModifier) * 4vw);
-                grid-column: 2;
-                resize: none;
-                border: none;
-                background: none;
-                font-size: calc(var(--sizeModifier) * 0.75vw);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                word-wrap: break-word;
-                overflow: hidden;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+procedure-element > div.containerDPR > div.donnees > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            procedure-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
-                outline: none;
-            }
+procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
+	width: calc(var(--sizeModifier) * 6.3vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            procedure-element > div.containerDPR > div.donnees:hover >  label.accolades {
-                display: block !important;
-            }
+procedure-element
+	> div.containerDPR
+	> div.donnees
+	> div.donneesEditable:focus-visible {
+	outline: none;
+}
 
-        procedure-element > div.containerDPR > div.nom {
-            width: calc(var(--sizeModifier) * 8vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            grid-column: 2;
-            border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            text-align: center;
-            font-size: calc(var(--sizeModifier) * 0.75vw);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            word-wrap: break-word;
-            overflow: hidden;
-            background-color: var(--bgColor);
-            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-        }
+procedure-element > div.containerDPR > div.donnees:hover > label.accolades {
+	display: block !important;
+}
 
-        procedure-element > div.containerDPR > div.nom:focus-visible {
-            outline: none;
-        }
+procedure-element > div.containerDPR > div.nom {
+	width: calc(var(--sizeModifier) * 8vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	background-color: var(--bgColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-        procedure-element > div.containerDPR > div.nom::before {
-            position: absolute;
-            content: "";
-            transform: translateX(calc(var(--sizeModifier) *-4.5vw));
-            width: calc(var(--sizeModifier) * 0.8vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            border-right: none;
-            background-color: var(--bgColor);
-        }
+procedure-element > div.containerDPR > div.nom:focus-visible {
+	outline: none;
+}
 
-        procedure-element > div.containerDPR > div.nom::after {
-            position: absolute;
-            content: "";
-            transform: translateX(calc(var(--sizeModifier) *4.5vw));
-            width: calc(var(--sizeModifier) * 0.8vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            border-left: none;
-            background-color: var(--bgColor);
-        }
+procedure-element > div.containerDPR > div.nom::before {
+	position: absolute;
+	content: "";
+	transform: translateX(calc(var(--sizeModifier) * -4.5vw));
+	width: calc(var(--sizeModifier) * 0.8vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-right: none;
+	background-color: var(--bgColor);
+}
 
-        procedure-element > div.containerDPR > div.resultat {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: calc(var(--sizeModifier) * 4vw);
-            display: grid;
-            grid-template-columns: 1fr 5fr 1fr;
-            grid-template-rows: 1fr;
-            column-gap: calc(var(--sizeModifier) * 0.2vw);
-            place-items: center;
-            grid-column: 3;
-            text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-        }
+procedure-element > div.containerDPR > div.nom::after {
+	position: absolute;
+	content: "";
+	transform: translateX(calc(var(--sizeModifier) * 4.5vw));
+	width: calc(var(--sizeModifier) * 0.8vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-left: none;
+	background-color: var(--bgColor);
+}
 
-            procedure-element > div.containerDPR > div.resultat > label.accolades {
-                font-size: calc(var(--sizeModifier) * 4vw);
-                transform: scaleX(0.75);
-                height: calc(var(--sizeModifier) * 4vw);
-                width: calc(var(--sizeModifier) * 1.5vw);
-                line-height: 0.9;
-                text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-            }
+procedure-element > div.containerDPR > div.resultat {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	grid-template-rows: 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 3;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
-                width: calc(var(--sizeModifier) * 6.3vw);
-                height: calc(var(--sizeModifier) * 4vw);
-                grid-column: 2;
-                resize: none;
-                border: none;
-                background: none;
-                font-size: calc(var(--sizeModifier) * 0.75vw);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                word-wrap: break-word;
-                overflow: hidden;
-            }
+procedure-element > div.containerDPR > div.resultat > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-            procedure-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
-                outline: none;
-            }
+procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
+	width: calc(var(--sizeModifier) * 6.3vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+}
 
-            procedure-element > div.containerDPR > div.resultat:hover >  label.accolades {
-                display: block !important;
-            }
+procedure-element
+	> div.containerDPR
+	> div.resultat
+	> div.resultatEditable:focus-visible {
+	outline: none;
+}
+
+procedure-element > div.containerDPR > div.resultat:hover > label.accolades {
+	display: block !important;
+}
 
 symbole-decomposition-element {
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    width: calc(var(--sizeModifier) * 1vw);
-    height: calc(var(--sizeModifier) * 1.5vw);
-    border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	width: calc(var(--sizeModifier) * 1vw);
+	height: calc(var(--sizeModifier) * 1.5vw);
+	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 structure-si-element {
-    display: grid;
-    grid-template-columns: 0px 1fr 0px;
-    grid-template-rows: 1fr;
-    width: fit-content;
-    height: calc(var(--sizeModifier) * 4vw);
-    position: absolute;
-    place-content: center;
-    place-items: center;
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	display: grid;
+	grid-template-columns: 0px 1fr 0px;
+	grid-template-rows: 1fr;
+	width: fit-content;
+	height: calc(var(--sizeModifier) * 4vw);
+	position: absolute;
+	place-content: center;
+	place-items: center;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 structure-si-element > div.triangle {
-    color: #0000;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: 3vw;
-    user-select: none;
-    cursor: pointer;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	color: #0000;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: 3vw;
+	user-select: none;
+	cursor: pointer;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
-    structure-si-element > div.triangle:hover {
-        color: var(--fgColorForward);
-        text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    }
+structure-si-element > div.triangle:hover {
+	color: var(--fgColorForward);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-    structure-si-element > div.triangleGauche {
-        width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
-        height: calc(var(--sizeModifier) * 2.8284271247vw);
-        border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        rotate: -45deg;
-        grid-column: 1;
-        background-color: var(--bgColor);
-        transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
-    }
+structure-si-element > div.triangleGauche {
+	width: calc(
+		var(--sizeModifier) * 2.8284271247vw
+	); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: -45deg;
+	grid-column: 1;
+	background-color: var(--bgColor);
+	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+}
 
-    structure-si-element > div.triangleGauche > span {
-        rotate: 45deg;
-        transform: translateX(-0.7vw);
-    }
+structure-si-element > div.triangleGauche > span {
+	rotate: 45deg;
+	transform: translateX(-0.7vw);
+}
 
-    structure-si-element > div.conditionContainer {
-        display: flex;
-        width: fit-content;
-        height: 100%;   
-        grid-column: 2;
-        flex-direction: row;
-    }
+structure-si-element > div.conditionContainer {
+	display: flex;
+	width: fit-content;
+	height: 100%;
+	grid-column: 2;
+	flex-direction: row;
+}
 
-        structure-si-element > div.conditionContainer > condition-element {
-            width: calc(var(--sizeModifier) * 10vw);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bgColor);
-            border-right: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
-            border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        }
+structure-si-element > div.conditionContainer > condition-element {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bgColor);
+	border-right: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+}
 
-    structure-si-element > div.triangleDroit {
-        width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
-        height: calc(var(--sizeModifier) * 2.8284271247vw);
-        border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        rotate: 45deg;
-        grid-column: 3;
-        background-color: var(--bgColor);
-        transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
-    }
+structure-si-element > div.triangleDroit {
+	width: calc(
+		var(--sizeModifier) * 2.8284271247vw
+	); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: 45deg;
+	grid-column: 3;
+	background-color: var(--bgColor);
+	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+}
 
-    structure-si-element > div.triangleDroit > span {
-        rotate: -45deg;
-        transform: translateX(0.7vw);
-    }
+structure-si-element > div.triangleDroit > span {
+	rotate: -45deg;
+	transform: translateX(0.7vw);
+}
 
 structure-switch-element {
-    display: grid;
-    grid-template-columns: 0px 1fr 0px;
-    grid-template-rows: 1fr 1fr;
-    width: fit-content;
-    height: calc(var(--sizeModifier) * 4vw);
-    position: absolute;
-    place-content: center;
-    place-items: center;
-    transition: all var(--transitionTime) ease;
-    background-color: var(--bgColor);
-    z-index: 2;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	display: grid;
+	grid-template-columns: 0px 1fr 0px;
+	grid-template-rows: 1fr 1fr;
+	width: fit-content;
+	height: calc(var(--sizeModifier) * 4vw);
+	position: absolute;
+	place-content: center;
+	place-items: center;
+	transition: all var(--transitionTime) ease;
+	background-color: var(--bgColor);
+	z-index: 2;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
-    structure-switch-element > div.triangle {
-        color: #0000;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        font-size: 2vw;
-        user-select: none;
-        cursor: pointer;
-        box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    }
+structure-switch-element > div.triangle {
+	color: #0000;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: 2vw;
+	user-select: none;
+	cursor: pointer;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-    structure-switch-element > div.triangle:hover {
-        color: var(--fgColorForward);
-        text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    }
+structure-switch-element > div.triangle:hover {
+	color: var(--fgColorForward);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
 
-    structure-switch-element > div.triangleGauche {
-        width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
-        height: calc(var(--sizeModifier) * 2.8284271247vw);
-        border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        rotate: -45deg;
-        grid-column: 1;
-        grid-row: 1/3;
-        background-color: var(--bgColor);
-        transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
-    }
+structure-switch-element > div.triangleGauche {
+	width: calc(
+		var(--sizeModifier) * 2.8284271247vw
+	); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: -45deg;
+	grid-column: 1;
+	grid-row: 1/3;
+	background-color: var(--bgColor);
+	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+}
 
-    structure-switch-element > div.triangleGauche > span {
-        rotate: 45deg;
-        transform: translate(-0.7vw, 30%);
-    }
+structure-switch-element > div.triangleGauche > span {
+	rotate: 45deg;
+	transform: translate(-0.7vw, 30%);
+}
 
-    structure-switch-element > hr.diviseurGauche {
-        width: calc(var(--sizeModifier) * 4vw);
-        height: calc(var(--sizeModifier) * 0.05vw);
-        grid-column: 1;
-        grid-row: 1/3;
-        background-color: var(--fgColor);
-        z-index: 1;
-        transform: translateX(-50%);
-        border: 0;
-    }
+structure-switch-element > hr.diviseurGauche {
+	width: calc(var(--sizeModifier) * 4vw);
+	height: calc(var(--sizeModifier) * 0.05vw);
+	grid-column: 1;
+	grid-row: 1/3;
+	background-color: var(--fgColor);
+	z-index: 1;
+	transform: translateX(-50%);
+	border: 0;
+}
 
-    structure-switch-element > div.expressionATester {
-        width: 100%;
-        height: 100%;
-        grid-column: 2;
-        grid-row: 1;
-        resize: none;
-        border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        border-left: 0;
-        border-right: 0;
-        text-align: center;
-        font-size: calc(var(--sizeModifier) * 0.75vw);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        word-wrap: break-word;
-        overflow: hidden;
-        background-color: var(--bgColor);
-        z-index: 10;
-    }
+structure-switch-element > div.expressionATester {
+	width: 100%;
+	height: 100%;
+	grid-column: 2;
+	grid-row: 1;
+	resize: none;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-left: 0;
+	border-right: 0;
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	background-color: var(--bgColor);
+	z-index: 10;
+}
 
-    structure-switch-element > div.expressionATester:focus-visible {
-        outline: none;
-    }
+structure-switch-element > div.expressionATester:focus-visible {
+	outline: none;
+}
 
-    structure-switch-element > div.conditionContainer {
-        display: flex;
-        min-width: fit-content;
-        width: 100%;
-        height: calc(var(--sizeModifier) * 2vw);   
-        grid-column: 2;
-        grid-row: 2;
-        flex-direction: row;
-    }
+structure-switch-element > div.conditionContainer {
+	display: flex;
+	min-width: fit-content;
+	width: 100%;
+	height: calc(var(--sizeModifier) * 2vw);
+	grid-column: 2;
+	grid-row: 2;
+	flex-direction: row;
+}
 
-        structure-switch-element > div.conditionContainer > condition-element {
-            min-width: calc(var(--sizeModifier) * 10vw);
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bgColor);
-            border-right: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
-            border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-            border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-        }
+structure-switch-element > div.conditionContainer > condition-element {
+	min-width: calc(var(--sizeModifier) * 10vw);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bgColor);
+	border-right: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+}
 
-    structure-switch-element > div.triangleDroit {
-    width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
-    height: calc(var(--sizeModifier) * 2.8284271247vw);
-    border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    rotate: 45deg;
-    grid-column: 3;
-    grid-row: 1/3;
-    background-color: var(--bgColor);
-    transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
-    }
+structure-switch-element > div.triangleDroit {
+	width: calc(
+		var(--sizeModifier) * 2.8284271247vw
+	); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: 45deg;
+	grid-column: 3;
+	grid-row: 1/3;
+	background-color: var(--bgColor);
+	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+}
 
-    structure-switch-element > div.triangleDroit > span {
-        rotate: -45deg;
-        transform: translate(0.7vw, 30%);
-    }
+structure-switch-element > div.triangleDroit > span {
+	rotate: -45deg;
+	transform: translate(0.7vw, 30%);
+}
 
-    structure-switch-element > hr.diviseurDroit {
-        width: calc(var(--sizeModifier) * 4vw);
-        height: calc(var(--sizeModifier) * 0.05vw);
-        grid-column: 3;
-        grid-row: 1/3;
-        background-color: var(--fgColor);
-        z-index: 1;
-        transform: translateX(-50%);
-        border: 0;
-    }
+structure-switch-element > hr.diviseurDroit {
+	width: calc(var(--sizeModifier) * 4vw);
+	height: calc(var(--sizeModifier) * 0.05vw);
+	grid-column: 3;
+	grid-row: 1/3;
+	background-color: var(--fgColor);
+	z-index: 1;
+	transform: translateX(-50%);
+	border: 0;
+}
 
 condition-element {
-    position: relative;
-    transition: all 0.2s ease-in-out;
-    height: 100%;
+	position: relative;
+	transition: all 0.2s ease-in-out;
+	height: 100%;
 }
 
 condition-element > div.libelle {
-    width: calc(var(--sizeModifier) * 10vw);
-    height: 100%;
-    resize: none;
-    border: none;
-    background: none;
-    text-align: center;
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    overflow: hidden;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    word-wrap: break-word;
-    background-color: var(--bgColor);
-    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	width: calc(var(--sizeModifier) * 10vw);
+	height: 100%;
+	resize: none;
+	border: none;
+	background: none;
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	overflow: hidden;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	background-color: var(--bgColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 condition-element > div.libelle:focus-visible {
-    outline: none;
+	outline: none;
 }
 
 condition-element > button.supprimer {
-    width: calc(var(--sizeModifier) * 2vw);
-    height: calc(var(--sizeModifier) * 1vw);
-    border: none;
-    border-radius: 0 0 999em 999em;
-    background-color: var(--warningColor);
-    z-index: 3;
-    transition: all var(--transitionTime) ease;
-    font-size: calc(var(--sizeModifier) * 1vw);
-    color: var(--bgColor);
-    display: none;
-    position: absolute;
-    top: 0;
+	width: calc(var(--sizeModifier) * 2vw);
+	height: calc(var(--sizeModifier) * 1vw);
+	border: none;
+	border-radius: 0 0 999em 999em;
+	background-color: var(--warningColor);
+	z-index: 3;
+	transition: all var(--transitionTime) ease;
+	font-size: calc(var(--sizeModifier) * 1vw);
+	color: var(--bgColor);
+	display: none;
+	position: absolute;
+	top: 0;
 }
 
 condition-element > button.supprimer:hover {
-    background-color: var(--errorColor);
+	background-color: var(--errorColor);
 }
 
 condition-element > div.arrowsWrapper {
-    width: calc(var(--sizeModifier) * 6vw);
-    height: calc(var(--sizeModifier) * 1vw);
-    border: none;
-    font-size: calc(var(--sizeModifier) * 1vw);
-    text-align: center;
-    position: absolute;
-    bottom: calc(var(--sizeModifier) * -1.5vw);
-    user-select: none;
-    cursor: pointer;
-    display: none;
-    padding: 0 calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw);
+	width: calc(var(--sizeModifier) * 6vw);
+	height: calc(var(--sizeModifier) * 1vw);
+	border: none;
+	font-size: calc(var(--sizeModifier) * 1vw);
+	text-align: center;
+	position: absolute;
+	bottom: calc(var(--sizeModifier) * -1.5vw);
+	user-select: none;
+	cursor: pointer;
+	display: none;
+	padding: 0 calc(var(--sizeModifier) * 0.5vw)
+		calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw);
 }
 
 condition-element > div.arrowsWrapper > span {
-    padding: calc(var(--sizeModifier) * 0.5vw);
-    border-radius: 0 0 999em 999em;
+	padding: calc(var(--sizeModifier) * 0.5vw);
+	border-radius: 0 0 999em 999em;
 }
 
 condition-element > div.arrowsWrapper > span:hover {
-    color: var(--goodColor);
-    font-size: calc(var(--sizeModifier) * 1.2vw);
-    transition: all 0.2s ease;
-    background-color: var(--goodColorTransparent);
-    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	color: var(--goodColor);
+	font-size: calc(var(--sizeModifier) * 1.2vw);
+	transition: all 0.2s ease;
+	background-color: var(--goodColorTransparent);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 condition-element > div.ajouterAGauche {
-    width: calc(var(--sizeModifier) * 1.5vw);
-    height: calc(var(--sizeModifier) * 1.5vw);
-    position: absolute;
-    left: 0;
-    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-radius: 0 999em 999em 0;
-    background-color: var(--goodColorTransparent);
-    z-index: 5;
-    color: var(--bgColor);
-    font-size: calc(var(--sizeModifier) * 1.5vw);
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    display: none;
+	width: calc(var(--sizeModifier) * 1.5vw);
+	height: calc(var(--sizeModifier) * 1.5vw);
+	position: absolute;
+	left: 0;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 0 999em 999em 0;
+	background-color: var(--goodColorTransparent);
+	z-index: 5;
+	color: var(--bgColor);
+	font-size: calc(var(--sizeModifier) * 1.5vw);
+	text-align: center;
+	user-select: none;
+	cursor: pointer;
+	display: none;
 }
 
 condition-element > div.ajouterADroite {
-    width: calc(var(--sizeModifier) * 1.5vw);
-    height: calc(var(--sizeModifier) * 1.5vw);
-    position: absolute;
-    right: 0;
-    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-radius: 999em 0 0 999em;
-    background-color: var(--goodColorTransparent);
-    z-index: 5;
-    color: var(--bgColor);
-    font-size: calc(var(--sizeModifier) * 1.5vw);
-    text-align: center;
-    user-select: none;
-    cursor: pointer;
-    display: none;
+	width: calc(var(--sizeModifier) * 1.5vw);
+	height: calc(var(--sizeModifier) * 1.5vw);
+	position: absolute;
+	right: 0;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 999em 0 0 999em;
+	background-color: var(--goodColorTransparent);
+	z-index: 5;
+	color: var(--bgColor);
+	font-size: calc(var(--sizeModifier) * 1.5vw);
+	text-align: center;
+	user-select: none;
+	cursor: pointer;
+	display: none;
 }
 
 condition-element > div.ajouterAGauche:hover,
 condition-element > div.ajouterADroite:hover {
-    background-color: var(--goodColor);
+	background-color: var(--goodColor);
 }
 
 condition-element:hover > div.arrowsWrapper,
 condition-element:hover > div.ajouterAGauche,
 condition-element:hover > div.ajouterADroite,
 condition-element:hover > button.supprimer {
-    display: block;
-    opacity: 60%;
+	display: block;
+	opacity: 60%;
 }
 
 invite-bornes-pour-si {
-    min-width: calc(var(--sizeModifier) * 22vw);
-    height: calc(var(--sizeModifier) * 8vw);
-    border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-    border-radius: 0.5vw;
-    background-color: var(--bgColor);
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr 2fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    place-items: center;
-    padding: calc(var(--sizeModifier) * 1.5vw);
-    z-index: 3;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	min-width: calc(var(--sizeModifier) * 22vw);
+	height: calc(var(--sizeModifier) * 8vw);
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 0.5vw;
+	background-color: var(--bgColor);
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	display: grid;
+	grid-template-columns: 2fr 2fr 1fr 2fr;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	place-items: center;
+	padding: calc(var(--sizeModifier) * 1.5vw);
+	z-index: 3;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > input {
-    border: none;
-    border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
-    background: none;
-    color: var(--fgColorForward);
-    font-weight: bold;
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    display: inline-block;
-    width: 90%;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	border: none;
+	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
+	background: none;
+	color: var(--fgColorForward);
+	font-weight: bold;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	width: 90%;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > label {
-    border: none;
-    background: none;
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    display: inline-block;
-    white-space: nowrap;
-    width: 100%;
-    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	white-space: nowrap;
+	width: 100%;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 invite-bornes-pour-si > select {
-    border: none;
-    border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
-    background: none;
-    color: var(--fgColorForward);
-    font-weight: bold;
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    display: inline-block;
-    width: 90%;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-    height: calc(var(--sizeModifier) * 1.5vw);
+	border: none;
+	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
+	background: none;
+	color: var(--fgColorForward);
+	font-weight: bold;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	width: 90%;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	height: calc(var(--sizeModifier) * 1.5vw);
 }
 
 invite-bornes-pour-si > button {
-    border: none;
-    border-radius: calc(var(--sizeModifier) * 0.5vw);
-    background-color: var(--goodColorTransparent);
-    font-size: calc(var(--sizeModifier) * 0.75vw);
-    display: inline-block;
-    white-space: nowrap;
-    width: 80%;
-    color: var(--fgColorForward);
-    cursor: pointer;
+	border: none;
+	border-radius: calc(var(--sizeModifier) * 0.5vw);
+	background-color: var(--goodColorTransparent);
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	white-space: nowrap;
+	width: 80%;
+	color: var(--fgColorForward);
+	cursor: pointer;
 }
 
 invite-bornes-pour-si > button:hover {
-    background-color: var(--goodColor);
-    color: var(--bgColor);
+	background-color: var(--goodColor);
+	color: var(--bgColor);
 }
 
 structure-iterative-non-bornee-element {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    place-items: center;
-    width: fit-content;
-    height: calc(var(--sizeModifier) * 4vw);
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	place-items: center;
+	width: fit-content;
+	height: calc(var(--sizeModifier) * 4vw);
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
 }
-    structure-iterative-non-bornee-element > div.boucleSVG {
-        width: calc(var(--sizeModifier) * 4vw);
-        height: calc(var(--sizeModifier) * 4vw);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-    }
+structure-iterative-non-bornee-element > div.boucleSVG {
+	width: calc(var(--sizeModifier) * 4vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
 
 structure-iterative-bornee-element {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    place-items: center;
-    width: fit-content;
-    height: calc(var(--sizeModifier) * 4vw);
-    position: absolute;
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	place-items: center;
+	width: fit-content;
+	height: calc(var(--sizeModifier) * 4vw);
+	position: absolute;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
 }
-    structure-iterative-bornee-element > div.boucleSVG {
-        width: calc(var(--sizeModifier) * 4vw);
-        height: calc(var(--sizeModifier) * 4vw);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-    }
+structure-iterative-bornee-element > div.boucleSVG {
+	width: calc(var(--sizeModifier) * 4vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
 
-    structure-iterative-bornee-element > div.informationsBornes {
-        width: calc(var(--sizeModifier) * 8vw);
-        height: 100%;
-        font-size: calc(var(--sizeModifier) * 1vw);
-    }
+structure-iterative-bornee-element > div.informationsBornes {
+	width: calc(var(--sizeModifier) * 8vw);
+	height: 100%;
+	font-size: calc(var(--sizeModifier) * 1vw);
+}
 
 condition-sortie-element {
-    position: absolute;
-    height: calc(var(--sizeModifier) * 4vw);
-    width: calc(var(--sizeModifier) * 4vw);
-    transition: all var(--transitionTime) ease;
-    z-index: 2;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	position: absolute;
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 4vw);
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 ligne-element {
-    position: absolute;
-    transform-origin: 0% 50%;
-    margin: 0;
-    padding: 0;
-    border: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
-    z-index: 0;
-    box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	position: absolute;
+	transform-origin: 0% 50%;
+	margin: 0;
+	padding: 0;
+	border: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
+	z-index: 0;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
 #transferForm {
-    display: none;
+	display: none;
 }
 
 @keyframes jumpOverLeft {
-    0% {
-        translate: 0 0;
-    }
-    50% {
-        translate: -50% calc(var(--sizeModifier) * -5vw);
-    }
-    100% {
-        translate: -100% 0;
-    }
+	0% {
+		translate: 0 0;
+	}
+	50% {
+		translate: -50% calc(var(--sizeModifier) * -5vw);
+	}
+	100% {
+		translate: -100% 0;
+	}
 }
 
 @keyframes jumpOverRight {
-    0% {
-        translate: 0 0;
-    }
-    50% {
-        translate: 50% calc(var(--sizeModifier) * -5vw);
-    }
-    100% {
-        translate: 100% 0;
-    }
+	0% {
+		translate: 0 0;
+	}
+	50% {
+		translate: 50% calc(var(--sizeModifier) * -5vw);
+	}
+	100% {
+		translate: 100% 0;
+	}
 }
 
 @keyframes slideUnderLeft {
-    0% {
-        translate: 0 0;
-    }
-    50% {
-        translate: -50% calc(var(--sizeModifier) * 1vw);
-    }
-    100% {
-        translate: -100% 0;
-    }
+	0% {
+		translate: 0 0;
+	}
+	50% {
+		translate: -50% calc(var(--sizeModifier) * 1vw);
+	}
+	100% {
+		translate: -100% 0;
+	}
 }
 
 @keyframes slideUnderRight {
-    0% {
-        translate: 0 0;
-    }
-    50% {
-        translate: 50% calc(var(--sizeModifier) * 1vw);
-    }
-    100% {
-        translate: 100% 0;
-    }
+	0% {
+		translate: 0 0;
+	}
+	50% {
+		translate: 50% calc(var(--sizeModifier) * 1vw);
+	}
+	100% {
+		translate: 100% 0;
+	}
 }
 
 @keyframes fall {
-    0% {
-        translate: 0 -5vw;
-    }
-    100% {
-        translate: 0 0;
-    }
+	0% {
+		translate: 0 -5vw;
+	}
+	100% {
+		translate: 0 0;
+	}
 }
 
 @keyframes zoomFromAbove {
-    0% {
-        scale: 0;
-        transform-origin: top;
-    }
-    100% {
-        scale: 1;
-        transform-origin: top;
-    }
-
+	0% {
+		scale: 0;
+		transform-origin: top;
+	}
+	100% {
+		scale: 1;
+		transform-origin: top;
+	}
 }
 affichage-erreur-element {
-    position: relative;
-    margin: 0;
-    height: fit-content;
-    
+	position: relative;
+	margin: 0;
+	height: fit-content;
 }
 
 affichage-erreur-element > div.img {
-    width: 100%;
+	width: 100%;
 }
-affichage-erreur-element button
-{
-    display: block;
-    background: none;
-    border: var(--fgColor) solid 0.1vw;
-    border-radius: 1vw;
-    font-size: 1vw;
-    color: var(--fgColor);
-    cursor: pointer;
-    margin: 0;
-    padding: 0.75vw;
+affichage-erreur-element button {
+	display: block;
+	background: none;
+	border: var(--fgColor) solid 0.1vw;
+	border-radius: 1vw;
+	font-size: 1vw;
+	color: var(--fgColor);
+	cursor: pointer;
+	margin: 0;
+	padding: 0.75vw;
 }
 
 affichage-erreur-element .erreur-container {
-    position: absolute;
-    top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
-    left: calc(-7.5vw + 50%); /* Centre la div par rapport au bouton */
-    background-color: var(--bgColor); /* Couleur de fond */
-    border: 0.1vw solid var(--fgColor); /* Bordure */
-    padding: 0.2vw; /* Espacement intérieur */
-    border-radius: 0.3vw; /* Bord arrondi */
-    z-index: 999; /* S'assure que la boîte est au-dessus des autres éléments */
-    width: 15vw;
-    font-size: 1vw;
-    padding-bottom: 1vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    animation: 0.2s ease-in-out zoomFromAbove;
+	position: absolute;
+	top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
+	left: calc(-7.5vw + 50%); /* Centre la div par rapport au bouton */
+	background-color: var(--bgColor); /* Couleur de fond */
+	border: 0.1vw solid var(--fgColor); /* Bordure */
+	padding: 0.2vw; /* Espacement intérieur */
+	border-radius: 0.3vw; /* Bord arrondi */
+	z-index: 999; /* S'assure que la boîte est au-dessus des autres éléments */
+	width: 15vw;
+	font-size: 1vw;
+	padding-bottom: 1vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	animation: 0.2s ease-in-out zoomFromAbove;
 }
 
 affichage-erreur-element div.fleches {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 1vw;
-    margin-bottom: 1vw;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 100%;
+	height: 1vw;
+	margin-bottom: 1vw;
 }
 
 affichage-erreur-element p.texte-erreur {
-    min-height: 2vw;
+	min-height: 2vw;
 }
 
 affichage-erreur-element .erreur-container .fleche {
-    cursor: pointer; /* Curseur de la flèche */
+	cursor: pointer; /* Curseur de la flèche */
 }
 affichage-erreur-element #RechercheAnomalie {
-    display: block;
-    width: 2vw;
-    height: 2vw;
+	display: block;
+	width: 2vw;
+	height: 2vw;
 }
-affichage-erreur-element .erreur-container
-{
-    z-index: 9000;
+affichage-erreur-element .erreur-container {
+	z-index: 9000;
 }
-affichage-erreur-element .erreur-container span, p {
-    display: inline-block;
+affichage-erreur-element .erreur-container span,
+p {
+	display: inline-block;
 }
-affichage-erreur-element .fleche, button, .numero-erreur
-{
-    user-select: none; /* désactive la possibilité de le selectionner */
-}
-
-@font-face {
-    font-family: "Cyberpunk";
-    src: url(assets/BladeLogicDemoRegular-ALnVD.otf);
+affichage-erreur-element .fleche,
+button,
+.numero-erreur {
+	user-select: none; /* désactive la possibilité de le selectionner */
 }
 
 @font-face {
-    font-family: 'White Rabbit';
-    src: url(assets/narrow-rectangle-7.ttf);
-  }
+	font-family: "Cyberpunk";
+	src: url(assets/BladeLogicDemoRegular-ALnVD.otf);
+}
+
+@font-face {
+	font-family: "White Rabbit";
+	src: url(assets/narrow-rectangle-7.ttf);
+}
 
 .rotate {
-    rotate: 360deg;
+	rotate: 360deg;
 }
 
 .move-right-2 {
-    translate: 2vw 0;
+	translate: 2vw 0;
 }
 
 .crayon {
-    transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+/* Glow specific styles */
+
+[data-glow].active {
+	--border-size: calc(var(--border, 2) * 1px);
+	--spotlight-size: calc(var(--size, 150) * 1px);
+	--hue: calc(var(--base) + (var(--xp, 0) * var(--spread, 0)));
+	background-image: radial-gradient(
+		var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px)
+			calc(var(--y, 0) * 1px),
+		hsl(
+			var(--hue, 210) calc(var(--saturation, 100) * 1%)
+				calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)
+		),
+		transparent
+	);
+}
+
+[data-glow].active::before,
+[data-glow].active::after {
+	pointer-events: none;
+	content: "";
+	position: absolute;
+	inset: calc(var(--border-size) * -1);
+	border: var(--border-size) solid transparent;
+	border-radius: 0.8em;
+	background-attachment: fixed;
+	background-size: calc(100% + (2 * var(--border-size)))
+		calc(100% + (2 * var(--border-size)));
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	mask: linear-gradient(transparent, transparent),
+		linear-gradient(white, white);
+	mask-clip: padding-box, border-box;
+	mask-composite: intersect;
+}
+
+/* This is the emphasis light */
+[data-glow].active::before {
+	background-image: radial-gradient(
+		calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+			calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+		hsl(
+			var(--hue, 210) calc(var(--saturation, 100) * 1%)
+				calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)
+		),
+		transparent 100%
+	);
+	filter: brightness(1.5);
+}
+/* This is the spotlight */
+[data-glow].active::after {
+	background-image: radial-gradient(
+		calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+			calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+		hsl(0 100% 100% / var(--border-light-opacity, 1)),
+		transparent 100%
+	);
+}
+menu-deroulant {
+	background-color: rgba(28, 39, 51, 0.35);
+	border: 1px solid var(--borderColor);
+}
+
+/* Dock animation style */
+.dock-item {
+	cursor: pointer;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transform-origin: bottom;
+}
+
+@media screen and (max-width: 780px) {
+	#boutonPointeur,
+	#boutonProbleme,
+	#boutonProcedure,
+	#boutonStructureSi,
+	#boutonStructureSwitch,
+	#boutonStructureIterative,
+	#boutonStructureIterativeBornee,
+	#boutonConditionSortie,
+	#boutonLien,
+	#boutonUndo,
+	#boutonRedo,
+	#dico_btn > img,
+	#biblio_btn > img {
+		width: 16px;
+		height: 16px;
+	}
+
+	indicateur-zoom > .zoomDisplay {
+		font-size: 14px;
+	}
+
+	indicateur-zoom > button {
+		font-size: 18px;
+	}
+
+	h1 {
+		font-size: 12px;
+	}
+
+	sous-plan-travail > span.fermeture {
+		font-size: 14px;
+	}
+}
+
+menu-compte-element {
+	position: relative;
+	display: inline-block;
+}
+
+menu-compte-element > div.img {
+	width: 100%;
+}
+
+menu-compte-element > #MenuCompte {
+	display: block;
+	width: 3vw;
+	height: 3vw;
+}
+
+menu-compte-element > div.menu-compte {
+	position: absolute;
+	top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
+	left: 50%; /* Centre la div par rapport au bouton */
+	transform: translateX(
+		-84%
+	); /* Décale la div vers la gauche pour aligner la bordure droite */
+	background-color: var(--bgColor);
+	padding: 0.2vw;
+	border-radius: 0.6em;
+	z-index: 999;
+	width: 15vw;
+	font-size: 1vw;
+	padding-bottom: 1vw;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	animation: 0.2s ease-in-out zoomFromAbove;
+	/* background: rgba( 28, 39, 51, 0.35 ); */
+	/* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
+	border: 1px solid #1f2b38;
+	display: flex;
+	gap: 0.5vw;
+}
+
+.elementMenuCompte {
+	padding-left: 5%;
+	width: 95%;
+	padding-top: 0.5vw;
+	padding-bottom: 0.5vw;
+	text-align: left;
+	white-space: nowrap;
+	position: relative;
+	cursor: pointer;
+	color: var(--fgColor);
 }

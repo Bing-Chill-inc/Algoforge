@@ -29,6 +29,9 @@ class ElementGraphique extends HTMLElement {
 		this._parent = parent;
 		this._elementGraphique = this;
 		this.setPosition(abscisse, ordonnee);
+	
+        // Empêchez le focus automatique sur d'autres éléments
+        document.activeElement.blur();
 	}
 
 	// ENCAPSULATION

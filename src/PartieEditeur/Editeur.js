@@ -33,6 +33,7 @@ class Editeur extends HTMLElement {
 	_lastPosY = 0;
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
+	_barreOutilHorizontale = null;
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -56,7 +57,9 @@ class Editeur extends HTMLElement {
 		super();
 
 		// Détection de la touche "Meta" (Cmd sur Mac, Ctrl sur Windows, Linux)
-		if (window.navigator.userAgent.match(/(Mac|Windows|Linux)/)[0] === "Mac") {
+		if (
+			window.navigator.userAgent.match(/(Mac|Windows|Linux)/)[0] === "Mac"
+		) {
 			this._toucheMeta = "⌘";
 		} else {
 			this._toucheMeta = "Ctrl + ";
@@ -94,7 +97,11 @@ class Editeur extends HTMLElement {
 		});
 
 		window.addEventListener("beforeunload", (e) => {
-			if (this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) {
+			if (
+				(this._pileAnnuler.length > 0 ||
+					this._pileRétablir.length > 0) &&
+				!isElectron
+			) {
 				// Cancel the event
 				e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
 				// Chrome requires returnValue to be set
@@ -104,46 +111,60 @@ class Editeur extends HTMLElement {
 		});
 
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
-		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
-		this.appendChild(this._bibliotheque);
 
 		// Référencement des types d'éléments que l'on peut créer
+		this._typesElements.push(Lien);
 		this._typesElements.push(Probleme);
 		this._typesElements.push(Procedure);
 		this._typesElements.push(StructureSi);
 		this._typesElements.push(StructureSwitch);
 		this._typesElements.push(StructureIterativeNonBornee);
-		this._typesElements.push(ConditionSortie);
-		this._typesElements.push(Lien);
 		this._typesElements.push(StructureIterativeBornee);
+		this._typesElements.push(ConditionSortie);
 
 		// Référencement des éléments d'interface
 		this._espacePrincipal = document.querySelector("#espacePrincipal");
 		this._espacePrincipal.appendChild(this._selection);
 		this._espacePrincipal.appendChild(this._selectionRectangle);
+		this._selectionRectangle.placer(-10, 0, -10, 0);
 		this._planActif = this._espacePrincipal;
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
-		this.appendChild(this._indicateurZoom);
+		document
+			.getElementById("biblio_wrapper")
+			.appendChild(this._bibliotheque);
+		document
+			.getElementById("dico_wrapper")
+			.appendChild(this._dictionnaireDesDonnees);
+		this._barreOutilHorizontale = document.querySelector("#actionsControl");
+		this._barreOutilHorizontale.appendChild(this._indicateurZoom);
 
 		this._boutonPointeur = document.querySelector("#boutonPointeur");
 
+		this._listeTools.push(document.querySelector("#boutonLien"));
 		this._listeTools.push(document.querySelector("#boutonProbleme"));
 		this._listeTools.push(document.querySelector("#boutonProcedure"));
 		this._listeTools.push(document.querySelector("#boutonStructureSi"));
 		this._listeTools.push(document.querySelector("#boutonStructureSwitch"));
-		this._listeTools.push(document.querySelector("#boutonStructureIterative"));
+		this._listeTools.push(
+			document.querySelector("#boutonStructureIterative"),
+		);
+		this._listeTools.push(
+			document.querySelector("#boutonStructureIterativeBornee"),
+		);
 		this._listeTools.push(document.querySelector("#boutonConditionSortie"));
-		this._listeTools.push(document.querySelector("#boutonLien"));
-		this._listeTools.push(document.querySelector("#boutonStructureIterativeBornee"));
 
 		this._undoButton = document.querySelector("#boutonUndo");
 		this._redoButton = document.querySelector("#boutonRedo");
 
-		this._menuDeroulantFichier = document.querySelector("#menuDeroulantFichier");
-		this._menuDeroulantEdition = document.querySelector("#menuDeroulantEdition");
+		this._menuDeroulantFichier = document.querySelector(
+			"#menuDeroulantFichier",
+		);
+		this._menuDeroulantEdition = document.querySelector(
+			"#menuDeroulantEdition",
+		);
 		this._menuDeroulantAide = document.querySelector("#menuDeroulantAide");
 
 		this.querySelector("#titreAlgo").addEventListener("input", (event) => {
@@ -151,53 +172,68 @@ class Editeur extends HTMLElement {
 			document.title = "Algoforge - " + event.target.innerText;
 		});
 
-		document.title = "Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		document.title =
+			"Algoforge - " + this.querySelector("#titreAlgo").innerText;
 
-		this.querySelector("#titreAlgo").addEventListener("keydown", (event) => {
-			// On vérifie si la touche appuyée est "Entrée"
-			if (event.key === "Enter") {
-				// On l'empêche pour éviter le saut de ligne, qui casse le design
-				event.preventDefault();
+		this.querySelector("#titreAlgo").addEventListener(
+			"keydown",
+			(event) => {
+				// On vérifie si la touche appuyée est "Entrée"
+				if (event.key === "Enter") {
+					// On l'empêche pour éviter le saut de ligne, qui casse le design
+					event.preventDefault();
 
-				// On enlève le focus de l'élément pour que le titre soit bien enregistré
-				event.target.blur();
+					// On enlève le focus de l'élément pour que le titre soit bien enregistré
+					event.target.blur();
 
-				// Petite animation sur le crayon
-				event.target.nextElementSibling.classList.add("rotate");
-				event.target.nextElementSibling.classList.add("move-right-2");
-				setTimeout(() => {
-					event.target.nextElementSibling.classList.remove("rotate");
-					event.target.nextElementSibling.classList.remove("move-right-2");
-				}, 500);
-			}
+					// Petite animation sur le crayon
+					event.target.nextElementSibling.classList.add("rotate");
+					event.target.nextElementSibling.classList.add(
+						"move-right-2",
+					);
+					setTimeout(() => {
+						event.target.nextElementSibling.classList.remove(
+							"rotate",
+						);
+						event.target.nextElementSibling.classList.remove(
+							"move-right-2",
+						);
+					}, 500);
+				}
 
-			if (verbose)
-				console.log(
-					`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`
-				);
-			// On vérifie si il y a trop de caractères
-			if (
-				event.target.innerText.length >= this.MAX_CHAR_TITRE &&
-				event.key !== "Backspace" &&
-				event.key !== "Delete"
-			) {
-				if (verbose) console.log("Trop de caractères");
-				// On empêche l'ajout de caractères
-				event.preventDefault();
-			}
-		});
+				if (verbose)
+					console.log(
+						`Le titre contient ${event.target.innerText.length} caractères sur ${this.MAX_CHAR_TITRE} autorisés.`,
+					);
+				// On vérifie si il y a trop de caractères
+				if (
+					event.target.innerText.length >= this.MAX_CHAR_TITRE &&
+					event.key !== "Backspace" &&
+					event.key !== "Delete"
+				) {
+					if (verbose) console.log("Trop de caractères");
+					// On empêche l'ajout de caractères
+					event.preventDefault();
+				}
+			},
+		);
 
-		this.querySelector("#titreAlgo").nextElementSibling.addEventListener("click", (event) => {
-			// On met le focus sur le titre
-			event.target.previousElementSibling.focus();
-		});
+		this.querySelector("#titreAlgo").nextElementSibling.addEventListener(
+			"click",
+			(event) => {
+				// On met le focus sur le titre
+				event.target.previousElementSibling.focus();
+			},
+		);
 
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
 				"Thème AlgoForge",
-				"#222222",
+				"#161e27",
+				"#0f141a",
 				"#838787",
+				"#f2fbff",
 				"#83878755",
 				"#83878711",
 				"#A6AAA9",
@@ -206,8 +242,13 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#FFE989",
 				"#34A5DA",
-				"Roboto, sans-serif"
-			)
+				"Roboto, sans-serif",
+				"",
+				"#1f2b38",
+				"rgba(28,39,51,0.35)",
+				"#bdc6c9",
+				"rgba(166, 170, 169, .6)",
+			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
@@ -222,8 +263,8 @@ class Editeur extends HTMLElement {
 				"#D85959", // error
 				"#FFAD5A", // warning
 				"#5B5847", // title
-				"Roboto, sans-serif"
-			)
+				"Roboto, sans-serif",
+			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
@@ -238,8 +279,8 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#b89f30",
 				"#22759c",
-				"Roboto, sans-serif"
-			)
+				"Roboto, sans-serif",
+			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
@@ -254,8 +295,8 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#FFE989",
 				"#FFFFFF",
-				"Roboto, sans-serif"
-			)
+				"Roboto, sans-serif",
+			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
@@ -270,8 +311,8 @@ class Editeur extends HTMLElement {
 				"#C82606",
 				"#FFE989",
 				"#FFFFFF",
-				"White Rabbit"
-			)
+				"White Rabbit",
+			),
 		);
 
 		this._themeSelect.appendChild(
@@ -288,8 +329,8 @@ class Editeur extends HTMLElement {
 				"#FFE989",
 				"#F2E307",
 				"Cyberpunk",
-				"#EB9EBB"
-			)
+				"#EB9EBB",
+			),
 		);
 
 		// this._themeSelect.appendChild(
@@ -310,7 +351,8 @@ class Editeur extends HTMLElement {
 
 		// Gestion des événements de thème
 		this._themeSelect.addEventListener("change", () => {
-			let theme = this._themeSelect.options[this._themeSelect.selectedIndex];
+			let theme =
+				this._themeSelect.options[this._themeSelect.selectedIndex];
 			theme.appliquer();
 		});
 
@@ -321,7 +363,9 @@ class Editeur extends HTMLElement {
 			this._themeSelect.selectedIndex = 0;
 		}
 		try {
-			this._themeSelect.options[this._themeSelect.selectedIndex].appliquer();
+			this._themeSelect.options[
+				this._themeSelect.selectedIndex
+			].appliquer();
 		} catch (error) {
 			console.error("Le thème n'a pas pu être appliqué.");
 			this._themeSelect.options[0].appliquer();
@@ -334,7 +378,7 @@ class Editeur extends HTMLElement {
 				console.log("Nouveau");
 				// On ouvre un nouvel onglet avec un éditeur vide
 				window.open(window.location.href, "_blank");
-			})
+			}),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Ouvrir", () => {
@@ -352,36 +396,51 @@ class Editeur extends HTMLElement {
 							let nomFichier = fileInput.files[0].name;
 							if (verbose) console.log(fileInput.files[0].size);
 							if (fileInput.files[0].size > 5000000) {
-								alert("Le fichier est trop volumineux (maximum 5 MégaOctets).");
+								alert(
+									"Le fichier est trop volumineux (maximum 5 MégaOctets).",
+								);
 								return;
 							}
-							if (nomFichier.substring(nomFichier.length - 5) !== ".json") {
+							if (
+								nomFichier.substring(nomFichier.length - 5) !==
+								".json"
+							) {
 								alert("Le fichier doit être au format .json.");
 								return;
 							}
 							// On retire l'extension
-							nomFichier = nomFichier.substring(0, nomFichier.length - 5);
-							this._transferInput.value = JSON.stringify(reader.result);
+							nomFichier = nomFichier.substring(
+								0,
+								nomFichier.length - 5,
+							);
+							this._transferInput.value = JSON.stringify(
+								reader.result,
+							);
 							this._transferNomFichier.value = nomFichier;
 							this._transferForm.submit();
 						} catch (error) {
-							alert("Le fichier n'a pas été chargé correctement.");
+							alert(
+								"Le fichier n'a pas été chargé correctement.",
+							);
 							console.error(error);
 						}
 					};
 					reader.readAsText(fileInput.files[0]);
 				});
 				fileInput.click();
-			})
+			}),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Créer une copie", () => {
 				console.log("Créer une copie");
 				// On post le contenu de l'éditeur actuel dans un nouvel onglet
-				this._transferInput.value = JSON.stringify(this._espacePrincipal.exporterEnJSON());
-				this._transferNomFichier.value = this.querySelector("#titreAlgo").innerText + " - copie";
+				this._transferInput.value = JSON.stringify(
+					this._espacePrincipal.exporterEnJSON(),
+				);
+				this._transferNomFichier.value =
+					this.querySelector("#titreAlgo").innerText + " - copie";
 				this._transferForm.submit();
-			})
+			}),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu(
@@ -390,8 +449,8 @@ class Editeur extends HTMLElement {
 					console.log("Partager");
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Renommer", () => {
@@ -399,7 +458,7 @@ class Editeur extends HTMLElement {
 				let titre = this.querySelector("#titreAlgo");
 				// On met le focus sur le titre
 				titre.focus();
-			})
+			}),
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
 			console.log("Exporter");
@@ -413,8 +472,10 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".json", () => {
 				console.log("Exporter en .json");
-				this.exporterJSON(JSON.stringify(this._espacePrincipal.exporterEnJSON()));
-			})
+				this.exporterJSON(
+					JSON.stringify(this._espacePrincipal.exporterEnJSON()),
+				);
+			}),
 		);
 
 		let sousTitreAlgorithme = document.createElement("h3");
@@ -432,8 +493,8 @@ class Editeur extends HTMLElement {
 					// );
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 
 		exporter.ajouterElementMenu(
@@ -447,15 +508,15 @@ class Editeur extends HTMLElement {
 					// );
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
 				console.log("Exporter en .svg");
 				this.exporterSVG(this._planActif);
-			})
+			}),
 		);
 
 		exporter.ajouterElementMenu(
@@ -465,8 +526,8 @@ class Editeur extends HTMLElement {
 					console.log("Exporter en .pdf");
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 
 		let sousTitreDictionnaire = document.createElement("h3");
@@ -477,21 +538,21 @@ class Editeur extends HTMLElement {
 			new ElementMenu(".xls", () => {
 				console.log("Exporter en .xls");
 				this._dictionnaireDesDonnees.exporter("xls");
-			})
+			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
 				console.log("Exporter en .csv");
 				this._dictionnaireDesDonnees.exporter("csv");
-			})
+			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".md", () => {
 				console.log("Exporter en .md");
 				this._dictionnaireDesDonnees.exporter("md");
-			})
+			}),
 		);
 
 		this._menuDeroulantFichier.ajouterElementMenu(
@@ -501,8 +562,8 @@ class Editeur extends HTMLElement {
 					console.log("Supprimer");
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 
 		// Edition
@@ -510,7 +571,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu("Importer", () => {
 				console.log("Importer");
 				this.importerJSON();
-			})
+			}),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -520,8 +581,8 @@ class Editeur extends HTMLElement {
 					console.log("Annuler");
 					this.undo();
 				},
-				`${this._toucheMeta}Z`
-			)
+				`${this._toucheMeta}Z`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -531,8 +592,8 @@ class Editeur extends HTMLElement {
 					console.log("Rétablir");
 					this.redo();
 				},
-				`${this._toucheMeta}Y`
-			)
+				`${this._toucheMeta}Y`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -542,8 +603,8 @@ class Editeur extends HTMLElement {
 					console.log("Couper");
 					this.cut();
 				},
-				`${this._toucheMeta}X`
-			)
+				`${this._toucheMeta}X`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -553,8 +614,8 @@ class Editeur extends HTMLElement {
 					console.log("Copier");
 					this.copy();
 				},
-				`${this._toucheMeta}C`
-			)
+				`${this._toucheMeta}C`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -564,8 +625,8 @@ class Editeur extends HTMLElement {
 					console.log("Coller");
 					this._modaleNoPaste.ouvrir();
 				},
-				`${this._toucheMeta}V`
-			)
+				`${this._toucheMeta}V`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -575,8 +636,8 @@ class Editeur extends HTMLElement {
 					console.log("Sélectionner tout");
 					this.selectAll();
 				},
-				`${this._toucheMeta}A`
-			)
+				`${this._toucheMeta}A`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -586,8 +647,8 @@ class Editeur extends HTMLElement {
 					console.log("Supprimer");
 					this.delete();
 				},
-				`Suppr / ${this._toucheMeta}⌫`
-			)
+				`Suppr / ${this._toucheMeta}⌫`,
+			),
 		);
 
 		this._menuDeroulantEdition.ajouterElementMenu(
@@ -599,8 +660,8 @@ class Editeur extends HTMLElement {
 					this._modaleNonImp.ouvrir();
 				},
 				`${this._toucheMeta}F`,
-				false
-			)
+				false,
+			),
 		);
 
 		// Aide
@@ -611,22 +672,22 @@ class Editeur extends HTMLElement {
 					console.log("Tutoriels");
 					this._modaleNonImp.ouvrir();
 				},
-				false
-			)
+				false,
+			),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("Raccourcis clavier", () => {
 				console.log("Raccourcis clavier");
 				this._modaleRaccourcisClavier.ouvrir();
-			})
+			}),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("À propos", () => {
 				console.log("À propos");
 				this._modaleAPropos.ouvrir();
-			})
+			}),
 		);
 
 		// Gestion des événements de l'interface
@@ -641,13 +702,21 @@ class Editeur extends HTMLElement {
 					"application/json",
 					JSON.stringify([
 						{
-							typeElement: this._typesElements[index].prototype.constructor.name,
+							typeElement:
+								this._typesElements[index].prototype.constructor
+									.name,
 							abscisse:
-								this._typesElements[index].prototype.constructor.name == "Probleme" ||
-								this._typesElements[index].prototype.constructor.name == "Procedure"
+								this._typesElements[index].prototype.constructor
+									.name == "Probleme" ||
+								this._typesElements[index].prototype.constructor
+									.name == "Procedure"
 									? "-15vw"
-									: this._typesElements[index].prototype.constructor.name == "StructureSi" ||
-									  this._typesElements[index].prototype.constructor.name == "StructureSwitch"
+									: this._typesElements[index].prototype
+											.constructor.name ==
+											"StructureSi" ||
+									  this._typesElements[index].prototype
+											.constructor.name ==
+											"StructureSwitch"
 									? "-5vw"
 									: "-2vw",
 							ordonnee: "0vw",
@@ -661,7 +730,7 @@ class Editeur extends HTMLElement {
 							borneSuperieure: "",
 							pas: "",
 						},
-					])
+					]),
 				);
 			});
 		});
@@ -711,52 +780,60 @@ class Editeur extends HTMLElement {
 			}
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
-				if (e.keyCode === 64) {
-					// Ctrl + # / ^2
-					e.preventDefault();
-					this.selectTool(-1);
+				switch (e.key) {
+					case "@":
+					case "²":
+						// Ctrl + @ / ²
+						e.preventDefault();
+						this.selectTool(-1);
+						break;
+					case "1":
+						// Ctrl + 1
+						e.preventDefault();
+						this.selectTool(0);
+						break;
+					case "2":
+						// Ctrl + 2
+						e.preventDefault();
+						this.selectTool(1);
+						break;
+					case "3":
+						// Ctrl + 3
+						e.preventDefault();
+						this.selectTool(2);
+						break;
+					case "4":
+						// Ctrl + 4
+						e.preventDefault();
+						this.selectTool(3);
+						break;
+					case "5":
+						// Ctrl + 5
+						e.preventDefault();
+						console.warn("TEST5");
+						this.selectTool(4);
+						break;
+					case "6":
+					case "§":
+						// Ctrl + 6 / §
+						e.preventDefault();
+						console.warn("TEST");
+						this.selectTool(5);
+						break;
+					case "7":
+						// Ctrl + 7
+						e.preventDefault();
+						this.selectTool(6);
+						break;
+					case "8":
+						// Ctrl + 8
+						e.preventDefault();
+						this.selectTool(7);
+						break;
+					default:
+						break;
 				}
 
-				if (e.keyCode === 49) {
-					// Ctrl + 1
-					e.preventDefault();
-					this.selectTool(0);
-				}
-				if (e.keyCode === 50) {
-					// Ctrl + 2
-					e.preventDefault();
-					this.selectTool(1);
-				}
-				if (e.keyCode === 51) {
-					// Ctrl + 3
-					e.preventDefault();
-					this.selectTool(2);
-				}
-				if (e.keyCode === 52) {
-					// Ctrl + 4
-					e.preventDefault();
-					this.selectTool(3);
-				}
-				if (e.keyCode === 53) {
-					// Ctrl + 5
-					e.preventDefault();
-					this.selectTool(4);
-				}
-				if (e.keyCode === 54) {
-					// Ctrl + 6
-					e.preventDefault();
-					this.selectTool(7);
-				}
-				if (e.keyCode === 55) {
-					// Ctrl + 7
-					e.preventDefault();
-					this.selectTool(5);
-				}
-				if (e.keyCode === 56) {
-					// Ctrl + 8
-					e.preventDefault();
-					this.selectTool(6);
-				}
 				// Raccourcis clavier en Ctrl + ... pour l'édition
 				if (e.key.toLowerCase() === "z") {
 					// Ctrl + Z
@@ -810,10 +887,12 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("dragover", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 		});
 
 		this.addEventListener("drop", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 
 			try {
@@ -822,11 +901,18 @@ class Editeur extends HTMLElement {
 
 				var parsedData = JSON.parse(data);
 
-				if (verbose) console.log(`parsedData: ${parsedData} et typeof parsedData: ${typeof parsedData}`);
+				if (verbose)
+					console.log(
+						`parsedData: ${parsedData} et typeof parsedData: ${typeof parsedData}`,
+					);
 
 				this._curMousePos = {
-					x: ((event.clientX / window.innerWidth) * 100) / this._indicateurZoom._zoom,
-					y: ((event.clientY / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+					x:
+						((event.clientX / window.innerWidth) * 100) /
+						this._indicateurZoom._zoom,
+					y:
+						((event.clientY / window.innerWidth) * 100) /
+						this._indicateurZoom._zoom,
 				}; // En vw
 
 				// Ajouter les coordonnées de la souris
@@ -834,27 +920,43 @@ class Editeur extends HTMLElement {
 				const appliquerDecalage = (elem) => {
 					if (verbose)
 						console.log(
-							`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(elem.abscisse)} + ${
-								this._curMousePos.x
-							} + "vw"
-                            = ${parseFloat(elem.abscisse) + this._curMousePos.x + "vw"}`
+							`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(
+								elem.abscisse,
+							)} + ${this._curMousePos.x} + "vw"
+                            = ${
+								parseFloat(elem.abscisse) +
+								this._curMousePos.x +
+								"vw"
+							}`,
 						);
 					if (verbose)
 						console.log(
-							`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(elem.ordonnee)} + ${
-								this._curMousePos.y
-							} + "vw"
-                            = ${parseFloat(elem.ordonnee) + this._curMousePos.y + "vw"}`
+							`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(
+								elem.ordonnee,
+							)} + ${this._curMousePos.y} + "vw"
+                            = ${
+								parseFloat(elem.ordonnee) +
+								this._curMousePos.y +
+								"vw"
+							}`,
 						);
-					elem.abscisse = parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
-					elem.ordonnee = parseFloat(elem.ordonnee) + this._curMousePos.y - offsetYPlanTravailVW + "vw";
+					elem.abscisse =
+						parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
+					elem.ordonnee =
+						parseFloat(elem.ordonnee) +
+						this._curMousePos.y -
+						offsetYPlanTravailVW +
+						"vw";
 					if (elem.enfants) {
 						elem.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
 						});
 					}
 
-					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					if (
+						elem.typeElement == "StructureSi" ||
+						elem.typeElement == "StructureIterative"
+					) {
 						for (let condition of elem.conditions) {
 							condition.enfants.forEach((enfant) => {
 								appliquerDecalage(enfant);
@@ -875,37 +977,56 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("paste", (e) => {
+			e.stopPropagation();
 			if (verbose) console.log(e);
 			if (verbose) console.log(e.clipboardData.getData("text/plain"));
 			try {
-				var parsedData = JSON.parse(e.clipboardData.getData("text/plain"));
+				var parsedData = JSON.parse(
+					e.clipboardData.getData("text/plain"),
+				);
 
 				// Ajouter les coordonnées de la souris
 				const offsetYPlanTravailVW = 6; // En vw
 				const appliquerDecalage = (elem) => {
 					if (verbose)
 						console.log(
-							`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(elem.abscisse)} + ${
-								this._curMousePos.x
-							} + "vw"
-                            = ${parseFloat(elem.abscisse) + this._curMousePos.x + "vw"}`
+							`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(
+								elem.abscisse,
+							)} + ${this._curMousePos.x} + "vw"
+                            = ${
+								parseFloat(elem.abscisse) +
+								this._curMousePos.x +
+								"vw"
+							}`,
 						);
 					if (verbose)
 						console.log(
-							`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(elem.ordonnee)} + ${
-								this._curMousePos.y
-							} + "vw"
-                            = ${parseFloat(elem.ordonnee) + this._curMousePos.y + "vw"}`
+							`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(
+								elem.ordonnee,
+							)} + ${this._curMousePos.y} + "vw"
+                            = ${
+								parseFloat(elem.ordonnee) +
+								this._curMousePos.y +
+								"vw"
+							}`,
 						);
-					elem.abscisse = parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
-					elem.ordonnee = parseFloat(elem.ordonnee) + this._curMousePos.y - offsetYPlanTravailVW + "vw";
+					elem.abscisse =
+						parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
+					elem.ordonnee =
+						parseFloat(elem.ordonnee) +
+						this._curMousePos.y -
+						offsetYPlanTravailVW +
+						"vw";
 					if (elem.enfants) {
 						elem.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
 						});
 					}
 
-					if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+					if (
+						elem.typeElement == "StructureSi" ||
+						elem.typeElement == "StructureIterative"
+					) {
 						for (let condition of elem.conditions) {
 							condition.enfants.forEach((enfant) => {
 								appliquerDecalage(enfant);
@@ -927,6 +1048,8 @@ class Editeur extends HTMLElement {
 
 		// Gestion des clics sur l'éditeur
 		this.addEventListener("click", (e) => {
+			e.stopPropagation();
+
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");
 			for (let i = 0; i < menuContextuel.length; i++) {
@@ -939,6 +1062,10 @@ class Editeur extends HTMLElement {
 			if (verbose) console.log(e);
 			// Remonter le DOM depuis e.target pour obtenir un élément utilisable
 			let maTarget = e.target;
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
+
 			// Gestion des clics  sur des éléments qui ne doivent pas être ciblés
 			if (e.target.classList.contains("nonCiblable")) {
 				return;
@@ -956,7 +1083,8 @@ class Editeur extends HTMLElement {
 				// Gestion des clics  sur des éléments qui ne doivent pas être ciblés
 				if (verbose) console.log(maTarget);
 				if (verbose) console.log(maTarget.classList);
-				if (verbose) console.log(maTarget.classList.contains("nonCiblable"));
+				if (verbose)
+					console.log(maTarget.classList.contains("nonCiblable"));
 				if (maTarget.classList.contains("nonCiblable")) {
 					return;
 				}
@@ -969,7 +1097,7 @@ class Editeur extends HTMLElement {
 						"currentTool = " +
 							this._currentTool +
 							" et typesElements.length = " +
-							this._typesElements.length
+							this._typesElements.length,
 					);
 				if (
 					this._currentTool !== null &&
@@ -977,45 +1105,76 @@ class Editeur extends HTMLElement {
 					this._currentTool >= 0
 				) {
 					let element = this._typesElements[this._currentTool];
-					if (verbose) console.log("Création d'un élément de type " + element.name);
-					let elemPose = maTarget.ajouterElement(element, e.offsetX, e.offsetY, false);
+					if (verbose)
+						console.log(
+							"Création d'un élément de type " + element.name,
+						);
+					let elemPose = maTarget.ajouterElement(
+						element,
+						e.offsetX,
+						e.offsetY,
+						false,
+					);
 					if (elemPose instanceof StructureIterativeBornee) {
 						elemPose.inviteBornes();
-						this.querySelector("invite-bornes-pour-si > input").focus();
+						this.querySelector(
+							"invite-bornes-pour-si > input",
+						).focus();
 					}
 				}
-				if (this._currentTool === 6) {
-					if (verbose) console.log("Clic sur le plan de travail avec l'outil lien");
+				if (this._currentTool === 0) {
+					if (verbose)
+						console.log(
+							"Clic sur le plan de travail avec l'outil lien",
+						);
 					if (this._pointePrecedementLien !== null) {
-						this._pointePrecedementLien.classList.remove("pointePourLien");
+						this._pointePrecedementLien.classList.remove(
+							"pointePourLien",
+						);
 						this._pointePrecedementLien = null;
 					}
 				}
-			} else if (maTarget instanceof ElementGraphique || maTarget instanceof Condition) {
-				console.log("Clic sur un élément graphique");
-				if (this._currentTool === 6) {
+			} else if (
+				maTarget instanceof ElementGraphique ||
+				maTarget instanceof Condition
+			) {
+				//console.log("Clic sur un élément graphique");
+				if (this._currentTool === 0) {
 					if (this._pointePrecedementLien === null) {
-						if (verbose) console.log("Premier clic sur un élément, on le pointe sil peut être décomposé");
+						if (verbose)
+							console.log(
+								"Premier clic sur un élément, on le pointe sil peut être décomposé",
+							);
 						if (maTarget.peutEtreDecompose()) {
 							this._pointePrecedementLien = maTarget;
 							maTarget.classList.add("pointePourLien");
 							if (verbose)
-								console.log("On pointe l'élément " + this._pointePrecedementLien.constructor.name);
+								console.log(
+									"On pointe l'élément " +
+										this._pointePrecedementLien.constructor
+											.name,
+								);
 						}
 					} else {
 						if (this._pointePrecedementLien == maTarget) {
 							// Les éléments sont les mêmes, on ne fait rien
-							this._pointePrecedementLien.classList.remove("pointePourLien");
+							this._pointePrecedementLien.classList.remove(
+								"pointePourLien",
+							);
 							this._pointePrecedementLien = null;
 						} else {
 							// Les éléments sont différents, la connexion peut être faite
 							// Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
 							if (verbose)
 								console.log(
-									`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`
+									`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`,
 								);
 							let parentRelation, enfantRelation;
-							if (parseFloat(this._pointePrecedementLien._ordonnee) < parseFloat(maTarget._ordonnee)) {
+							if (
+								parseFloat(
+									this._pointePrecedementLien._ordonnee,
+								) < parseFloat(maTarget._ordonnee)
+							) {
 								parentRelation = this._pointePrecedementLien;
 								enfantRelation = maTarget;
 							} else {
@@ -1030,10 +1189,14 @@ class Editeur extends HTMLElement {
 							}
 
 							// On crée le lien
-							parentRelation._elemParent.lierEnfant(enfantRelation);
+							parentRelation._elemParent.lierEnfant(
+								enfantRelation,
+							);
 
 							if (!e.shiftKey) {
-								this._pointePrecedementLien.classList.remove("pointePourLien");
+								this._pointePrecedementLien.classList.remove(
+									"pointePourLien",
+								);
 								this._pointePrecedementLien = null;
 							}
 						}
@@ -1043,6 +1206,13 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("mousedown", function (e) {
+			e.stopPropagation();
+			let maTarget = e.target;
+
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
+
 			// Sur un click molette, on active le déplacement
 			if (e.button === 1) {
 				e.preventDefault();
@@ -1051,7 +1221,7 @@ class Editeur extends HTMLElement {
 				_lastPosY = e.clientY;
 				return;
 			}
-			let maTarget = e.target;
+
 			while (
 				!(maTarget instanceof ElementGraphique) &&
 				!(maTarget instanceof PlanTravail) &&
@@ -1065,11 +1235,13 @@ class Editeur extends HTMLElement {
 				// Gestion des clics sur des éléments qui ne doivent pas être ciblés
 				if (verbose) console.log(maTarget);
 				if (verbose) console.log(maTarget.classList);
-				if (verbose) console.log(maTarget.classList.contains("nonCiblable"));
+				if (verbose)
+					console.log(maTarget.classList.contains("nonCiblable"));
 				if (maTarget.classList.contains("nonCiblable")) {
 					return;
 				}
 			}
+
 			if (maTarget instanceof Condition) {
 				maTarget = maTarget._structure;
 			}
@@ -1082,7 +1254,7 @@ class Editeur extends HTMLElement {
 			if (
 				maTarget instanceof ElementGraphique &&
 				!this._selection.estSelectionne(maTarget) &&
-				this._currentTool != 6
+				this._currentTool != 0
 			) {
 				if (verbose) console.log("Sélection d'un élément graphique");
 				this._selection.selectionnerElement(maTarget);
@@ -1090,45 +1262,66 @@ class Editeur extends HTMLElement {
 				this._selection.deselectionnerElement(maTarget);
 			}
 
-			if (verbose) console.log(`this._currentTool = ${this._currentTool}`);
+			if (verbose)
+				console.log(`this._currentTool = ${this._currentTool}`);
 
 			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
+				console.log("event 1");
+
 				this._isSelecting = true;
-				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
-				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
+				this._coordonneesSelection.x =
+					(this._curMousePos.x / 100) * window.innerWidth;
+				this._coordonneesSelection.y =
+					(this._curMousePos.y / 100) * window.innerWidth;
 			} else {
+				//console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
-				this._evenementDeplacement = new EvenementDeplacementElementMultiples();
+				this._evenementDeplacement =
+					new EvenementDeplacementElementMultiples();
 				for (let element of this._selection.getElementsSelectionnes()) {
-					this._evenementDeplacement.ajouterElementDeplace(new EvenementDeplacementElement(element));
+					this._evenementDeplacement.ajouterElementDeplace(
+						new EvenementDeplacementElement(element),
+					);
 				}
 			}
 		});
-		this.addEventListener("mouseup", function () {
+		this.addEventListener("mouseup", function (e) {
+			e.stopPropagation();
 			if (this._evenementDeplacement != null) {
-				if (this._evenementDeplacement.estDecale() && this._isDragging) {
+				if (
+					this._evenementDeplacement.estDecale() &&
+					this._isDragging
+				) {
 					this.ajouterEvenement(this._evenementDeplacement);
 				}
 			}
 			this._isDragging = false;
 			this._isSelecting = false;
 			this._isMoving = false;
-			let listeElemsASelec = this._selectionRectangle.listerElementsGraphiques();
+			let listeElemsASelec =
+				this._selectionRectangle.listerElementsGraphiques();
 			for (let elem of listeElemsASelec) {
 				this._selection.selectionnerElement(elem);
 			}
-			this._selectionRectangle.placer(0, 0, 0, 0);
+			this._selectionRectangle.placer(-10, 0, -10, 0);
 		});
 		this.addEventListener("mousemove", function (e) {
+			e.stopPropagation();
 			if (this._isMoving) {
-				if (e.clientX - this._lastPosX > 100 || e.clientX - this._lastPosX < -100) {
+				if (
+					e.clientX - this._lastPosX > 100 ||
+					e.clientX - this._lastPosX < -100
+				) {
 					this._lastPosX = e.clientX;
 					this._lastPosY = e.clientY;
 					return;
 				}
-				if (e.clientY - this._lastPosY > 100 || e.clientY - this._lastPosY < -100) {
+				if (
+					e.clientY - this._lastPosY > 100 ||
+					e.clientY - this._lastPosY < -100
+				) {
 					this._lastPosX = e.clientX;
 					this._lastPosY = e.clientY;
 					return;
@@ -1140,8 +1333,16 @@ class Editeur extends HTMLElement {
 				return;
 			}
 			this._curMousePos = {
-				x: (((e.clientX + this._planActif.scrollLeft) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
-				y: (((e.clientY + this._planActif.scrollTop) / window.innerWidth) * 100) / this._indicateurZoom._zoom,
+				x:
+					(((e.clientX + this._planActif.scrollLeft) /
+						window.innerWidth) *
+						100) /
+					this._indicateurZoom._zoom,
+				y:
+					(((e.clientY + this._planActif.scrollTop) /
+						window.innerWidth) *
+						100) /
+					this._indicateurZoom._zoom,
 			}; // En vw
 			if (verbose) console.log(`mousemove avec ${this._isDragging}`);
 			if (verbose) console.log(this._curMousePos);
@@ -1152,14 +1353,21 @@ class Editeur extends HTMLElement {
 				let decalageYEnPx = ordonneeEnPx - this._lastPosY;
 				let decalageXEnVw =
 					((decalageXEnPx / window.innerWidth) * 100) /
-					parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
+					parseFloat(
+						document.body.style.getPropertyValue("--sizeModifier"),
+					);
 				let decalageYEnVw =
 					((decalageYEnPx / window.innerWidth) * 100) /
-					parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
-				this._selection.moveAllSelectedElements(decalageXEnVw, decalageYEnVw);
+					parseFloat(
+						document.body.style.getPropertyValue("--sizeModifier"),
+					);
+				this._selection.moveAllSelectedElements(
+					decalageXEnVw,
+					decalageYEnVw,
+				);
 				if (verbose)
 					console.log(
-						`Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`
+						`Déplacement de la sélection de ${decalageXEnVw}vw en abscisse et de ${decalageYEnVw}vw en ordonnée`,
 					);
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
@@ -1176,19 +1384,26 @@ class Editeur extends HTMLElement {
 				};
 
 				// Prendre en compte le zoom
-				coordSouris.x /= parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
-				coordSouris.y /= parseFloat(document.body.style.getPropertyValue("--sizeModifier"));
+				coordSouris.x /= parseFloat(
+					document.body.style.getPropertyValue("--sizeModifier"),
+				);
+				coordSouris.y /= parseFloat(
+					document.body.style.getPropertyValue("--sizeModifier"),
+				);
 
 				// Prendre en compte le scroll du plan de travail
-				coordSouris.x += (this._planActif.scrollLeft / window.innerWidth) * 100;
-				coordSouris.y += (this._planActif.scrollTop / window.innerWidth) * 100;
+				coordSouris.x +=
+					(this._planActif.scrollLeft / window.innerWidth) * 100;
+				coordSouris.y +=
+					(this._planActif.scrollTop / window.innerWidth) * 100;
 
 				// Trouver l'élément le plus proche
 				for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 					let coordCentreElem = elem.getCentre();
 
 					let distance = Math.sqrt(
-						(coordSouris.x - coordCentreElem.x) ** 2 + (coordSouris.y - coordCentreElem.y) ** 2
+						(coordSouris.x - coordCentreElem.x) ** 2 +
+							(coordSouris.y - coordCentreElem.y) ** 2,
 					);
 					if (distance < distanceMin) {
 						distanceMin = distance;
@@ -1196,7 +1411,10 @@ class Editeur extends HTMLElement {
 					}
 				}
 				if (verbose) console.log(elemLePlusProche);
-				if (elemLePlusProche != this._ancienPlusProche && elemLePlusProche != null) {
+				if (
+					elemLePlusProche != this._ancienPlusProche &&
+					elemLePlusProche != null
+				) {
 					elemLePlusProche.parentNode.appendChild(elemLePlusProche);
 					this._ancienPlusProche = elemLePlusProche;
 				}
@@ -1204,27 +1422,37 @@ class Editeur extends HTMLElement {
 			if (this._isSelecting) {
 				let abscisseEnPx =
 					(this._curMousePos.x / 100) * window.innerWidth -
-					this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom;
+					this._planActif.getBoundingClientRect().left /
+						this._indicateurZoom._zoom;
 				let ordonneeEnPx =
 					(this._curMousePos.y / 100) * window.innerWidth -
-					this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom;
+					this._planActif.getBoundingClientRect().top /
+						this._indicateurZoom._zoom;
 				let abscisseEnVw = (abscisseEnPx / window.innerWidth) * 100;
 				let ordonneeEnVw = (ordonneeEnPx / window.innerWidth) * 100;
 				let lastXenVw =
 					((this._coordonneesSelection.x -
-						this._planActif.getBoundingClientRect().left / this._indicateurZoom._zoom) /
+						this._planActif.getBoundingClientRect().left /
+							this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
 				let lastYenVw =
 					((this._coordonneesSelection.y -
-						this._planActif.getBoundingClientRect().top / this._indicateurZoom._zoom) /
+						this._planActif.getBoundingClientRect().top /
+							this._indicateurZoom._zoom) /
 						window.innerWidth) *
 					100;
-				this._selectionRectangle.placer(abscisseEnVw, ordonneeEnVw, lastXenVw, lastYenVw);
+				this._selectionRectangle.placer(
+					abscisseEnVw,
+					ordonneeEnVw,
+					lastXenVw,
+					lastYenVw,
+				);
 			}
 		});
 
 		this.addEventListener("contextmenu", function (e) {
+			e.stopPropagation();
 			e.preventDefault();
 
 			// Calculer la position du menu contextuel
@@ -1236,7 +1464,14 @@ class Editeur extends HTMLElement {
 			ordonnee = (ordonnee / window.innerWidth) * 100;
 
 			// Créer le menu contextuel
-			this.appendChild(new MenuContextuel(abscisse, ordonnee, this._selection, e.target));
+			this.appendChild(
+				new MenuContextuel(
+					abscisse,
+					ordonnee,
+					this._selection,
+					e.target,
+				),
+			);
 		});
 	}
 
@@ -1244,7 +1479,8 @@ class Editeur extends HTMLElement {
 		const d = new Date();
 		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
 		let expires = "expires=" + d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
+		document.cookie =
+			cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
 	}
 
 	getCookie(cname) {
@@ -1275,7 +1511,10 @@ class Editeur extends HTMLElement {
 		}
 
 		// On ouvre une invite pour les éléments de type StructureIterativeBornee s'il y en a un seul
-		if (lesElements.length == 1 && lesElements[0] instanceof StructureIterativeBornee) {
+		if (
+			lesElements.length == 1 &&
+			lesElements[0] instanceof StructureIterativeBornee
+		) {
 			lesElements[0].inviteBornes();
 		}
 	}
@@ -1286,14 +1525,20 @@ class Editeur extends HTMLElement {
 			tool.classList.remove("selected");
 			this._boutonPointeur.classList.remove("selected");
 		});
+		const sousPlanTravail = document.querySelector("sous-plan-travail");
 		if (idTool != -1) {
 			this._listeTools[idTool].classList.add("selected");
+			const cursor =
+				this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
+			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
+			this._planActif.style.cursor = `url(${cursor + urlColor}), auto`;
 		} else {
 			// Pointeur
 			this._boutonPointeur.classList.add("selected");
+			this._planActif.style.cursor = `url(${this._boutonPointeur.src}), auto`;
 		}
 
-		if (idTool != 7 && this._pointePrecedementLien != null) {
+		if (idTool != 0 && this._pointePrecedementLien != null) {
 			// Tout autre outil que le lien, on enlève la pointe de l'élément précédemment pointé
 			this._pointePrecedementLien.classList.remove("pointePourLien");
 			this._pointePrecedementLien = null;
@@ -1319,13 +1564,21 @@ class Editeur extends HTMLElement {
 		for (let elementGraphique of elementsSelectionnees) {
 			if (verbose) console.log(elementGraphique._parent);
 			if (verbose && elementGraphique._parent)
-				console.log(elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire));
+				console.log(
+					elementsSelectionnees.indexOf(
+						elementGraphique._parent._proprietaire,
+					),
+				);
 			if (
 				elementGraphique._parent == null ||
-				elementsSelectionnees.indexOf(elementGraphique._parent._proprietaire) == -1
+				elementsSelectionnees.indexOf(
+					elementGraphique._parent._proprietaire,
+				) == -1
 			) {
 				if (verbose) console.log(elementGraphique);
-				elementsACopier.push(elementGraphique.toJSONspecifier(elementsSelectionnees));
+				elementsACopier.push(
+					elementGraphique.toJSONspecifier(elementsSelectionnees),
+				);
 			}
 		}
 
@@ -1338,27 +1591,36 @@ class Editeur extends HTMLElement {
 			const appliquerDecalage = (elem) => {
 				if (verbose)
 					console.log(
-						`parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(elem.abscisse)} - ${
-							coinSupGauche.x
-						} + "vw"
-                        = ${parseFloat(elem.abscisse) - coinSupGauche.x + "vw"}`
+						`parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(
+							elem.abscisse,
+						)} - ${coinSupGauche.x} + "vw"
+                        = ${
+							parseFloat(elem.abscisse) - coinSupGauche.x + "vw"
+						}`,
 					);
 				if (verbose)
 					console.log(
-						`parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(elem.ordonnee)} - ${
-							coinSupGauche.y
-						} + "vw"
-                        = ${parseFloat(elem.ordonnee) - coinSupGauche.y + "vw"}`
+						`parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(
+							elem.ordonnee,
+						)} - ${coinSupGauche.y} + "vw"
+                        = ${
+							parseFloat(elem.ordonnee) - coinSupGauche.y + "vw"
+						}`,
 					);
-				elem.abscisse = parseFloat(elem.abscisse) - coinSupGauche.x + "vw";
-				elem.ordonnee = parseFloat(elem.ordonnee) - coinSupGauche.y + "vw";
+				elem.abscisse =
+					parseFloat(elem.abscisse) - coinSupGauche.x + "vw";
+				elem.ordonnee =
+					parseFloat(elem.ordonnee) - coinSupGauche.y + "vw";
 				if (elem.enfants) {
 					elem.enfants.forEach((enfant) => {
 						appliquerDecalage(enfant);
 					});
 				}
 
-				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+				if (
+					elem.typeElement == "StructureSi" ||
+					elem.typeElement == "StructureIterative"
+				) {
 					for (let condition of elem.conditions) {
 						condition.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
@@ -1373,7 +1635,8 @@ class Editeur extends HTMLElement {
 		}
 
 		if (verbose) console.log(elementsACopier);
-		if (toClipboard) navigator.clipboard.writeText(JSON.stringify(elementsACopier));
+		if (toClipboard)
+			navigator.clipboard.writeText(JSON.stringify(elementsACopier));
 		return JSON.stringify(elementsACopier);
 	}
 	paste() {
@@ -1385,27 +1648,40 @@ class Editeur extends HTMLElement {
 			const appliquerDecalage = (elem) => {
 				if (verbose)
 					console.log(
-						`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(elem.abscisse)} + ${
-							this._curMousePos.x
-						} + "vw"
-                        = ${parseFloat(elem.abscisse) + this._curMousePos.x + "vw"}`
+						`parseFloat(elem.abscisse) + this._curMousePos.x + "vw" = ${parseFloat(
+							elem.abscisse,
+						)} + ${this._curMousePos.x} + "vw"
+                        = ${
+							parseFloat(elem.abscisse) +
+							this._curMousePos.x +
+							"vw"
+						}`,
 					);
 				if (verbose)
 					console.log(
-						`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(elem.ordonnee)} + ${
-							this._curMousePos.y
-						} + "vw"
-                        = ${parseFloat(elem.ordonnee) + this._curMousePos.y + "vw"}`
+						`parseFloat(elem.ordonnee) + this._curMousePos.y + "vw" = ${parseFloat(
+							elem.ordonnee,
+						)} + ${this._curMousePos.y} + "vw"
+                        = ${
+							parseFloat(elem.ordonnee) +
+							this._curMousePos.y +
+							"vw"
+						}`,
 					);
-				elem.abscisse = parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
-				elem.ordonnee = parseFloat(elem.ordonnee) + this._curMousePos.y + "vw";
+				elem.abscisse =
+					parseFloat(elem.abscisse) + this._curMousePos.x + "vw";
+				elem.ordonnee =
+					parseFloat(elem.ordonnee) + this._curMousePos.y + "vw";
 				if (elem.enfants) {
 					elem.enfants.forEach((enfant) => {
 						appliquerDecalage(enfant);
 					});
 				}
 
-				if (elem.typeElement == "StructureSi" || elem.typeElement == "StructureIterative") {
+				if (
+					elem.typeElement == "StructureSi" ||
+					elem.typeElement == "StructureIterative"
+				) {
 					for (let condition of elem.conditions) {
 						condition.enfants.forEach((enfant) => {
 							appliquerDecalage(enfant);
@@ -1426,7 +1702,8 @@ class Editeur extends HTMLElement {
 	selectAll() {
 		console.log("selectAll");
 		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
-			if (elem instanceof ElementGraphique) this._selection.selectionnerElement(elem);
+			if (elem instanceof ElementGraphique)
+				this._selection.selectionnerElement(elem);
 		}
 	}
 	delete() {
@@ -1447,7 +1724,9 @@ class Editeur extends HTMLElement {
 		// On crée un élément <a> pour télécharger le fichier
 		var downloadLink = document.createElement("a");
 		downloadLink.href = url;
-		downloadLink.download = `${this.querySelector("#titreAlgo").innerText}.json`;
+		downloadLink.download = `${
+			this.querySelector("#titreAlgo").innerText
+		}.json`;
 
 		// Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
 		document.body.appendChild(downloadLink);
@@ -2118,7 +2397,11 @@ class Editeur extends HTMLElement {
 		if (isJSON) {
 			planExport.chargerDepuisJSON(JSON.parse(nodeToCopy));
 		} else {
-			planExport.chargerDepuisJSON(nodeToCopy.exporterEnJSONSpecifier(Array.from(nodeToCopy.children)));
+			planExport.chargerDepuisJSON(
+				nodeToCopy.exporterEnJSONSpecifier(
+					Array.from(nodeToCopy.children),
+				),
+			);
 		}
 		document.body.removeChild(planExport);
 
@@ -2132,7 +2415,10 @@ class Editeur extends HTMLElement {
 		planExport.style.height = hauteur + 5 + "vw";
 
 		// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
-		planExport.toutDeplacer(-tailles.coordMin.x + 2.5, -tailles.coordMin.y + 2.5);
+		planExport.toutDeplacer(
+			-tailles.coordMin.x + 2.5,
+			-tailles.coordMin.y + 2.5,
+		);
 
 		for (let imgBoucle of planExport.querySelectorAll("div.boucleSVG")) {
 			if (verbose) console.log(imgBoucle);
@@ -2163,7 +2449,9 @@ class Editeur extends HTMLElement {
             `;
 		}
 
-		for (let conditionSortie of planExport.querySelectorAll("condition-sortie-element")) {
+		for (let conditionSortie of planExport.querySelectorAll(
+			"condition-sortie-element",
+		)) {
 			if (verbose) console.log(conditionSortie);
 			let svgConditionSortie = document.createElement("svg");
 			conditionSortie.appendChild(svgConditionSortie);
@@ -2193,7 +2481,9 @@ class Editeur extends HTMLElement {
 		if (download) {
 			var downloadLink = document.createElement("a");
 			downloadLink.href = url;
-			downloadLink.download = `${this.querySelector("#titreAlgo").innerText}.svg`;
+			downloadLink.download = `${
+				this.querySelector("#titreAlgo").innerText
+			}.svg`;
 			document.body.appendChild(downloadLink);
 			downloadLink.click();
 			document.body.removeChild(downloadLink);
