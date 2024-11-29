@@ -296,7 +296,7 @@ editeur-interface > header > div.zonePartage > button {
     justify-content: center;
 } */ /* A remettre quand le compte sera fonctionnel */
 
-editeur-interface > header > select#theme {
+select#theme {
     width: 10%;
     height: 50%;
     background: none;
@@ -314,7 +314,7 @@ editeur-interface > header > select#theme {
     width: 24px;
     height: 24px;
 }
-#boutonProbleme, #boutonProcedure,
+#boutonProbleme, #boutonProcedure, #boutonAccount,
 #boutonStructureSi, #boutonStructureSwitch {
     width: 34px;
     height: 34px;
@@ -2306,4 +2306,55 @@ menu-deroulant {
     sous-plan-travail > span.fermeture {
         font-size: 14px;
     }
+}
+
+menu-compte-element { 
+    position: relative;
+    display: inline-block;
+}
+
+menu-compte-element > div.img {
+    width: 100%;
+}
+
+menu-compte-element > #MenuCompte {
+    display: block;
+    width: 3vw;
+    height: 3vw;
+}
+
+menu-compte-element > div.menu-compte {
+    position: absolute;
+    top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
+    left: 50%; /* Centre la div par rapport au bouton */
+    transform: translateX(-84%); /* Décale la div vers la gauche pour aligner la bordure droite */
+    background-color: var(--bgColor); 
+    padding: 0.2vw;
+    border-radius: .6em;
+    z-index: 999;
+    width: 15vw;
+    font-size: 1vw;
+    padding-bottom: 1vw;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    animation: 0.2s ease-in-out zoomFromAbove;
+    /* background: rgba( 28, 39, 51, 0.35 ); */
+    /* backdrop-filter: blur( 5px );
+    -webkit-backdrop-filter: blur( 5px ); */
+    border: 1px solid #1f2b38;
+    display: flex; 
+    gap: 0.5vw; 
+}
+
+.elementMenuCompte {
+    padding-left: 5%;
+    width: 95%;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+    color : var(--fgColor);
 }
