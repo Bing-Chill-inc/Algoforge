@@ -25,4 +25,7 @@ class ElementMenuKeyboardTip extends ElementMenu {
 		this.addEventListener("click", value);
 	}
 }
-window.customElements.define("element-menu-keyboard-tip", ElementMenuKeyboardTip);
+window.customElements.define(
+	"element-menu-keyboard-tip",
+	ElementMenuKeyboardTip,
+);

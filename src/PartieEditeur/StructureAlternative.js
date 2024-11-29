@@ -56,7 +56,9 @@ class StructureAlternative extends ElementGraphique {
 	 * @description affiche la structure alternative
 	 */
 	afficher() {
-		console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
+		console.log(
+			`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`,
+		);
 		console.log("Conditions :");
 		this._listeConditions.forEach((condition) => {
 			condition.afficher();
@@ -75,7 +77,10 @@ class StructureAlternative extends ElementGraphique {
 				listeEnfants.push(elem.element);
 			}
 		}
-		listeEnfants = PlanTravail.FiltrerElementsGraphique(listeEnfants, typeRechercher);
+		listeEnfants = PlanTravail.FiltrerElementsGraphique(
+			listeEnfants,
+			typeRechercher,
+		);
 		return PlanTravail.trierElementsGraphique(listeEnfants);
 	}
 
@@ -87,7 +92,9 @@ class StructureAlternative extends ElementGraphique {
 	ajouterCondition(condition = new Condition()) {
 		condition._structure = this;
 		this._listeConditions.appendChild(condition);
-		this._editeur.ajouterEvenement(new EvenementCreationElement(condition, this._listeConditions));
+		this._editeur.ajouterEvenement(
+			new EvenementCreationElement(condition, this._listeConditions),
+		);
 	}
 
 	/**
@@ -100,15 +107,25 @@ class StructureAlternative extends ElementGraphique {
 			return; // On ne peut pas supprimer la dernière condition
 		}
 		if (condition instanceof Condition) {
-			this._editeur.ajouterEvenement(new EvenementSuppressionElement(condition));
+			this._editeur.ajouterEvenement(
+				new EvenementSuppressionElement(condition),
+			);
 			condition._elemParent.delierTousLesEnfants();
 			this._listeConditions.removeChild(condition);
 		} else {
 			// Parcourons les conditions de la droite vers la gauche et retirons la première qui est vide
-			for (let i = this._listeConditions.children.length - 1; i >= 0; i--) {
+			for (
+				let i = this._listeConditions.children.length - 1;
+				i >= 0;
+				i--
+			) {
 				if (this._listeConditions.children[i]._libelle == "") {
-					this._listeConditions.children[i]._elemParent.delierTousLesEnfants();
-					this._listeConditions.removeChild(this._listeConditions.children[i]);
+					this._listeConditions.children[
+						i
+					]._elemParent.delierTousLesEnfants();
+					this._listeConditions.removeChild(
+						this._listeConditions.children[i],
+					);
 					break;
 				}
 			}
@@ -128,45 +145,80 @@ class StructureAlternative extends ElementGraphique {
 	}
 
 	decalerCondition(pCondition, decalage, estAnnulation = false) {
-		if (!estAnnulation) this._editeur.ajouterEvenement(new EvenementDeplacementCondition(pCondition, decalage));
+		if (!estAnnulation)
+			this._editeur.ajouterEvenement(
+				new EvenementDeplacementCondition(pCondition, decalage),
+			);
 		if (decalage == -1 && pCondition instanceof Condition) {
 			// Décaler la condition vers la gauche
 			let autreCondition = pCondition.previousElementSibling;
 			if (autreCondition != null) {
-				pCondition.style.animation = "jumpOverLeft var(--specialTransitionTime) ease-in-out";
-				autreCondition.style.animation = "slideUnderRight var(--specialTransitionTime) ease-in-out";
-				setTimeout(() => {
-					pCondition.parentElement.insertBefore(pCondition, autreCondition);
-					pCondition.style.animation = "";
-					autreCondition.style.animation = "";
-					// update les liens vers les enfants
-					pCondition._elemParent._listeElementsEnfants.forEach((lien) => {
-						lien.ligne.update();
-					});
+				pCondition.style.animation =
+					"jumpOverLeft var(--specialTransitionTime) ease-in-out";
+				autreCondition.style.animation =
+					"slideUnderRight var(--specialTransitionTime) ease-in-out";
+				setTimeout(
+					() => {
+						pCondition.parentElement.insertBefore(
+							pCondition,
+							autreCondition,
+						);
+						pCondition.style.animation = "";
+						autreCondition.style.animation = "";
+						// update les liens vers les enfants
+						pCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
 
-					autreCondition._elemParent._listeElementsEnfants.forEach((lien) => {
-						lien.ligne.update();
-					});
-				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
+						autreCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
+					},
+					parseFloat(
+						document.body.style.getPropertyValue(
+							"--specialTransitionTime",
+						),
+					) * 1000,
+				);
 			}
 		} else if (decalage == 1 && pCondition instanceof Condition) {
 			// Décaler la condition vers la droite
 			let autreCondition = pCondition.nextElementSibling;
 			if (autreCondition != null) {
-				pCondition.style.animation = "jumpOverRight var(--specialTransitionTime) ease-in-out";
-				autreCondition.style.animation = "slideUnderLeft var(--specialTransitionTime) ease-in-out";
-				setTimeout(() => {
-					pCondition.parentElement.insertBefore(autreCondition, pCondition);
-					pCondition.style.animation = "";
-					autreCondition.style.animation = "";
-					pCondition._elemParent._listeElementsEnfants.forEach((lien) => {
-						lien.ligne.update();
-					});
+				pCondition.style.animation =
+					"jumpOverRight var(--specialTransitionTime) ease-in-out";
+				autreCondition.style.animation =
+					"slideUnderLeft var(--specialTransitionTime) ease-in-out";
+				setTimeout(
+					() => {
+						pCondition.parentElement.insertBefore(
+							autreCondition,
+							pCondition,
+						);
+						pCondition.style.animation = "";
+						autreCondition.style.animation = "";
+						pCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
 
-					autreCondition._elemParent._listeElementsEnfants.forEach((lien) => {
-						lien.ligne.update();
-					});
-				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
+						autreCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
+					},
+					parseFloat(
+						document.body.style.getPropertyValue(
+							"--specialTransitionTime",
+						),
+					) * 1000,
+				);
 			}
 		}
 	}
@@ -178,14 +230,27 @@ class StructureAlternative extends ElementGraphique {
 			newCondition._structure = this;
 			this._listeConditions.insertBefore(newCondition, pCondition);
 			if (!estAnnulation)
-				this._editeur.ajouterEvenement(new EvenementCreationElement(newCondition, this._listeConditions));
+				this._editeur.ajouterEvenement(
+					new EvenementCreationElement(
+						newCondition,
+						this._listeConditions,
+					),
+				);
 		} else if (decalage == 1 && pCondition instanceof Condition) {
 			// Ajouter une condition à droite
 			let newCondition = new Condition();
 			newCondition._structure = this;
-			this._listeConditions.insertBefore(newCondition, pCondition.nextElementSibling);
+			this._listeConditions.insertBefore(
+				newCondition,
+				pCondition.nextElementSibling,
+			);
 			if (!estAnnulation)
-				this._editeur.ajouterEvenement(new EvenementCreationElement(newCondition, this._listeConditions));
+				this._editeur.ajouterEvenement(
+					new EvenementCreationElement(
+						newCondition,
+						this._listeConditions,
+					),
+				);
 		}
 		setTimeout(() => {
 			// update les liens vers les enfants
@@ -210,7 +275,9 @@ class StructureAlternative extends ElementGraphique {
 			for (let elem of condition._elemParent._listeElementsEnfants) {
 				listeEnfantsParCondition.push(elem.element);
 			}
-			listeEnfantsParCondition = PlanTravail.trierElementsGraphique(listeEnfantsParCondition);
+			listeEnfantsParCondition = PlanTravail.trierElementsGraphique(
+				listeEnfantsParCondition,
+			);
 			listeConditionsEnfants.push(listeEnfantsParCondition);
 		}
 		return listeConditionsEnfants;
@@ -230,7 +297,7 @@ class StructureAlternative extends ElementGraphique {
 				for (let condition of this._listeConditions.children) {
 					condition._elemParent.delierTousLesEnfants();
 				}
-			})
+			}),
 		);
 		return listeOptions;
 	}

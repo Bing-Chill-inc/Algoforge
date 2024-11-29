@@ -2359,7 +2359,9 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transition:
+		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+		margin 0.8s;
 	transform-origin: bottom;
 }
 

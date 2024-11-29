@@ -42,17 +42,30 @@ class Bibliotheque extends HTMLElement {
 			})
 			.catch((error) => {
 				// Handle any errors that occurred during the fetch
-				console.error("There has been a problem with your fetch operation:", error);
+				console.error(
+					"There has been a problem with your fetch operation:",
+					error,
+				);
 			});
 
 		// On récupère aussi les éléments personnalisés dans le cookie
 		if (this._editeur.getCookie("elementsPersonnalises"))
-			this._arborescenceCustom = JSON.parse(this._editeur.getCookie("elementsPersonnalises"));
+			this._arborescenceCustom = JSON.parse(
+				this._editeur.getCookie("elementsPersonnalises"),
+			);
 	}
 
 	ajouterAlgorithmeCustom(nom, algo, descriptif) {
-		this._arborescenceCustom.push({ nom: nom, algo: algo, descriptif: descriptif });
-		this._editeur.setCookie("elementsPersonnalises", JSON.stringify(this._arborescenceCustom), 365);
+		this._arborescenceCustom.push({
+			nom: nom,
+			algo: algo,
+			descriptif: descriptif,
+		});
+		this._editeur.setCookie(
+			"elementsPersonnalises",
+			JSON.stringify(this._arborescenceCustom),
+			365,
+		);
 		this.update();
 	}
 
@@ -148,13 +161,19 @@ class Bibliotheque extends HTMLElement {
 				algorithmeElement.preview.classList.add("previewAlgo");
 				try {
 					let planTravail = new PlanTravail();
-					planTravail.chargerDepuisJSON(JSON.parse(algorithme.algo), false);
+					planTravail.chargerDepuisJSON(
+						JSON.parse(algorithme.algo),
+						false,
+					);
 					let tailles = planTravail.getCoordMinEtMax();
 					if (verbose) console.log(tailles);
 					// À partir des tailles, on peut déterminer la taille de la prévisualisation, et ainsi calculer le zoom à appliquer
 					let largeur = tailles.coordMax.x - tailles.coordMin.x;
 					let hauteur = tailles.coordMax.y - tailles.coordMin.y;
-					if (verbose) console.log(`nom = ${algorithme.nom},largeur = ${largeur}, hauteur = ${hauteur}`);
+					if (verbose)
+						console.log(
+							`nom = ${algorithme.nom},largeur = ${largeur}, hauteur = ${hauteur}`,
+						);
 					// // La largeur et la hauteur multipliés par le zoom doivent être inférieurs à 25vw et 15vw respectivement
 					// let zoom = Math.min(25 / largeur, 15 / hauteur);
 
@@ -168,7 +187,10 @@ class Bibliotheque extends HTMLElement {
 					// planTravail.style.height = hauteur + 5 + "vw";
 
 					// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
-					planTravail.toutDeplacer(-tailles.coordMin.x, -tailles.coordMin.y);
+					planTravail.toutDeplacer(
+						-tailles.coordMin.x,
+						-tailles.coordMin.y,
+					);
 
 					// Compenser la taille avec un scale() pour obtenir du 25vw et 15vw
 					let scale = Math.min(25 / largeur, 15 / hauteur);
@@ -214,8 +236,14 @@ class Bibliotheque extends HTMLElement {
 				coordCentreElement.x += 15;
 
 				const appliquerDecalage = (element) => {
-					element.abscisse = parseFloat(element.abscisse) - coordCentreElement.x + "vw";
-					element.ordonnee = parseFloat(element.ordonnee) - coordCentreElement.y + "vw";
+					element.abscisse =
+						parseFloat(element.abscisse) -
+						coordCentreElement.x +
+						"vw";
+					element.ordonnee =
+						parseFloat(element.ordonnee) -
+						coordCentreElement.y +
+						"vw";
 
 					if (element.enfants) {
 						element.enfants.forEach((enfant) => {
@@ -223,7 +251,10 @@ class Bibliotheque extends HTMLElement {
 						});
 					}
 
-					if (element.typeElement == "StructureSi" || element.typeElement == "StructureIterative") {
+					if (
+						element.typeElement == "StructureSi" ||
+						element.typeElement == "StructureIterative"
+					) {
 						for (let condition of element.conditions) {
 							condition.enfants.forEach((enfant) => {
 								appliquerDecalage(enfant);
@@ -241,7 +272,10 @@ class Bibliotheque extends HTMLElement {
 
 				algorithmeElement.addEventListener("dragstart", (event) => {
 					if (verbose) console.log(event);
-					event.dataTransfer.setData("application/json", JSON.stringify(algoElements));
+					event.dataTransfer.setData(
+						"application/json",
+						JSON.stringify(algoElements),
+					);
 					this.removeChild(algorithmeElement.preview);
 					this.style.opacity = 0.2;
 				});
@@ -261,7 +295,9 @@ class Bibliotheque extends HTMLElement {
 					if (verbose) console.log(event);
 					// Cacher la description et le contenu
 					if (algorithmeElement.preview.parentNode)
-						algorithmeElement.preview.parentNode.removeChild(algorithmeElement.preview);
+						algorithmeElement.preview.parentNode.removeChild(
+							algorithmeElement.preview,
+						);
 				});
 				listeAlgorithmes.appendChild(algorithmeElement);
 			}
@@ -296,8 +332,15 @@ class Bibliotheque extends HTMLElement {
 				let algorithmeElement = document.createElement("img");
 				algorithmeElement.estCustom = true;
 				algorithmeElement.supprimer = () => {
-					this._arborescenceCustom.splice(this._arborescenceCustom.indexOf(algorithme), 1);
-					this._editeur.setCookie("elementsPersonnalises", JSON.stringify(this._arborescenceCustom), 365);
+					this._arborescenceCustom.splice(
+						this._arborescenceCustom.indexOf(algorithme),
+						1,
+					);
+					this._editeur.setCookie(
+						"elementsPersonnalises",
+						JSON.stringify(this._arborescenceCustom),
+						365,
+					);
 					this.update();
 				};
 				algorithmeElement.classList.add("algorithmeBibliotheque");
@@ -313,13 +356,19 @@ class Bibliotheque extends HTMLElement {
 				algorithmeElement.preview.classList.add("previewAlgo");
 				try {
 					let planTravail = new PlanTravail();
-					planTravail.chargerDepuisJSON(JSON.parse(algorithme.algo), false);
+					planTravail.chargerDepuisJSON(
+						JSON.parse(algorithme.algo),
+						false,
+					);
 					let tailles = planTravail.getCoordMinEtMax();
 					if (verbose) console.log(tailles);
 					// À partir des tailles, on peut déterminer la taille de la prévisualisation, et ainsi calculer le zoom à appliquer
 					let largeur = tailles.coordMax.x - tailles.coordMin.x;
 					let hauteur = tailles.coordMax.y - tailles.coordMin.y;
-					if (verbose) console.log(`nom = ${algorithme.nom},largeur = ${largeur}, hauteur = ${hauteur}`);
+					if (verbose)
+						console.log(
+							`nom = ${algorithme.nom},largeur = ${largeur}, hauteur = ${hauteur}`,
+						);
 					// // La largeur et la hauteur multipliés par le zoom doivent être inférieurs à 25vw et 15vw respectivement
 					// let zoom = Math.min(25 / largeur, 15 / hauteur);
 
@@ -333,7 +382,10 @@ class Bibliotheque extends HTMLElement {
 					// planTravail.style.height = hauteur + 5 + "vw";
 
 					// Tout déplacer pour que ce soit alligné avec le coin en haut à gauche
-					planTravail.toutDeplacer(-tailles.coordMin.x, -tailles.coordMin.y);
+					planTravail.toutDeplacer(
+						-tailles.coordMin.x,
+						-tailles.coordMin.y,
+					);
 
 					// Compenser la taille avec un scale() pour obtenir du 25vw et 15vw
 					let scale = Math.min(25 / largeur, 15 / hauteur);
@@ -379,8 +431,14 @@ class Bibliotheque extends HTMLElement {
 				coordCentreElement.x += 15;
 
 				const appliquerDecalage = (element) => {
-					element.abscisse = parseFloat(element.abscisse) - coordCentreElement.x + "vw";
-					element.ordonnee = parseFloat(element.ordonnee) - coordCentreElement.y + "vw";
+					element.abscisse =
+						parseFloat(element.abscisse) -
+						coordCentreElement.x +
+						"vw";
+					element.ordonnee =
+						parseFloat(element.ordonnee) -
+						coordCentreElement.y +
+						"vw";
 
 					if (element.enfants) {
 						element.enfants.forEach((enfant) => {
@@ -388,7 +446,10 @@ class Bibliotheque extends HTMLElement {
 						});
 					}
 
-					if (element.typeElement == "StructureSi" || element.typeElement == "StructureIterative") {
+					if (
+						element.typeElement == "StructureSi" ||
+						element.typeElement == "StructureIterative"
+					) {
 						for (let condition of element.conditions) {
 							condition.enfants.forEach((enfant) => {
 								appliquerDecalage(enfant);
@@ -406,7 +467,10 @@ class Bibliotheque extends HTMLElement {
 
 				algorithmeElement.addEventListener("dragstart", (event) => {
 					if (verbose) console.log(event);
-					event.dataTransfer.setData("application/json", JSON.stringify(algoElements));
+					event.dataTransfer.setData(
+						"application/json",
+						JSON.stringify(algoElements),
+					);
 					this.removeChild(algorithmeElement.preview);
 					this.style.opacity = 0.2;
 				});
@@ -426,7 +490,9 @@ class Bibliotheque extends HTMLElement {
 					if (verbose) console.log(event);
 					// Cacher la description et le contenu
 					if (algorithmeElement.preview.parentNode)
-						algorithmeElement.preview.parentNode.removeChild(algorithmeElement.preview);
+						algorithmeElement.preview.parentNode.removeChild(
+							algorithmeElement.preview,
+						);
 				});
 				listeAlgorithmes.appendChild(algorithmeElement);
 			}
