@@ -11,6 +11,11 @@ body {
 	--warningColor: #ffa500 !important;
 	--titleColor: #000000 !important;
 	--glowColor: #00000000 !important;
+	--bgColorSecondary: #ffffff !important;
+}
+
+#espacePrincipal_wrapper {
+	border: none;
 }
 
 header,
