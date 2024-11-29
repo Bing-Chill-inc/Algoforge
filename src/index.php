@@ -189,6 +189,7 @@
         }
         ?>
 
+        /* Data-glow animation*/
         const box = document.querySelector("[data-glow]");
 
         box.addEventListener("mouseenter", () => {
@@ -225,9 +226,11 @@
                 parentDiv.classList.remove("active");
             });
         });
-        
+
+        /* Cursor initialisation */
         document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src}), auto`;
 
+        /* Dock animation */
         const dock = document.querySelector('.dock');
         const icons = document.querySelectorAll('.dock-item');
 
