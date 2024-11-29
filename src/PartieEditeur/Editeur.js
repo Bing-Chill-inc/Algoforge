@@ -121,6 +121,7 @@ class Editeur extends HTMLElement {
     this._espacePrincipal = document.querySelector("#espacePrincipal");
     this._espacePrincipal.appendChild(this._selection);
     this._espacePrincipal.appendChild(this._selectionRectangle);
+    this._selectionRectangle.placer(-10, 0, -10, 0);
     this._planActif = this._espacePrincipal;
 
     this._logoAlgoForge = document.querySelector("#logoAlgoForge");
@@ -1242,7 +1243,7 @@ class Editeur extends HTMLElement {
       for (let elem of listeElemsASelec) {
         this._selection.selectionnerElement(elem);
       }
-      this._selectionRectangle.placer(0, 0, 0, 0);
+      this._selectionRectangle.placer(-10, 0, -10, 0);
     });
     this.addEventListener("mousemove", function (e) {
       e.stopPropagation();

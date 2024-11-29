@@ -37,12 +37,14 @@
                 <div class="zonePartage">
                     <button class="partage">Partager</button>
                 </div>
-                <affichage-erreur-element>
-                </affichage-erreur-element>
+                <menu-compte-element>
+                </menu-compte-element>
                 <select id="theme"></select>
             </header>
-            <div data-glow-tools class="barreOutilsHorizontale">
+            <div class="barreOutilsHorizontale">
                 <div id="dicobiblioControl">
+                    <affichage-erreur-element>
+                    </affichage-erreur-element>
                     <button id="biblio_btn">
                         <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
                     </button>
@@ -50,19 +52,19 @@
                         <img src="./assetsDynamiques/DictionnaireDonnees.php" alt="" srcset="">
                     </button>
                 </div>
-                <div id="itemsControl">
-                    <img src="assetsDynamiques/mini/pointeur.php" id="boutonPointeur" class="selected" title="Sélectionner">
-                    <img src="assetsDynamiques/mini/lien.php" id="boutonLien" title="Lier des éléments">
-                    <img src="assetsDynamiques/mini/probleme.php" id="boutonProbleme" title="Créer un Problème">
-                    <img src="assetsDynamiques/mini/procedure.php" id="boutonProcedure" title="Créer une Procédure">
-                    <img src="assetsDynamiques/mini/structureSi.php" id="boutonStructureSi" title="Créer un 'SI'">
-                    <img src="assetsDynamiques/mini/structureSwitch.php" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
+                <div id="itemsControl" class="dock">
+                    <img src="assetsDynamiques/mini/pointeur.php" id="boutonPointeur" class="selected dock-item" title="Sélectionner">
+                    <img src="assetsDynamiques/mini/lien.php" id="boutonLien" title="Lier des éléments" class="dock-item">
+                    <img src="assetsDynamiques/mini/probleme.php" id="boutonProbleme" title="Créer un Problème" class="dock-item">
+                    <img src="assetsDynamiques/mini/procedure.php" id="boutonProcedure" title="Créer une Procédure" class="dock-item">
+                    <img src="assetsDynamiques/mini/structureSi.php" id="boutonStructureSi" title="Créer un 'SI'" class="dock-item">
+                    <img src="assetsDynamiques/mini/structureSwitch.php" id="boutonStructureSwitch" title="Créer un 'SWITCH'" class="dock-item">
                     <img src="assetsDynamiques/mini/structureIterative.php" id="boutonStructureIterative"
-                        title="Créer une Structure Itérative">
+                        title="Créer une Structure Itérative" class="dock-item">
                     <img src="assetsDynamiques/mini/structureIterativeBornee.php" id="boutonStructureIterativeBornee" title="Créer une
-                        Structure Itérative Bornee">
+                        Structure Itérative Bornee" class="dock-item">
                     <img src="assetsDynamiques/mini/conditionSortie.php" id="boutonConditionSortie"
-                        title="Créer une action d'arrêt">
+                        title="Créer une action d'arrêt" class="dock-item">
                 </div>
                 <div id="actionsControl">
                     <div class="undoRedo">
@@ -116,6 +118,7 @@
     <script src="PartieErreur/ErreurVariableMagique.js"></script>
     <script src="PartieErreur/AffichageErreur.js"></script>
 
+
     <!--Éléments utilisés par l'éditeur-->
     <script src="PartieEditeur/PlanTravail.js"></script>
     <script src="PartieEditeur/SousPlanTravail.js"></script>
@@ -154,6 +157,7 @@
     <script src="PartieEditeur/Bilbiotheque.js"></script>
     <script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
     <script src="PartieEditeur/FenetreModale.js"></script>
+    <script src="PartieEditeur/MenuCompte.js"></script>
 
     <!--Gestion des évenement de l'éditeur-->
     <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>
@@ -189,6 +193,7 @@
         }
         ?>
 
+        /* Data-glow animation*/
         const box = document.querySelector("[data-glow]");
 
         box.addEventListener("mouseenter", () => {
@@ -218,15 +223,50 @@
             const childDiv = document.querySelector(".barreOutilsHorizontale");
 
             childDiv.addEventListener("mouseenter", () => {
-                parentDiv.classList.add("active");;
+                parentDiv.classList.add("active");
             });
 
             childDiv.addEventListener("mouseleave", () => {
-                parentDiv.classList.remove("active");;
+                parentDiv.classList.remove("active");
             });
         });
-        
+
+        /* Cursor initialisation */
         document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src}), auto`;
+
+        /* Dock animation */
+        const dock = document.querySelector('.dock');
+        const icons = document.querySelectorAll('.dock-item');
+
+        function updateDock() {
+        icons.forEach((icon) => {
+            let scale = 1;
+            let margin = '1px';
+            const updateIcon = (s,m) => (scale = s) && (margin = m);
+            icon.isHover && updateIcon(1.5,'.6em');
+            icon.isNext && updateIcon(1.25,'.6em');
+            icon.style.transform = `scale(${scale})`;
+            icon.style.margin = `0 ${margin}`;
+        });
+        }
+
+        function reset() {
+        icons.forEach((icon) => icon.isHover = icon.isNext = false); 
+        updateDock();
+        }
+
+        function activate(e) {
+        if (e.target.matches('.dock-item')) {
+            icons.forEach((icon) => {
+            icon.isHover = icon === e.target;
+            icon.isNext = Math.abs([...icons].indexOf(icon) - [...icons].indexOf(e.target)) === 1;
+            });
+            updateDock();
+        }
+        }
+
+        dock.addEventListener('pointermove',activate,false);
+        dock.addEventListener('pointerleave',reset,false);
     </script>
 
 </html>
