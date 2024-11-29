@@ -520,14 +520,9 @@ class Editeur extends HTMLElement {
 		);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(
-				".pdf",
-				() => {
-					console.log("Exporter en .pdf");
-					this._modaleNonImp.ouvrir();
-				},
-				false,
-			),
+			new ElementMenu(".pdf", () => {
+				window.print();
+			}),
 		);
 
 		let sousTitreDictionnaire = document.createElement("h3");
