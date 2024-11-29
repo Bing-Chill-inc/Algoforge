@@ -41,7 +41,7 @@
                 </menu-compte-element>
                 <select id="theme"></select>
             </header>
-            <div data-glow-tools class="barreOutilsHorizontale">
+            <div class="barreOutilsHorizontale">
                 <div id="dicobiblioControl">
                     <affichage-erreur-element>
                     </affichage-erreur-element>
@@ -222,11 +222,11 @@
             const childDiv = document.querySelector(".barreOutilsHorizontale");
 
             childDiv.addEventListener("mouseenter", () => {
-                parentDiv.classList.add("active");;
+                parentDiv.classList.add("active");
             });
 
             childDiv.addEventListener("mouseleave", () => {
-                parentDiv.classList.remove("active");;
+                parentDiv.classList.remove("active");
             });
         });
         

@@ -49,6 +49,15 @@ class SousPlanTravail extends PlanTravail {
       .parentNode.appendChild(this._spanSousTitre);
 
     this._editeur._planActif = this;
+    const parentDiv = document.querySelector("[data-glow]");
+
+    this.addEventListener("mouseenter", () => {
+      parentDiv.classList.add("active");
+    });
+
+    this.addEventListener("mouseleave", () => {
+      parentDiv.classList.remove("active");
+    });
   }
 
   fermer() {

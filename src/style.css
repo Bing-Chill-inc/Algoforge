@@ -62,6 +62,10 @@ h1 {
     margin: 0 5px 0 0;
 }
 
+#titreAlgo_wrapper > span.sous-titre {
+    color: var(--fgColorForward);
+}
+
 span {
     display: inline-block;
 }
@@ -71,6 +75,17 @@ canvas#canvas {
     top: 0;
     left: 0;
     z-index: -1;
+}
+
+/* logoAlgoForge */
+#logoAlgoForge {
+    cursor: pointer;
+}
+#logoAlgoForge:hover {
+    scale: none;
+}
+#logoAlgoForge:active {
+    scale: 0.9;
 }
 
 editeur-interface {
@@ -242,7 +257,6 @@ element-menu-keyboard-tip.disabled {
 
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button:hover > span {
     color: var(--fgColorForward);
-    font-weight: bold;
     z-index: 1;
 }
 
@@ -2257,37 +2271,6 @@ affichage-erreur-element .fleche, button, .numero-erreur
       hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
     );
   }
-  /* [data-glow] [data-glow] {
-    position: absolute;
-    inset: 0;
-    will-change: filter;
-    opacity: var(--outer, 1);
-  }
-  [data-glow] > [data-glow] {
-    border-radius: calc(var(--radius) * 1px);
-    border-width: calc(var(--border-size) * 20);
-    filter: blur(calc(var(--border-size) * 10));
-    background: none;
-    pointer-events: none;
-  }
-  [data-glow] > [data-glow]::before {
-    inset: -10px;
-    border-width: 10px;
-  }
-  [data-glow] [data-glow] {
-    border: none;
-  }
-  [data-glow] :is(a, button) {
-    border-radius: calc(var(--radius) * 1px);
-    border: var(--border-size) solid transparent;
-  }
-  [data-glow] :is(a, button) [data-glow] {
-    background: none;
-  }
-  [data-glow] :is(a, button) [data-glow]::before {
-    inset: calc(var(--border-size) * -1);
-    border-width: calc(var(--border-size) * 1);
-  } */
 menu-deroulant {
     background-color: rgba(28, 39, 51, 0.35);
     border: 1px solid var(--borderColor);
