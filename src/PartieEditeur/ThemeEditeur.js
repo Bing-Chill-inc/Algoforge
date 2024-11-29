@@ -1,6 +1,8 @@
 class ThemeEditeur extends HTMLOptionElement {
 	nom;
 	bgColor;
+	bgColorSecondary;
+	borderColor;
 	fgColor;
 	fgColorSemiTransparent;
 	fgColorTransparent;
@@ -20,6 +22,8 @@ class ThemeEditeur extends HTMLOptionElement {
 	constructor(
 		nom,
 		bgColor,
+		bgColorSecondary,
+		borderColor,
 		fgColor,
 		fgColorSemiTransparent,
 		fgColorTransparent,
@@ -35,6 +39,8 @@ class ThemeEditeur extends HTMLOptionElement {
 		super();
 		this.nom = nom;
 		this.bgColor = bgColor;
+		this.bgColorSecondary = bgColorSecondary;
+		this.borderColor = borderColor;
 		this.fgColor = fgColor;
 		this.fgColorSemiTransparent = fgColorSemiTransparent;
 		this.fgColorTransparent = fgColorTransparent;
@@ -52,6 +58,8 @@ class ThemeEditeur extends HTMLOptionElement {
 
 	appliquer() {
 		document.body.style.setProperty("--bgColor", this.bgColor);
+		document.body.style.setProperty("--bgColorSecondary", this.bgColorSecondary);
+		document.body.style.setProperty("--borderColor", this.borderColor);
 		document.body.style.setProperty("--fgColor", this.fgColor);
 		document.body.style.setProperty("--fgColorSemiTransparent", this.fgColorSemiTransparent);
 		document.body.style.setProperty("--fgColorTransparent", this.fgColorTransparent);
@@ -170,4 +178,6 @@ class ThemeEditeur extends HTMLOptionElement {
 		this._editeur.setCookie("theme", this.nom, 365);
 	}
 }
-window.customElements.define("theme-editeur", ThemeEditeur, { extends: "option" });
+window.customElements.define("theme-editeur", ThemeEditeur, {
+	extends: "option",
+});

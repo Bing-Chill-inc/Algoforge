@@ -14,7 +14,7 @@ class Selection extends HTMLElement {
 	constructor() {
 		super();
 		this._listeElementsSelectionnes = [];
-
+		
 		setInterval(() => {
 			this.update();
 		}, 1000 / 24); // 24 fps
@@ -125,8 +125,8 @@ class Selection extends HTMLElement {
 	coordonneesMinEtMax() {
 		if (this._listeElementsSelectionnes.length == 0)
 			return {
-				coordonneesMin: { x: 0, y: 0 },
-				coordonneesMax: { x: 0, y: 0 },
+				coordonneesMin: { x: -100, y: -100 },
+				coordonneesMax: { x: -100, y: -100 },
 			};
 		var coordonneesMin = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
 		var coordonneesMax = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };

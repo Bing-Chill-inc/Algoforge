@@ -33,6 +33,7 @@ class Editeur extends HTMLElement {
 	_lastPosY = 0;
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
+	_barreOutilHorizontale = null;
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -94,7 +95,7 @@ class Editeur extends HTMLElement {
 		});
 
 		window.addEventListener("beforeunload", (e) => {
-			if (this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) {
+			if ((this._pileAnnuler.length > 0 || this._pileRétablir.length > 0) && !isElectron) {
 				// Cancel the event
 				e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
 				// Chrome requires returnValue to be set
@@ -104,19 +105,17 @@ class Editeur extends HTMLElement {
 		});
 
 		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
-		this.appendChild(this._dictionnaireDesDonnees);
 		this._bibliotheque.title = "Bibliothèque";
-		if (!isExam) this.appendChild(this._bibliotheque);
 
 		// Référencement des types d'éléments que l'on peut créer
+		this._typesElements.push(Lien);
 		this._typesElements.push(Probleme);
 		this._typesElements.push(Procedure);
 		this._typesElements.push(StructureSi);
 		this._typesElements.push(StructureSwitch);
 		this._typesElements.push(StructureIterativeNonBornee);
-		this._typesElements.push(ConditionSortie);
-		this._typesElements.push(Lien);
 		this._typesElements.push(StructureIterativeBornee);
+		this._typesElements.push(ConditionSortie);
 
 		// Référencement des éléments d'interface
 		this._espacePrincipal = document.querySelector("#espacePrincipal");
@@ -126,18 +125,21 @@ class Editeur extends HTMLElement {
 
 		this._logoAlgoForge = document.querySelector("#logoAlgoForge");
 		this._themeSelect = document.querySelector("select#theme");
-		this.appendChild(this._indicateurZoom);
+		document.getElementById("biblio_wrapper").appendChild(this._bibliotheque);
+		document.getElementById("dico_wrapper").appendChild(this._dictionnaireDesDonnees);
+		this._barreOutilHorizontale = document.querySelector("#actionsControl");
+		this._barreOutilHorizontale.appendChild(this._indicateurZoom);
 
 		this._boutonPointeur = document.querySelector("#boutonPointeur");
 
+		this._listeTools.push(document.querySelector("#boutonLien"));
 		this._listeTools.push(document.querySelector("#boutonProbleme"));
 		this._listeTools.push(document.querySelector("#boutonProcedure"));
 		this._listeTools.push(document.querySelector("#boutonStructureSi"));
 		this._listeTools.push(document.querySelector("#boutonStructureSwitch"));
 		this._listeTools.push(document.querySelector("#boutonStructureIterative"));
-		this._listeTools.push(document.querySelector("#boutonConditionSortie"));
-		this._listeTools.push(document.querySelector("#boutonLien"));
 		this._listeTools.push(document.querySelector("#boutonStructureIterativeBornee"));
+		this._listeTools.push(document.querySelector("#boutonConditionSortie"));
 
 		this._undoButton = document.querySelector("#boutonUndo");
 		this._redoButton = document.querySelector("#boutonRedo");
@@ -196,8 +198,10 @@ class Editeur extends HTMLElement {
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
 				"Thème AlgoForge",
-				"#222222",
+				"#161e27",
+				"#0f141a",
 				"#838787",
+				"#f2fbff",
 				"#83878755",
 				"#83878711",
 				"#A6AAA9",
@@ -711,52 +715,60 @@ class Editeur extends HTMLElement {
 			}
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
-				if (e.keyCode === 64) {
-					// Ctrl + # / ^2
-					e.preventDefault();
-					this.selectTool(-1);
+				switch (e.key) {
+					case "@":
+					case "²":
+						// Ctrl + @ / ²
+						e.preventDefault();
+						this.selectTool(-1);
+						break;
+					case "1":
+						// Ctrl + 1
+						e.preventDefault();
+						this.selectTool(0);
+						break;
+					case "2":
+						// Ctrl + 2
+						e.preventDefault();
+						this.selectTool(1);
+						break;
+					case "3":
+						// Ctrl + 3
+						e.preventDefault();
+						this.selectTool(2);
+						break;
+					case "4":
+						// Ctrl + 4
+						e.preventDefault();
+						this.selectTool(3);
+						break;
+					case "5":
+						// Ctrl + 5
+						e.preventDefault();
+						console.warn("TEST5");
+						this.selectTool(4);
+						break;
+					case "6":
+					case "§":
+						// Ctrl + 6 / §
+						e.preventDefault();
+						console.warn("TEST");
+						this.selectTool(5);
+						break;
+					case "7":
+						// Ctrl + 7
+						e.preventDefault();
+						this.selectTool(6);
+						break;
+					case "8":
+						// Ctrl + 8
+						e.preventDefault();
+						this.selectTool(7);
+						break;
+					default:
+						break;
 				}
 
-				if (e.keyCode === 49) {
-					// Ctrl + 1
-					e.preventDefault();
-					this.selectTool(0);
-				}
-				if (e.keyCode === 50) {
-					// Ctrl + 2
-					e.preventDefault();
-					this.selectTool(1);
-				}
-				if (e.keyCode === 51) {
-					// Ctrl + 3
-					e.preventDefault();
-					this.selectTool(2);
-				}
-				if (e.keyCode === 52) {
-					// Ctrl + 4
-					e.preventDefault();
-					this.selectTool(3);
-				}
-				if (e.keyCode === 53) {
-					// Ctrl + 5
-					e.preventDefault();
-					this.selectTool(4);
-				}
-				if (e.keyCode === 54) {
-					// Ctrl + 6
-					e.preventDefault();
-					this.selectTool(7);
-				}
-				if (e.keyCode === 55) {
-					// Ctrl + 7
-					e.preventDefault();
-					this.selectTool(5);
-				}
-				if (e.keyCode === 56) {
-					// Ctrl + 8
-					e.preventDefault();
-					this.selectTool(6);
-				}
 				// Raccourcis clavier en Ctrl + ... pour l'édition
 				if (e.key.toLowerCase() === "z") {
 					// Ctrl + Z
@@ -810,10 +822,12 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("dragover", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 		});
 
 		this.addEventListener("drop", (event) => {
+			event.stopPropagation();
 			event.preventDefault();
 
 			try {
@@ -875,6 +889,7 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("paste", (e) => {
+			e.stopPropagation();
 			if (verbose) console.log(e);
 			if (verbose) console.log(e.clipboardData.getData("text/plain"));
 			try {
@@ -927,6 +942,8 @@ class Editeur extends HTMLElement {
 
 		// Gestion des clics sur l'éditeur
 		this.addEventListener("click", (e) => {
+			e.stopPropagation();
+
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");
 			for (let i = 0; i < menuContextuel.length; i++) {
@@ -939,6 +956,10 @@ class Editeur extends HTMLElement {
 			if (verbose) console.log(e);
 			// Remonter le DOM depuis e.target pour obtenir un élément utilisable
 			let maTarget = e.target;
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
+
 			// Gestion des clics  sur des éléments qui ne doivent pas être ciblés
 			if (e.target.classList.contains("nonCiblable")) {
 				return;
@@ -984,7 +1005,7 @@ class Editeur extends HTMLElement {
 						this.querySelector("invite-bornes-pour-si > input").focus();
 					}
 				}
-				if (this._currentTool === 6) {
+				if (this._currentTool === 0) {
 					if (verbose) console.log("Clic sur le plan de travail avec l'outil lien");
 					if (this._pointePrecedementLien !== null) {
 						this._pointePrecedementLien.classList.remove("pointePourLien");
@@ -992,8 +1013,8 @@ class Editeur extends HTMLElement {
 					}
 				}
 			} else if (maTarget instanceof ElementGraphique || maTarget instanceof Condition) {
-				console.log("Clic sur un élément graphique");
-				if (this._currentTool === 6) {
+				//console.log("Clic sur un élément graphique");
+				if (this._currentTool === 0) {
 					if (this._pointePrecedementLien === null) {
 						if (verbose) console.log("Premier clic sur un élément, on le pointe sil peut être décomposé");
 						if (maTarget.peutEtreDecompose()) {
@@ -1043,6 +1064,13 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("mousedown", function (e) {
+			e.stopPropagation();
+			let maTarget = e.target;
+
+			// if (e.target.id === "espacePrincipal_wrapper") {
+			// 	maTarget = document.getElementById("espacePrincipal");
+			// } else { maTarget = e.target; }
+
 			// Sur un click molette, on active le déplacement
 			if (e.button === 1) {
 				e.preventDefault();
@@ -1051,7 +1079,7 @@ class Editeur extends HTMLElement {
 				_lastPosY = e.clientY;
 				return;
 			}
-			let maTarget = e.target;
+
 			while (
 				!(maTarget instanceof ElementGraphique) &&
 				!(maTarget instanceof PlanTravail) &&
@@ -1070,6 +1098,7 @@ class Editeur extends HTMLElement {
 					return;
 				}
 			}
+
 			if (maTarget instanceof Condition) {
 				maTarget = maTarget._structure;
 			}
@@ -1082,7 +1111,7 @@ class Editeur extends HTMLElement {
 			if (
 				maTarget instanceof ElementGraphique &&
 				!this._selection.estSelectionne(maTarget) &&
-				this._currentTool != 6
+				this._currentTool != 0
 			) {
 				if (verbose) console.log("Sélection d'un élément graphique");
 				this._selection.selectionnerElement(maTarget);
@@ -1093,10 +1122,13 @@ class Editeur extends HTMLElement {
 			if (verbose) console.log(`this._currentTool = ${this._currentTool}`);
 
 			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
+				console.log("event 1");
+
 				this._isSelecting = true;
 				this._coordonneesSelection.x = (this._curMousePos.x / 100) * window.innerWidth;
 				this._coordonneesSelection.y = (this._curMousePos.y / 100) * window.innerWidth;
 			} else {
+				//console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
@@ -1106,7 +1138,8 @@ class Editeur extends HTMLElement {
 				}
 			}
 		});
-		this.addEventListener("mouseup", function () {
+		this.addEventListener("mouseup", function (e) {
+			e.stopPropagation();
 			if (this._evenementDeplacement != null) {
 				if (this._evenementDeplacement.estDecale() && this._isDragging) {
 					this.ajouterEvenement(this._evenementDeplacement);
@@ -1122,6 +1155,7 @@ class Editeur extends HTMLElement {
 			this._selectionRectangle.placer(0, 0, 0, 0);
 		});
 		this.addEventListener("mousemove", function (e) {
+			e.stopPropagation();
 			if (this._isMoving) {
 				if (e.clientX - this._lastPosX > 100 || e.clientX - this._lastPosX < -100) {
 					this._lastPosX = e.clientX;
@@ -1225,6 +1259,7 @@ class Editeur extends HTMLElement {
 		});
 
 		this.addEventListener("contextmenu", function (e) {
+			e.stopPropagation();
 			e.preventDefault();
 
 			// Calculer la position du menu contextuel
@@ -1248,23 +1283,19 @@ class Editeur extends HTMLElement {
 	}
 
 	getCookie(cname) {
-		try {
-			let name = cname + "=";
-			let decodedCookie = decodeURIComponent(document.cookie);
-			let ca = decodedCookie.split(";");
-			for (let i = 0; i < ca.length; i++) {
-				let c = ca[i];
-				while (c.charAt(0) == " ") {
-					c = c.substring(1);
-				}
-				if (c.indexOf(name) == 0) {
-					return c.substring(name.length, c.length);
-				}
+		let name = cname + "=";
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(";");
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
 			}
-			return "";
-		} catch (error) {
-			return "";
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
 		}
+		return "";
 	}
 
 	chargerDepuisJSON(json) {
@@ -1290,14 +1321,19 @@ class Editeur extends HTMLElement {
 			tool.classList.remove("selected");
 			this._boutonPointeur.classList.remove("selected");
 		});
+		const sousPlanTravail = document.querySelector("sous-plan-travail");
 		if (idTool != -1) {
 			this._listeTools[idTool].classList.add("selected");
+			const cursor = this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
+			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
+			this._planActif.style.cursor = `url(${cursor + urlColor}), auto`;
 		} else {
 			// Pointeur
 			this._boutonPointeur.classList.add("selected");
+			this._planActif.style.cursor = `url(${this._boutonPointeur.src}), auto`;
 		}
 
-		if (idTool != 7 && this._pointePrecedementLien != null) {
+		if (idTool != 0 && this._pointePrecedementLien != null) {
 			// Tout autre outil que le lien, on enlève la pointe de l'élément précédemment pointé
 			this._pointePrecedementLien.classList.remove("pointePourLien");
 			this._pointePrecedementLien = null;

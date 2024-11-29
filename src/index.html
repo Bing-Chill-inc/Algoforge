@@ -20,26 +20,18 @@
             <header>
                 <img alt="Logo AlgoForge" id="logoAlgoForge">
                 <div class="titreEtMenu">
-                    <h1><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span class="crayon">
-                            ✎</span></h1>
                     <div class="menuButtons">
                         <button>
                             <span>Fichier</span>
-                            <menu-deroulant id="menuDeroulantFichier">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantFichier"></menu-deroulant>
                         </button>
                         <button>
                             <span>Édition</span>
-                            <menu-deroulant id="menuDeroulantEdition">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantEdition"></menu-deroulant>
                         </button>
                         <button>
                             <span>Aide</span>
-                            <menu-deroulant id="menuDeroulantAide">
-
-                            </menu-deroulant>
+                            <menu-deroulant id="menuDeroulantAide"></menu-deroulant>
                         </button>
                     </div>
                 </div>
@@ -48,31 +40,48 @@
                 </div>
                 <affichage-erreur-element>
                 </affichage-erreur-element>
-                <select id="theme">
-
-                </select>
+                <select id="theme"></select>
             </header>
-            <div class="barreOutilsHorizontale">
-                <img src="assets/mini/pointeur.svg" id="boutonPointeur" class="selected" title="Sélectionner">
-                <img src="assets/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
-                <img src="assets/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
-                <img src="assets/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
-                <img src="assets/mini/structureSwitch.svg" id="boutonStructureSwitch" title="Créer un 'SWITCH'">
-                <img src="assets/mini/structureIterative.svg" id="boutonStructureIterative"
-                    title="Créer une Structure Itérative">
-                <img src="assets/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee" title="Créer une
-                    Structure Itérative Bornee">
-                <img src="assetsDynamiques/mini/conditionSortie.svg" id="boutonConditionSortie"
-                    title="Créer une action d'arrêt">
-                <img src="assets/mini/lien.svg" id="boutonLien" title="Lier des éléments">
-                <div class="undoRedo">
-                    <img src="assets/mini/undo.svg" id="boutonUndo" title="Annuler">
-                    <img src="assets/mini/redo.svg" id="boutonRedo" title="Refaire">
+            <div data-glow-tools class="barreOutilsHorizontale">
+                <div id="dicobiblioControl">
+                    <button id="biblio_btn">
+                        <img src="./assetsDynamiques/BibliothequeAlgo.svg" alt="" srcset="">
+                    </button>
+                    <button id="dico_btn">
+                        <img src="./assetsDynamiques/DictionnaireDonnees.svg" alt="" srcset="">
+                    </button>
+                </div>
+                <div id="itemsControl">
+                    <img src="assetsDynamiques/mini/pointeur.svg" id="boutonPointeur" class="selected"
+                        title="Sélectionner">
+                    <img src="assetsDynamiques/mini/lien.svg" id="boutonLien" title="Lier des éléments">
+                    <img src="assetsDynamiques/mini/probleme.svg" id="boutonProbleme" title="Créer un Problème">
+                    <img src="assetsDynamiques/mini/procedure.svg" id="boutonProcedure" title="Créer une Procédure">
+                    <img src="assetsDynamiques/mini/structureSi.svg" id="boutonStructureSi" title="Créer un 'SI'">
+                    <img src="assetsDynamiques/mini/structureSwitch.svg" id="boutonStructureSwitch"
+                        title="Créer un 'SWITCH'">
+                    <img src="assetsDynamiques/mini/structureIterative.svg" id="boutonStructureIterative"
+                        title="Créer une Structure Itérative">
+                    <img src="assetsDynamiques/mini/structureIterativeBornee.svg" id="boutonStructureIterativeBornee"
+                        title="Créer une
+                        Structure Itérative Bornee">
+                    <img src="assetsDynamiques/mini/conditionSortie.svg" id="boutonConditionSortie"
+                        title="Créer une action d'arrêt">
+                </div>
+                <div id="actionsControl">
+                    <div class="undoRedo">
+                        <img src="assetsDynamiques/mini/undo.svg" id="boutonUndo" title="Annuler">
+                        <img src="assetsDynamiques/mini/redo.svg" id="boutonRedo" title="Refaire">
+                    </div>
                 </div>
             </div>
-            <plan-travail id="espacePrincipal">
-
-            </plan-travail>
+            <div data-glow id="espacePrincipal_wrapper">
+                <h1 id="titreAlgo_wrapper"><span contenteditable="true" id="titreAlgo">Titre de l'algorithme</span><span
+                        class="crayon">✎</span></h1>
+                <plan-travail data-glow id="espacePrincipal"></plan-travail>
+                <div data-glow id="dico_wrapper" style="z-index: -200;"></div>
+                <div id="biblio_wrapper" style="z-index: -300;"></div>
+            </div>
         </editeur-interface>
         <form id="transferForm" method="post" target="_blank">
             <input type="hidden" name="corpAlgo" id="corpAlgo">
@@ -89,11 +98,53 @@
             window.location.href = "https://www.mozilla.org/fr/firefox/new/";
         }
 
+        const isElectron = false;
         const isExam = false;
 
         const editeur = document.querySelector("editeur-interface");
-        const verbose = true;
+        const verbose = false;
         let titreAlgo = document.getElementById("titreAlgo");
+
+        const box = document.querySelector("[data-glow]");
+
+        box.addEventListener("mouseenter", () => {
+            box.classList.add("active");
+        });
+
+        box.addEventListener("mouseleave", () => {
+            box.classList.remove("active");
+        });
+
+        const syncPointer = ({ x, y }) => {
+            document.documentElement.style.setProperty("--x", x.toFixed(2));
+            document.documentElement.style.setProperty(
+                "--xp",
+                (x / window.innerWidth).toFixed(2)
+            );
+            document.documentElement.style.setProperty("--y", y.toFixed(2));
+            document.documentElement.style.setProperty(
+                "--yp",
+                (y / window.innerHeight).toFixed(2)
+            );
+        };
+        document.body.addEventListener("pointermove", syncPointer);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const parentDiv = document.querySelector("[data-glow]");
+            const childDiv = document.querySelector(".barreOutilsHorizontale");
+
+            childDiv.addEventListener("mouseenter", () => {
+                parentDiv.classList.add("active");;
+            });
+
+            childDiv.addEventListener("mouseleave", () => {
+                parentDiv.classList.remove("active");;
+            });
+        });
+
+        setTimeout(() => {
+            document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src}), auto`;
+        })
     </script>
 
     <!-- Dictionnaire des données-->

@@ -7,9 +7,16 @@ class Bibliotheque extends HTMLElement {
 	constructor() {
 		super();
 
-		this.addEventListener("click", () => {
+		const biblioButton = document.getElementById("biblio_btn");
+
+		biblioButton.addEventListener("click", () => {
+			// document.getElementById("dico_btn").setAttribute("disabled", true);
 			this.ouvrir();
 		});
+
+		if (isExam) {
+			biblioButton.parentNode.removeChild(biblioButton);
+		}
 
 		// Affichage de l'icone
 		let iconeBibliotheque = document.createElement("div");
@@ -19,7 +26,7 @@ class Bibliotheque extends HTMLElement {
 
 		// Construire le contenu de la bibliothèque
 		// On commence par récupérer la structure de la bibliothèque
-		fetch("/Bibliotheque/getStructure")
+		fetch("Bibliotheque/getStructure")
 			.then((response) => {
 				if (!response.ok) {
 					// If the server response is not OK, throw an error
@@ -50,6 +57,8 @@ class Bibliotheque extends HTMLElement {
 	}
 
 	ouvrir() {
+		document.querySelector("dictionnaire-donnee").fermer();
+		document.getElementById("biblio_wrapper").style.zIndex = 300;
 		if (this._estOuvert) {
 			return;
 		}
@@ -62,7 +71,7 @@ class Bibliotheque extends HTMLElement {
 
 		// Ajout de la flèche de fermeture
 		let flecheFermeture = document.createElement("span");
-		flecheFermeture.innerHTML = "➔";
+		flecheFermeture.innerHTML = "x";
 		flecheFermeture.classList.add("fermeture");
 		flecheFermeture.addEventListener("click", (e) => {
 			e.stopPropagation();
@@ -425,6 +434,8 @@ class Bibliotheque extends HTMLElement {
 	}
 
 	fermer() {
+		document.getElementById("biblio_wrapper").style.zIndex = -300;
+		// document.getElementById("dico_btn").removeAttribute("disabled");
 		if (!this._estOuvert) {
 			return;
 		}
