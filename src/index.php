@@ -37,12 +37,14 @@
                 <div class="zonePartage">
                     <button class="partage">Partager</button>
                 </div>
-                <affichage-erreur-element>
-                </affichage-erreur-element>
+                <menu-compte-element>
+                </menu-compte-element>
                 <select id="theme"></select>
             </header>
             <div data-glow-tools class="barreOutilsHorizontale">
                 <div id="dicobiblioControl">
+                    <affichage-erreur-element>
+                    </affichage-erreur-element>
                     <button id="biblio_btn">
                         <img src="./assetsDynamiques/BibliothequeAlgo.php" alt="" srcset="">
                     </button>
@@ -116,6 +118,7 @@
     <script src="PartieErreur/ErreurVariableMagique.js"></script>
     <script src="PartieErreur/AffichageErreur.js"></script>
 
+
     <!--Éléments utilisés par l'éditeur-->
     <script src="PartieEditeur/PlanTravail.js"></script>
     <script src="PartieEditeur/SousPlanTravail.js"></script>
@@ -154,6 +157,7 @@
     <script src="PartieEditeur/Bilbiotheque.js"></script>
     <script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
     <script src="PartieEditeur/FenetreModale.js"></script>
+    <script src="PartieEditeur/MenuCompte.js"></script>
 
     <!--Gestion des évenement de l'éditeur-->
     <script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>
