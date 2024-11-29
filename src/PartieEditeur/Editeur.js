@@ -225,7 +225,9 @@ class Editeur extends HTMLElement {
         "Roboto, sans-serif",
         "", 
         "#1f2b38",
-        "rgba(28,39,51,0.35)"
+        "rgba(28,39,51,0.35)",
+        "#bdc6c9",
+        "rgba(166, 170, 169, .6)"
       )
     );
     this._themeSelect.appendChild(
