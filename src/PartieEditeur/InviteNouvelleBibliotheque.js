@@ -63,9 +63,16 @@ class InviteNouvelleBibliotheque extends HTMLElement {
 		const description = this.inputDescription.value;
 		const algo = this._algoJSON;
 
-		this._editeur._bibliotheque.ajouterAlgorithmeCustom(nom, algo, description);
+		this._editeur._bibliotheque.ajouterAlgorithmeCustom(
+			nom,
+			algo,
+			description,
+		);
 
 		this.remove();
 	}
 }
-customElements.define("invite-nouvelle-bibliotheque", InviteNouvelleBibliotheque);
+customElements.define(
+	"invite-nouvelle-bibliotheque",
+	InviteNouvelleBibliotheque,
+);

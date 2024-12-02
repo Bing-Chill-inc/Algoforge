@@ -14,7 +14,7 @@ class Selection extends HTMLElement {
 	constructor() {
 		super();
 		this._listeElementsSelectionnes = [];
-		
+
 		setInterval(() => {
 			this.update();
 		}, 1000 / 24); // 24 fps
@@ -25,7 +25,10 @@ class Selection extends HTMLElement {
 	}
 
 	selectionnerElement(element) {
-		if (element instanceof ElementGraphique && !this.estSelectionne(element)) {
+		if (
+			element instanceof ElementGraphique &&
+			!this.estSelectionne(element)
+		) {
 			let rep = new RepresentationSelectionSimple(element, this);
 			this.parentNode.appendChild(rep);
 			this._listeElementsSelectionnes.push(rep);
@@ -54,7 +57,10 @@ class Selection extends HTMLElement {
 			for (var selection of this._listeElementsSelectionnes) {
 				if (selection._element === element) {
 					selection.supprimer();
-					this._listeElementsSelectionnes.splice(this._listeElementsSelectionnes.indexOf(selection), 1);
+					this._listeElementsSelectionnes.splice(
+						this._listeElementsSelectionnes.indexOf(selection),
+						1,
+					);
 					break;
 				}
 			}
@@ -116,8 +122,14 @@ class Selection extends HTMLElement {
 			}
 		} else if (topOuBottom == "center") {
 			return {
-				x: (coordonnees.coordonneesMin.x + coordonnees.coordonneesMax.x) / 2,
-				y: (coordonnees.coordonneesMin.y + coordonnees.coordonneesMax.y) / 2,
+				x:
+					(coordonnees.coordonneesMin.x +
+						coordonnees.coordonneesMax.x) /
+					2,
+				y:
+					(coordonnees.coordonneesMin.y +
+						coordonnees.coordonneesMax.y) /
+					2,
 			};
 		}
 	}
@@ -131,26 +143,78 @@ class Selection extends HTMLElement {
 		var coordonneesMin = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
 		var coordonneesMax = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
 		for (var selection of this._listeElementsSelectionnes) {
-			if (parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) < coordonneesMin.x)
-				coordonneesMin.x = parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length));
-			if (parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) < coordonneesMin.y)
-				coordonneesMin.y = parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length));
 			if (
-				parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) +
-					parseFloat(selection.style.width.substring("calc(var(--sizeModifier) * ".length)) >
+				parseFloat(
+					selection.style.left.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				) < coordonneesMin.x
+			)
+				coordonneesMin.x = parseFloat(
+					selection.style.left.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				);
+			if (
+				parseFloat(
+					selection.style.top.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				) < coordonneesMin.y
+			)
+				coordonneesMin.y = parseFloat(
+					selection.style.top.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				);
+			if (
+				parseFloat(
+					selection.style.left.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				) +
+					parseFloat(
+						selection.style.width.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					) >
 				coordonneesMax.x
 			)
 				coordonneesMax.x =
-					parseFloat(selection.style.left.substring("calc(var(--sizeModifier) * ".length)) +
-					parseFloat(selection.style.width.substring("calc(var(--sizeModifier) * ".length));
+					parseFloat(
+						selection.style.left.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					) +
+					parseFloat(
+						selection.style.width.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					);
 			if (
-				parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) +
-					parseFloat(selection.style.height.substring("calc(var(--sizeModifier) * ".length)) >
+				parseFloat(
+					selection.style.top.substring(
+						"calc(var(--sizeModifier) * ".length,
+					),
+				) +
+					parseFloat(
+						selection.style.height.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					) >
 				coordonneesMax.y
 			)
 				coordonneesMax.y =
-					parseFloat(selection.style.top.substring("calc(var(--sizeModifier) * ".length)) +
-					parseFloat(selection.style.height.substring("calc(var(--sizeModifier) * ".length));
+					parseFloat(
+						selection.style.top.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					) +
+					parseFloat(
+						selection.style.height.substring(
+							"calc(var(--sizeModifier) * ".length,
+						),
+					);
 		}
 		return {
 			coordonneesMin: coordonneesMin,
@@ -163,18 +227,34 @@ class Selection extends HTMLElement {
 			selection.update();
 		}
 		let coordonnees = this.coordonneesMinEtMax();
-		this.style.left = "calc(var(--sizeModifier) * " + coordonnees.coordonneesMin.x + "vw)";
-		this.style.top = "calc(var(--sizeModifier) * " + coordonnees.coordonneesMin.y + "vw)";
+		this.style.left =
+			"calc(var(--sizeModifier) * " +
+			coordonnees.coordonneesMin.x +
+			"vw)";
+		this.style.top =
+			"calc(var(--sizeModifier) * " +
+			coordonnees.coordonneesMin.y +
+			"vw)";
 		this.style.width =
-			"calc(var(--sizeModifier) * " + (coordonnees.coordonneesMax.x - coordonnees.coordonneesMin.x) + "vw)";
+			"calc(var(--sizeModifier) * " +
+			(coordonnees.coordonneesMax.x - coordonnees.coordonneesMin.x) +
+			"vw)";
 		this.style.height =
-			"calc(var(--sizeModifier) * " + (coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y) + "vw)";
+			"calc(var(--sizeModifier) * " +
+			(coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y) +
+			"vw)";
 	}
 
 	moveAllSelectedElements(deplacementAbscisse, deplacementOrdonnee) {
 		for (var selection of this._listeElementsSelectionnes) {
-			selection._element._abscisse = parseFloat(selection._element._abscisse) + deplacementAbscisse + "vw";
-			selection._element._ordonnee = parseFloat(selection._element._ordonnee) + deplacementOrdonnee + "vw";
+			selection._element._abscisse =
+				parseFloat(selection._element._abscisse) +
+				deplacementAbscisse +
+				"vw";
+			selection._element._ordonnee =
+				parseFloat(selection._element._ordonnee) +
+				deplacementOrdonnee +
+				"vw";
 			selection._element.setPosition();
 			selection.update();
 			if (
@@ -184,11 +264,13 @@ class Selection extends HTMLElement {
 			) {
 				selection._element._elemParent.updateAll();
 			} else if (selection._element instanceof StructureAlternative) {
-				for (let condition of selection._element._listeConditions.children) {
+				for (let condition of selection._element._listeConditions
+					.children) {
 					condition._elemParent.updateAll();
 				}
 			}
-			if (selection._element._parent != null) selection._element._parent.updateAll();
+			if (selection._element._parent != null)
+				selection._element._parent.updateAll();
 		}
 		this.update();
 	}

@@ -1,1 +1,127 @@
-[{"typeElement":"Probleme","abscisse":"32.8139209513816vw","ordonnee":"3.4312259531304647vw","libelle":"Recherche de première occurrence","listeDonnes":["structure"],"listeResultats":["trouve"],"enfants":[{"typeElement":"Probleme","abscisse":"17.52885624344176vw","ordonnee":"10.881383350821967vw","libelle":"Initialiser la recherche","listeDonnes":[""],"listeResultats":["trouve"],"enfants":[{"typeElement":"Probleme","abscisse":"10.25358516963974vw","ordonnee":"18.05172263029031vw","libelle":"Se positionner en début de structure","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"22.845400489681708vw","ordonnee":"18.156654424623994vw","libelle":"trouve ← faux","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]},{"typeElement":"Probleme","abscisse":"48.448758307100384vw","ordonnee":"10.776451556488263vw","libelle":"Effectuer la recherche","listeDonnes":["trouve"],"listeResultats":["trouve"],"enfants":[{"typeElement":"StructureIterativeNonBornee","abscisse":"61.42007694998254vw","ordonnee":"18.78279118572925vw","enfants":[{"typeElement":"Probleme","abscisse":"31.414830360265793vw","ordonnee":"24.48753934942288vw","libelle":"Déterminer si on a analysé tous les éléments de la structure","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSi","abscisse":"41.37810423224893vw","ordonnee":"29.72437915355019vw","conditions":[{"typeElement":"Condition","libelle":"Tous les éléments ont été analysés = vrai ou trouve = vrai","enfants":[{"typeElement":"ConditionSortie","abscisse":"44.35117173836995vw","ordonnee":"35.43196922000703vw"}]}]}]},{"typeElement":"Probleme","abscisse":"48.448758307100306vw","ordonnee":"24.697402938090253vw","libelle":"Vérifier si on a trouvé ce qu'on cherche","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSi","abscisse":"58.41203217908355vw","ordonnee":"30.668765302553304vw","conditions":[{"typeElement":"Condition","libelle":"L'élément courant vérifie la propriété recherchée","enfants":[{"typeElement":"Probleme","abscisse":"48.41378104232234vw","ordonnee":"36.51971843301859vw","libelle":"trouve ← vrai","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]}]},{"typeElement":"Probleme","abscisse":"63.13920951381599vw","ordonnee":"24.382607555089177vw","libelle":"Passer à l'élément suivant","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]}]},{"typeElement":"DictionnaireDonnee","contenu":{}}]
+[
+	{
+		"typeElement": "Probleme",
+		"abscisse": "32.8139209513816vw",
+		"ordonnee": "3.4312259531304647vw",
+		"libelle": "Recherche de première occurrence",
+		"listeDonnes": ["structure"],
+		"listeResultats": ["trouve"],
+		"enfants": [
+			{
+				"typeElement": "Probleme",
+				"abscisse": "17.52885624344176vw",
+				"ordonnee": "10.881383350821967vw",
+				"libelle": "Initialiser la recherche",
+				"listeDonnes": [""],
+				"listeResultats": ["trouve"],
+				"enfants": [
+					{
+						"typeElement": "Probleme",
+						"abscisse": "10.25358516963974vw",
+						"ordonnee": "18.05172263029031vw",
+						"libelle": "Se positionner en début de structure",
+						"listeDonnes": [""],
+						"listeResultats": [""],
+						"enfants": []
+					},
+					{
+						"typeElement": "Probleme",
+						"abscisse": "22.845400489681708vw",
+						"ordonnee": "18.156654424623994vw",
+						"libelle": "trouve ← faux",
+						"listeDonnes": [""],
+						"listeResultats": [""],
+						"enfants": []
+					}
+				]
+			},
+			{
+				"typeElement": "Probleme",
+				"abscisse": "48.448758307100384vw",
+				"ordonnee": "10.776451556488263vw",
+				"libelle": "Effectuer la recherche",
+				"listeDonnes": ["trouve"],
+				"listeResultats": ["trouve"],
+				"enfants": [
+					{
+						"typeElement": "StructureIterativeNonBornee",
+						"abscisse": "61.42007694998254vw",
+						"ordonnee": "18.78279118572925vw",
+						"enfants": [
+							{
+								"typeElement": "Probleme",
+								"abscisse": "31.414830360265793vw",
+								"ordonnee": "24.48753934942288vw",
+								"libelle": "Déterminer si on a analysé tous les éléments de la structure",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": [
+									{
+										"typeElement": "StructureSi",
+										"abscisse": "41.37810423224893vw",
+										"ordonnee": "29.72437915355019vw",
+										"conditions": [
+											{
+												"typeElement": "Condition",
+												"libelle": "Tous les éléments ont été analysés = vrai ou trouve = vrai",
+												"enfants": [
+													{
+														"typeElement": "ConditionSortie",
+														"abscisse": "44.35117173836995vw",
+														"ordonnee": "35.43196922000703vw"
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"typeElement": "Probleme",
+								"abscisse": "48.448758307100306vw",
+								"ordonnee": "24.697402938090253vw",
+								"libelle": "Vérifier si on a trouvé ce qu'on cherche",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": [
+									{
+										"typeElement": "StructureSi",
+										"abscisse": "58.41203217908355vw",
+										"ordonnee": "30.668765302553304vw",
+										"conditions": [
+											{
+												"typeElement": "Condition",
+												"libelle": "L'élément courant vérifie la propriété recherchée",
+												"enfants": [
+													{
+														"typeElement": "Probleme",
+														"abscisse": "48.41378104232234vw",
+														"ordonnee": "36.51971843301859vw",
+														"libelle": "trouve ← vrai",
+														"listeDonnes": [""],
+														"listeResultats": [""],
+														"enfants": []
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"typeElement": "Probleme",
+								"abscisse": "63.13920951381599vw",
+								"ordonnee": "24.382607555089177vw",
+								"libelle": "Passer à l'élément suivant",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": []
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee", "contenu": {} }
+]

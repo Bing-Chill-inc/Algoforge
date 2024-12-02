@@ -1,7 +1,9 @@
 class IndicateurZoom extends HTMLElement {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur
-	_zoom = parseFloat(this._editeur.getCookie("zoom")) ? parseFloat(this._editeur.getCookie("zoom")) : 1; // Number
+	_zoom = parseFloat(this._editeur.getCookie("zoom"))
+		? parseFloat(this._editeur.getCookie("zoom"))
+		: 1; // Number
 
 	// CONSTRUCTEUR
 	constructor() {
@@ -26,7 +28,11 @@ class IndicateurZoom extends HTMLElement {
 				this.display.blur();
 			}
 			// Si la touche n'est pas un chiffre ou un point ou backsapce ou delete, on empêche l'écriture
-			if (!/[\d.]/.test(e.key) && e.key !== "Backspace" && e.key !== "Delete") {
+			if (
+				!/[\d.]/.test(e.key) &&
+				e.key !== "Backspace" &&
+				e.key !== "Delete"
+			) {
 				e.preventDefault();
 			}
 		});

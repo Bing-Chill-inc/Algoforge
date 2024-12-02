@@ -707,13 +707,13 @@ class Editeur extends HTMLElement {
 									.name == "Procedure"
 									? "-15vw"
 									: this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSi" ||
-									  this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSwitch"
-									? "-5vw"
-									: "-2vw",
+												.constructor.name ==
+												"StructureSi" ||
+										  this._typesElements[index].prototype
+												.constructor.name ==
+												"StructureSwitch"
+										? "-5vw"
+										: "-2vw",
 							ordonnee: "0vw",
 							listeDonnes: [],
 							listeResultats: [],
