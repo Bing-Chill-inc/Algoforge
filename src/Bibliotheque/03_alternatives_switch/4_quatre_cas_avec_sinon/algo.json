@@ -1,1 +1,41 @@
-[{"typeElement":"Probleme","abscisse":"33.023784540049vw","ordonnee":"5.914611752360965vw","libelle":"","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSwitch","abscisse":"27.946834557537656vw","ordonnee":"10.97656523259878vw","expressionATester":"expression","conditions":[{"typeElement":"Condition","libelle":"valeur1","enfants":[]},{"typeElement":"Condition","libelle":"valeur2","enfants":[]},{"typeElement":"Condition","libelle":"valeur3","enfants":[]},{"typeElement":"Condition","libelle":"sinon","enfants":[]}]}]},{"typeElement":"DictionnaireDonnee","contenu":{}}]
+[
+	{
+		"typeElement": "Probleme",
+		"abscisse": "33.023784540049vw",
+		"ordonnee": "5.914611752360965vw",
+		"libelle": "",
+		"listeDonnes": [""],
+		"listeResultats": [""],
+		"enfants": [
+			{
+				"typeElement": "StructureSwitch",
+				"abscisse": "27.946834557537656vw",
+				"ordonnee": "10.97656523259878vw",
+				"expressionATester": "expression",
+				"conditions": [
+					{
+						"typeElement": "Condition",
+						"libelle": "valeur1",
+						"enfants": []
+					},
+					{
+						"typeElement": "Condition",
+						"libelle": "valeur2",
+						"enfants": []
+					},
+					{
+						"typeElement": "Condition",
+						"libelle": "valeur3",
+						"enfants": []
+					},
+					{
+						"typeElement": "Condition",
+						"libelle": "sinon",
+						"enfants": []
+					}
+				]
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee", "contenu": {} }
+]

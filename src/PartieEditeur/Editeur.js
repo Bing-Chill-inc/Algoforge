@@ -520,14 +520,9 @@ class Editeur extends HTMLElement {
 		);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(
-				".pdf",
-				() => {
-					console.log("Exporter en .pdf");
-					this._modaleNonImp.ouvrir();
-				},
-				false,
-			),
+			new ElementMenu(".pdf", () => {
+				window.print();
+			}),
 		);
 
 		let sousTitreDictionnaire = document.createElement("h3");
@@ -712,13 +707,13 @@ class Editeur extends HTMLElement {
 									.name == "Procedure"
 									? "-15vw"
 									: this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSi" ||
-									  this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSwitch"
-									? "-5vw"
-									: "-2vw",
+												.constructor.name ==
+												"StructureSi" ||
+										  this._typesElements[index].prototype
+												.constructor.name ==
+												"StructureSwitch"
+										? "-5vw"
+										: "-2vw",
 							ordonnee: "0vw",
 							listeDonnes: [],
 							listeResultats: [],

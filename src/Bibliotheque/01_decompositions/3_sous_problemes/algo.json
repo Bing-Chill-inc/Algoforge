@@ -1,40 +1,40 @@
 [
-  {
-    "typeElement": "Probleme",
-    "abscisse": "6.461988304093572vw",
-    "ordonnee": "4.175438596491231vw",
-    "libelle": "",
-    "listeDonnes": [""],
-    "listeResultats": [""],
-    "enfants": [
-      {
-        "typeElement": "Probleme",
-        "abscisse": "-8.120176586540161vw",
-        "ordonnee": "12.363885035077882vw",
-        "libelle": "",
-        "listeDonnes": [""],
-        "listeResultats": [""],
-        "enfants": []
-      },
-      {
-        "typeElement": "Probleme",
-        "abscisse": "6.3498178049348075vw",
-        "ordonnee": "12.41997028465725vw",
-        "libelle": "",
-        "listeDonnes": [""],
-        "listeResultats": [""],
-        "enfants": []
-      },
-      {
-        "typeElement": "Probleme",
-        "abscisse": "19.58593670566387vw",
-        "ordonnee": "12.251714535919174vw",
-        "libelle": "",
-        "listeDonnes": [""],
-        "listeResultats": [""],
-        "enfants": []
-      }
-    ]
-  },
-  { "typeElement": "DictionnaireDonnee", "contenu": {} }
+	{
+		"typeElement": "Probleme",
+		"abscisse": "6.461988304093572vw",
+		"ordonnee": "4.175438596491231vw",
+		"libelle": "",
+		"listeDonnes": [""],
+		"listeResultats": [""],
+		"enfants": [
+			{
+				"typeElement": "Probleme",
+				"abscisse": "-8.120176586540161vw",
+				"ordonnee": "12.363885035077882vw",
+				"libelle": "",
+				"listeDonnes": [""],
+				"listeResultats": [""],
+				"enfants": []
+			},
+			{
+				"typeElement": "Probleme",
+				"abscisse": "6.3498178049348075vw",
+				"ordonnee": "12.41997028465725vw",
+				"libelle": "",
+				"listeDonnes": [""],
+				"listeResultats": [""],
+				"enfants": []
+			},
+			{
+				"typeElement": "Probleme",
+				"abscisse": "19.58593670566387vw",
+				"ordonnee": "12.251714535919174vw",
+				"libelle": "",
+				"listeDonnes": [""],
+				"listeResultats": [""],
+				"enfants": []
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee", "contenu": {} }
 ]

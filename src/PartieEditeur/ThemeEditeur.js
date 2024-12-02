@@ -156,71 +156,60 @@ class ThemeEditeur extends HTMLOptionElement {
 			}
 		}
 
-		document.querySelector(
-			"img#boutonPointeur",
-		).src = `assetsDynamiques/mini/pointeur.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
+		document.querySelector("img#boutonPointeur").src =
+			`assetsDynamiques/mini/pointeur.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector(
-			"img#boutonProbleme",
-		).src = `assetsDynamiques/mini/probleme.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonProbleme").src =
+			`assetsDynamiques/mini/probleme.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonProcedure",
-		).src = `assetsDynamiques/mini/procedure.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonProcedure").src =
+			`assetsDynamiques/mini/procedure.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonStructureSi",
-		).src = `assetsDynamiques/mini/structureSi.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonStructureSi").src =
+			`assetsDynamiques/mini/structureSi.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonStructureSwitch",
-		).src = `assetsDynamiques/mini/structureSwitch.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonStructureSwitch").src =
+			`assetsDynamiques/mini/structureSwitch.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonStructureIterative",
-		).src = `assetsDynamiques/mini/structureIterative.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
+		document.querySelector("img#boutonStructureIterative").src =
+			`assetsDynamiques/mini/structureIterative.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector(
-			"img#boutonConditionSortie",
-		).src = `assetsDynamiques/mini/conditionSortie.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonConditionSortie").src =
+			`assetsDynamiques/mini/conditionSortie.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonLien",
-		).src = `assetsDynamiques/mini/lien.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonLien").src =
+			`assetsDynamiques/mini/lien.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonStructureIterativeBornee",
-		).src = `assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
+		document.querySelector("img#boutonStructureIterativeBornee").src =
+			`assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector(
-			"img#boutonUndo",
-		).src = `assetsDynamiques/mini/undo.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonUndo").src =
+			`assetsDynamiques/mini/undo.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
-		document.querySelector(
-			"img#boutonRedo",
-		).src = `assetsDynamiques/mini/redo.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		document.querySelector("img#boutonRedo").src =
+			`assetsDynamiques/mini/redo.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
 
 		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.svg?fgColor=${this.fgColor.substring(
 			1,

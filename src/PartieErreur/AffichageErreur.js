@@ -25,7 +25,9 @@ class AffichageErreur extends HTMLElement {
 			if (this._divErreur) {
 				this.supprimerDivErreur();
 			} else {
-				this._listeErreur = document.querySelector("plan-travail").rechercherAnomalies();
+				this._listeErreur = document
+					.querySelector("plan-travail")
+					.rechercherAnomalies();
 				this.creerDivErreur();
 			}
 		});
@@ -120,15 +122,22 @@ class AffichageErreur extends HTMLElement {
 
 	afficherSelectionErreur() {
 		if (!this._listeErreur) {
-			this.querySelector(".texte-erreur").textContent = "Aucune anomalie détectée";
+			this.querySelector(".texte-erreur").textContent =
+				"Aucune anomalie détectée";
 			this.querySelector(".numero-erreur").textContent = "(0/0)";
 		} else if (this._listeErreur.length == 0) {
-			this.querySelector(".texte-erreur").textContent = "Aucune anomalie détectée";
+			this.querySelector(".texte-erreur").textContent =
+				"Aucune anomalie détectée";
 			this.querySelector(".numero-erreur").textContent = "(0/0)";
 		} else {
-			this.querySelector(".texte-erreur").textContent = this._listeErreur[this._courant].toString();
+			this.querySelector(".texte-erreur").textContent =
+				this._listeErreur[this._courant].toString();
 			this.querySelector(".numero-erreur").textContent =
-				"(" + (this._courant + 1) + "/" + this._listeErreur.length + ")";
+				"(" +
+				(this._courant + 1) +
+				"/" +
+				this._listeErreur.length +
+				")";
 		}
 	}
 

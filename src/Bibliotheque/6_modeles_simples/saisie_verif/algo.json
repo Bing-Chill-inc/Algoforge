@@ -1,46 +1,46 @@
 [
-  {
-    "typeElement": "Probleme",
-    "abscisse": "7.514619883040938vw",
-    "ordonnee": "4.291666666666665vw",
-    "libelle": "saisie vérif",
-    "listeDonnes": [""],
-    "listeResultats": ["valeur"],
-    "enfants": [
-      {
-        "typeElement": "StructureIterativeNonBornee",
-        "abscisse": "20.526315789473674vw",
-        "ordonnee": "9.239766081871311vw",
-        "enfants": [
-          {
-            "typeElement": "Probleme",
-            "abscisse": "-6.05263157894735vw",
-            "ordonnee": "17.15716374269001vw",
-            "libelle": "saisir valeur",
-            "listeDonnes": [""],
-            "listeResultats": ["valeur"],
-            "enfants": []
-          },
-          {
-            "typeElement": "StructureSi",
-            "abscisse": "31.637426900584707vw",
-            "ordonnee": "16.654970760233898vw",
-            "conditions": [
-              {
-                "typeElement": "Condition",
-                "libelle": "valeur vérifie P",
-                "enfants": [
-                  {
-                    "typeElement": "ConditionSortie",
-                    "abscisse": "34.619883040935605vw",
-                    "ordonnee": "23.391812865497045vw"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+	{
+		"typeElement": "Probleme",
+		"abscisse": "7.514619883040938vw",
+		"ordonnee": "4.291666666666665vw",
+		"libelle": "saisie vérif",
+		"listeDonnes": [""],
+		"listeResultats": ["valeur"],
+		"enfants": [
+			{
+				"typeElement": "StructureIterativeNonBornee",
+				"abscisse": "20.526315789473674vw",
+				"ordonnee": "9.239766081871311vw",
+				"enfants": [
+					{
+						"typeElement": "Probleme",
+						"abscisse": "-6.05263157894735vw",
+						"ordonnee": "17.15716374269001vw",
+						"libelle": "saisir valeur",
+						"listeDonnes": [""],
+						"listeResultats": ["valeur"],
+						"enfants": []
+					},
+					{
+						"typeElement": "StructureSi",
+						"abscisse": "31.637426900584707vw",
+						"ordonnee": "16.654970760233898vw",
+						"conditions": [
+							{
+								"typeElement": "Condition",
+								"libelle": "valeur vérifie P",
+								"enfants": [
+									{
+										"typeElement": "ConditionSortie",
+										"abscisse": "34.619883040935605vw",
+										"ordonnee": "23.391812865497045vw"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
 ]

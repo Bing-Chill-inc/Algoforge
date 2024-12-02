@@ -29,9 +29,9 @@ class ElementGraphique extends HTMLElement {
 		this._parent = parent;
 		this._elementGraphique = this;
 		this.setPosition(abscisse, ordonnee);
-	
-        // Empêchez le focus automatique sur d'autres éléments
-        document.activeElement.blur();
+
+		// Empêchez le focus automatique sur d'autres éléments
+		document.activeElement.blur();
 	}
 
 	// ENCAPSULATION
@@ -126,8 +126,10 @@ class ElementGraphique extends HTMLElement {
 	 */
 	setPosition(abscisse = -1, ordonnee = -1) {
 		if (abscisse == -1 && ordonnee == -1) {
-			this.style.left = "calc(var(--sizeModifier) * " + this._abscisse + ")";
-			this.style.top = "calc(var(--sizeModifier) * " + this._ordonnee + ")";
+			this.style.left =
+				"calc(var(--sizeModifier) * " + this._abscisse + ")";
+			this.style.top =
+				"calc(var(--sizeModifier) * " + this._ordonnee + ")";
 		} else {
 			this.style.left = "calc(var(--sizeModifier) * " + abscisse + ")";
 			this.style.top = "calc(var(--sizeModifier) * " + ordonnee + ")";
@@ -150,7 +152,9 @@ class ElementGraphique extends HTMLElement {
 	 * @description Affiche dans la console la position de l'ElementGraphique
 	 */
 	afficher() {
-		console.log(`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`);
+		console.log(
+			`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`,
+		);
 	}
 
 	/**
@@ -160,7 +164,12 @@ class ElementGraphique extends HTMLElement {
 	 * @returns {Array<Information>} Une liste de classe Informations
 	 */
 	extraireInformation() {
-		console.log("Extraire J'ai pas été initialisé abcisse " + this._abscisse + " ordonee " + this._ordonnee);
+		console.log(
+			"Extraire J'ai pas été initialisé abcisse " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
 		return [];
 	}
 
@@ -186,9 +195,15 @@ class ElementGraphique extends HTMLElement {
 		const listeDeMesEnfants = this.getEnfants();
 		let listeDeMesDescendants = listeDeMesEnfants;
 		for (let enfant of listeDeMesEnfants) {
-			listeDeMesDescendants = [...listeDeMesDescendants, ...enfant.getDescendants()];
+			listeDeMesDescendants = [
+				...listeDeMesDescendants,
+				...enfant.getDescendants(),
+			];
 		}
-		return PlanTravail.FiltrerElementsGraphique(listeDeMesDescendants, typeRechercher);
+		return PlanTravail.FiltrerElementsGraphique(
+			listeDeMesDescendants,
+			typeRechercher,
+		);
 	}
 
 	/**
@@ -200,7 +215,8 @@ class ElementGraphique extends HTMLElement {
 	 */
 	getParent(typeRechercher = ElementGraphique) {
 		if (this._parent) {
-			return this._parent._proprietaire._elementGraphique instanceof typeRechercher
+			return this._parent._proprietaire._elementGraphique instanceof
+				typeRechercher
 				? this._parent._proprietaire._elementGraphique
 				: null;
 		}
@@ -218,9 +234,15 @@ class ElementGraphique extends HTMLElement {
 		let listeDeMesAntescedants = [];
 		if (parent !== null) {
 			listeDeMesAntescedants.push(parent);
-			listeDeMesAntescedants = [...listeDeMesAntescedants, ...parent.getAntescedants()];
+			listeDeMesAntescedants = [
+				...listeDeMesAntescedants,
+				...parent.getAntescedants(),
+			];
 		}
-		return PlanTravail.FiltrerElementsGraphique(listeDeMesAntescedants, typeRechercher);
+		return PlanTravail.FiltrerElementsGraphique(
+			listeDeMesAntescedants,
+			typeRechercher,
+		);
 	}
 
 	/**
@@ -232,7 +254,12 @@ class ElementGraphique extends HTMLElement {
 	 * @returns {boolean} Renvoie false par défaut
 	 */
 	include(nameInformation) {
-		console.log("Include J'ai pas été initialisé je suis " + this._abscisse + " ordonee " + this._ordonnee);
+		console.log(
+			"Include J'ai pas été initialisé je suis " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
 		return false;
 	}
 
@@ -259,7 +286,7 @@ class ElementGraphique extends HTMLElement {
 			"get Information Resultat non défini dans ma classe abscisse" +
 				this._abscisse +
 				" ordonee " +
-				this._ordonnee
+				this._ordonnee,
 		);
 		return [];
 	}
@@ -273,7 +300,10 @@ class ElementGraphique extends HTMLElement {
 	 */
 	getInformationDonnee() {
 		console.log(
-			"get Information Donnée non défini dans ma classe je suis " + this._abscisse + " ordonee " + this._ordonnee
+			"get Information Donnée non défini dans ma classe je suis " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
 		);
 		return [];
 	}
@@ -282,9 +312,15 @@ class ElementGraphique extends HTMLElement {
 		let anomalieDeMesEnfantsEtLesMiennes = [];
 		let enfants = this.getEnfants();
 		for (let enfant of enfants) {
-			anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...enfant.rechercherAnomalies()];
+			anomalieDeMesEnfantsEtLesMiennes = [
+				...anomalieDeMesEnfantsEtLesMiennes,
+				...enfant.rechercherAnomalies(),
+			];
 		}
-		anomalieDeMesEnfantsEtLesMiennes = [...anomalieDeMesEnfantsEtLesMiennes, ...mesAnomalies];
+		anomalieDeMesEnfantsEtLesMiennes = [
+			...anomalieDeMesEnfantsEtLesMiennes,
+			...mesAnomalies,
+		];
 		return anomalieDeMesEnfantsEtLesMiennes;
 	}
 	/* Partie Affichage */
@@ -294,13 +330,15 @@ class ElementGraphique extends HTMLElement {
 	renameInformation(ancienNom, nouveauNom) {}
 
 	getAncreDecomposition() {
-		let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+		let abscisse =
+			parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
 		let ordonnee = parseFloat(this._ordonnee) + this.getTailleOrdonnee();
 		return { abscisse: abscisse, ordonnee: ordonnee - 0.7 };
 	}
 
 	getAncreComposition() {
-		let abscisse = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+		let abscisse =
+			parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
 		let ordonnee = parseFloat(this._ordonnee);
 		return { abscisse: abscisse, ordonnee: ordonnee };
 	}
@@ -322,13 +360,13 @@ class ElementGraphique extends HTMLElement {
 					editeur.selectTool(6); // Outil de liaison
 					editeur._pointePrecedementLien = this;
 					this.classList.add("pointePourLien");
-				})
+				}),
 			);
 			if (this._elemParent.nombreEnfants != 0) {
 				lesOptions.push(
 					new ElementMenu("Délier tous les enfants", () => {
 						this._elemParent.delierTousLesEnfants();
-					})
+					}),
 				);
 			}
 		}
@@ -336,7 +374,7 @@ class ElementGraphique extends HTMLElement {
 			lesOptions.push(
 				new ElementMenu("Délier du parent", () => {
 					this._parent.delierEnfant(this);
-				})
+				}),
 			);
 		}
 		return lesOptions;

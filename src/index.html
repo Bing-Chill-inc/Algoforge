@@ -212,12 +212,6 @@
 			});
 		});
 
-		setTimeout(() => {
-			document.querySelector("#espacePrincipal").style.cursor = `url(${
-				document.querySelector("#boutonPointeur").src
-			}), auto`;
-		});
-
 		/* Dock animation */
 		const dock = document.querySelector(".dock");
 		const icons = document.querySelectorAll(".dock-item");
@@ -344,4 +338,10 @@
 	<script src="PartieEditeur/EvenementEdition/EvenementEditionStructureIterative.js"></script>
 
 	<script src="PartieEditeur/Editeur.js"></script>
+
+	<script>
+		document.querySelector("#espacePrincipal").style.cursor = `url(${
+			document.querySelector("#boutonPointeur").src
+		}), auto`;
+	</script>
 </html>

@@ -1,1 +1,46 @@
-[{"typeElement":"Probleme","abscisse":"32.67401189227002vw","ordonnee":"6.334338929695696vw","libelle":"Parcours complet avec traitement conditionné sur structure à accès direct","listeDonnes":["structureAccesDirect","\nborneDebut"," borneFin\n"],"listeResultats":[""],"enfants":[{"typeElement":"StructureIterativeBornee","abscisse":"45.61035327037427vw","ordonnee":"11.612451906260926vw","variableAIterer":"i","borneInferieure":"borneDebut","borneSuperieure":"borneFin","pas":"1","enfants":[{"typeElement":"StructureSi","abscisse":"42.60230849947535vw","ordonnee":"17.2374956278419vw","conditions":[{"typeElement":"Condition","libelle":"L'élément courant vérifie la propriété recherchée","enfants":[{"typeElement":"Probleme","abscisse":"32.604057362714244vw","ordonnee":"22.598767051416594vw","libelle":"Traiter l'élément en position i dans structureAccesDirect","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]}]}]},{"typeElement":"DictionnaireDonnee","contenu":{}}]
+[
+	{
+		"typeElement": "Probleme",
+		"abscisse": "32.67401189227002vw",
+		"ordonnee": "6.334338929695696vw",
+		"libelle": "Parcours complet avec traitement conditionné sur structure à accès direct",
+		"listeDonnes": ["structureAccesDirect", "\nborneDebut", " borneFin\n"],
+		"listeResultats": [""],
+		"enfants": [
+			{
+				"typeElement": "StructureIterativeBornee",
+				"abscisse": "45.61035327037427vw",
+				"ordonnee": "11.612451906260926vw",
+				"variableAIterer": "i",
+				"borneInferieure": "borneDebut",
+				"borneSuperieure": "borneFin",
+				"pas": "1",
+				"enfants": [
+					{
+						"typeElement": "StructureSi",
+						"abscisse": "42.60230849947535vw",
+						"ordonnee": "17.2374956278419vw",
+						"conditions": [
+							{
+								"typeElement": "Condition",
+								"libelle": "L'élément courant vérifie la propriété recherchée",
+								"enfants": [
+									{
+										"typeElement": "Probleme",
+										"abscisse": "32.604057362714244vw",
+										"ordonnee": "22.598767051416594vw",
+										"libelle": "Traiter l'élément en position i dans structureAccesDirect",
+										"listeDonnes": [""],
+										"listeResultats": [""],
+										"enfants": []
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee", "contenu": {} }
+]
