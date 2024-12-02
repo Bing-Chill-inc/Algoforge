@@ -321,8 +321,8 @@ editeur-interface > header > div.zonePartage > button {
 } */ /* A remettre quand le compte sera fonctionnel */
 
 select#theme {
-	width: 10%;
-	height: 50%;
+	width: 95%;
+	height: 100%;
 	background: none;
 	border: var(--fgColor) solid 0.1vw;
 	border-radius: 1vw;
@@ -330,6 +330,7 @@ select#theme {
 	color: var(--fgColor);
 	cursor: pointer;
 	display: none;
+	padding-left: 15%;
 }
 
 #boutonPointeur,
