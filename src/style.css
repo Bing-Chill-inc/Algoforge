@@ -167,8 +167,8 @@ editeur-interface
 	position: absolute;
 	top: 1.8vw;
 	left: -0.025vw;
-	width: fit-content;
-	min-width: 1vw;
+	/* width: fit-content; */
+	/* min-width: 1vw; */
 	height: fit-content;
 	min-height: 1vw;
 	background-color: var(--bgColor);
@@ -187,17 +187,22 @@ editeur-interface
 menu-deroulant > element-menu,
 menu-deroulant > element-menu-compose,
 menu-deroulant > element-menu-keyboard-tip {
-	padding-left: 2px;
+	/* padding-left: 2px;
 	padding-top: 0.5vw;
-	padding-bottom: 0.5vw;
+	padding-bottom: 0.5vw; */
+	/* width: fit-content; */
 	width: 100%;
 	text-align: left;
 	white-space: nowrap;
 	position: relative;
 	border-radius: 0.5em;
+	display: flex;
+	justify-content: space-between;
+	gap: 2em;
 }
 
-menu-deroulant > element-menu-keyboard-tip > span {
+menu-deroulant > element-menu-keyboard-tip > span,
+menu-deroulant > element-menu-keyboard-tip > p {
 	width: fit-content;
 }
 
@@ -236,11 +241,11 @@ element-menu-compose:hover > span {
 element-menu-compose > menu-deroulant {
 	position: absolute;
 	top: 0;
-	left: 100%;
+	left: 97%;
 	width: fit-content;
-	min-width: 1vw;
+	/*min-width: 1vw;
 	height: fit-content;
-	min-height: 1vw;
+	min-height: 1vw; */
 	background-color: var(--bgColorTertiary);
 	border: 1px solid var(--borderColor2);
 	color: var(--fgColor);
@@ -249,7 +254,7 @@ element-menu-compose > menu-deroulant {
 	flex-direction: column;
 	justify-content: center;
 	scale: 0;
-	gap: 0.1vw;
+	gap: 6px;
 	/* padding-top: 1vw;
     padding-bottom: 1vw; */
 	transition: all 0.1s ease;
@@ -1015,7 +1020,7 @@ menu-contextuel {
 	position: fixed;
 	width: 20vw;
 	height: fit-content;
-	min-height: 2vw;
+	/* min-height: 2vw; */
 	border-radius: 0.5vw;
 	display: flex;
 	flex-direction: column;
@@ -1026,8 +1031,10 @@ menu-contextuel {
     -webkit-backdrop-filter: blur( 5px ); */
 	outline: 1px solid var(--borderColor2);
 	color: var(--fgColor);
-	padding: 6px;
+	padding: 8px;
+	gap: 6px;
 }
+
 menu-contextuel::before {
 	content: ""; /* Création du pseudo-élément */
 	position: absolute; /* Position absolue par rapport au parent */
@@ -1047,17 +1054,16 @@ menu-contextuel > element-menu-keyboard-tip,
 element-menu-compose:hover > menu-deroulant > element-menu,
 element-menu-compose:hover > menu-deroulant > element-menu-compose,
 element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
-	/* padding-left: 5%;
-    width: 95%;
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
-    text-align: left;
-    white-space: nowrap;
-    position: relative;
-    
-    border-radius: .5em;
-    display: flex;
-    gap: 1em; */
+	/* padding-left: 5%; */
+	width: calc(100% - 12px);
+	/* padding-top: 0.5vw;
+	padding-bottom: 0.5vw; */
+	text-align: left;
+	white-space: nowrap;
+	position: relative;
+	border-radius: 0.5em;
+	display: flex;
+	padding: 6px;
 }
 
 menu-contextuel > element-menu:hover,
