@@ -94,7 +94,6 @@ canvas#canvas {
 }
 
 editeur-interface {
-	/* display: block; */
 	width: calc(100vw - 30px);
 	height: calc(100vh - 15px);
 	display: flex;
@@ -107,12 +106,10 @@ editeur-interface {
 editeur-interface > header {
 	width: 100%;
 	height: 4vw;
-	/* border: 0.1vw solid var(--fgColor); */
 	background-color: var(--bgColor);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	/* justify-content: space-evenly; */
 }
 
 editeur-interface > header > img {
@@ -167,8 +164,7 @@ editeur-interface
 	position: absolute;
 	top: 1.8vw;
 	left: -0.025vw;
-	/* width: fit-content; */
-	/* min-width: 1vw; */
+	width: 160px;
 	height: fit-content;
 	min-height: 1vw;
 	background-color: var(--bgColor);
@@ -181,51 +177,38 @@ editeur-interface
 	transition: all 0.1s ease;
 	transform-origin: top left;
 	padding: 6px;
+	gap: 6px;
 	box-shadow: 0 0 0.5vw var(--glowColor);
 }
 
 menu-deroulant > element-menu,
 menu-deroulant > element-menu-compose,
 menu-deroulant > element-menu-keyboard-tip {
-	/* padding-left: 2px;
-	padding-top: 0.5vw;
-	padding-bottom: 0.5vw; */
-	/* width: fit-content; */
-	width: 100%;
+	width: calc(100% - 8px);
+	padding: 4px;
 	text-align: left;
 	white-space: nowrap;
 	position: relative;
 	border-radius: 0.5em;
 	display: flex;
 	justify-content: space-between;
-	gap: 2em;
 }
 
-menu-deroulant > element-menu-keyboard-tip > span,
 menu-deroulant > element-menu-keyboard-tip > p {
-	width: fit-content;
+	padding: 0;
+	margin: 0;
 }
-
-/* menu-deroulant > element-menu-keyboard-tip {
-    padding-right: 3vw;
-}
-
-menu-deroulant:has(> element-menu-keyboard-tip) {
-    padding-right: 3vw !important;
-} */
 
 menu-deroulant > element-menu:hover,
 menu-deroulant > element-menu-compose:hover,
 menu-deroulant > element-menu-keyboard-tip:hover {
-	background-color: var(--fgColor);
+	background-color: var(--fgColorHover);
 	color: var(--bgColor);
 }
 
 element-menu-compose > span,
 menu-deroulant > element-menu-keyboard-tip > span {
 	transition: all 0.5s ease;
-	position: absolute;
-	right: 5%;
 }
 
 element-menu-keyboard-tip > span {
@@ -243,9 +226,6 @@ element-menu-compose > menu-deroulant {
 	top: 0;
 	left: 97%;
 	width: fit-content;
-	/*min-width: 1vw;
-	height: fit-content;
-	min-height: 1vw; */
 	background-color: var(--bgColorTertiary);
 	border: 1px solid var(--borderColor2);
 	color: var(--fgColor);
@@ -255,8 +235,6 @@ element-menu-compose > menu-deroulant {
 	justify-content: center;
 	scale: 0;
 	gap: 6px;
-	/* padding-top: 1vw;
-    padding-bottom: 1vw; */
 	transition: all 0.1s ease;
 	transform-origin: top left;
 	padding: 6px;
@@ -310,20 +288,6 @@ editeur-interface > header > div.zonePartage > button {
 	color: var(--fgColor);
 	cursor: default;
 }
-
-/* editeur-interface > header > div.compte {
-    height: 75%;
-    aspect-ratio: 1/1;
-    background: none;
-    border: var(--fgColor) solid 0.1vw;
-    border-radius: 100%;
-    font-size: 1vw;
-    color: var(--fgColor);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */ /* A remettre quand le compte sera fonctionnel */
 
 select#theme {
 	width: 10%;
@@ -409,8 +373,7 @@ editeur-interface > div.barreOutilsHorizontale > img {
 }
 
 img.dragging {
-	scale: 1.5; /* Make it 50% larger */
-	/* You can add more styles here */
+	scale: 1.5;
 }
 img.selected {
 	border-radius: 0.3vw;
@@ -432,8 +395,6 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo {
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	/* position: absolute;
-    left: 6%; */
 }
 
 #titre_wrapper {
@@ -466,32 +427,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 	border-radius: 0.8em;
 }
 
-/* dictionnaire-donnee {
-    position: fixed;
-    top: 10vw;
-    right: 0;
-    width: 5vw;
-    height: 5vw;
-    padding: 0.5vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 1vw 0 0 1vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    z-index: 2048;
-    font-size: 1vw;
-    overflow: hidden;
-    cursor: pointer;
-    transform-origin: right;
-    transition: 0.2s all ease;
-} */ /* Version à droite */
-
 dictionnaire-donnee {
-	/* position: fixed;
-    top: 3.8vw;
-    right: 2vw; */
 	width: 2vw;
 	height: 2vw;
 	padding: 0.5vw;
@@ -499,12 +435,11 @@ dictionnaire-donnee {
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
-	/* z-index: 2048; */
 	font-size: 1vw;
 	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
-} /* Version en haut */
+}
 
 dictionnaire-donnee > div.img {
 	width: 5vw;
@@ -651,31 +586,7 @@ dictionnaire-donnee
 	text-shadow: 0 0 0.5vw var(--fgColor);
 }
 
-/* bibliotheque-algorithmique {
-    position: fixed;
-    top: 10vw;
-    left: 0;
-    width: 5vw;
-    height: 5vw;
-    padding: 0.5vw;
-    background-color: var(--bgColor);
-    border: 0.1vw solid var(--fgColor);
-    border-radius: 0 1vw 1vw 0;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: start;
-    z-index: 2048;
-    font-size: 1vw;
-    cursor: pointer;
-    transform-origin: left;
-    transition: 0.2s all ease;
-} */ /* Version à gauche */
-
 bibliotheque-algorithmique {
-	/* position: fixed;
-    top: 3.8vw;
-    left: 2vw; */
 	width: 2vw;
 	height: 2vw;
 	padding: 0.5vw;
@@ -683,48 +594,35 @@ bibliotheque-algorithmique {
 	flex-direction: column;
 	align-items: end;
 	justify-content: start;
-	/* z-index: 2048; */
 	font-size: 1vw;
 	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
-
-	/* On ne met plus directement le backdrop-filter ici */
-	position: relative; /* Nécessaire pour positionner le pseudo-élément correctement */
+	position: relative;
 }
 
 bibliotheque-algorithmique::before {
-	content: ""; /* Création du pseudo-élément */
-	position: absolute; /* Position absolue par rapport au parent */
+	content: "";
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	backdrop-filter: blur(5px); /* Flou appliqué ici */
-	-webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
-	z-index: -1; /* Place le pseudo-élément derrière le contenu */
-	border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	z-index: -1;
+	border-radius: inherit;
 }
-
-/* bibliotheque-algorithmique > img {
-    width: 5vw;
-    height: 5vw;
-} */ /* Version à gauche */
 
 bibliotheque-algorithmique > div.img {
 	width: 1.8vw;
 	height: 1.8vw;
-} /* Version en haut */
-
-/* bibliotheque-algorithmique:hover {
-    scale: 1.15 1;
-    box-shadow: 0 0 1vw var(--fgColorSemiTransparent);
-} */
+}
 
 bibliotheque-algorithmique:hover {
 	scale: 1.15 1;
 	transform-origin: center;
-} /* Version en haut */
+}
 
 bibliotheque-algorithmique.ouvert {
 	width: 25vw;
@@ -784,10 +682,10 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
 	flex-direction: row;
 	align-items: center;
 	justify-content: start;
-	-webkit-user-select: none; /* Safari */
-	-moz-user-select: none; /* Firefox */
-	-ms-user-select: none; /* Internet Explorer/Edge */
-	user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 bibliotheque-algorithmique
@@ -870,7 +768,6 @@ bibliotheque-algorithmique > div.previewAlgo {
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
-	/* opacity: 0.95; */
 	overflow: hidden;
 	border-radius: 0.8em;
 	background: var(--bgColorTertiary);
@@ -889,16 +786,6 @@ bibliotheque-algorithmique > div.previewAlgo > p {
 bibliotheque-algorithmique > div.previewAlgo > p {
 	font-size: 0.8vw;
 }
-
-/* bibliotheque-algorithmique > div.previewAlgo > div.divTransparent {
-    width: 100%;
-    height: 100%;
-    background-color: var(--bgColorTransparent);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 500000;
-} */
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail {
 	width: 25vw;
@@ -1018,34 +905,31 @@ invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail label.accolades {
 
 menu-contextuel {
 	position: fixed;
-	width: 20vw;
+	width: 160px;
 	height: fit-content;
-	/* min-height: 2vw; */
+	min-height: 2vw;
 	border-radius: 0.5vw;
 	display: flex;
 	flex-direction: column;
 	z-index: 2048;
 	font-size: 1vw;
 	background: var(--bgColorTertiary);
-	/* backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px ); */
 	outline: 1px solid var(--borderColor2);
 	color: var(--fgColor);
-	padding: 8px;
+	padding: 6px;
 	gap: 6px;
 }
-
 menu-contextuel::before {
-	content: ""; /* Création du pseudo-élément */
-	position: absolute; /* Position absolue par rapport au parent */
+	content: "";
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	backdrop-filter: blur(5px); /* Flou appliqué ici */
-	-webkit-backdrop-filter: blur(5px); /* Compatibilité Webkit */
-	z-index: -1; /* Place le pseudo-élément derrière le contenu */
-	border-radius: inherit; /* Reprend les bordures arrondies du parent si nécessaire */
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	z-index: -1;
+	border-radius: inherit;
 }
 
 menu-contextuel > element-menu,
@@ -1054,30 +938,32 @@ menu-contextuel > element-menu-keyboard-tip,
 element-menu-compose:hover > menu-deroulant > element-menu,
 element-menu-compose:hover > menu-deroulant > element-menu-compose,
 element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
-	/* padding-left: 5%; */
 	width: calc(100% - 12px);
-	/* padding-top: 0.5vw;
-	padding-bottom: 0.5vw; */
 	text-align: left;
 	white-space: nowrap;
 	position: relative;
 	border-radius: 0.5em;
 	display: flex;
+	justify-content: space-between;
 	padding: 6px;
+}
+
+menu-contextuel > element-menu-keyboard-tip > p,
+element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip > p {
+	padding: 0;
+	margin: 0;
 }
 
 menu-contextuel > element-menu:hover,
 menu-contextuel > element-menu-compose:hover,
 menu-contextuel > element-menu-keyboard-tip:hover {
-	background-color: var(--fgColor);
+	background-color: var(--fgColorHover);
 	color: var(--bgColor);
 }
 
 menu-contextuel > element-menu-compose > span,
 menu-contextuel > element-menu-keyboard-tip > span {
 	transition: all 0.5s ease;
-	position: absolute;
-	right: 5%;
 }
 
 menu-contextuel > element-menu-compose:hover > span {
@@ -1121,7 +1007,6 @@ indicateur-zoom {
 	gap: 1px;
 	width: 10vw;
 	height: 3vw;
-	/* background-color: var(--fgColorTransparent); */
 }
 
 indicateur-zoom > .zoomDisplay {
@@ -1140,7 +1025,6 @@ indicateur-zoom > button {
 	background: none;
 	border: none;
 	font-size: 26px;
-	/* color: var(--fgColor); */
 	color: #f2fbff;
 	cursor: pointer;
 	display: flex;
@@ -1193,7 +1077,6 @@ selection-rectangle {
 }
 
 [contenteditable="true"] {
-	/* Pour empêcher le navigateur de supprimer les espaces */
 	white-space: pre-wrap;
 }
 
@@ -1252,14 +1135,10 @@ plan-travail {
 	width: calc(100% - 4px);
 	height: calc(100% - 4px);
 	display: flex;
-	/* border: 0.1vw solid var(--fgColor); */
 	position: relative;
 	overflow: scroll;
 	scrollbar-width: 10;
 	scrollbar-color: var(--fgColor) transparent;
-	/* background-color:  #151b23; */
-	/* background-color: var(--bgColorSecondary); */
-	/* border-radius: .8em; */
 }
 
 #espacePrincipal_wrapper {
@@ -1267,23 +1146,10 @@ plan-travail {
 	height: 100%;
 	border: 0.1vw solid var(--borderColor);
 	position: relative;
-	/* overflow: hidden; */
 	background-color: var(--bgColorSecondary);
-	/* background-color: transparent; */
 	border-radius: 0.8em;
 	padding: 34px 0 0 0;
 }
-
-/* plan-travail::before {
-    position: absolute;
-    content: "";
-    width: calc(90vw - 30px);
-    height: calc(90vh - 15px);
-    border: 0.1vw solid var(--fgColor);
-    background-color: #151b23;
-    overflow: hidden;
-    border-radius: .8em;
-} */
 
 sous-plan-travail {
 	width: calc(100vw - 38px);
@@ -2203,6 +2069,7 @@ ligne-element {
 	}
 }
 affichage-erreur-element {
+	display: none;
 	position: relative;
 	margin: 0;
 	height: fit-content;
@@ -2274,7 +2141,7 @@ p {
 affichage-erreur-element .fleche,
 button,
 .numero-erreur {
-	user-select: none; /* désactive la possibilité de le selectionner */
+	user-select: none;
 }
 
 @font-face {
@@ -2365,9 +2232,7 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition:
-		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
-		margin 0.8s;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
 	transform-origin: bottom;
 }
 
@@ -2439,9 +2304,6 @@ menu-compte-element > div.menu-compte {
 	align-items: stretch;
 	justify-content: center;
 	animation: 0.2s ease-in-out zoomFromAbove;
-	/* background: rgba( 28, 39, 51, 0.35 ); */
-	/* backdrop-filter: blur( 5px );
-    -webkit-backdrop-filter: blur( 5px ); */
 	border: 1px solid #1f2b38;
 	display: flex;
 	gap: 0.5vw;
