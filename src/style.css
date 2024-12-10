@@ -2,7 +2,6 @@
 	--border: 2;
 	--size: 400;
 	--bg-spot-opacity: 0.022;
-	--base: 225;
 	--spread: 20;
 	--outer: 1;
 }
@@ -2299,7 +2298,7 @@ button,
 [data-glow].active {
 	--border-size: calc(var(--border, 2) * 1px);
 	--spotlight-size: calc(var(--size, 150) * 1px);
-	--hue: calc(var(--base) + (var(--xp, 0) * var(--spread, 0)));
+	--hue: calc(var(--baseGlowColor) + (var(--xp, 0) * var(--spread, 0)));
 	background-image: radial-gradient(
 		var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px)
 			calc(var(--y, 0) * 1px),

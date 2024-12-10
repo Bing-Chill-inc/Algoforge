@@ -229,57 +229,74 @@ class Editeur extends HTMLElement {
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Thème AlgoForge",
-				"#161e27",
-				"#0f141a",
-				"#838787",
-				"#f2fbff",
-				"#83878755",
-				"#83878711",
-				"#A6AAA9",
-				"#8ABE5E",
-				"#8ABE5E99",
-				"#C82606",
-				"#FFE989",
-				"#34A5DA",
-				"Roboto, sans-serif",
-				"",
-				"#1f2b38",
-				"rgba(28,39,51,0.35)",
-				"#bdc6c9",
-				"rgba(166, 170, 169, .6)",
+				"Thème AlgoForge", // nom
+				"#161e27", // bgColor
+				"#0f141a", // bgColorSecondary
+				"#838787", // borderColor
+				"#F2FBFF", // fgColor
+				"#83878755", // fgColorSemiTransparent
+				"#83878711", // fgColorTransparent
+				"#A6AAA9", // fgColorForward
+				"#8ABE5E", // goodColor
+				"#8ABE5E99", // goodColorTransparent
+				"#C82606", // errorColor
+				"#FFE989", // warningColor
+				"#34A5DA", // titleColor
+				"Roboto, sans-serif", // fontFamily
+				"", // glowColor
+				"#1f2b38", // borderColor2
+				"rgba(28,39,51,0.35)", // bgColorTertiary
+				"#bdc6c9", // fgColorHover
+				"rgba(166, 170, 169, .6)", // fgColorDisabled
+				225, // baseGlowColor
 			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
 				"Pacifique", // nom
-				"#F7F3E2", // bg color
-				"#5B5847", // fg color
-				"#5B584755", // fg semi color transparent
-				"#cbcbcb22", // fg color transparent
-				"#7E7D73", // fg color forward
-				"#9E978E", // good color
-				"#9E978E99", // good color transparent
-				"#D85959", // error
-				"#FFAD5A", // warning
-				"#5B5847", // title
-				"Roboto, sans-serif",
+				"#F2F5F8", // bgColor
+				"#E5EAF0", // bgColorSecondary
+				"#BECBDA", // borderColor
+				"#33475C", // fgColor
+				"#BECBDA55", // fgColorSemiTransparent
+				"#BECBDA11", // fgColorTransparent
+				"#33475C", // fgColorForward
+				"#9E978E", // goodColor
+				"#9E978E99", // goodColorTransparent
+				"#D85959", // errorColor
+				"#FFAD5A", // warningColor
+				"#19668A", // titleColor
+				"Roboto, sans-serif", // fontFamily
+				"", // glowColor
+				"#bdc6c9", // borderColor2
+				"E5EAF070", // bgColorTertiary
+				"#143847", // fgColorHover
+				"#7E7D73", // fgColorDisabled
+				211, // baseGlowColor
 			),
 		);
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Flashbang",
-				"#FFFFFF",
-				"#222222",
-				"#22222255",
-				"#22222222",
-				"#333333",
-				"#589129",
-				"#58912999",
-				"#C82606",
-				"#b89f30",
-				"#22759c",
-				"Roboto, sans-serif",
+				"FlashBang", // nom
+				"#FFFFFF", // bgColor
+				"#FFFFFF", // bgColorSecondary
+				"#000000", // borderColor
+				"#000000", // fgColor
+				"#00000055", // fgColorSemiTransparent
+				"#00000011", // fgColorTransparent
+				"#000000", // fgColorForward
+				"#9E978E", // goodColor
+				"#9E978E99", // goodColorTransparent
+				"#D85959", // errorColor
+				"#FFAD5A", // warningColor
+				"#000000", // titleColor
+				"Roboto, sans-serif", // fontFamily
+				"", // glowColor
+				"#000000", // borderColor2
+				"#FFFFFF", // bgColorTertiary
+				"#FFFFFF", // fgColorHover
+				"#666666", // fgColorDisabled
+				250, // baseGlowColor
 			),
 		);
 		this._themeSelect.appendChild(
