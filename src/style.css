@@ -338,10 +338,13 @@ select#theme {
 #boutonLien,
 #boutonUndo,
 #boutonRedo,
-#dico_btn > img,
-#biblio_btn > img {
+#dico_btn > svg#boutonDico,
+#biblio_btn > svg#boutonBiblio {
 	width: 24px;
 	height: 24px;
+	fill: var(--fgColor);
+	user-select: none;
+	cursor: pointer;
 }
 #boutonProbleme,
 #boutonProcedure,
@@ -350,10 +353,76 @@ select#theme {
 #boutonStructureSwitch {
 	width: 34px;
 	height: 34px;
+	fill: var(--fgColor);
+	user-select: none;
+	cursor: pointer;
 }
 #boutonStructureIterativeBornee {
 	width: 28px;
 	height: 28px;
+	fill: var(--fgColor);
+	user-select: none;
+	cursor: pointer;
+}
+
+#boutonRedo,
+#boutonUndo,
+#boutonBiblio,
+#boutonDico {
+	transition: all 0.1s ease-in-out;
+}
+
+#biblio_btn > #boutonBiblio:hover,
+#dico_btn > svg#boutonDico:hover,
+.undoRedo > svg:hover {
+	fill: var(--fgColorHover) !important;
+	scale: 1.1;
+}
+#biblio_btn > #boutonBiblio:active,
+#dico_btn > svg#boutonDico:active,
+.undoRedo > svg:active {
+	scale: 1;
+}
+
+/* button hover - update custom property values for button & label */
+.svg-wrapper {
+	position: relative;
+}
+
+#dicobiblioControl > button:hover,
+#dicobiblioControl > button:focus-visible,
+#itemsControl > .svg-wrapper:hover,
+#itemsControl > .svg-wrapper:focus-visible {
+	--label-opacity: 1;
+	--label-y: 0;
+	--label-delay: 150ms;
+	--label-scale: 1;
+}
+#dicobiblioControl > button:before,
+#itemsControl > .svg-wrapper:before {
+	content: attr(data-title);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	text-align: center;
+	background: var(--bgColor);
+	color: var(--fgColor);
+	border: 1px solid var(--borderColor2);
+	border-radius: 0.6em;
+	z-index: -1;
+	translate: -50% -2rem;
+	white-space: nowrap;
+	font-size: 0.75rem;
+	padding: 0.15rem 0.75rem;
+
+	/* transition */
+	opacity: var(--label-opacity, 0);
+	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
+	transition:
+		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out,
+		scale 500ms ease-in-out;
+	transition-delay: var(--label-delay, 0ms);
 }
 
 editeur-interface > div.barreOutilsHorizontale {
@@ -407,16 +476,22 @@ img.dragging {
 	scale: 1.5; /* Make it 50% larger */
 	/* You can add more styles here */
 }
-img.selected {
+#itemsControl > div > svg.selected {
 	border-radius: 0.3vw;
 	scale: 1.2;
+	fill: var(--titleColor) !important;
 }
 
-img:hover {
+#itemsControl > div > svg:hover {
+	fill: var(--fgColorHover);
+}
+
+#actionsControl > div > svg:hover {
 	scale: 1.1;
+	fill: var(--fgColorHover);
 }
 
-img.selected:hover {
+#itemsControl > div > svg.selected:hover {
 	scale: 1.2;
 }
 
@@ -448,6 +523,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 
 #biblio_btn,
 #dico_btn {
+	position: relative;
 	background-color: transparent;
 	border: none;
 }
@@ -1125,7 +1201,7 @@ indicateur-zoom > .zoomDisplay {
 	align-items: center;
 	justify-content: center;
 	font-size: 16px;
-	color: #f2fbff;
+	color: var(--fgColor);
 }
 
 indicateur-zoom > button {
@@ -1134,8 +1210,7 @@ indicateur-zoom > button {
 	background: none;
 	border: none;
 	font-size: 26px;
-	/* color: var(--fgColor); */
-	color: #f2fbff;
+	color: var(--fgColor);
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -1144,8 +1219,12 @@ indicateur-zoom > button {
 }
 
 indicateur-zoom > button:hover {
-	color: var(--fgColorForward);
-	scale: 1.1;
+	color: var(--fgColorHover);
+	scale: 1.2;
+}
+indicateur-zoom > button:active {
+	color: var(--fgColorHover);
+	scale: 1;
 }
 
 .pointePourLien {
@@ -2377,10 +2456,11 @@ menu-deroulant {
 	#boutonLien,
 	#boutonUndo,
 	#boutonRedo,
-	#dico_btn > img,
-	#biblio_btn > img {
+	#dico_btn > svg#boutonDico,
+	#biblio_btn > svg#boutonBiblio {
 		width: 16px;
 		height: 16px;
+		fill: var(--fgColor);
 	}
 
 	indicateur-zoom > .zoomDisplay {
