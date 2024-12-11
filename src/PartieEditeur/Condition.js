@@ -7,7 +7,11 @@ class Condition extends HTMLElement {
 	_maxLines = 4;
 
 	// CONSTRUCTEUR
-	constructor(libelle = "", elemParent = new ElementParent(), structure = null) {
+	constructor(
+		libelle = "",
+		elemParent = new ElementParent(),
+		structure = null,
+	) {
 		super();
 		this._elemParent = elemParent;
 		this._structure = structure;
@@ -72,13 +76,23 @@ class Condition extends HTMLElement {
 		this.divLibelle.contentEditable = "true";
 		this.appendChild(this.divLibelle);
 		this.divLibelle.addEventListener("focusout", (e) => {
-			if(this._structure instanceof StructureSi) {
-				this.divLibelle.innerText = this.divLibelle.innerText.replace(/&&/g, "ET");
-				this.divLibelle.innerText = this.divLibelle.innerText.replace(/\|\|/g, "OU");
+			if (this._structure instanceof StructureSi) {
+				this.divLibelle.innerText = this.divLibelle.innerText.replace(
+					/&&/g,
+					"ET",
+				);
+				this.divLibelle.innerText = this.divLibelle.innerText.replace(
+					/\|\|/g,
+					"OU",
+				);
 			}
 			if (this._ancienLib != this._libelle) {
 				this._editeur.ajouterEvenement(
-					new EvenementEditionLibelleCondition(this, this._ancienLib, this._libelle)
+					new EvenementEditionLibelleCondition(
+						this,
+						this._ancienLib,
+						this._libelle,
+					),
 				);
 				this._ancienLib = this._libelle;
 			}
@@ -155,7 +169,9 @@ class Condition extends HTMLElement {
 		return {
 			typeElement: this.constructor.name,
 			libelle: this._libelle,
-			enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver),
+			enfants: this._elemParent.toJSONspecifier(
+				listeElemEnfantsAConcerver,
+			),
 		};
 	}
 
@@ -189,7 +205,10 @@ class Condition extends HTMLElement {
 		for (let enfant of this._elemParent._listeElementsEnfants) {
 			listeDesEnfants.push(enfant.element);
 		}
-		listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+		listeDesEnfants = PlanTravail.FiltrerElementsGraphique(
+			listeDesEnfants,
+			typeRechercher,
+		);
 		return listeDesEnfants.sort((a, b) => a._abscisse - b._abscisse);
 	}
 }

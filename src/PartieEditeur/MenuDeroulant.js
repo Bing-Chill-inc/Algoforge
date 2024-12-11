@@ -5,11 +5,12 @@
  * @extends {HTMLElement}
  */
 class MenuDeroulant extends HTMLElement {
-    constructor() {
-        super();
-    }
+	constructor() {
+		super();
+	}
 
-    ajouterElementMenu(elementMenu) {
-        this.appendChild(elementMenu);
-    }
-} window.customElements.define('menu-deroulant', MenuDeroulant);
+	ajouterElementMenu(elementMenu) {
+		this.appendChild(elementMenu);
+	}
+}
+window.customElements.define("menu-deroulant", MenuDeroulant);

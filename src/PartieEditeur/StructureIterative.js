@@ -58,7 +58,10 @@ class StructureIterative extends ElementGraphique {
 		for (let enfant of this._elemParent._listeElementsEnfants) {
 			listeDesEnfants.push(enfant.element);
 		}
-		listeDesEnfants = PlanTravail.FiltrerElementsGraphique(listeDesEnfants, typeRechercher);
+		listeDesEnfants = PlanTravail.FiltrerElementsGraphique(
+			listeDesEnfants,
+			typeRechercher,
+		);
 		return PlanTravail.trierElementsGraphique(listeDesEnfants);
 	}
 
@@ -98,7 +101,8 @@ class StructureIterative extends ElementGraphique {
 		this._elemParent.delierTousLesEnfants();
 		if (this._parent != null) this._parent.delierEnfant(this);
 		if (this._inviteBornes != null)
-			if (this._inviteBornes.parentNode != null) this._inviteBornes.parentNode.removeChild(this._inviteBornes);
+			if (this._inviteBornes.parentNode != null)
+				this._inviteBornes.parentNode.removeChild(this._inviteBornes);
 		this.remove();
 	}
 }

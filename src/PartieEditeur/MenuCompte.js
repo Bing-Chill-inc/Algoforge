@@ -25,7 +25,6 @@ class MenuCompte extends HTMLElement {
 		this.appendChild(this.MenuIcone);
 	}
 
-	// MÉTHODES
 	ouvrirMenu() {
 		this._menuDiv = document.createElement("div");
 		this._menuDiv.id = "MenuCompteDiv";
@@ -68,6 +67,9 @@ class MenuCompte extends HTMLElement {
 		this._estOuvert = false;
 	}
 
+	deconnexion() {
+		console.log("Déconnexion");
+	}
 	deconnexion() {
 		console.log("Déconnexion");
 	}

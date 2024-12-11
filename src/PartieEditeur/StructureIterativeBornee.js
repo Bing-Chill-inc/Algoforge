@@ -30,7 +30,7 @@ class StructureIterativeBornee extends StructureIterative {
 		borneInferieure = "BORNE_INF",
 		borneSuperieure = "BORNE_SUP",
 		pas = "1",
-		estCroissant = true
+		estCroissant = true,
 	) {
 		super(abscisse, ordonnee);
 		this._variableAIterer = variableAIterer;
@@ -56,13 +56,13 @@ class StructureIterativeBornee extends StructureIterative {
 	setVariableAIterer(value) {
 		this._variableAIterer = value;
 		if (this.etatClassique()) {
-			this.querySelector(
-				".informationsBornes"
-			).innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
+			this.querySelector(".informationsBornes").innerHTML =
+				`Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
-			this.querySelector(".informationsBornes").innerHTML = `Pour ${this._variableAIterer} allant de ${
-				this._borneInferieure
-			} à ${this._borneSuperieure} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${this._pas}`;
+			this.querySelector(".informationsBornes").innerHTML =
+				`Pour ${this._variableAIterer} allant de ${
+					this._borneInferieure
+				} à ${this._borneSuperieure} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${this._pas}`;
 		}
 	}
 
@@ -145,7 +145,8 @@ class StructureIterativeBornee extends StructureIterative {
 		// Sinon, calculons la direction des bornes et vérifions si la croissance est cohérente
 		let direction = borneSup - borneInf;
 		if (direction == 0) return false;
-		if (direction > 0) return this._estCroissant && parseFloat(this._pas) == 1;
+		if (direction > 0)
+			return this._estCroissant && parseFloat(this._pas) == 1;
 		return !this._estCroissant && parseFloat(this._pas) == 1;
 	}
 
@@ -165,9 +166,15 @@ class StructureIterativeBornee extends StructureIterative {
 			mesAnomalies.push(new ErreurBoucleBorneeSansFin(this));
 		}
 		// 12
-		let tropDeSousElements = AvertissementTropDeSousElements.detecterAnomalie(this);
+		let tropDeSousElements =
+			AvertissementTropDeSousElements.detecterAnomalie(this);
 		if (tropDeSousElements[0]) {
-			mesAnomalies.push(new AvertissementTropDeSousElements(this, tropDeSousElements[1]));
+			mesAnomalies.push(
+				new AvertissementTropDeSousElements(
+					this,
+					tropDeSousElements[1],
+				),
+			);
 		}
 		return super.rechercherAnomalies(mesAnomalies);
 	}
@@ -210,7 +217,9 @@ class StructureIterativeBornee extends StructureIterative {
 			borneSuperieure: this._borneSuperieure,
 			pas: this._pas,
 			croissant: this._estCroissant,
-			enfants: this._elemParent.toJSONspecifier(listeElemEnfantsAConcerver),
+			enfants: this._elemParent.toJSONspecifier(
+				listeElemEnfantsAConcerver,
+			),
 		};
 	}
 
@@ -269,4 +278,7 @@ class StructureIterativeBornee extends StructureIterative {
 		}
 	}
 }
-window.customElements.define("structure-iterative-bornee-element", StructureIterativeBornee);
+window.customElements.define(
+	"structure-iterative-bornee-element",
+	StructureIterativeBornee,
+);

@@ -4,38 +4,47 @@ class InviteBornesPourSI extends HTMLElement {
 	_structureIterativeNonBornee;
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
-	constructor(uneStructureIterative, oldIndice = "", oldBorneInf = "", oldBorneSup = "", oldPas = "") {
+	constructor(
+		uneStructureIterative,
+		oldIndice = "",
+		oldBorneInf = "",
+		oldBorneSup = "",
+		oldPas = "",
+	) {
 		super();
 		if (verbose)
 			console.log(
-				`Une invite pour les bornes a été créée pour la structure itérative : ${uneStructureIterative}`
+				`Une invite pour les bornes a été créée pour la structure itérative : ${uneStructureIterative}`,
 			);
 		this._structureIterative = uneStructureIterative;
 
 		if (uneStructureIterative instanceof StructureIterativeBornee) {
 			this._structureIterativeBornee = uneStructureIterative;
-			this._structureIterativeNonBornee = new StructureIterativeNonBornee();
+			this._structureIterativeNonBornee =
+				new StructureIterativeNonBornee();
 			if (verbose)
 				console.log(
-					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`
+					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`,
 				); // null normalement
 			this._structureIterativeNonBornee._inviteBornes = this;
 			if (verbose)
 				console.log(
-					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`
+					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`,
 				); // this normalement
 			this._structureIterativeNonBornee.afficher();
-		} else if (uneStructureIterative instanceof StructureIterativeNonBornee) {
+		} else if (
+			uneStructureIterative instanceof StructureIterativeNonBornee
+		) {
 			this._structureIterativeNonBornee = uneStructureIterative;
 			this._structureIterativeBornee = new StructureIterativeBornee();
 			if (verbose)
 				console.log(
-					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`
+					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`,
 				); // null normalement
 			this._structureIterativeBornee._inviteBornes = this;
 			if (verbose)
 				console.log(
-					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`
+					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`,
 				); // this normalement
 			this._structureIterativeBornee.afficher();
 		}
@@ -43,7 +52,9 @@ class InviteBornesPourSI extends HTMLElement {
 		setInterval(() => {
 			this.style.left = `
 				calc(var(--sizeModifier) * ${
-					parseFloat(this._structureIterative._abscisse) + this._structureIterative.getTailleAbscisse() + 1
+					parseFloat(this._structureIterative._abscisse) +
+					this._structureIterative.getTailleAbscisse() +
+					1
 				}vw)`;
 			this.style.top = `
             calc(var(--sizeModifier) * ${parseFloat(this._structureIterative._ordonnee)}vw`;
@@ -160,7 +171,8 @@ class InviteBornesPourSI extends HTMLElement {
 		}
 
 		let ancienneStructure = {};
-		ancienneStructure.estBornee = this._structureIterative instanceof StructureIterativeBornee;
+		ancienneStructure.estBornee =
+			this._structureIterative instanceof StructureIterativeBornee;
 		ancienneStructure.indice = this._structureIterative._indice;
 		ancienneStructure.borneInf = this._structureIterative._borneInferieure;
 		ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
@@ -175,7 +187,11 @@ class InviteBornesPourSI extends HTMLElement {
 
 		if (!estAnnulation) {
 			this._editeur.ajouterEvenement(
-				new EvenementEditionStructureIterative(this._structureIterative, ancienneStructure, nouvelleStructure)
+				new EvenementEditionStructureIterative(
+					this._structureIterative,
+					ancienneStructure,
+					nouvelleStructure,
+				),
 			);
 		}
 
@@ -184,52 +200,81 @@ class InviteBornesPourSI extends HTMLElement {
 			console.log(
 				`this._structureIterative instanceof StructureIterativeBornee : ${
 					this._structureIterative instanceof StructureIterativeBornee
-				}`
+				}`,
 			);
 			console.log(
 				`this._structureIterative instanceof StructureIterativeNonBornee : ${
-					this._structureIterative instanceof StructureIterativeNonBornee
-				}`
+					this._structureIterative instanceof
+					StructureIterativeNonBornee
+				}`,
 			);
-			console.log(`this._structureIterative.parentNode : ${this._structureIterative.parentNode}`);
-			console.log(`this._structureIterativeBornee.parentNode : ${this._structureIterativeBornee.parentNode}`);
 			console.log(
-				`this._structureIterativeNonBornee.parentNode : ${this._structureIterativeNonBornee.parentNode}`
+				`this._structureIterative.parentNode : ${this._structureIterative.parentNode}`,
+			);
+			console.log(
+				`this._structureIterativeBornee.parentNode : ${this._structureIterativeBornee.parentNode}`,
+			);
+			console.log(
+				`this._structureIterativeNonBornee.parentNode : ${this._structureIterativeNonBornee.parentNode}`,
 			);
 			console.log(this._structureIterativeBornee);
 			console.log(this._structureIterativeNonBornee);
 		}
 
 		if (this._structureIterative instanceof StructureIterativeBornee) {
-			this._structureIterative._borneInferieure = this.borneInf.value || "BORNE_INF";
-			this._structureIterative._borneSuperieure = this.borneSup.value || "BORNE_SUP";
+			this._structureIterative._borneInferieure =
+				this.borneInf.value || "BORNE_INF";
+			this._structureIterative._borneSuperieure =
+				this.borneSup.value || "BORNE_SUP";
 			this._structureIterative._pas = this.pas.value || "1";
-			this._structureIterative._estCroissant = this.selectCroissant.value == "croissant";
-			this._structureIterative.setVariableAIterer(this.indice.value || "i");
-		} else if (this._structureIterative instanceof StructureIterativeNonBornee) {
+			this._structureIterative._estCroissant =
+				this.selectCroissant.value == "croissant";
+			this._structureIterative.setVariableAIterer(
+				this.indice.value || "i",
+			);
+		} else if (
+			this._structureIterative instanceof StructureIterativeNonBornee
+		) {
 			let plan = this._structureIterative.parentNode;
 			// let nouvelleStructure = new StructureIterativeBornee(this._structureIterative._abscisse, this._structureIterative._ordonnee, this.indice.value, this.borneInf.value, this.borneSup.value, this.pas.value);
-			this._structureIterativeBornee._abscisse = this._structureIterative._abscisse;
-			this._structureIterativeBornee._ordonnee = this._structureIterative._ordonnee;
+			this._structureIterativeBornee._abscisse =
+				this._structureIterative._abscisse;
+			this._structureIterativeBornee._ordonnee =
+				this._structureIterative._ordonnee;
 			this._structureIterativeBornee.setPosition();
-			this._structureIterativeBornee._borneInferieure = this.borneInf.value || "BORNE_INF";
-			this._structureIterativeBornee._borneSuperieure = this.borneSup.value || "BORNE_SUP";
+			this._structureIterativeBornee._borneInferieure =
+				this.borneInf.value || "BORNE_INF";
+			this._structureIterativeBornee._borneSuperieure =
+				this.borneSup.value || "BORNE_SUP";
 			this._structureIterativeBornee._pas = this.pas.value || "1";
-			this._structureIterativeBornee._estCroissant = this.selectCroissant.value == "croissant";
-			this._structureIterativeBornee.setVariableAIterer(this.indice.value || "i");
+			this._structureIterativeBornee._estCroissant =
+				this.selectCroissant.value == "croissant";
+			this._structureIterativeBornee.setVariableAIterer(
+				this.indice.value || "i",
+			);
 
 			// nouvelleStructure.afficher();
 			plan.removeChild(this._structureIterative);
 			plan.appendChild(this._structureIterativeBornee);
 
 			if (this._structureIterative._parent != null) {
-				this._structureIterative._parent.lierEnfant(this._structureIterativeBornee);
-				this._structureIterative._parent.delierEnfant(this._structureIterative);
+				this._structureIterative._parent.lierEnfant(
+					this._structureIterativeBornee,
+				);
+				this._structureIterative._parent.delierEnfant(
+					this._structureIterative,
+				);
 			}
-			this._structureIterative._elemParent._listeElementsEnfants.forEach((lien) => {
-				this._structureIterative._elemParent.delierEnfant(lien.element);
-				this._structureIterativeBornee._elemParent.lierEnfant(lien.element);
-			});
+			this._structureIterative._elemParent._listeElementsEnfants.forEach(
+				(lien) => {
+					this._structureIterative._elemParent.delierEnfant(
+						lien.element,
+					);
+					this._structureIterativeBornee._elemParent.lierEnfant(
+						lien.element,
+					);
+				},
+			);
 			this._structureIterative = this._structureIterativeBornee;
 		}
 		if (this.parentNode) this.parentNode.removeChild(this);
@@ -237,7 +282,8 @@ class InviteBornesPourSI extends HTMLElement {
 
 	nonBorne(estAnnulation = false) {
 		let ancienneStructure = {};
-		ancienneStructure.estBornee = this._structureIterative instanceof StructureIterativeBornee;
+		ancienneStructure.estBornee =
+			this._structureIterative instanceof StructureIterativeBornee;
 		ancienneStructure.indice = this._structureIterative._indice;
 		ancienneStructure.borneInf = this._structureIterative._borneInferieure;
 		ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
@@ -251,28 +297,40 @@ class InviteBornesPourSI extends HTMLElement {
 				new EvenementEditionStructureIterative(
 					this._structureIterative,
 					ancienneStructure,
-					nouvelleStructureEvent
-				)
+					nouvelleStructureEvent,
+				),
 			);
 		}
 
-		let plan = this._structureIterativeNonBornee.parentNode || this._structureIterativeBornee.parentNode;
+		let plan =
+			this._structureIterativeNonBornee.parentNode ||
+			this._structureIterativeBornee.parentNode;
 		// let nouvelleStructure = new StructureIterativeNonBornee(this._structureIterative._abscisse, this._structureIterative._ordonnee);
-		this._structureIterativeNonBornee._abscisse = this._structureIterative._abscisse;
-		this._structureIterativeNonBornee._ordonnee = this._structureIterative._ordonnee;
+		this._structureIterativeNonBornee._abscisse =
+			this._structureIterative._abscisse;
+		this._structureIterativeNonBornee._ordonnee =
+			this._structureIterative._ordonnee;
 		this._structureIterativeNonBornee.setPosition();
 		// nouvelleStructure.afficher();
 		plan.removeChild(this._structureIterative);
 		plan.appendChild(this._structureIterativeNonBornee);
 
 		if (this._structureIterative._parent != null) {
-			this._structureIterative._parent.lierEnfant(this._structureIterativeNonBornee);
-			this._structureIterative._parent.delierEnfant(this._structureIterative);
+			this._structureIterative._parent.lierEnfant(
+				this._structureIterativeNonBornee,
+			);
+			this._structureIterative._parent.delierEnfant(
+				this._structureIterative,
+			);
 		}
-		this._structureIterative._elemParent._listeElementsEnfants.forEach((lien) => {
-			this._structureIterative._elemParent.delierEnfant(lien.element);
-			this._structureIterativeNonBornee._elemParent.lierEnfant(lien.element);
-		});
+		this._structureIterative._elemParent._listeElementsEnfants.forEach(
+			(lien) => {
+				this._structureIterative._elemParent.delierEnfant(lien.element);
+				this._structureIterativeNonBornee._elemParent.lierEnfant(
+					lien.element,
+				);
+			},
+		);
 		this._structureIterative = this._structureIterativeNonBornee;
 		if (this.parentNode) this.parentNode.removeChild(this);
 	}

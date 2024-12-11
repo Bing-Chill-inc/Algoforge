@@ -1,17 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Renderer pour algoforge</title>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="style.css" />
 	</head>
 
 	<body>
-		<plan-travail id="espacePrincipal">
-
-		</plan-travail>
+		<plan-travail id="espacePrincipal"> </plan-travail>
 	</body>
 	<!-- Dictionnaire des données-->
 	<script src="PartieEditeur/Type.js"></script>
@@ -115,26 +112,37 @@
 	</style>
 	<script>
 		const verbose = false;
-		let espacePrincipal = document.getElementById('espacePrincipal');
+		let espacePrincipal = document.getElementById("espacePrincipal");
 		document.body.style.setProperty("--sizeModifier", 1);
-		document.body.style.setProperty("--bgColor", '#FFFFFF');
-		document.body.style.setProperty("--fgColor", '#000000');
-		document.body.style.setProperty("--fgColorSemiTransparent", 'rgba(0, 0, 0, 0.5)');
-		document.body.style.setProperty("--fgColorTransparent", 'rgba(0, 0, 0, 0.25)');
-		document.body.style.setProperty("--fgColorForward", '#000000');
-		document.body.style.setProperty("--goodColor", '#00FF00');
-		document.body.style.setProperty("--goodColorTransparent", 'rgba(0, 255, 0, 0.5)');
-		document.body.style.setProperty("--errorColor", '#FF0000');
-		document.body.style.setProperty("--warningColor", '#FFFF00');
-		document.body.style.setProperty("--titleColor", '#0000FF');
-		document.body.style.setProperty("--glowColor", '#0000FF00');
+		document.body.style.setProperty("--bgColor", "#FFFFFF");
+		document.body.style.setProperty("--fgColor", "#000000");
+		document.body.style.setProperty(
+			"--fgColorSemiTransparent",
+			"rgba(0, 0, 0, 0.5)",
+		);
+		document.body.style.setProperty(
+			"--fgColorTransparent",
+			"rgba(0, 0, 0, 0.25)",
+		);
+		document.body.style.setProperty("--fgColorForward", "#000000");
+		document.body.style.setProperty("--goodColor", "#00FF00");
+		document.body.style.setProperty(
+			"--goodColorTransparent",
+			"rgba(0, 255, 0, 0.5)",
+		);
+		document.body.style.setProperty("--errorColor", "#FF0000");
+		document.body.style.setProperty("--warningColor", "#FFFF00");
+		document.body.style.setProperty("--titleColor", "#0000FF");
+		document.body.style.setProperty("--glowColor", "#0000FF00");
 
 		const sheet = document.styleSheets[0];
 
 		let ruleToEdit;
 		const ruleSelectoBibliotheque = "bibliotheque-algorithmique > div.img";
-		const ruleSelectorBoucle = "structure-iterative-non-bornee-element > div.boucleSVG";
-		const ruleSelectorBoucle2 = "structure-iterative-bornee-element > div.boucleSVG";
+		const ruleSelectorBoucle =
+			"structure-iterative-non-bornee-element > div.boucleSVG";
+		const ruleSelectorBoucle2 =
+			"structure-iterative-bornee-element > div.boucleSVG";
 		const ruleSelectorSortie = "condition-sortie-element";
 		const ruleSelectorDico = "dictionnaire-donnee > div.img";
 		const ruleSelectorErreur = "affichage-erreur-element > div.img";
@@ -166,5 +174,4 @@
 			}
 		}
 	</script>
-
 </html>

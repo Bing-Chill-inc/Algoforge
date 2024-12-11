@@ -1,1 +1,132 @@
-[{"typeElement":"Probleme","abscisse":"32.84889821615949vw","ordonnee":"3.3962486883525704vw","libelle":"Recherche de première occurrence","listeDonnes":["structure"],"listeResultats":["trouve"],"enfants":[{"typeElement":"Probleme","abscisse":"17.52885624344176vw","ordonnee":"10.881383350821967vw","libelle":"Initialiser la recherche","listeDonnes":[""],"listeResultats":["trouve"],"enfants":[{"typeElement":"Probleme","abscisse":"10.25358516963974vw","ordonnee":"18.05172263029031vw","libelle":"Se positionner en début de structure","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"Probleme","abscisse":"22.845400489681708vw","ordonnee":"18.156654424623994vw","libelle":"trouve ← faux","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]},{"typeElement":"Probleme","abscisse":"48.448758307100384vw","ordonnee":"10.776451556488263vw","libelle":"Effectuer la recherche","listeDonnes":["trouve"],"listeResultats":["trouve"],"enfants":[{"typeElement":"StructureIterativeNonBornee","abscisse":"61.45505421476043vw","ordonnee":"18.95767750961872vw","enfants":[{"typeElement":"Probleme","abscisse":"29.21126267925845vw","ordonnee":"24.80233473242393vw","libelle":"Déterminer si on a analysé tous les éléments de la structure","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSi","abscisse":"39.17453655124162vw","ordonnee":"30.039174536551236vw","conditions":[{"typeElement":"Condition","libelle":"Tous les éléments ont été analysés = vrai","enfants":[{"typeElement":"ConditionSortie","abscisse":"42.14760405736264vw","ordonnee":"35.746764603008074vw"}]}]}]},{"typeElement":"Probleme","abscisse":"46.245190626093vw","ordonnee":"25.0121983210913vw","libelle":"Vérifier si on a trouvé ce qu'on cherche","listeDonnes":[""],"listeResultats":[""],"enfants":[{"typeElement":"StructureSi","abscisse":"56.208464498076246vw","ordonnee":"30.98356068555435vw","conditions":[{"typeElement":"Condition","libelle":"L'élément courant vérifie la propriété recherchée","enfants":[{"typeElement":"Probleme","abscisse":"40.36901014340675vw","ordonnee":"37.21926372857646vw","libelle":"trouve ← vrai","listeDonnes":[""],"listeResultats":[""],"enfants":[]},{"typeElement":"ConditionSortie","abscisse":"66.42182581322142vw","ordonnee":"37.74046869534805vw"}]}]}]},{"typeElement":"Probleme","abscisse":"60.935641832808685vw","ordonnee":"24.697402938090224vw","libelle":"Passer à l'élément suivant","listeDonnes":[""],"listeResultats":[""],"enfants":[]}]}]}]},{"typeElement":"DictionnaireDonnee","contenu":{}}]
+[
+	{
+		"typeElement": "Probleme",
+		"abscisse": "32.84889821615949vw",
+		"ordonnee": "3.3962486883525704vw",
+		"libelle": "Recherche de première occurrence",
+		"listeDonnes": ["structure"],
+		"listeResultats": ["trouve"],
+		"enfants": [
+			{
+				"typeElement": "Probleme",
+				"abscisse": "17.52885624344176vw",
+				"ordonnee": "10.881383350821967vw",
+				"libelle": "Initialiser la recherche",
+				"listeDonnes": [""],
+				"listeResultats": ["trouve"],
+				"enfants": [
+					{
+						"typeElement": "Probleme",
+						"abscisse": "10.25358516963974vw",
+						"ordonnee": "18.05172263029031vw",
+						"libelle": "Se positionner en début de structure",
+						"listeDonnes": [""],
+						"listeResultats": [""],
+						"enfants": []
+					},
+					{
+						"typeElement": "Probleme",
+						"abscisse": "22.845400489681708vw",
+						"ordonnee": "18.156654424623994vw",
+						"libelle": "trouve ← faux",
+						"listeDonnes": [""],
+						"listeResultats": [""],
+						"enfants": []
+					}
+				]
+			},
+			{
+				"typeElement": "Probleme",
+				"abscisse": "48.448758307100384vw",
+				"ordonnee": "10.776451556488263vw",
+				"libelle": "Effectuer la recherche",
+				"listeDonnes": ["trouve"],
+				"listeResultats": ["trouve"],
+				"enfants": [
+					{
+						"typeElement": "StructureIterativeNonBornee",
+						"abscisse": "61.45505421476043vw",
+						"ordonnee": "18.95767750961872vw",
+						"enfants": [
+							{
+								"typeElement": "Probleme",
+								"abscisse": "29.21126267925845vw",
+								"ordonnee": "24.80233473242393vw",
+								"libelle": "Déterminer si on a analysé tous les éléments de la structure",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": [
+									{
+										"typeElement": "StructureSi",
+										"abscisse": "39.17453655124162vw",
+										"ordonnee": "30.039174536551236vw",
+										"conditions": [
+											{
+												"typeElement": "Condition",
+												"libelle": "Tous les éléments ont été analysés = vrai",
+												"enfants": [
+													{
+														"typeElement": "ConditionSortie",
+														"abscisse": "42.14760405736264vw",
+														"ordonnee": "35.746764603008074vw"
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"typeElement": "Probleme",
+								"abscisse": "46.245190626093vw",
+								"ordonnee": "25.0121983210913vw",
+								"libelle": "Vérifier si on a trouvé ce qu'on cherche",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": [
+									{
+										"typeElement": "StructureSi",
+										"abscisse": "56.208464498076246vw",
+										"ordonnee": "30.98356068555435vw",
+										"conditions": [
+											{
+												"typeElement": "Condition",
+												"libelle": "L'élément courant vérifie la propriété recherchée",
+												"enfants": [
+													{
+														"typeElement": "Probleme",
+														"abscisse": "40.36901014340675vw",
+														"ordonnee": "37.21926372857646vw",
+														"libelle": "trouve ← vrai",
+														"listeDonnes": [""],
+														"listeResultats": [""],
+														"enfants": []
+													},
+													{
+														"typeElement": "ConditionSortie",
+														"abscisse": "66.42182581322142vw",
+														"ordonnee": "37.74046869534805vw"
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"typeElement": "Probleme",
+								"abscisse": "60.935641832808685vw",
+								"ordonnee": "24.697402938090224vw",
+								"libelle": "Passer à l'élément suivant",
+								"listeDonnes": [""],
+								"listeResultats": [""],
+								"enfants": []
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee", "contenu": {} }
+]

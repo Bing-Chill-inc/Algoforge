@@ -34,7 +34,9 @@ class DictionnaireDonnee extends HTMLElement {
 	ouvrir() {
 		document.querySelector("bibliotheque-algorithmique").fermer();
 		document.getElementById("dico_wrapper").style.zIndex = 200;
-		document.querySelector("editeur-interface")._planActif.effectuerDictionnaireDesDonnee();
+		document
+			.querySelector("editeur-interface")
+			._planActif.effectuerDictionnaireDesDonnee();
 		if (this._estOuvert) return;
 		// Supprimer tout le contenu
 		this.innerHTML = "";
@@ -123,12 +125,21 @@ class DictionnaireDonnee extends HTMLElement {
 				}
 				// Demander confirmation pour la suppression si il ne reste qu'un caractère
 				if (event.key === "Backspace" && tdNom.innerText.length == 1) {
-					if (!confirm("Voulez-vous vraiment supprimer cette variable?")) {
+					if (
+						!confirm(
+							"Voulez-vous vraiment supprimer cette variable?",
+						)
+					) {
 						event.preventDefault();
 					} else {
 						if (verbose) console.log(info);
-						document.querySelector("plan-travail").renameInformation(info._nom, this.VARIABLE_SUPPR);
-						this._mesInformations.splice(this._mesInformations.indexOf(info), 1);
+						document
+							.querySelector("plan-travail")
+							.renameInformation(info._nom, this.VARIABLE_SUPPR);
+						this._mesInformations.splice(
+							this._mesInformations.indexOf(info),
+							1,
+						);
 						this.fermer();
 						this.ouvrir();
 					}
@@ -136,8 +147,11 @@ class DictionnaireDonnee extends HTMLElement {
 			});
 
 			tdNom.addEventListener("input", () => {
-				document.querySelector("editeur-interface")._planActif.renameInformation(info._nom, tdNom.innerText);
-				this._matchSignification[tdNom.innerText] = this._matchSignification[info._nom];
+				document
+					.querySelector("editeur-interface")
+					._planActif.renameInformation(info._nom, tdNom.innerText);
+				this._matchSignification[tdNom.innerText] =
+					this._matchSignification[info._nom];
 				this._matchSignification[info._nom] = undefined;
 				this._matchType[tdNom.innerText] = this._matchType[info._nom];
 				this._matchType[info._nom] = undefined;
@@ -193,7 +207,8 @@ class DictionnaireDonnee extends HTMLElement {
 
 			let tdSignification = document.createElement("td");
 			if (this._matchSignification) {
-				tdSignification.textContent = this._matchSignification[info._nom];
+				tdSignification.textContent =
+					this._matchSignification[info._nom];
 			}
 			tdSignification.setAttribute("contenteditable", "true");
 			trContent.append(tdSignification);
@@ -226,7 +241,9 @@ class DictionnaireDonnee extends HTMLElement {
 			tdNom.addEventListener("input", () => {
 				this._mesInformations.forEach((element) => {
 					if (element._nom == info._nom) {
-						document.getElementById("espace1").renameInformation(element._nom, tdNom.innerText);
+						document
+							.getElementById("espace1")
+							.renameInformation(element._nom, tdNom.innerText);
 						element._nom = tdNom.innerText;
 					}
 				});
@@ -258,10 +275,16 @@ class DictionnaireDonnee extends HTMLElement {
 		if (uneInformation instanceof Information) {
 			if (this.nomCorrecte(nameInformation)) {
 				if (this.containInformation(nameInformation)) {
-					const ancienType = this.getInformation(nameInformation)._type;
+					const ancienType =
+						this.getInformation(nameInformation)._type;
 					const nouveauType = uneInformation._type;
-					const resultType = this.convertionVariable(nouveauType, ancienType);
-					if (this.getInformation(nameInformation)._type != resultType) {
+					const resultType = this.convertionVariable(
+						nouveauType,
+						ancienType,
+					);
+					if (
+						this.getInformation(nameInformation)._type != resultType
+					) {
 						this.changeType(uneInformation._nom, resultType);
 					}
 				} else {
@@ -282,7 +305,9 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	retirerUneInformation(nameVariable) {
-		this._mesInformations = this._mesInformations.filter((element) => element._nom != nameVariable);
+		this._mesInformations = this._mesInformations.filter(
+			(element) => element._nom != nameVariable,
+		);
 		return true;
 	}
 
@@ -374,7 +399,9 @@ class DictionnaireDonnee extends HTMLElement {
 		return trouver;
 	}
 	getInformation(nameInformation) {
-		const foundElement = this._mesInformations.find((element) => element._nom === nameInformation);
+		const foundElement = this._mesInformations.find(
+			(element) => element._nom === nameInformation,
+		);
 		return foundElement;
 	}
 	renameInformation(nameVariable, newName) {
@@ -420,7 +447,11 @@ class DictionnaireDonnee extends HTMLElement {
 			resultat = false;
 		}
 		for (let char of nameVariable) {
-			if (!(char >= "a" && char <= "z") && !(char >= "A" && char <= "Z") && char !== "_") {
+			if (
+				!(char >= "a" && char <= "z") &&
+				!(char >= "A" && char <= "Z") &&
+				char !== "_"
+			) {
 				resultat = false;
 			}
 		}
@@ -429,7 +460,11 @@ class DictionnaireDonnee extends HTMLElement {
 
 	suppressionDonneeInutiliser() {
 		this._mesInformations = this._mesInformations.filter((element) => {
-			return element._type != undefined || (element._signification != undefined && element._signification != "");
+			return (
+				element._type != undefined ||
+				(element._signification != undefined &&
+					element._signification != "")
+			);
 		});
 	}
 
@@ -456,7 +491,9 @@ class DictionnaireDonnee extends HTMLElement {
 					aoa.push([
 						info._nom,
 						`${this._matchType[info._nom] ? this._matchType[info._nom] : info._type}`,
-						this._matchSignification[info._nom] ? this._matchSignification[info._nom] : "",
+						this._matchSignification[info._nom]
+							? this._matchSignification[info._nom]
+							: "",
 					]);
 				});
 				/* Create worksheet from Array of arrays */
@@ -469,7 +506,10 @@ class DictionnaireDonnee extends HTMLElement {
 				XLSX.utils.book_append_sheet(wb, ws, "Dictionnaire"); // "Dictionnaire" is the worksheet name
 
 				/* Export to file (start a download) */
-				XLSX.writeFile(wb, `${document.querySelector("#titreAlgo").innerText}Dictionnaire.xls`);
+				XLSX.writeFile(
+					wb,
+					`${document.querySelector("#titreAlgo").innerText}Dictionnaire.xls`,
+				);
 				this.fermer();
 				break;
 			case "csv":
@@ -480,7 +520,9 @@ class DictionnaireDonnee extends HTMLElement {
 
 				this._mesInformations.forEach((info) => {
 					contenuTexte += `${info._nom};${info._type};${
-						this._matchSignification[info._nom] ? this._matchSignification[info._nom] : ""
+						this._matchSignification[info._nom]
+							? this._matchSignification[info._nom]
+							: ""
 					}\n`;
 				});
 
@@ -513,7 +555,9 @@ class DictionnaireDonnee extends HTMLElement {
 
 				this._mesInformations.forEach((info) => {
 					contenuTexte += `${info._nom};${info._type};${
-						this._matchSignification[info._nom] ? this._matchSignification[info._nom] : ""
+						this._matchSignification[info._nom]
+							? this._matchSignification[info._nom]
+							: ""
 					}\n`;
 				});
 
