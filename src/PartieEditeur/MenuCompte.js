@@ -37,15 +37,6 @@ class MenuCompte extends HTMLElement {
 		this._selectionTheme = document.querySelector("select#theme");
 		boutonTheme.appendChild(this._selectionTheme);
 
-		// style selectionTheme
-		// this._selectionTheme.style.width = "100%";
-		// this._selectionTheme.style.height = "50%";
-		// this._selectionTheme.style.background = "none";
-		// this._selectionTheme.style.border = "var(--fgColor) solid 0.1vw";
-		// this._selectionTheme.style.borderRadius = "1vw";
-		// this._selectionTheme.style.fontSize = "1vw";
-		// this._selectionTheme.style.color = "var(--fgColor)";
-		// this._selectionTheme.style.cursor = "pointer";
 		this._selectionTheme.style.display = "block";
 
 		this._boutonDeconnexion =
