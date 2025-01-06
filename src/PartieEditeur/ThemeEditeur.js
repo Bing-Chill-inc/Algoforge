@@ -14,6 +14,7 @@ class ThemeEditeur extends HTMLOptionElement {
 	titleColor;
 	fontFamily;
 	glowColor;
+	baseGlowColor;
 
 	_logoAlgoForge = document.querySelector("#logoAlgoForge");
 
@@ -39,6 +40,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		bgColorTertiary,
 		fgColorHover,
 		fgColorDisabled,
+		baseGlowColor,
 	) {
 		super();
 		this.nom = nom;
@@ -60,6 +62,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		this.bgColorTertiary = bgColorTertiary;
 		this.fgColorHover = fgColorHover;
 		this.fgColorDisabled = fgColorDisabled;
+		this.baseGlowColor = baseGlowColor;
 
 		this.innerText = this.nom;
 	}
@@ -93,6 +96,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		document.body.style.setProperty("--warningColor", this.warningColor);
 		document.body.style.setProperty("--titleColor", this.titleColor);
 		document.body.style.setProperty("--glowColor", this.glowColor);
+		document.body.style.setProperty("--baseGlowColor", this.baseGlowColor);
 		document.body.style.setProperty("--borderColor2", this.borderColor2);
 		document.body.style.setProperty(
 			"--bgColorTertiary",
@@ -116,6 +120,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		const ruleSelectorSortie = "condition-sortie-element";
 		const ruleSelectorDico = "dictionnaire-donnee > div.img";
 		const ruleSelectorErreur = "affichage-erreur-element > div.img";
+		const ruleSelectorMenuCompte = "menu-compte-element > div.img";
 
 		for (let i = 0; i < sheet.cssRules.length; i++) {
 			if (sheet.cssRules[i].selectorText === ruleSelectorBibliotheque) {
@@ -149,6 +154,12 @@ class ThemeEditeur extends HTMLOptionElement {
 				)})`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorErreur) {
+				ruleToEdit = sheet.cssRules[i];
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
+					1,
+				)})`;
+			}
+			if (sheet.cssRules[i].selectorText === ruleSelectorMenuCompte) {
 				ruleToEdit = sheet.cssRules[i];
 				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
 					1,

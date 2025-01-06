@@ -6,7 +6,6 @@ class MenuCompte extends HTMLElement {
 	_menuIcone;
 	_selectionTheme;
 	_estOuvert = false;
-	_init = false;
 
 	// CONSTRUCTEUR
 	constructor() {
@@ -26,19 +25,19 @@ class MenuCompte extends HTMLElement {
 		this.appendChild(this.MenuIcone);
 	}
 
-	// MÉTHODES
 	ouvrirMenu() {
 		this._menuDiv = document.createElement("div");
 		this._menuDiv.id = "MenuCompteDiv";
 		this._menuDiv.classList.add("menu-compte");
 		this._menuDiv.innerHTML = `
             <div class="elementMenuCompte" id="boutonDeconnexion">Deconnexion</div>
+            <div class="elementMenuCompte" id="boutonTheme"></div>
         `;
-		if (!this._init) {
-			this._selectionTheme = document.querySelector("select#theme");
-			this._menuDiv.appendChild(this._selectionTheme);
-			this._selectionTheme.style.display = "block";
-		}
+		let boutonTheme = this._menuDiv.querySelector("#boutonTheme");
+		this._selectionTheme = document.querySelector("select#theme");
+		boutonTheme.appendChild(this._selectionTheme);
+
+		this._selectionTheme.style.display = "block";
 
 		this._boutonDeconnexion =
 			this._menuDiv.querySelector("#boutonDeconnexion");
@@ -51,10 +50,17 @@ class MenuCompte extends HTMLElement {
 	}
 
 	fermerMenu() {
+		this._selectionTheme = document.querySelector("select#theme");
+		this.appendChild(this._selectionTheme);
+		this._selectionTheme.style.display = "none";
+
 		this.removeChild(this._menuDiv);
 		this._estOuvert = false;
 	}
 
+	deconnexion() {
+		console.log("Déconnexion");
+	}
 	deconnexion() {
 		console.log("Déconnexion");
 	}
