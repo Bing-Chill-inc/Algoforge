@@ -10,8 +10,8 @@ class Bibliotheque extends HTMLElement {
 		const biblioButton = document.getElementById("biblio_btn");
 
 		biblioButton.addEventListener("click", () => {
-			// document.getElementById("dico_btn").setAttribute("disabled", true);
-			this.ouvrir();
+			if (this._estOuvert) this.fermer();
+			else this.ouvrir();
 		});
 
 		if (isExam) {
@@ -72,6 +72,8 @@ class Bibliotheque extends HTMLElement {
 	ouvrir() {
 		document.querySelector("dictionnaire-donnee").fermer();
 		document.getElementById("biblio_wrapper").style.zIndex = 300;
+		document.getElementById("boutonBiblio").classList.add("elementIsOpen");
+
 		if (this._estOuvert) {
 			return;
 		}
@@ -149,7 +151,6 @@ class Bibliotheque extends HTMLElement {
 				// Création de l'algorithme
 				let algorithmeElement = document.createElement("img");
 				algorithmeElement.classList.add("algorithmeBibliotheque");
-				algorithmeElement.title = algorithme.nom;
 				algorithmeElement.contenu = algorithme.algo;
 				algorithmeElement.description = algorithme.descriptif;
 				algorithmeElement.preview = document.createElement("div");
@@ -501,6 +502,10 @@ class Bibliotheque extends HTMLElement {
 
 	fermer() {
 		document.getElementById("biblio_wrapper").style.zIndex = -300;
+		document
+			.getElementById("boutonBiblio")
+			.classList.remove("elementIsOpen");
+
 		// document.getElementById("dico_btn").removeAttribute("disabled");
 		if (!this._estOuvert) {
 			return;

@@ -229,6 +229,31 @@ class Editeur extends HTMLElement {
 		// Ajouter les options de thème
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
+				"Thème Pacifique", // nom
+				"#F2F5F8", // bgColor
+				"#E5EAF0", // bgColorSecondary
+				"#BECBDA", // borderColor
+				"#0C3245", // fgColor
+				"#BECBDA55", // fgColorSemiTransparent
+				"#BECBDA11", // fgColorTransparent
+				"#33475C", // fgColorForward
+				"#9E978E", // goodColor
+				"#9E978E99", // goodColorTransparent
+				"#D85959", // errorColor
+				"#FFAD5A", // warningColor
+				"#1C719C", // titleColor
+				"Roboto, sans-serif", // fontFamily
+				"", // glowColor
+				"#bdc6c9", // borderColor2
+				"#F2F5F870", // bgColorTertiary
+				"#134D67", // fgColorHover
+				"#7E7D73", // fgColorDisabled
+				211, // baseGlowColor
+			),
+		);
+
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
 				"Thème AlgoForge", // nom
 				"#161e27", // bgColor
 				"#0f141a", // bgColorSecondary
@@ -251,33 +276,10 @@ class Editeur extends HTMLElement {
 				225, // baseGlowColor
 			),
 		);
+
 		this._themeSelect.appendChild(
 			new ThemeEditeur(
-				"Pacifique", // nom
-				"#F2F5F8", // bgColor
-				"#E5EAF0", // bgColorSecondary
-				"#BECBDA", // borderColor
-				"#33475C", // fgColor
-				"#BECBDA55", // fgColorSemiTransparent
-				"#BECBDA11", // fgColorTransparent
-				"#33475C", // fgColorForward
-				"#9E978E", // goodColor
-				"#9E978E99", // goodColorTransparent
-				"#D85959", // errorColor
-				"#FFAD5A", // warningColor
-				"#19668A", // titleColor
-				"Roboto, sans-serif", // fontFamily
-				"", // glowColor
-				"#bdc6c9", // borderColor2
-				"E5EAF070", // bgColorTertiary
-				"#143847", // fgColorHover
-				"#7E7D73", // fgColorDisabled
-				211, // baseGlowColor
-			),
-		);
-		this._themeSelect.appendChild(
-			new ThemeEditeur(
-				"FlashBang", // nom
+				"Thème FlashBang", // nom
 				"#FFFFFF", // bgColor
 				"#FFFFFF", // bgColorSecondary
 				"#000000", // borderColor
@@ -294,61 +296,61 @@ class Editeur extends HTMLElement {
 				"", // glowColor
 				"#000000", // borderColor2
 				"#FFFFFF", // bgColorTertiary
-				"#FFFFFF", // fgColorHover
+				"#888888", // fgColorHover
 				"#666666", // fgColorDisabled
-				250, // baseGlowColor
+				0, // baseGlowColor
 			),
 		);
-		this._themeSelect.appendChild(
-			new ThemeEditeur(
-				"Minuit",
-				"#020012",
-				"#838787",
-				"#83878755",
-				"#83878711",
-				"#A6AAA9",
-				"#8ABE5E",
-				"#8ABE5E99",
-				"#C82606",
-				"#FFE989",
-				"#FFFFFF",
-				"Roboto, sans-serif",
-			),
-		);
-		this._themeSelect.appendChild(
-			new ThemeEditeur(
-				"H@ck3r",
-				"#001202",
-				"#00ff00",
-				"#00ff0055",
-				"#00ff0011",
-				"#85f299",
-				"#00aaff",
-				"#00aaff99",
-				"#C82606",
-				"#FFE989",
-				"#FFFFFF",
-				"White Rabbit",
-			),
-		);
+		// this._themeSelect.appendChild(
+		// 	new ThemeEditeur(
+		// 		"Minuit",
+		// 		"#020012",
+		// 		"#838787",
+		// 		"#83878755",
+		// 		"#83878711",
+		// 		"#A6AAA9",
+		// 		"#8ABE5E",
+		// 		"#8ABE5E99",
+		// 		"#C82606",
+		// 		"#FFE989",
+		// 		"#FFFFFF",
+		// 		"Roboto, sans-serif",
+		// 	),
+		// );
+		// this._themeSelect.appendChild(
+		// 	new ThemeEditeur(
+		// 		"H@ck3r",
+		// 		"#001202",
+		// 		"#00ff00",
+		// 		"#00ff0055",
+		// 		"#00ff0011",
+		// 		"#85f299",
+		// 		"#00aaff",
+		// 		"#00aaff99",
+		// 		"#C82606",
+		// 		"#FFE989",
+		// 		"#FFFFFF",
+		// 		"White Rabbit",
+		// 	),
+		// );
 
-		this._themeSelect.appendChild(
-			new ThemeEditeur(
-				"Cyberpunk",
-				"#000000",
-				"#FAFC06",
-				"#FAFC0655",
-				"#FAFC0611",
-				"#2BF0FB",
-				"#F2E307",
-				"#F2E30799",
-				"#C82606",
-				"#FFE989",
-				"#F2E307",
-				"Cyberpunk",
-				"#EB9EBB",
-			),
-		);
+		// this._themeSelect.appendChild(
+		// 	new ThemeEditeur(
+		// 		"Cyberpunk",
+		// 		"#000000",
+		// 		"#FAFC06",
+		// 		"#FAFC0655",
+		// 		"#FAFC0611",
+		// 		"#2BF0FB",
+		// 		"#F2E307",
+		// 		"#F2E30799",
+		// 		"#C82606",
+		// 		"#FFE989",
+		// 		"#F2E307",
+		// 		"Cyberpunk",
+		// 		"#EB9EBB",
+		// 	),
+		// );
 
 		// this._themeSelect.appendChild(
 		// 	new ThemeEditeur(

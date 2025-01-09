@@ -24,7 +24,8 @@ class DictionnaireDonnee extends HTMLElement {
 		this.appendChild(iconeDico);
 
 		document.getElementById("dico_btn").addEventListener("click", () => {
-			this.ouvrir();
+			if (this._estOuvert) this.fermer();
+			else this.ouvrir();
 		});
 	}
 
@@ -34,6 +35,8 @@ class DictionnaireDonnee extends HTMLElement {
 	ouvrir() {
 		document.querySelector("bibliotheque-algorithmique").fermer();
 		document.getElementById("dico_wrapper").style.zIndex = 200;
+		document.getElementById("boutonDico").classList.add("elementIsOpen");
+
 		document
 			.querySelector("editeur-interface")
 			._planActif.effectuerDictionnaireDesDonnee();
@@ -75,6 +78,8 @@ class DictionnaireDonnee extends HTMLElement {
 	fermer() {
 		document.getElementById("dico_wrapper").style.zIndex = -200;
 		document.getElementById("biblio_btn").removeAttribute("disabled");
+		document.getElementById("boutonDico").classList.remove("elementIsOpen");
+
 		// Supprimer tout le contenu
 		this.innerHTML = "";
 
@@ -214,54 +219,6 @@ class DictionnaireDonnee extends HTMLElement {
 			trContent.append(tdSignification);
 			tdSignification.addEventListener("input", () => {
 				this._matchSignification[info._nom] = tdSignification.innerText;
-			});
-		}
-	}
-
-	// Déprécié
-	#AfficherDictionnaire() {
-		// Récupérez la référence de la table par son ID
-		const table = document.getElementById("tableDictionnaireDonnee");
-		// Obtenez toutes les lignes de la table
-		let rows = table.getElementsByTagName("tr");
-
-		// Effacer lancien contenu
-		for (let i = rows.length - 1; i > 0; i--) {
-			// Supprimez chaque ligne sauf la première
-			table.deleteRow(i);
-		}
-		for (let info of this._mesInformations) {
-			let trContent = document.createElement("tr");
-			table.appendChild(trContent);
-
-			let tdNom = document.createElement("td");
-			tdNom.textContent = info._nom;
-			tdNom.setAttribute("contenteditable", "true");
-			trContent.append(tdNom);
-			tdNom.addEventListener("input", () => {
-				this._mesInformations.forEach((element) => {
-					if (element._nom == info._nom) {
-						document
-							.getElementById("espace1")
-							.renameInformation(element._nom, tdNom.innerText);
-						element._nom = tdNom.innerText;
-					}
-				});
-			});
-			let tdType = document.createElement("td");
-			tdType.textContent = info._type;
-			trContent.append(tdType);
-
-			let tdSignification = document.createElement("td");
-			tdSignification.textContent = info._signification;
-			tdSignification.setAttribute("contenteditable", "true");
-			trContent.append(tdSignification);
-			tdSignification.addEventListener("input", () => {
-				this._mesInformations.forEach((element) => {
-					if (element._nom == info._nom) {
-						element._signification = tdSignification.innerText;
-					}
-				});
 			});
 		}
 	}

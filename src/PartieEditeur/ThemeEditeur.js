@@ -120,7 +120,6 @@ class ThemeEditeur extends HTMLOptionElement {
 		const ruleSelectorSortie = "condition-sortie-element";
 		const ruleSelectorDico = "dictionnaire-donnee > div.img";
 		const ruleSelectorErreur = "affichage-erreur-element > div.img";
-		const ruleSelectorMenuCompte = "menu-compte-element > div.img";
 
 		for (let i = 0; i < sheet.cssRules.length; i++) {
 			if (sheet.cssRules[i].selectorText === ruleSelectorBibliotheque) {
@@ -154,12 +153,6 @@ class ThemeEditeur extends HTMLOptionElement {
 				)})`;
 			}
 			if (sheet.cssRules[i].selectorText === ruleSelectorErreur) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
-					1,
-				)})`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorMenuCompte) {
 				ruleToEdit = sheet.cssRules[i];
 				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
 					1,

@@ -92,6 +92,24 @@ canvas#canvas {
 	scale: 0.9;
 }
 
+/* boutonBouton */
+#boutonCompte {
+	cursor: pointer;
+	fill: var(--fgColor);
+}
+#boutonCompte:hover {
+	scale: none;
+	fill: var(--fgColorHover);
+}
+#boutonCompte:active {
+	scale: 0.9;
+	fill: var(--titleColor);
+}
+
+.elementIsOpen {
+	fill: var(--titleColor) !important;
+}
+
 editeur-interface {
 	width: calc(100vw - 30px);
 	height: calc(100vh - 15px);
@@ -111,7 +129,8 @@ editeur-interface > header {
 	align-items: center;
 }
 
-editeur-interface > header > img {
+editeur-interface > header > img,
+editeur-interface > header > svg {
 	height: 80%;
 	aspect-ratio: 1/1;
 }
@@ -262,7 +281,6 @@ editeur-interface
 	> button:hover
 	> span {
 	color: var(--fgColorHover);
-	font-weight: bold;
 	z-index: 1;
 }
 
@@ -383,8 +401,8 @@ select#theme {
 	white-space: nowrap;
 	font-size: 0.75rem;
 	padding: 0.15rem 0.75rem;
+	pointer-events: none;
 
-	/* transition */
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
 	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
@@ -627,7 +645,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td {
 	flex-direction: row;
 	align-items: center;
 	justify-content: start;
-	border-right: 0.1vw solid var(--fgColor);
+	border-right: 0.1vw solid var(--borderColor2);
 	cursor: text;
 	overflow-x: hidden;
 	word-wrap: anywhere;
@@ -646,7 +664,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType {
 	width: 100%;
 	height: 100%;
 	border: none;
-	background-color: var(--bgColor);
+	background-color: transparent;
 	color: var(--fgColor);
 	font-size: 1vw;
 	cursor: pointer;
@@ -657,7 +675,8 @@ dictionnaire-donnee
 	> tr
 	> td
 	> select.selectType:hover {
-	text-shadow: 0 0 0.5vw var(--fgColor);
+	text-shadow: 0 0 0.3vw var(--glowColor);
+	color: var(--fgColorHover);
 }
 
 bibliotheque-algorithmique {

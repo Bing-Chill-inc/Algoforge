@@ -13,6 +13,7 @@ class MenuCompte extends HTMLElement {
 
 		this.MenuIcone = document.createElement("div");
 		this.MenuIcone.classList.add("img");
+		this.MenuIcone.innerHTML = `<svg id="boutonCompte" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
 		this.MenuIcone.alt = "Menu compte";
 		this.MenuIcone.id = "MenuCompte";
 		this.MenuIcone.addEventListener("click", () => {
@@ -23,6 +24,15 @@ class MenuCompte extends HTMLElement {
 			}
 		});
 		this.appendChild(this.MenuIcone);
+
+		document.addEventListener(
+			"click",
+			(e) => {
+				if (this.contains(e.target)) return;
+				else if (this._estOuvert) this.fermerMenu();
+			},
+			true,
+		);
 	}
 
 	ouvrirMenu() {
@@ -133,6 +143,7 @@ class MenuCompte extends HTMLElement {
 		this.appendChild(this._menuDiv);
 		this._estOuvert = true;
 		this._init = true;
+		document.getElementById("boutonCompte").classList.add("elementIsOpen");
 	}
 
 	fermerMenu() {
@@ -142,11 +153,11 @@ class MenuCompte extends HTMLElement {
 
 		this.removeChild(this._menuDiv);
 		this._estOuvert = false;
+		document
+			.getElementById("boutonCompte")
+			.classList.remove("elementIsOpen");
 	}
 
-	deconnexion() {
-		console.log("Déconnexion");
-	}
 	deconnexion() {
 		console.log("Déconnexion");
 	}
