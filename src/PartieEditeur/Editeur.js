@@ -504,8 +504,19 @@ class Editeur extends HTMLElement {
 				".png",
 				() => {
 					console.log("Exporter en .png");
-					this.exporterPNG(this._planActif);
-					//this._modaleNonImp.ouvrir();
+					const plansTravail = this.querySelectorAll("plan-travail");
+					const sousPlansTravail =
+						this.querySelectorAll("sous-plan-travail");
+
+					const allPlansTravail = Array.from(plansTravail).concat(
+						Array.from(sousPlansTravail),
+					);
+
+					allPlansTravail.forEach((planTravail, index) => {
+						setTimeout(() => {
+							this.exporterPNG(planTravail);
+						}, index * 1500);
+					});
 				},
 				true,
 			),
@@ -516,8 +527,19 @@ class Editeur extends HTMLElement {
 				".jpg",
 				() => {
 					console.log("Exporter en .jpg");
-					this.exporterJPG(this._planActif);
-					//this._modaleNonImp.ouvrir();
+					const plansTravail = this.querySelectorAll("plan-travail");
+					const sousPlansTravail =
+						this.querySelectorAll("sous-plan-travail");
+
+					const allPlansTravail = Array.from(plansTravail).concat(
+						Array.from(sousPlansTravail),
+					);
+
+					allPlansTravail.forEach((planTravail, index) => {
+						setTimeout(() => {
+							this.exporterJPG(planTravail);
+						}, index * 1500);
+					});
 				},
 				true,
 			),
@@ -2522,12 +2544,22 @@ class Editeur extends HTMLElement {
 		);
 	}
 
-	createBitmapImageFromSvg(
+	isCreatingBitmapImageFromSvg = false;
+
+	async createBitmapImageFromSvg(
 		mimeType,
 		nodeToCopy,
 		download = true,
 		isJSON = false,
 	) {
+		if (this.isCreatingBitmapImageFromSvg) {
+			await new Promise((resolve) => {
+				setInterval(() => {
+					if (!this.isCreatingBitmapImageFromSvg) resolve();
+				}, 16);
+			});
+		}
+		this.isCreatingBitmapImageFromSvg = true;
 		let canvasExport = document.getElementById("canvasExport");
 		canvasExport.width =
 			this._planActif.getBoundingClientRect().width *
@@ -2555,6 +2587,7 @@ class Editeur extends HTMLElement {
 
 		const titreAlgo = this.querySelector("#titreAlgo").innerText;
 		img.onload = function () {
+			ctxExport.clearRect(0, 0, canvasExport.width, canvasExport.height);
 			ctxExport.drawImage(
 				img,
 				0,
@@ -2569,6 +2602,7 @@ class Editeur extends HTMLElement {
 			document.body.appendChild(downloadLink);
 			downloadLink.click();
 			document.body.removeChild(downloadLink);
+			editeur.isCreatingBitmapImageFromSvg = false;
 		};
 	}
 
