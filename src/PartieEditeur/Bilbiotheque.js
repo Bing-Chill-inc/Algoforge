@@ -151,6 +151,7 @@ class Bibliotheque extends HTMLElement {
 				// Création de l'algorithme
 				let algorithmeElement = document.createElement("img");
 				algorithmeElement.classList.add("algorithmeBibliotheque");
+				algorithmeElement.title = "";
 				algorithmeElement.contenu = algorithme.algo;
 				algorithmeElement.description = algorithme.descriptif;
 				algorithmeElement.preview = document.createElement("div");
@@ -345,7 +346,7 @@ class Bibliotheque extends HTMLElement {
 					this.update();
 				};
 				algorithmeElement.classList.add("algorithmeBibliotheque");
-				algorithmeElement.title = algorithme.nom;
+				algorithmeElement.title = "";
 				algorithmeElement.contenu = algorithme.algo;
 				algorithmeElement.description = algorithme.descriptif;
 				algorithmeElement.preview = document.createElement("div");

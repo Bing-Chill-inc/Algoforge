@@ -110,9 +110,6 @@ class Editeur extends HTMLElement {
 			}
 		});
 
-		this._dictionnaireDesDonnees.title = "Dictionnaire des données";
-		this._bibliotheque.title = "Bibliothèque";
-
 		// Référencement des types d'éléments que l'on peut créer
 		this._typesElements.push(Lien);
 		this._typesElements.push(Probleme);
@@ -237,8 +234,8 @@ class Editeur extends HTMLElement {
 				"#BECBDA55", // fgColorSemiTransparent
 				"#BECBDA11", // fgColorTransparent
 				"#33475C", // fgColorForward
-				"#9E978E", // goodColor
-				"#9E978E99", // goodColorTransparent
+				"#8ABE5E", // goodColor
+				"#8ABE5E99", // goodColorTransparent
 				"#D85959", // errorColor
 				"#FFAD5A", // warningColor
 				"#1C719C", // titleColor
@@ -262,10 +259,10 @@ class Editeur extends HTMLElement {
 				"#83878755", // fgColorSemiTransparent
 				"#83878711", // fgColorTransparent
 				"#A6AAA9", // fgColorForward
-				"#8ABE5E", // goodColor
-				"#8ABE5E99", // goodColorTransparent
-				"#C82606", // errorColor
-				"#FFE989", // warningColor
+				"#D4E7C5", // goodColor
+				"#D4E7C599", // goodColorTransparent
+				"#FFA8A8", // errorColor
+				"#FFD6AD", // warningColor
 				"#34A5DA", // titleColor
 				"Roboto, sans-serif", // fontFamily
 				"", // glowColor
@@ -287,10 +284,10 @@ class Editeur extends HTMLElement {
 				"#00000055", // fgColorSemiTransparent
 				"#00000011", // fgColorTransparent
 				"#000000", // fgColorForward
-				"#9E978E", // goodColor
-				"#9E978E99", // goodColorTransparent
-				"#D85959", // errorColor
-				"#FFAD5A", // warningColor
+				"#00FF00", // goodColor
+				"#00FF0099", // goodColorTransparent
+				"#FF0000", // errorColor
+				"#FFA300", // warningColor
 				"#000000", // titleColor
 				"Roboto, sans-serif", // fontFamily
 				"", // glowColor

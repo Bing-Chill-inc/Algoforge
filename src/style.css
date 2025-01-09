@@ -4,6 +4,9 @@
 	--bg-spot-opacity: 0.022;
 	--spread: 20;
 	--outer: 1;
+	--font-size1: 1.4rem;
+	--font-size2: 1.2rem;
+	--font-size3: 1rem;
 }
 
 /* Track */
@@ -19,6 +22,10 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: var(--titleColor);
+}
+
+html {
+	font-size: 10px;
 }
 
 * {
@@ -45,15 +52,11 @@ h6 {
 }
 
 h1 {
-	font-size: 16px;
-	width: 90%;
-	height: 3vh;
+	font-size: var(--font-size1);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	font-weight: 400;
-	display: flex;
-	align-items: center;
+	line-height: 15px;
 }
 
 #titreAlgo_wrapper {
@@ -64,6 +67,7 @@ h1 {
 
 #titreAlgo_wrapper > span {
 	margin: 0 5px 0 0;
+	font-size: var(--font-size1);
 }
 
 #titreAlgo_wrapper > span.sous-titre {
@@ -122,7 +126,7 @@ editeur-interface {
 
 editeur-interface > header {
 	width: 100%;
-	height: 4vw;
+	height: fit-content;
 	background-color: var(--bgColor);
 	display: flex;
 	flex-direction: row;
@@ -131,7 +135,8 @@ editeur-interface > header {
 
 editeur-interface > header > img,
 editeur-interface > header > svg {
-	height: 80%;
+	height: 50px;
+	margin: 10px 10px 10px 0;
 	aspect-ratio: 1/1;
 }
 
@@ -153,7 +158,7 @@ editeur-interface > header > div.titreEtMenu > div.menuButtons {
 editeur-interface > header > div.titreEtMenu > div.menuButtons > button {
 	background: none;
 	border: none;
-	font-size: 1vw;
+	font-size: var(--font-size1);
 	color: var(--fgColor);
 	cursor: pointer;
 	position: relative;
@@ -180,9 +185,9 @@ editeur-interface
 	> button
 	> menu-deroulant {
 	position: absolute;
-	top: 1.8vw;
-	left: -0.025vw;
-	width: 160px;
+	top: 20px;
+	left: -5px;
+	width: fit-content;
 	height: fit-content;
 	min-height: 1vw;
 	background-color: var(--bgColor);
@@ -202,7 +207,6 @@ editeur-interface
 menu-deroulant > element-menu,
 menu-deroulant > element-menu-compose,
 menu-deroulant > element-menu-keyboard-tip {
-	width: calc(100% - 8px);
 	padding: 4px;
 	text-align: left;
 	white-space: nowrap;
@@ -210,6 +214,7 @@ menu-deroulant > element-menu-keyboard-tip {
 	border-radius: 0.5em;
 	display: flex;
 	justify-content: space-between;
+	gap: 10px;
 }
 
 menu-deroulant > element-menu-keyboard-tip > p {
@@ -301,7 +306,7 @@ editeur-interface > header > div.zonePartage > button {
 	background: none;
 	border: var(--fgColor) solid 0.1vw;
 	border-radius: 1vw;
-	font-size: 1vw;
+	font-size: var(--font-size1);
 	color: var(--fgColor);
 	cursor: default;
 }
@@ -312,11 +317,11 @@ select#theme {
 	background: none;
 	border: var(--fgColor) solid 0.1vw;
 	border-radius: 1vw;
-	font-size: 1vw;
+	font-size: var(--font-size2);
 	color: var(--fgColor);
 	cursor: pointer;
 	display: none;
-	padding-left: 15%;
+	padding: 4px 10px;
 }
 
 #boutonPointeur,
@@ -397,16 +402,18 @@ select#theme {
 	border: 1px solid var(--borderColor2);
 	border-radius: 0.6em;
 	z-index: -1;
-	translate: -50% -2rem;
+	translate: -50% -2.5rem;
 	white-space: nowrap;
-	font-size: 0.75rem;
-	padding: 0.15rem 0.75rem;
+	font-size: var(--font-size2);
+	padding: 0.3rem 1rem;
 	pointer-events: none;
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition:
+		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out,
+		scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -527,18 +534,10 @@ dictionnaire-donnee {
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
-	font-size: 1vw;
+	font-size: var(--font-size1);
 	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
-}
-
-dictionnaire-donnee > div.img {
-	width: 5vw;
-	height: 5vw;
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
 }
 
 dictionnaire-donnee:hover {
@@ -551,6 +550,7 @@ dictionnaire-donnee.ouvert {
 	height: fit-content;
 	max-height: calc(80vh - 10vw);
 	min-height: 15vw;
+	min-width: 350px;
 
 	/* Version en haut */
 	background-color: var(--bgColor);
@@ -570,10 +570,18 @@ dictionnaire-donnee > span.raffraichir {
 	top: 0;
 	right: 30px;
 	padding: 10px;
-	font-size: 18px;
+	line-height: 5px;
+	font-size: 30px;
+	aspect-ratio: 1 /1;
 	transition: 0.2s all ease;
+	color: var(--fgColor);
 }
-
+dictionnaire-donnee > span.raffraichir:hover {
+	color: var(--fgColorHover);
+}
+dictionnaire-donnee > span.raffraichir:active {
+	scale: 0.9;
+}
 dictionnaire-donnee > span.raffraichir.rotation {
 	rotate: 360deg;
 }
@@ -583,7 +591,16 @@ dictionnaire-donnee > span.fermeture {
 	top: 0;
 	right: 0;
 	padding: 10px;
-	font-size: 18px;
+	line-height: 8px;
+	font-size: 20px;
+	aspect-ratio: 1 /1;
+	color: var(--fgColor);
+}
+dictionnaire-donnee > span.fermeture:hover {
+	color: var(--fgColorHover);
+}
+dictionnaire-donnee > span.fermeture:active {
+	scale: 0.9;
 }
 
 dictionnaire-donnee > #tableDictionnaireDonnee {
@@ -666,7 +683,7 @@ dictionnaire-donnee > #tableDictionnaireDonnee > tr > td > select.selectType {
 	border: none;
 	background-color: transparent;
 	color: var(--fgColor);
-	font-size: 1vw;
+	font-size: var(--font-size3);
 	cursor: pointer;
 }
 
@@ -680,14 +697,12 @@ dictionnaire-donnee
 }
 
 bibliotheque-algorithmique {
-	width: 2vw;
-	height: 2vw;
 	padding: 0.5vw;
 	display: flex;
 	flex-direction: column;
 	align-items: end;
 	justify-content: start;
-	font-size: 1vw;
+	font-size: var(--font-size2);
 	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
@@ -707,11 +722,6 @@ bibliotheque-algorithmique::before {
 	border-radius: inherit;
 }
 
-bibliotheque-algorithmique > div.img {
-	width: 1.8vw;
-	height: 1.8vw;
-}
-
 bibliotheque-algorithmique:hover {
 	scale: 1.15 1;
 	transform-origin: center;
@@ -721,7 +731,8 @@ bibliotheque-algorithmique.ouvert {
 	width: 25vw;
 	height: fit-content;
 	max-height: calc(80vh - 10vw);
-	min-height: 15vw;
+	min-height: 100px;
+	min-width: 300px;
 
 	/* Version en haut */
 	border-radius: 0.8em;
@@ -738,8 +749,15 @@ bibliotheque-algorithmique > span.fermeture {
 	top: 0;
 	left: 0;
 	padding: 10px;
-	font-size: 18px;
+	font-size: 20px;
 	rotate: 180deg;
+	color: var(--fgColor);
+}
+bibliotheque-algorithmique > span.fermeture:hover {
+	color: var(--fgColorHover);
+}
+bibliotheque-algorithmique > span.fermeture:active {
+	scale: 0.9;
 }
 
 bibliotheque-algorithmique > div.listeCategories {
@@ -757,20 +775,21 @@ bibliotheque-algorithmique > div.listeCategories {
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie {
 	width: 100%;
-	height: 2vw;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: start;
 	justify-content: start;
-	border-bottom: 0.1vw solid var(--fgColor);
+	border-bottom: 2px solid var(--fgColor);
 	cursor: pointer;
+	margin: 5px 0;
 	transition: 0.2s all ease;
 }
 
 bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
 	position: relative;
 	width: 100%;
-	height: 2vw;
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -779,6 +798,7 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	font-size: var(--font-size1);
 }
 
 bibliotheque-algorithmique
@@ -786,10 +806,10 @@ bibliotheque-algorithmique
 	> div.categorie
 	> h3
 	> div.flecheOuverture {
-	font-size: 1vw;
+	font-size: var(--font-size1);
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: -1px;
 	transition: 0.2s all ease;
 	rotate: -90deg;
 }
@@ -833,6 +853,8 @@ bibliotheque-algorithmique
 	> img.algorithmeBibliotheque {
 	width: 5vw;
 	height: 5vw;
+	min-width: 60px;
+	min-height: 60px;
 	margin: 0.5vw;
 	cursor: pointer;
 	transition: 0.2s all ease;
@@ -851,11 +873,11 @@ bibliotheque-algorithmique
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
-	width: 25vw;
+	width: 40vw;
 	height: fit-content;
 	position: absolute;
 	top: 0;
-	right: -27vw;
+	right: -42vw;
 	padding: 0.5vw;
 	display: flex;
 	flex-direction: column;
@@ -869,6 +891,9 @@ bibliotheque-algorithmique > div.previewAlgo {
 	outline: 1px solid var(--borderColor2);
 }
 
+bibliotheque-algorithmique > div.previewAlgo > h4 {
+	font-size: var(--font-size1);
+}
 bibliotheque-algorithmique > div.previewAlgo > h4,
 bibliotheque-algorithmique > div.previewAlgo > p {
 	white-space: wrap;
@@ -877,7 +902,7 @@ bibliotheque-algorithmique > div.previewAlgo > p {
 }
 
 bibliotheque-algorithmique > div.previewAlgo > p {
-	font-size: 0.8vw;
+	font-size: var(--font-size2);
 }
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail {
@@ -998,14 +1023,14 @@ invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail label.accolades {
 
 menu-contextuel {
 	position: fixed;
-	width: 160px;
+	width: 180px;
 	height: fit-content;
 	min-height: 2vw;
-	border-radius: 0.5vw;
+	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
 	z-index: 2048;
-	font-size: 1vw;
+	font-size: var(--font-size1);
 	background: var(--bgColorTertiary);
 	outline: 1px solid var(--borderColor2);
 	color: var(--fgColor);
@@ -1025,20 +1050,25 @@ menu-contextuel::before {
 	border-radius: inherit;
 }
 
+menu-contextuel > element-menu-compose > span,
+menu-deroulant > element-menu-compose > span {
+	margin-right: 5px;
+}
+
 menu-contextuel > element-menu,
 menu-contextuel > element-menu-compose,
 menu-contextuel > element-menu-keyboard-tip,
 element-menu-compose:hover > menu-deroulant > element-menu,
 element-menu-compose:hover > menu-deroulant > element-menu-compose,
 element-menu-compose:hover > menu-deroulant > element-menu-keyboard-tip {
-	width: calc(100% - 12px);
 	text-align: left;
 	white-space: nowrap;
 	position: relative;
-	border-radius: 0.5em;
+	border-radius: 10px;
 	display: flex;
 	justify-content: space-between;
 	padding: 6px;
+	gap: 10px;
 }
 
 menu-contextuel > element-menu-keyboard-tip > p,
@@ -1070,10 +1100,10 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
 	width: 15vw;
 	height: fit-content;
 	min-height: 2vw;
-	border-radius: 0.5vw;
+	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
-	z-index: 2048;
+	z-index: 999999;
 	gap: 0;
 	padding: 0;
 	overflow: hidden;
@@ -1087,8 +1117,8 @@ menu-contextuel > element-menu-compose:hover > menu-deroulant {
 menu-contextuel > element-menu-compose:hover > menu-deroulant > h3 {
 	padding-left: 5%;
 	width: 95%;
-	padding-top: 0.5vw;
-	padding-bottom: 0.5vw;
+	padding-top: 6px;
+	padding-bottom: 6px;
 	text-align: left;
 	white-space: nowrap;
 }
@@ -1136,7 +1166,7 @@ indicateur-zoom > button:active {
 }
 
 .pointePourLien {
-	border-bottom: 5px solid var(--goodColorTransparent) !important;
+	border-bottom: 5px solid var(--titleColor) !important;
 	padding-bottom: 10px;
 }
 
@@ -1871,7 +1901,7 @@ condition-element > button.supprimer {
 	height: calc(var(--sizeModifier) * 1vw);
 	border: none;
 	border-radius: 0 0 999em 999em;
-	background-color: var(--warningColor);
+	background-color: var(--errorColor);
 	z-index: 3;
 	transition: all var(--transitionTime) ease;
 	font-size: calc(var(--sizeModifier) * 1vw);
@@ -1882,7 +1912,7 @@ condition-element > button.supprimer {
 }
 
 condition-element > button.supprimer:hover {
-	background-color: var(--errorColor);
+	background-color: var(--fgColorHover);
 }
 
 condition-element > div.arrowsWrapper {
@@ -1906,10 +1936,10 @@ condition-element > div.arrowsWrapper > span {
 }
 
 condition-element > div.arrowsWrapper > span:hover {
-	color: var(--goodColor);
+	color: var(--bgColor);
 	font-size: calc(var(--sizeModifier) * 1.2vw);
 	transition: all 0.2s ease;
-	background-color: var(--goodColorTransparent);
+	background-color: var(--fgColorHover);
 	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
@@ -1920,7 +1950,7 @@ condition-element > div.ajouterAGauche {
 	left: 0;
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-radius: 0 999em 999em 0;
-	background-color: var(--goodColorTransparent);
+	background-color: var(--goodColor);
 	z-index: 5;
 	color: var(--bgColor);
 	font-size: calc(var(--sizeModifier) * 1.5vw);
@@ -1937,7 +1967,7 @@ condition-element > div.ajouterADroite {
 	right: 0;
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-radius: 999em 0 0 999em;
-	background-color: var(--goodColorTransparent);
+	background-color: var(--goodColor);
 	z-index: 5;
 	color: var(--bgColor);
 	font-size: calc(var(--sizeModifier) * 1.5vw);
@@ -1949,7 +1979,7 @@ condition-element > div.ajouterADroite {
 
 condition-element > div.ajouterAGauche:hover,
 condition-element > div.ajouterADroite:hover {
-	background-color: var(--goodColor);
+	background-color: var(--fgColorHover);
 }
 
 condition-element:hover > div.arrowsWrapper,
@@ -2017,17 +2047,18 @@ invite-bornes-pour-si > select {
 invite-bornes-pour-si > button {
 	border: none;
 	border-radius: calc(var(--sizeModifier) * 0.5vw);
-	background-color: var(--goodColorTransparent);
-	font-size: calc(var(--sizeModifier) * 0.75vw);
+	background-color: var(--titleColor);
+	font-size: calc(var(--sizeModifier) * var(--font-size2));
 	display: inline-block;
 	white-space: nowrap;
-	width: 80%;
-	color: var(--fgColorForward);
+	padding: 6px 10px;
+	margin-top: 30px;
+	color: var(--bgColor);
 	cursor: pointer;
 }
 
 invite-bornes-pour-si > button:hover {
-	background-color: var(--goodColor);
+	background-color: var(--fgColorHover);
 	color: var(--bgColor);
 }
 
@@ -2324,12 +2355,15 @@ button,
 menu-deroulant {
 	background-color: rgba(28, 39, 51, 0.35);
 	border: 1px solid var(--borderColor);
+	font-size: var(--font-size1);
 }
 
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transition:
+		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+		margin 0.8s;
 	transform-origin: bottom;
 }
 
@@ -2361,7 +2395,7 @@ menu-deroulant {
 	}
 
 	h1 {
-		font-size: 12px;
+		font-size: var(--font-size2);
 	}
 
 	sous-plan-travail > span.fermeture {
@@ -2380,8 +2414,8 @@ menu-compte-element > div.img {
 
 menu-compte-element > #MenuCompte {
 	display: block;
-	width: 3vw;
-	height: 3vw;
+	width: 40px;
+	height: 40px;
 }
 
 menu-compte-element > div.menu-compte {
@@ -2396,6 +2430,7 @@ menu-compte-element > div.menu-compte {
 	border-radius: 0.6em;
 	z-index: 999;
 	width: 15vw;
+	min-width: 150px;
 	font-size: 1vw;
 	padding-bottom: 1vw;
 	flex-direction: column;
@@ -2417,6 +2452,7 @@ menu-compte-element > div.menu-compte {
 	position: relative;
 	cursor: pointer;
 	color: var(--fgColor);
+	font-size: var(--font-size2);
 }
 
 .element-compte-switch {
@@ -2430,7 +2466,9 @@ menu-compte-element > div.menu-compte {
 .element-compte-switch-container {
 	width: 3vw;
 	height: 1.5vw;
-	border: 1px solid var(--fgColor);
+	min-width: 30px;
+	min-height: 15px;
+	border: 1px solid var(--fgColorHover);
 	border-radius: 999em;
 	position: relative;
 	transition: all 0.2s ease;
@@ -2439,8 +2477,10 @@ menu-compte-element > div.menu-compte {
 .element-compte-switch-displayer {
 	width: 1.3vw;
 	height: 1.3vw;
+	min-width: 13px;
+	min-height: 13px;
 	border-radius: 999em;
-	background-color: var(--fgColor);
+	background-color: var(--bgColor);
 	position: absolute;
 	top: 0.1vw;
 	transition: all 0.2s ease;
