@@ -18,7 +18,10 @@ class ElementMenuKeyboardTip extends ElementMenu {
 	}
 
 	set _texte(value) {
-		this.innerText = value;
+		let textElm = document.createElement("p");
+		textElm.textContent = value;
+		this.appendChild(textElm);
+		// this.innerText = value;
 	}
 
 	set _action(value) {
