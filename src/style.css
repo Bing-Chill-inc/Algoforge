@@ -418,10 +418,8 @@ select#theme {
 	/* transition */
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition:
-		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out,
-		scale 500ms ease-in-out;
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -2438,9 +2436,7 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition:
-		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
-		margin 0.8s;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
 	transform-origin: bottom;
 }
 
@@ -2531,4 +2527,31 @@ menu-compte-element > div.menu-compte {
 	position: relative;
 	cursor: pointer;
 	color: var(--fgColor);
+}
+
+.element-compte-switch {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	height: fit-content;
+}
+
+.element-compte-switch-container {
+	width: 3vw;
+	height: 1.5vw;
+	border: 1px solid var(--fgColor);
+	border-radius: 999em;
+	position: relative;
+	transition: all 0.2s ease;
+}
+
+.element-compte-switch-displayer {
+	width: 1.3vw;
+	height: 1.3vw;
+	border-radius: 999em;
+	background-color: var(--fgColor);
+	position: absolute;
+	top: 0.1vw;
+	transition: all 0.2s ease;
 }
