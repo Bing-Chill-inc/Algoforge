@@ -291,7 +291,8 @@
 			dockEffect: true,
 		}
 
-		setTimeout(() => {
+		setTimeout(async () => {
+			await customElements.whenDefined("editeur-interface");
 			preferences.glow = editeur.getCookie("glow") === "true" ? true : editeur.getCookie("glow") === "false" ? false : navigator.userAgent.includes("Chrome");
 			preferences.dockEffect = editeur.getCookie("dockEffect") === "false" ? false : true;
 			if (!preferences.glow) {
