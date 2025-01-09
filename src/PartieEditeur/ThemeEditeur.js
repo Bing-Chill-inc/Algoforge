@@ -14,6 +14,7 @@ class ThemeEditeur extends HTMLOptionElement {
 	titleColor;
 	fontFamily;
 	glowColor;
+	baseGlowColor;
 
 	_logoAlgoForge = document.querySelector("#logoAlgoForge");
 
@@ -39,6 +40,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		bgColorTertiary,
 		fgColorHover,
 		fgColorDisabled,
+		baseGlowColor,
 	) {
 		super();
 		this.nom = nom;
@@ -60,6 +62,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		this.bgColorTertiary = bgColorTertiary;
 		this.fgColorHover = fgColorHover;
 		this.fgColorDisabled = fgColorDisabled;
+		this.baseGlowColor = baseGlowColor;
 
 		this.innerText = this.nom;
 	}
@@ -93,6 +96,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		document.body.style.setProperty("--warningColor", this.warningColor);
 		document.body.style.setProperty("--titleColor", this.titleColor);
 		document.body.style.setProperty("--glowColor", this.glowColor);
+		document.body.style.setProperty("--baseGlowColor", this.baseGlowColor);
 		document.body.style.setProperty("--borderColor2", this.borderColor2);
 		document.body.style.setProperty(
 			"--bgColorTertiary",
@@ -108,7 +112,7 @@ class ThemeEditeur extends HTMLOptionElement {
 		const sheet = document.styleSheets[0];
 
 		let ruleToEdit;
-		const ruleSelectoBibliotheque = "bibliotheque-algorithmique > div.img";
+		const ruleSelectorBibliotheque = "bibliotheque-algorithmique > div.img";
 		const ruleSelectorBoucle =
 			"structure-iterative-non-bornee-element > div.boucleSVG";
 		const ruleSelectorBoucle2 =
@@ -116,9 +120,10 @@ class ThemeEditeur extends HTMLOptionElement {
 		const ruleSelectorSortie = "condition-sortie-element";
 		const ruleSelectorDico = "dictionnaire-donnee > div.img";
 		const ruleSelectorErreur = "affichage-erreur-element > div.img";
+		const ruleSelectorMenuCompte = "menu-compte-element > div.img";
 
 		for (let i = 0; i < sheet.cssRules.length; i++) {
-			if (sheet.cssRules[i].selectorText === ruleSelectoBibliotheque) {
+			if (sheet.cssRules[i].selectorText === ruleSelectorBibliotheque) {
 				ruleToEdit = sheet.cssRules[i];
 				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
 					1,
@@ -154,59 +159,75 @@ class ThemeEditeur extends HTMLOptionElement {
 					1,
 				)})`;
 			}
+			if (sheet.cssRules[i].selectorText === ruleSelectorMenuCompte) {
+				ruleToEdit = sheet.cssRules[i];
+				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
+					1,
+				)})`;
+			}
 		}
 
-		document.querySelector("img#boutonPointeur").src =
+		document.querySelector("#dico_btn > svg").src =
+			`assetsDynamiques/DictionnaireDonnees.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
+
+		document.querySelector("#biblio_btn > svg").src =
+			`assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
+
+		document.querySelector("#boutonPointeur").src =
 			`assetsDynamiques/mini/pointeur.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector("img#boutonProbleme").src =
+		document.querySelector("#boutonProbleme").src =
 			`assetsDynamiques/mini/probleme.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonProcedure").src =
+		document.querySelector("#boutonProcedure").src =
 			`assetsDynamiques/mini/procedure.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonStructureSi").src =
+		document.querySelector("#boutonStructureSi").src =
 			`assetsDynamiques/mini/structureSi.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonStructureSwitch").src =
+		document.querySelector("#boutonStructureSwitch").src =
 			`assetsDynamiques/mini/structureSwitch.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonStructureIterative").src =
+		document.querySelector("#boutonStructureIterative").src =
 			`assetsDynamiques/mini/structureIterative.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector("img#boutonConditionSortie").src =
+		document.querySelector("#boutonConditionSortie").src =
 			`assetsDynamiques/mini/conditionSortie.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonLien").src =
+		document.querySelector("#boutonLien").src =
 			`assetsDynamiques/mini/lien.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonStructureIterativeBornee").src =
+		document.querySelector("#boutonStructureIterativeBornee").src =
 			`assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}&bgColor=${this.bgColor.substring(1)}`;
 
-		document.querySelector("img#boutonUndo").src =
+		document.querySelector("#boutonUndo").src =
 			`assetsDynamiques/mini/undo.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
 
-		document.querySelector("img#boutonRedo").src =
+		document.querySelector("#boutonRedo").src =
 			`assetsDynamiques/mini/redo.svg?fgColor=${this.fgColor.substring(
 				1,
 			)}`;
