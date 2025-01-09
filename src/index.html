@@ -470,8 +470,9 @@
 			dockEffect: true,
 			renderScale: 4,
 		};
-
-		setTimeout(() => {
+    
+		setTimeout(async () => {
+      await customElements.whenDefined("editeur-interface");
 			preferences.glow =
 				editeur.getCookie("glow") === "true"
 					? true
