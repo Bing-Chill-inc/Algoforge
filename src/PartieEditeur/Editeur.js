@@ -1,3 +1,646 @@
+const testSvgImg = `<svg xmlns="http://www.w3.org/2000/svg">
+		<foreignObject x="0" y="0" width="100%" height="100%">
+		<plan-travail xmlns="http://www.w3.org/1999/xhtml" style="--sizeModifier: 1; width: 85.6821vw; height: 43.7479vw;">
+
+		<style>
+			selection-editeur {
+				display: none
+			}
+			
+			selection-simple {
+				display: none
+			}
+			
+			selection-rectangle {
+				display: none;
+			}
+			
+			plan-travail {
+				width: 100vw;
+				height: 100vh;
+				border: 0.1vw solid #000000;
+				position: relative;
+				overflow: scroll;
+				background-color: #FFFFFF;
+				--sizeModifier: 1;
+				font-family: 'Roboto', sans-serif;
+				background-color: #FFFFFF;
+				color: #222222;
+			}
+			
+			probleme-element {
+				display: flex;
+				width: calc(var(--sizeModifier) * 30vw);
+				height: fit-content;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				position: absolute;
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+			
+				probleme-element &gt; div.containerDPR {
+					width: 100%;
+					height: calc(var(--sizeModifier) * 4vw);
+					display: grid;
+					grid-template-columns: 1fr 1fr 1fr;
+					column-gap: calc(var(--sizeModifier) * 0.2vw);
+					place-items: center;
+				}
+			
+					probleme-element &gt; div.containerDPR &gt; div.donnees {
+						width: 100%;
+						height: 100%;
+						display: grid;
+						grid-template-columns: 1fr 5fr 1fr;
+						grid-template-rows: 1fr;
+						column-gap: calc(var(--sizeModifier) * 0.2vw);
+						place-items: center;
+						grid-column: 1;
+					}
+			
+						probleme-element &gt; div.containerDPR &gt; div.donnees &gt; label.accolades {
+							font-size: calc(var(--sizeModifier) * 4vw);
+							transform: scaleX(0.75);
+						}
+			
+						probleme-element &gt; div.containerDPR &gt; div.donnees &gt; div.donneesEditable {
+							width: calc(var(--sizeModifier) * 6.3vw);
+							height: 100%;
+							grid-column: 2;
+							resize: none;
+							border: none;
+							background: none;
+							font-size: calc(var(--sizeModifier) * 0.75vw);
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							flex-direction: column;
+							word-wrap: break-word;
+							overflow: hidden;
+						}
+			
+					probleme-element &gt; div.containerDPR &gt; div.nom {
+						width: calc(var(--sizeModifier) * 10vw);
+						height: 100%;
+						grid-column: 2;
+						border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						text-align: center;
+						font-size: calc(var(--sizeModifier) * 0.75vw);
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						flex-direction: column;
+						word-wrap: break-word;
+						overflow: hidden;
+						background-color: #FFFFFF;
+					}
+			
+					probleme-element &gt; div.containerDPR &gt; div.resultat {
+						width: 100%;
+						height: 100%;
+						display: grid;
+						grid-template-columns: 1fr 5fr 1fr;
+						grid-template-rows: 1fr;
+						column-gap: calc(var(--sizeModifier) * 0.2vw);
+						place-items: center;
+						grid-column: 3;
+					}
+			
+						probleme-element &gt; div.containerDPR &gt; div.resultat &gt; label.accolades {
+							font-size: calc(var(--sizeModifier) * 4vw);
+							transform: scaleX(0.75);
+						}
+			
+						probleme-element &gt; div.containerDPR &gt; div.resultat &gt; div.resultatEditable {
+							width: calc(var(--sizeModifier) * 6.3vw);
+							height: 100%;
+							grid-column: 2;
+							resize: none;
+							border: none;
+							background: none;
+							font-size: calc(var(--sizeModifier) * 0.75vw);
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							flex-direction: column;
+							word-wrap: break-word;
+							overflow: hidden;
+						}
+			
+			procedure-element {
+				display: flex;
+				width: calc(var(--sizeModifier) * 30vw);
+				height: fit-content;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				position: absolute;
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+				
+				procedure-element &gt; div.containerDPR {
+					width: 100%;
+					height: calc(var(--sizeModifier) * 4vw);
+					display: grid;
+					grid-template-columns: 1fr 1fr 1fr;
+					column-gap: calc(var(--sizeModifier) * 0.2vw);
+					place-items: center;
+				}
+			
+					procedure-element &gt; div.containerDPR &gt; div.donnees {
+						width: 100%;
+						height: 100%;
+						display: grid;
+						grid-template-columns: 1fr 5fr 1fr;
+						grid-template-rows: 1fr;
+						column-gap: calc(var(--sizeModifier) * 0.2vw);
+						place-items: center;
+						grid-column: 1;
+					}
+			
+						procedure-element &gt; div.containerDPR &gt; div.donnees &gt; label.accolades {
+							font-size: calc(var(--sizeModifier) * 4vw);
+							transform: scaleX(0.75);
+						}
+			
+						procedure-element &gt; div.containerDPR &gt; div.donnees &gt; div.donneesEditable {
+							width: calc(var(--sizeModifier) * 6.3vw);
+							height: 100%;
+							grid-column: 2;
+							resize: none;
+							border: none;
+							background: none;
+							font-size: calc(var(--sizeModifier) * 0.75vw);
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							flex-direction: column;
+							word-wrap: break-word;
+							overflow: hidden;
+						}
+			
+					procedure-element &gt; div.containerDPR &gt; div.nom {
+						width: calc(var(--sizeModifier) * 8vw);
+						height: 100%;
+						grid-column: 2;
+						border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						text-align: center;
+						font-size: calc(var(--sizeModifier) * 0.75vw);
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						flex-direction: column;
+						word-wrap: break-word;
+						overflow: hidden;
+						background-color: #FFFFFF;
+					}
+			
+					procedure-element &gt; div.containerDPR &gt; div.nom::before {
+						position: absolute;
+						content: "";
+						transform: translateX(calc(var(--sizeModifier) *-4.5vw));
+						width: calc(var(--sizeModifier) * 0.8vw);
+						height: calc(var(--sizeModifier) * 4vw);
+						border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						border-right: none;
+						background-color: #FFFFFF;
+					}
+			
+					procedure-element &gt; div.containerDPR &gt; div.nom::after {
+						position: absolute;
+						content: "";
+						transform: translateX(calc(var(--sizeModifier) *4.5vw));
+						width: calc(var(--sizeModifier) * 0.8vw);
+						height: calc(var(--sizeModifier) * 4vw);
+						border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						border-left: none;
+						background-color: #FFFFFF;
+					}
+			
+					procedure-element &gt; div.containerDPR &gt; div.resultat {
+						width: 100%;
+						height: 100%;
+						display: grid;
+						grid-template-columns: 1fr 5fr 1fr;
+						grid-template-rows: 1fr;
+						column-gap: calc(var(--sizeModifier) * 0.2vw);
+						place-items: center;
+						grid-column: 3;
+					}
+			
+						procedure-element &gt; div.containerDPR &gt; div.resultat &gt; label.accolades {
+							font-size: calc(var(--sizeModifier) * 4vw);
+							transform: scaleX(0.75);
+						}
+			
+						procedure-element &gt; div.containerDPR &gt; div.resultat &gt; div.resultatEditable {
+							width: calc(var(--sizeModifier) * 6.3vw);
+							height: 100%;
+							grid-column: 2;
+							resize: none;
+							border: none;
+							background: none;
+							font-size: calc(var(--sizeModifier) * 0.75vw);
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							flex-direction: column;
+							word-wrap: break-word;
+							overflow: hidden;
+						}
+			
+			symbole-decomposition-element {
+				position: absolute;
+				transition: all var(--transitionTime) ease;
+				width: calc(var(--sizeModifier) * 1vw);
+				height: calc(var(--sizeModifier) * 1.5vw);
+				border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+				border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+				border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+			}
+			
+			structure-si-element {
+				display: grid;
+				grid-template-columns: 0px 1fr 0px;
+				grid-template-rows: 1fr;
+				width: fit-content;
+				height: calc(var(--sizeModifier) * 4vw);
+				position: absolute;
+				place-content: center;
+				place-items: center;
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+			
+			structure-si-element &gt; div.triangle {
+				color: #0000;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				font-size: 3vw;
+				user-select: none;
+				cursor: pointer;
+			}
+			
+				structure-si-element &gt; div.triangleGauche {
+					width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+					height: calc(var(--sizeModifier) * 2.8284271247vw);
+					border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					rotate: -45deg;
+					grid-column: 1;
+					background-color: #FFFFFF;
+					transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+				}
+			
+				structure-si-element &gt; div.triangleGauche &gt; span {
+					rotate: 45deg;
+					transform: translateX(-0.7vw);
+				}
+			
+				structure-si-element &gt; div.conditionContainer {
+					display: flex;
+					width: fit-content;
+					height: 100%;   
+					grid-column: 2;
+					flex-direction: row;
+				}
+			
+					structure-si-element &gt; div.conditionContainer &gt; condition-element {
+						width: calc(var(--sizeModifier) * 10vw);
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						background-color: #FFFFFF;
+						border-right: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+						border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					}
+			
+				structure-si-element &gt; div.triangleDroit {
+					width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+					height: calc(var(--sizeModifier) * 2.8284271247vw);
+					border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					rotate: 45deg;
+					grid-column: 3;
+					background-color: #FFFFFF;
+					transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+				}
+			
+				structure-si-element &gt; div.triangleDroit &gt; span {
+					rotate: -45deg;
+					transform: translateX(0.7vw);
+				}
+			
+			structure-switch-element {
+				display: grid;
+				grid-template-columns: 0px 1fr 0px;
+				grid-template-rows: 1fr 1fr;
+				width: fit-content;
+				height: calc(var(--sizeModifier) * 4vw);
+				position: absolute;
+				place-content: center;
+				place-items: center;
+				transition: all var(--transitionTime) ease;
+				background-color: #FFFFFF;
+				z-index: 2;
+			}
+			
+				structure-switch-element &gt; div.triangle {
+					color: #0000;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: center;
+					font-size: 2vw;
+					user-select: none;
+					cursor: pointer;
+				}
+			
+				structure-switch-element &gt; div.triangleGauche {
+					width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+					height: calc(var(--sizeModifier) * 2.8284271247vw);
+					border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					rotate: -45deg;
+					grid-column: 1;
+					grid-row: 1/3;
+					background-color: #FFFFFF;
+					transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+				}
+			
+				structure-switch-element &gt; div.triangleGauche &gt; span {
+					rotate: 45deg;
+					transform: translate(-0.7vw, 30%);
+				}
+			
+				structure-switch-element &gt; hr.diviseurGauche {
+					width: calc(var(--sizeModifier) * 4vw);
+					height: calc(var(--sizeModifier) * 0.05vw);
+					grid-column: 1;
+					grid-row: 1/3;
+					background-color: #000000;
+					z-index: 1;
+					transform: translateX(-50%);
+					border: 0;
+				}
+			
+				structure-switch-element &gt; div.expressionATester {
+					width: 100%;
+					height: 100%;
+					grid-column: 2;
+					grid-row: 1;
+					resize: none;
+					border: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					border-left: 0;
+					border-right: 0;
+					text-align: center;
+					font-size: calc(var(--sizeModifier) * 0.75vw);
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex-direction: column;
+					word-wrap: break-word;
+					overflow: hidden;
+					background-color: #FFFFFF;
+					z-index: 10;
+				}
+			
+				structure-switch-element &gt; div.expressionATester:focus-visible {
+					outline: none;
+				}
+			
+				structure-switch-element &gt; div.conditionContainer {
+					display: flex;
+					min-width: fit-content;
+					width: 100%;
+					height: calc(var(--sizeModifier) * 2vw);   
+					grid-column: 2;
+					grid-row: 2;
+					flex-direction: row;
+				}
+			
+					structure-switch-element &gt; div.conditionContainer &gt; condition-element {
+						min-width: calc(var(--sizeModifier) * 10vw);
+						width: 100%;
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						background-color: #FFFFFF;
+						border-right: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+						border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+						border-bottom: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+					}
+			
+				structure-switch-element &gt; div.triangleDroit {
+				width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+				height: calc(var(--sizeModifier) * 2.8284271247vw);
+				border-top: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+				border-right: calc(var(--sizeModifier) * 0.1vw) solid #000000;
+				rotate: 45deg;
+				grid-column: 3;
+				grid-row: 1/3;
+				background-color: #FFFFFF;
+				transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+				}
+			
+				structure-switch-element &gt; div.triangleDroit &gt; span {
+					rotate: -45deg;
+					transform: translate(0.7vw, 30%);
+				}
+			
+				structure-switch-element &gt; hr.diviseurDroit {
+					width: calc(var(--sizeModifier) * 4vw);
+					height: calc(var(--sizeModifier) * 0.05vw);
+					grid-column: 3;
+					grid-row: 1/3;
+					background-color: #000000;
+					z-index: 1;
+					transform: translateX(-50%);
+					border: 0;
+				}
+			
+			condition-element {
+				position: relative;
+				transition: all 0.2s ease-in-out;
+			}
+			
+			condition-element &gt; div.libelle {
+				width: calc(var(--sizeModifier) * 10vw);
+				height: inherit;
+				resize: none;
+				border: none;
+				background: none;
+				text-align: center;
+				font-size: calc(var(--sizeModifier) * 0.75vw);
+				overflow: hidden;
+				z-index: 2;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				word-wrap: break-word;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			condition-element &gt; div.libelle:focus-visible {
+				outline: none;
+			}
+			
+			condition-element &gt; button.supprimer {
+				width: calc(var(--sizeModifier) * 2vw);
+				height: calc(var(--sizeModifier) * 1vw);
+				border: none;
+				border-radius: 0 0 999em 999em;
+				background-color: var(--warningColor);
+				z-index: 3;
+				transition: all var(--transitionTime) ease;
+				font-size: calc(var(--sizeModifier) * 1vw);
+				color: #FFFFFF;
+				display: none;
+				position: absolute;
+				top: 0;
+			}
+			
+			condition-element &gt; div.arrowsWrapper {
+				width: calc(var(--sizeModifier) * 6vw);
+				height: calc(var(--sizeModifier) * 1vw);
+				border: none;
+				font-size: calc(var(--sizeModifier) * 1vw);
+				text-align: center;
+				position: absolute;
+				bottom: -1.5vw;
+				user-select: none;
+				cursor: pointer;
+				display: none;
+				padding: 0 0.5vw 0.5vw 0.5vw;
+			}
+			
+			condition-element &gt; div.arrowsWrapper &gt; span {
+				padding: 0.5vw;
+				border-radius: 0 0 999em 999em;
+			}
+			
+			condition-element &gt; div.ajouterAGauche {
+				display: none;
+			}
+			
+			condition-element &gt; div.ajouterADroite {
+				display: none;
+			}
+			
+			invite-bornes-pour-si {
+				display: none;
+			}
+			
+			structure-iterative-non-bornee-element {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				place-items: center;
+				width: fit-content;
+				height: calc(var(--sizeModifier) * 4vw);
+				position: absolute;
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+				structure-iterative-non-bornee-element &gt; svg.boucleSVG {
+					width: calc(var(--sizeModifier) * 4vw);
+					height: calc(var(--sizeModifier) * 4vw);
+				}
+			
+			structure-iterative-bornee-element {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				place-items: center;
+				width: fit-content;
+				height: calc(var(--sizeModifier) * 4vw);
+				position: absolute;
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+				structure-iterative-bornee-element &gt; svg.boucleSVG {
+					width: calc(var(--sizeModifier) * 4vw);
+					height: calc(var(--sizeModifier) * 4vw);
+				}
+			
+				structure-iterative-bornee-element &gt; div.informationsBornes {
+					width: calc(var(--sizeModifier) * 8vw);
+					height: 100%;
+					font-size: calc(var(--sizeModifier) * 1vw);
+				}
+			
+			condition-sortie-element {
+				position: absolute;
+				background-image: url("assets/conditionSortie.svg");
+				height: calc(var(--sizeModifier) * 4vw);
+				width: calc(var(--sizeModifier) * 4vw);
+				transition: all var(--transitionTime) ease;
+				z-index: 2;
+			}
+			
+			ligne-element {
+				position: absolute;
+				transform-origin: 0% 50%;
+				margin: 0;
+				padding: 0;
+				border: calc(var(--sizeModifier) * 0.05vw) solid #000000;
+				z-index: 0;
+			}
+			</style><probleme-element style="left: calc(var(--sizeModifier) * 25.060335781741855vw); top: calc(var(--sizeModifier) * 2.5vw);">
+			<div class="containerDPR">
+			<div class="donnees"><label class="accolades" style="">{</label>
+				<div class="donneesEditable" contenteditable="true">structure</div>
+				<label class="accolades" style="">}</label></div><div class="nom" contenteditable="true">Recherche de première occurrence</div>
+				<div class="resultat"><label class="accolades" style="">{</label><div class="resultatEditable" contenteditable="true">trouve, [pos]</div>
+					<label class="accolades" style="">}</label></div></div></probleme-element>
+					<probleme-element style="left: calc(var(--sizeModifier) * 9.775271073802017vw); top: calc(var(--sizeModifier) * 9.985134662469395vw);">
+					<div class="containerDPR"><div class="donnees"><label class="accolades" style="display: none;">{</label><div class="donneesEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div><div class="nom" contenteditable="true">Initialiser la recherche</div><div class="resultat"><label class="accolades" style="">{</label><div class="resultatEditable" contenteditable="true">trouve</div><label class="accolades" style="">}</label></div></div></probleme-element><probleme-element style="left: calc(var(--sizeModifier) * 2.5vw); top: calc(var(--sizeModifier) * 17.15547394193774vw);"><div class="containerDPR"><div class="donnees"><label class="accolades" style="display: none;">{</label><div class="donneesEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div><div class="nom" contenteditable="true">Se positionner en début de structure</div><div class="resultat"><label class="accolades" style="display: none;">{</label><div class="resultatEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div></div></probleme-element><probleme-element style="left: calc(var(--sizeModifier) * 15.091815320041967vw); top: calc(var(--sizeModifier) * 17.260405736271423vw);"><div class="containerDPR"><div class="donnees"><label class="accolades" style="display: none;">{</label><div class="donneesEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div><div class="nom" contenteditable="true">trouve ← faux</div><div class="resultat"><label class="accolades" style="display: none;">{</label><div class="resultatEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div></div></probleme-element><symbole-decomposition-element style="left: calc(var(--sizeModifier) * 24.175271073802016vw); top: calc(var(--sizeModifier) * 14.035134662469396vw);"></symbole-decomposition-element><ligne-element style="left: calc(var(--sizeModifier) * 17.5vw); top: calc(var(--sizeModifier) * 15.535134662469396vw); width: calc(var(--sizeModifier) * 7.275271073802017vw); transform: rotate(0rad);"></ligne-element><ligne-element style="left: calc(var(--sizeModifier) * 17.5vw); top: calc(var(--sizeModifier) * 17.155473941937736vw); width: calc(var(--sizeModifier) * 1.620339279468343vw); transform: rotate(-1.5708rad);"></ligne-element><symbole-decomposition-element style="left: calc(var(--sizeModifier) * 24.175271073802016vw); top: calc(var(--sizeModifier) * 14.035134662469396vw);"></symbole-decomposition-element><ligne-element style="left: calc(var(--sizeModifier) * 24.775271073802017vw); top: calc(var(--sizeModifier) * 15.535134662469396vw); width: calc(var(--sizeModifier) * 5.31654424623995vw); transform: rotate(0rad);"></ligne-element><ligne-element style="left: calc(var(--sizeModifier) * 30.091815320041967vw); top: calc(var(--sizeModifier) * 17.260405736271423vw); width: calc(var(--sizeModifier) * 1.725271073802027vw); transform: rotate(-1.5708rad);"></ligne-element><probleme-element style="left: calc(var(--sizeModifier) * 40.69517313746064vw); top: calc(var(--sizeModifier) * 9.880202868135694vw);"><div class="containerDPR"><div class="donnees"><label class="accolades" style="">{</label><div class="donneesEditable" contenteditable="true">trouve</div><label class="accolades" style="">}</label></div><div class="nom" contenteditable="true">Effectuer la recherche</div><div class="resultat"><label class="accolades" style="">{</label><div class="resultatEditable" contenteditable="true">trouve</div><label class="accolades" style="">}</label></div></div></probleme-element><structure-iterative-non-bornee-element style="left: calc(var(--sizeModifier) * 53.70146904512069vw); top: calc(var(--sizeModifier) * 18.061428821266148vw);"><svg class="boucleSVG" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.51 386.63">
+					<defs>
+						<style>
+							.cls-1 {
+								fill: #ffffff00;
+								stroke: #838787;
+								stroke-miterlimit: 10;
+								stroke-width: 10px;
+							}
+							.cls-2 {
+								fill: #222222;
+								stroke: #838787;
+								stroke-miterlimit: 10;
+								stroke-width: 10px;
+							}
+						</style>
+					</defs>
+					<circle class="cls-1 " cx="193.31" cy="193.31" r="190.81"/>
+					<polygon class="cls-2" points="377.88 154.61 334.58 229.61 421.18 229.61 377.88 154.61"/>
+				</svg>
+				</structure-iterative-non-bornee-element><probleme-element style="left: calc(var(--sizeModifier) * 21.45767750961871vw); top: calc(var(--sizeModifier) * 23.90608604407136vw);"><div class="containerDPR"><div class="donnees"><label class="accolades" style="display: none;">{</label><div class="donneesEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div><div class="nom" contenteditable="true">Déterminer si on a analysé tous les éléments de la structure</div><div class="resultat"><label class="accolades" style="display: none;">{</label><div class="resultatEditable" contenteditable="true"></div><label class="accolades" style="display: none;">}</label></div></div></probleme-element><structure-si-element style="left: calc(var(--sizeModifier) * 31.42095138160188vw); top: calc(var(--sizeModifier) * 29.14292584819866vw);"><div class="triangleGauche triangle"><span>-<span></span></span></div><div class="conditionContainer"><condition-element style="animation: 0.2s ease-in fall;"><button class="supprimer">-</button><div class="libelle" contenteditable="true">Tous les éléments ont été analysés = vrai ou trouve = vrai</div><div class="arrowsWrapper no-render"><span>← </span><span> →</span></div><div class="ajouterAGauche no-render">+</div><div class="ajouterADroite no-render">+</div></condition-element></div><div class="triangleDroit triangle"><span>+<span></span></span></div></structure-si-element><condition-sortie-element style="left: calc(var(--sizeModifier) * 34.3940188877229vw); top: calc(var(--sizeModifier) * 34.8505159146555vw);"><!--?xml version="1.0" encoding="utf-8"?-->
+				<!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+				<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 320.28 319.89" style="enable-background:new 0 0 320.28 319.89;" xml:space="preserve">
+				<style type="text/css">
+					.st0{fill:none;stroke:#838787;stroke-width:10;stroke-miterlimit:10;}
+					.st1{fill:none;stroke:#838787;stroke-width:10;stroke-linecap:round;stroke-miterlimit:10;}
+				</style>
+				<path class="st0" d="M294.62,312.59H25.4c-9.88,0-17.89-8.01-17.89-17.89V25.48c0-9.88,8.01-17.89,17.89-17.89h269.22&#xA;                c9.88,0,17.89,8.01,17.89,17.89V294.7C312.51,304.58,304.5,312.59,294.62,312.59z"/>
+				<line class="st1" x1="106.57" y1="204.62" x2="106.57" y2="7.62"/>
+				<line class="st1" x1="212.57" y1="7.62" x2="212.57" y2="204.62"/>
+				<path class="st1" d="M58.95,197.57"/>
+				<path class="st1" d="M58.95,197.57c-4.7,0-6.49,6.14-2.53,8.66l101.49,64.73c1.54,0.98,3.51,0.98,5.05,0l101.49-64.73&#xA;                c3.96-2.53,2.17-8.66-2.53-8.66"/>
+				</svg></condition-sortie-element><ligne-element style="left: calc(var(--sizeModifier) * 36.39401888772291vw); top: calc(var(--sizeModifier) * 34.8505159146555vw); width: calc(var(--sizeModifier) * 1.4078477028480512vw); transform: rotate(-1.55167rad);"></ligne-element>
+				</plan-travail></foreignObject></svg>`;
+
 /**
  * @class Editeur
  * @classdesc La classe Editeur est l'interface de notre éditeur, elle permet de créer des éléments graphiques et de les manipuler.<br>
@@ -504,13 +1147,10 @@ class Editeur extends HTMLElement {
 				".png",
 				() => {
 					console.log("Exporter en .png");
-					// this.exportPNG(
-					// 	JSON.stringify(this._planActif.exporterEnJSON()),
-					// 	`${this.querySelector("#titreAlgo").innerText}`
-					// );
-					this._modaleNonImp.ouvrir();
+					this.exporterPNG(this._planActif);
+					//this._modaleNonImp.ouvrir();
 				},
-				false,
+				true,
 			),
 		);
 
@@ -519,13 +1159,10 @@ class Editeur extends HTMLElement {
 				".jpg",
 				() => {
 					console.log("Exporter en .jpg");
-					// this.exportJPG(
-					// 	JSON.stringify(this._planActif.exporterEnJSON()),
-					// 	`${this.querySelector("#titreAlgo").innerText}`
-					// );
-					this._modaleNonImp.ouvrir();
+					this.exporterJPG(this._planActif);
+					//this._modaleNonImp.ouvrir();
 				},
-				false,
+				true,
 			),
 		);
 
@@ -724,13 +1361,13 @@ class Editeur extends HTMLElement {
 									.name == "Procedure"
 									? "-15vw"
 									: this._typesElements[index].prototype
-												.constructor.name ==
-												"StructureSi" ||
-										  this._typesElements[index].prototype
-												.constructor.name ==
-												"StructureSwitch"
-										? "-5vw"
-										: "-2vw",
+											.constructor.name ==
+											"StructureSi" ||
+									  this._typesElements[index].prototype
+											.constructor.name ==
+											"StructureSwitch"
+									? "-5vw"
+									: "-2vw",
 							ordonnee: "0vw",
 							listeDonnes: [],
 							listeResultats: [],
@@ -2488,7 +3125,10 @@ class Editeur extends HTMLElement {
 
 		var serializer = new XMLSerializer();
 		var svgString = serializer.serializeToString(planExport);
-		var blob = new Blob([svgString], { type: "image/svg+xml" });
+		let templateHeader = `<svg xmlns="http://www.w3.org/2000/svg">
+		<foreignObject x="0" y="0" width="100%" height="100%">${svgString}</foreignObject></svg>`;
+
+		var blob = new Blob([templateHeader], { type: "image/svg+xml" });
 		var url = URL.createObjectURL(blob);
 		if (download) {
 			var downloadLink = document.createElement("a");
@@ -2500,63 +3140,75 @@ class Editeur extends HTMLElement {
 			downloadLink.click();
 			document.body.removeChild(downloadLink);
 		}
-		return svgString;
+		return templateHeader;
 	}
 
-	exportPNG(json, outputFileName) {
-		// On fait une requête POST à l'API de conversion de SVG à PNG
-		if (verbose) console.log(json);
-		fetch("https://render.algoforge.fr/png", {
-			// Make sure this points to your server URL
-			method: "POST",
-			headers: {
-				"Content-Type": "text/plain",
-			},
-			body: json,
-		})
-			.then((response) => response.blob())
-			.then((blob) => {
-				// Create a URL for the blob object
-				const imageUrl = URL.createObjectURL(blob);
-
-				// Create a temporary anchor element and trigger a download
-				const a = document.createElement("a");
-				a.href = imageUrl;
-				a.download = `${outputFileName}.png`; // You can name the file anything you want
-				document.body.appendChild(a); // Append the anchor to the body
-				a.click(); // Simulate a click on the anchor
-				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
-				URL.revokeObjectURL(imageUrl); // Clean up the URL object
-			})
-			.catch((error) => console.error("Error:", error));
+	exporterJPG(nodeToCopy, download = true, isJSON = false) {
+		this.createBitmapImageFromSvg(
+			"jpeg",
+			nodeToCopy,
+			(download = true),
+			(isJSON = false),
+		);
 	}
 
-	exportJPG(json, outputFileName) {
-		// On fait une requête POST à l'API de conversion de SVG à PNG
-		if (verbose) console.log(json);
-		fetch("http://localhost:3000/jpg", {
-			// Make sure this points to your server URL
-			method: "POST",
-			headers: {
-				"Content-Type": "text/plain",
-			},
-			body: json,
-		})
-			.then((response) => response.blob())
-			.then((blob) => {
-				// Create a URL for the blob object
-				const imageUrl = URL.createObjectURL(blob);
+	createBitmapImageFromSvg(
+		mimeType,
+		nodeToCopy,
+		download = true,
+		isJSON = false,
+	) {
+		let canvasExport = document.getElementById("canvasExport");
+		canvasExport.width =
+			this._planActif.getBoundingClientRect().width *
+			preferences.renderScale;
+		canvasExport.height =
+			this._planActif.getBoundingClientRect().height *
+			preferences.renderScale;
+		let ctxExport = canvasExport.getContext("2d");
 
-				// Create a temporary anchor element and trigger a download
-				const a = document.createElement("a");
-				a.href = imageUrl;
-				a.download = `${outputFileName}.jpg`; // You can name the file anything you want
-				document.body.appendChild(a); // Append the anchor to the body
-				a.click(); // Simulate a click on the anchor
-				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
-				URL.revokeObjectURL(imageUrl); // Clean up the URL object
-			})
-			.catch((error) => console.error("Error:", error));
+		let svgString = this.exporterSVG(nodeToCopy, false, isJSON);
+		if (mimeType == "jpeg" || mimeType == "jpg") {
+			ctxExport.fillStyle = "#ffffff";
+			ctxExport.strokeRect = "#ffffff";
+			ctxExport.fillRect(0, 0, canvasExport.width, canvasExport.height);
+		}
+
+		let testSvg = `data:image/svg+xml;base64,${btoa(
+			unescape(encodeURIComponent(svgString)),
+		)}`;
+
+		let img = new Image();
+		img.width = canvasExport.width;
+		img.height = canvasExport.height;
+		img.src = testSvg;
+
+		const titreAlgo = this.querySelector("#titreAlgo").innerText;
+		img.onload = function () {
+			ctxExport.drawImage(
+				img,
+				0,
+				0,
+				canvasExport.width,
+				canvasExport.height,
+			);
+			let downloadLink = document.createElement("a");
+			downloadLink.href = canvasExport.toDataURL(`image/${mimeType}`, 1);
+			downloadLink.download = `${titreAlgo}.${mimeType}`;
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+		};
+	}
+
+	exporterPNG(nodeToCopy, download = true, isJSON = false) {
+		this.createBitmapImageFromSvg(
+			"png",
+			nodeToCopy,
+			(download = true),
+			(isJSON = false),
+		);
 	}
 }
 window.customElements.define("editeur-interface", Editeur);
