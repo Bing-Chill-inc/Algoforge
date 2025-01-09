@@ -882,6 +882,22 @@ class Probleme extends ElementGraphique {
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
 				console.log("Exporter en .png");
+				this._editeur.exporterPNG(
+					JSON.stringify([this.toJSON()]),
+					true,
+					true,
+				);
+			}),
+		);
+
+		exporter.ajouterElementMenu(
+			new ElementMenu(".jpg", () => {
+				console.log("Exporter en .jpg");
+				this._editeur.exporterJPG(
+					JSON.stringify([this.toJSON()]),
+					true,
+					true,
+				);
 			}),
 		);
 
