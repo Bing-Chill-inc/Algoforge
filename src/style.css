@@ -187,7 +187,7 @@ editeur-interface
 	position: absolute;
 	top: 20px;
 	left: -5px;
-	width: fit-content;
+	min-width: fit-content;
 	height: fit-content;
 	min-height: 1vw;
 	background-color: var(--bgColor);
@@ -1400,7 +1400,7 @@ probleme-element > div.containerDPR > div.nom {
 	grid-column: 2;
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	text-align: center;
-	font-size: calc(var(--sizeModifier) * 0.75vw);
+	font-size: calc(var(--sizeModifier) * var(--font-size2));
 	display: flex;
 	align-items: center;
 	justify-content: center;

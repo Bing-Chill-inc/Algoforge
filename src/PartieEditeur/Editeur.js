@@ -1542,7 +1542,37 @@ class Editeur extends HTMLElement {
 			const cursor =
 				this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
 			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
-			this._planActif.style.cursor = `url(${cursor + urlColor}), auto`;
+			switch (idTool) {
+				// Lien
+				case 0:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 20 6, auto`;
+					break;
+				//Probleme, Procedure
+				case 1:
+				case 2:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 10 6, auto`;
+					break;
+				// Structure si, Structure switch
+				case 3:
+				case 4:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 14 6, auto`;
+					break;
+				// Boucle itérative non bornée
+				case 5:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 16 6, auto`;
+					break;
+				// Boucle itérative bornée
+				case 6:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 13 6, auto`;
+					break;
+				// Condition de sortie
+				case 7:
+					this._planActif.style.cursor = `url(${cursor + urlColor}) 22 6, auto`;
+					break;
+				default:
+					this._planActif.style.cursor = `url(${cursor + urlColor}), auto`;
+					break;
+			}
 		} else {
 			// Pointeur
 			this._boutonPointeur.classList.add("selected");
