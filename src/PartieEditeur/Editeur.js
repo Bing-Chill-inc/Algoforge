@@ -1862,7 +1862,7 @@ class Editeur extends HTMLElement {
             align-items: center;
             justify-content: center;
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
@@ -1963,7 +1963,7 @@ class Editeur extends HTMLElement {
             align-items: center;
             justify-content: center;
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             
@@ -2080,7 +2080,7 @@ class Editeur extends HTMLElement {
         
         symbole-decomposition-element {
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             width: calc(var(--sizeModifier) * 1vw);
             height: calc(var(--sizeModifier) * 1.5vw);
             border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
@@ -2097,7 +2097,7 @@ class Editeur extends HTMLElement {
             position: absolute;
             place-content: center;
             place-items: center;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
@@ -2174,7 +2174,7 @@ class Editeur extends HTMLElement {
             position: absolute;
             place-content: center;
             place-items: center;
-            transition: all var(--transitionTime) ease;
+            
             background-color: #FFFFFF;
             z-index: 2;
         }
@@ -2297,7 +2297,6 @@ class Editeur extends HTMLElement {
         
         condition-element {
             position: relative;
-            transition: all 0.2s ease-in-out;
         }
         
         condition-element > div.libelle {
@@ -2330,7 +2329,7 @@ class Editeur extends HTMLElement {
             border-radius: 0 0 999em 999em;
             background-color: var(--warningColor);
             z-index: 3;
-            transition: all var(--transitionTime) ease;
+            
             font-size: calc(var(--sizeModifier) * 1vw);
             color: #FFFFFF;
             display: none;
@@ -2377,7 +2376,7 @@ class Editeur extends HTMLElement {
             width: fit-content;
             height: calc(var(--sizeModifier) * 4vw);
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             structure-iterative-non-bornee-element > svg.boucleSVG {
@@ -2393,7 +2392,7 @@ class Editeur extends HTMLElement {
             width: fit-content;
             height: calc(var(--sizeModifier) * 4vw);
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             structure-iterative-bornee-element > svg.boucleSVG {
@@ -2412,7 +2411,7 @@ class Editeur extends HTMLElement {
             background-image: url("assets/conditionSortie.svg");
             height: calc(var(--sizeModifier) * 4vw);
             width: calc(var(--sizeModifier) * 4vw);
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
