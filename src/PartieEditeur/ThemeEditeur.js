@@ -166,11 +166,13 @@ class ThemeEditeur extends HTMLOptionElement {
 			1,
 		)}`;
 
-		document.querySelector(
-			"#biblio_btn > svg",
-		).src = `assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		if (!isExam) {
+			document.querySelector(
+				"#biblio_btn > svg",
+			).src = `assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
+				1,
+			)}`;
+		}
 
 		document.querySelector(
 			"#boutonPointeur",
@@ -238,9 +240,9 @@ class ThemeEditeur extends HTMLOptionElement {
 			1,
 		)}`;
 
-		this._logoAlgoForge.src = `assetsDynamiques/AlgoForge.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
+		this._logoAlgoForge.src = `assetsDynamiques/${
+			isExam ? "AlgoForgeExamEdition" : "AlgoForge"
+		}.svg?fgColor=${this.fgColor.substring(1)}`;
 
 		this._editeur._bibliotheque.update();
 
