@@ -723,6 +723,7 @@ class Probleme extends ElementGraphique {
 	supprimer() {
 		this._elemParent.delierTousLesEnfants();
 		if (this._parent != null) this._parent.delierEnfant(this);
+		if (this._sousPlan != null) this._sousPlan.remove(); // On supprime le sous-plan s'il existe
 		this.remove();
 	}
 
