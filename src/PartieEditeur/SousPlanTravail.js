@@ -20,6 +20,16 @@ class SousPlanTravail extends PlanTravail {
 			this.fermer();
 		});
 		this.appendChild(croixFermeture);
+
+		let parent = this.parentElement;
+
+		setInterval(() => {
+			if (this._proprietaire.parentElement == null) {
+				this.remove();
+			} else if (this.parentElement == null) {
+				parent.appendChild(this);
+			}
+		}, 1000);
 	}
 
 	// Methodes
