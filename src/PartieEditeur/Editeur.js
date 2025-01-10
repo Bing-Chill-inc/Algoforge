@@ -1530,61 +1530,56 @@ class Editeur extends HTMLElement {
 			tool.classList.remove("selected");
 			this._boutonPointeur.classList.remove("selected");
 		});
-		const sousPlanTravail = document.querySelector("sous-plan-travail");
+		const planPrincipal = document.querySelector("plan-travail");
+		const sousPlanTravail = document.querySelectorAll("sous-plan-travail");
 		if (idTool != -1) {
 			this._listeTools[idTool].classList.add("selected");
 			const cursor =
 				this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
 			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
+			let curseurÀAppliquer;
 			switch (idTool) {
 				// Lien
 				case 0:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 20 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 20 6, auto`;
 					break;
 				//Probleme, Procedure
 				case 1:
 				case 2:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 10 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 10 6, auto`;
 					break;
 				// Structure si, Structure switch
 				case 3:
 				case 4:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 14 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 14 6, auto`;
 					break;
 				// Boucle itérative non bornée
 				case 5:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 16 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 16 6, auto`;
 					break;
 				// Boucle itérative bornée
 				case 6:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 13 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 13 6, auto`;
 					break;
 				// Condition de sortie
 				case 7:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}) 22 6, auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}) 22 6, auto`;
 					break;
 				default:
-					this._planActif.style.cursor = `url(${
-						cursor + urlColor
-					}), auto`;
+					curseurÀAppliquer = `url(${cursor + urlColor}), auto`;
 					break;
 			}
+			planPrincipal.style.cursor = curseurÀAppliquer;
+			sousPlanTravail.forEach((sousPlan) => {
+				sousPlan.style.cursor = curseurÀAppliquer;
+			});
 		} else {
 			// Pointeur
 			this._boutonPointeur.classList.add("selected");
-			this._planActif.style.cursor = `url(${this._boutonPointeur.src}), auto`;
+			planPrincipal.style.cursor = `url(${this._boutonPointeur.src}), auto`;
+			sousPlanTravail.forEach((sousPlan) => {
+				sousPlan.style.cursor = `url(${this._boutonPointeur.src}), auto`;
+			});
 		}
 
 		if (idTool != 0 && this._pointePrecedementLien != null) {
