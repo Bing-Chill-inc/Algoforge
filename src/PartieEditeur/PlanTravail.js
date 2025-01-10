@@ -7,6 +7,7 @@
 class PlanTravail extends HTMLElement {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
+	_refScroll;
 
 	// CONSTRUCTEUR
 	/**
@@ -15,27 +16,14 @@ class PlanTravail extends HTMLElement {
 	constructor() {
 		super();
 
-		// this.addEventListener("dragover", (event) => {
-		//     event.preventDefault(); // Necessary to allow a drop
-		// });
+		this._refScroll = document.createElement("div");
+		this._refScroll.style.position = "absolute";
+		this._refScroll.style.left = "50%";
+		this._refScroll.style.display = "list-item";
+		this._refScroll.style.opacity = "0";
+		this.appendChild(this._refScroll);
 
-		// this.addEventListener("drop", (event) => {
-		//     event.preventDefault();
-
-		//     // Get the id of the dragged element
-		//     const data = event.dataTransfer.getData("text/plain");
-		//     if (verbose) console.log("Dropped:", data);
-
-		//     // Get the X and Y coordinates
-		//     const x = event.layerX;
-		//     const y = event.layerY;
-
-		//     if (verbose) console.log("Dropped at coordinates:", x, y);
-		//     if (verbose) console.log("eval(data) = " + eval(data));
-		//     this.ajouterElement(eval(data), x, y, false);
-		// });
-
-		// Une fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
+		// 30 fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
 		setInterval(() => {
 			for (let element of this.children) {
 				if (element instanceof ElementGraphique) {
@@ -51,7 +39,13 @@ class PlanTravail extends HTMLElement {
 					}
 				}
 			}
-		}, 1000);
+
+			// On va aussi trouver l'élément le plus en bas et déplacer refScroll 200px plus bas
+			let coordMinEtMax = this.getCoordMinEtMax();
+
+			// On déplace refScroll
+			this._refScroll.style.top = coordMinEtMax.coordMax.y + 5 + "vw";
+		}, 33);
 	}
 
 	// ENCAPSULATION
