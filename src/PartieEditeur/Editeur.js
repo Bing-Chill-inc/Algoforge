@@ -722,44 +722,6 @@ class Editeur extends HTMLElement {
 			tool.addEventListener("click", () => {
 				this.selectTool(index);
 			});
-
-			tool.addEventListener("dragstart", (event) => {
-				if (verbose) console.log(event);
-				event.dataTransfer.setData(
-					"application/json",
-					JSON.stringify([
-						{
-							typeElement:
-								this._typesElements[index].prototype.constructor
-									.name,
-							abscisse:
-								this._typesElements[index].prototype.constructor
-									.name == "Probleme" ||
-								this._typesElements[index].prototype.constructor
-									.name == "Procedure"
-									? "-15vw"
-									: this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSi" ||
-									  this._typesElements[index].prototype
-											.constructor.name ==
-											"StructureSwitch"
-									? "-5vw"
-									: "-2vw",
-							ordonnee: "0vw",
-							listeDonnes: [],
-							listeResultats: [],
-							enfants: [],
-							conditions: [],
-							expressionATester: "",
-							variableAIterer: "",
-							borneInferieure: "",
-							borneSuperieure: "",
-							pas: "",
-						},
-					]),
-				);
-			});
 		});
 
 		this._undoButton.addEventListener("click", () => {
@@ -879,8 +841,11 @@ class Editeur extends HTMLElement {
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
-					e.preventDefault();
-					this.copy();
+					console.log("Ctrl + C", window.getSelection().toString());
+					if (window.getSelection().toString().length == 0) {
+						e.preventDefault();
+						this.copy();
+					}
 				}
 				if (e.key.toLowerCase() === "a") {
 					// Ctrl + A
@@ -1574,32 +1539,46 @@ class Editeur extends HTMLElement {
 			switch (idTool) {
 				// Lien
 				case 0:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 20 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 20 6, auto`;
 					break;
 				//Probleme, Procedure
 				case 1:
 				case 2:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 10 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 10 6, auto`;
 					break;
 				// Structure si, Structure switch
 				case 3:
 				case 4:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 14 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 14 6, auto`;
 					break;
 				// Boucle itérative non bornée
 				case 5:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 16 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 16 6, auto`;
 					break;
 				// Boucle itérative bornée
 				case 6:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 13 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 13 6, auto`;
 					break;
 				// Condition de sortie
 				case 7:
-					this._planActif.style.cursor = `url(${cursor + urlColor}) 22 6, auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}) 22 6, auto`;
 					break;
 				default:
-					this._planActif.style.cursor = `url(${cursor + urlColor}), auto`;
+					this._planActif.style.cursor = `url(${
+						cursor + urlColor
+					}), auto`;
 					break;
 			}
 		} else {
@@ -1657,9 +1636,13 @@ class Editeur extends HTMLElement {
 			let coinSupGauche = this._selection.coin("center");
 			if (verbose) console.log(coinSupGauche);
 
+			// On convertit le coin supérieur gauche en vw
+			coinSupGauche.x = (coinSupGauche.x / window.innerWidth) * 100;
+			coinSupGauche.y = (coinSupGauche.y / window.innerWidth) * 100;
+
 			// Soustraire les coordonnées du coin supérieur gauche pour que les coordonnées soient relatives
 			const appliquerDecalage = (elem) => {
-				if (verbose)
+				if (true)
 					console.log(
 						`parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(
 							elem.abscisse,
@@ -1668,7 +1651,7 @@ class Editeur extends HTMLElement {
 							parseFloat(elem.abscisse) - coinSupGauche.x + "vw"
 						}`,
 					);
-				if (verbose)
+				if (true)
 					console.log(
 						`parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(
 							elem.ordonnee,
