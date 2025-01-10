@@ -2570,11 +2570,6 @@ class Editeur extends HTMLElement {
 		let ctxExport = canvasExport.getContext("2d");
 
 		let svgString = this.exporterSVG(nodeToCopy, false, isJSON);
-		if (mimeType == "jpeg" || mimeType == "jpg") {
-			ctxExport.fillStyle = "#ffffff";
-			ctxExport.strokeRect = "#ffffff";
-			ctxExport.fillRect(0, 0, canvasExport.width, canvasExport.height);
-		}
 
 		let testSvg = `data:image/svg+xml;base64,${btoa(
 			unescape(encodeURIComponent(svgString)),
@@ -2588,6 +2583,18 @@ class Editeur extends HTMLElement {
 		const titreAlgo = this.querySelector("#titreAlgo").innerText;
 		img.onload = function () {
 			ctxExport.clearRect(0, 0, canvasExport.width, canvasExport.height);
+
+			if (mimeType == "jpeg" || mimeType == "jpg") {
+				ctxExport.fillStyle = "#ffffff";
+				ctxExport.strokeRect = "#ffffff";
+				ctxExport.fillRect(
+					0,
+					0,
+					canvasExport.width,
+					canvasExport.height,
+				);
+			}
+
 			ctxExport.drawImage(
 				img,
 				0,
