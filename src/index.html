@@ -16,6 +16,7 @@
 	</head>
 
 	<body>
+		<canvas id="canvasExport" style="position: absolute; z-index: -33333333"></canvas>
 		<editeur-interface>
 			<header>
 				<img alt="Logo AlgoForge" id="logoAlgoForge" />
@@ -464,9 +465,11 @@
 		const preferences = {
 			glow: false,
 			dockEffect: true,
+			renderScale: 4,
 		};
 
-		setTimeout(() => {
+		setTimeout(async () => {
+			await customElements.whenDefined("editeur-interface");
 			preferences.glow =
 				editeur.getCookie("glow") === "true"
 					? true
@@ -648,8 +651,7 @@
 	<script src="PartieEditeur/Editeur.js"></script>
 
 	<script>
-		document.querySelector("#espacePrincipal").style.cursor = `url(${
-			document.querySelector("#boutonPointeur").src
-		}), auto`;
+		document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src
+			}), auto`;
 	</script>
 </html>

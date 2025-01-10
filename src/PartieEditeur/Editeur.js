@@ -503,13 +503,21 @@ class Editeur extends HTMLElement {
 				".png",
 				() => {
 					console.log("Exporter en .png");
-					// this.exportPNG(
-					// 	JSON.stringify(this._planActif.exporterEnJSON()),
-					// 	`${this.querySelector("#titreAlgo").innerText}`
-					// );
-					this._modaleNonImp.ouvrir();
+					const plansTravail = this.querySelectorAll("plan-travail");
+					const sousPlansTravail =
+						this.querySelectorAll("sous-plan-travail");
+
+					const allPlansTravail = Array.from(plansTravail).concat(
+						Array.from(sousPlansTravail),
+					);
+
+					allPlansTravail.forEach((planTravail, index) => {
+						setTimeout(() => {
+							this.exporterPNG(planTravail);
+						}, index * 1500);
+					});
 				},
-				false,
+				true,
 			),
 		);
 
@@ -518,13 +526,21 @@ class Editeur extends HTMLElement {
 				".jpg",
 				() => {
 					console.log("Exporter en .jpg");
-					// this.exportJPG(
-					// 	JSON.stringify(this._planActif.exporterEnJSON()),
-					// 	`${this.querySelector("#titreAlgo").innerText}`
-					// );
-					this._modaleNonImp.ouvrir();
+					const plansTravail = this.querySelectorAll("plan-travail");
+					const sousPlansTravail =
+						this.querySelectorAll("sous-plan-travail");
+
+					const allPlansTravail = Array.from(plansTravail).concat(
+						Array.from(sousPlansTravail),
+					);
+
+					allPlansTravail.forEach((planTravail, index) => {
+						setTimeout(() => {
+							this.exporterJPG(planTravail);
+						}, index * 1500);
+					});
 				},
-				false,
+				true,
 			),
 		);
 
@@ -723,13 +739,13 @@ class Editeur extends HTMLElement {
 									.name == "Procedure"
 									? "-15vw"
 									: this._typesElements[index].prototype
-												.constructor.name ==
-												"StructureSi" ||
-										  this._typesElements[index].prototype
-												.constructor.name ==
-												"StructureSwitch"
-										? "-5vw"
-										: "-2vw",
+											.constructor.name ==
+											"StructureSi" ||
+									  this._typesElements[index].prototype
+											.constructor.name ==
+											"StructureSwitch"
+									? "-5vw"
+									: "-2vw",
 							ordonnee: "0vw",
 							listeDonnes: [],
 							listeResultats: [],
@@ -1484,6 +1500,19 @@ class Editeur extends HTMLElement {
 				),
 			);
 		});
+
+		window.onbeforeprint = () => {
+			// On met le zoom à 100% pour l'impression
+			document.body.style.setProperty("--sizeModifier", 1.0);
+		};
+
+		window.onafterprint = () => {
+			// On remet le zoom comme il était avant l'impression
+			document.body.style.setProperty(
+				"--sizeModifier",
+				this._indicateurZoom._zoom,
+			);
+		};
 	}
 
 	setCookie(cname, cvalue, exdays) {
@@ -1862,7 +1891,7 @@ class Editeur extends HTMLElement {
             align-items: center;
             justify-content: center;
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
@@ -1963,7 +1992,7 @@ class Editeur extends HTMLElement {
             align-items: center;
             justify-content: center;
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             
@@ -2080,7 +2109,7 @@ class Editeur extends HTMLElement {
         
         symbole-decomposition-element {
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             width: calc(var(--sizeModifier) * 1vw);
             height: calc(var(--sizeModifier) * 1.5vw);
             border-left: calc(var(--sizeModifier) * 0.1vw) solid #000000;
@@ -2097,7 +2126,7 @@ class Editeur extends HTMLElement {
             position: absolute;
             place-content: center;
             place-items: center;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
@@ -2174,7 +2203,7 @@ class Editeur extends HTMLElement {
             position: absolute;
             place-content: center;
             place-items: center;
-            transition: all var(--transitionTime) ease;
+            
             background-color: #FFFFFF;
             z-index: 2;
         }
@@ -2297,7 +2326,6 @@ class Editeur extends HTMLElement {
         
         condition-element {
             position: relative;
-            transition: all 0.2s ease-in-out;
         }
         
         condition-element > div.libelle {
@@ -2330,7 +2358,7 @@ class Editeur extends HTMLElement {
             border-radius: 0 0 999em 999em;
             background-color: var(--warningColor);
             z-index: 3;
-            transition: all var(--transitionTime) ease;
+            
             font-size: calc(var(--sizeModifier) * 1vw);
             color: #FFFFFF;
             display: none;
@@ -2377,7 +2405,7 @@ class Editeur extends HTMLElement {
             width: fit-content;
             height: calc(var(--sizeModifier) * 4vw);
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             structure-iterative-non-bornee-element > svg.boucleSVG {
@@ -2393,7 +2421,7 @@ class Editeur extends HTMLElement {
             width: fit-content;
             height: calc(var(--sizeModifier) * 4vw);
             position: absolute;
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
             structure-iterative-bornee-element > svg.boucleSVG {
@@ -2412,7 +2440,7 @@ class Editeur extends HTMLElement {
             background-image: url("assets/conditionSortie.svg");
             height: calc(var(--sizeModifier) * 4vw);
             width: calc(var(--sizeModifier) * 4vw);
-            transition: all var(--transitionTime) ease;
+            
             z-index: 2;
         }
         
@@ -2517,7 +2545,10 @@ class Editeur extends HTMLElement {
 
 		var serializer = new XMLSerializer();
 		var svgString = serializer.serializeToString(planExport);
-		var blob = new Blob([svgString], { type: "image/svg+xml" });
+		let templateHeader = `<svg xmlns="http://www.w3.org/2000/svg">
+		<foreignObject x="0" y="0" width="100%" height="100%">${svgString}</foreignObject></svg>`;
+
+		var blob = new Blob([templateHeader], { type: "image/svg+xml" });
 		var url = URL.createObjectURL(blob);
 		if (download) {
 			var downloadLink = document.createElement("a");
@@ -2529,63 +2560,94 @@ class Editeur extends HTMLElement {
 			downloadLink.click();
 			document.body.removeChild(downloadLink);
 		}
-		return svgString;
+		return templateHeader;
 	}
 
-	exportPNG(json, outputFileName) {
-		// On fait une requête POST à l'API de conversion de SVG à PNG
-		if (verbose) console.log(json);
-		fetch("https://render.algoforge.fr/png", {
-			// Make sure this points to your server URL
-			method: "POST",
-			headers: {
-				"Content-Type": "text/plain",
-			},
-			body: json,
-		})
-			.then((response) => response.blob())
-			.then((blob) => {
-				// Create a URL for the blob object
-				const imageUrl = URL.createObjectURL(blob);
-
-				// Create a temporary anchor element and trigger a download
-				const a = document.createElement("a");
-				a.href = imageUrl;
-				a.download = `${outputFileName}.png`; // You can name the file anything you want
-				document.body.appendChild(a); // Append the anchor to the body
-				a.click(); // Simulate a click on the anchor
-				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
-				URL.revokeObjectURL(imageUrl); // Clean up the URL object
-			})
-			.catch((error) => console.error("Error:", error));
+	exporterJPG(nodeToCopy, download = true, isJSON = false) {
+		this.createBitmapImageFromSvg(
+			"jpeg",
+			nodeToCopy,
+			(download = true),
+			(isJSON = false),
+		);
 	}
 
-	exportJPG(json, outputFileName) {
-		// On fait une requête POST à l'API de conversion de SVG à PNG
-		if (verbose) console.log(json);
-		fetch("http://localhost:3000/jpg", {
-			// Make sure this points to your server URL
-			method: "POST",
-			headers: {
-				"Content-Type": "text/plain",
-			},
-			body: json,
-		})
-			.then((response) => response.blob())
-			.then((blob) => {
-				// Create a URL for the blob object
-				const imageUrl = URL.createObjectURL(blob);
+	isCreatingBitmapImageFromSvg = false;
 
-				// Create a temporary anchor element and trigger a download
-				const a = document.createElement("a");
-				a.href = imageUrl;
-				a.download = `${outputFileName}.jpg`; // You can name the file anything you want
-				document.body.appendChild(a); // Append the anchor to the body
-				a.click(); // Simulate a click on the anchor
-				document.body.removeChild(a); // Optionally, remove the anchor after triggering the download
-				URL.revokeObjectURL(imageUrl); // Clean up the URL object
-			})
-			.catch((error) => console.error("Error:", error));
+	async createBitmapImageFromSvg(
+		mimeType,
+		nodeToCopy,
+		download = true,
+		isJSON = false,
+	) {
+		if (this.isCreatingBitmapImageFromSvg) {
+			await new Promise((resolve) => {
+				setInterval(() => {
+					if (!this.isCreatingBitmapImageFromSvg) resolve();
+				}, 16);
+			});
+		}
+		this.isCreatingBitmapImageFromSvg = true;
+		let canvasExport = document.getElementById("canvasExport");
+		canvasExport.width =
+			this._planActif.getBoundingClientRect().width *
+			preferences.renderScale;
+		canvasExport.height =
+			this._planActif.getBoundingClientRect().height *
+			preferences.renderScale;
+		let ctxExport = canvasExport.getContext("2d");
+
+		let svgString = this.exporterSVG(nodeToCopy, false, isJSON);
+
+		let testSvg = `data:image/svg+xml;base64,${btoa(
+			unescape(encodeURIComponent(svgString)),
+		)}`;
+
+		let img = new Image();
+		img.width = canvasExport.width;
+		img.height = canvasExport.height;
+		img.src = testSvg;
+
+		const titreAlgo = this.querySelector("#titreAlgo").innerText;
+		img.onload = function () {
+			ctxExport.clearRect(0, 0, canvasExport.width, canvasExport.height);
+
+			if (mimeType == "jpeg" || mimeType == "jpg") {
+				ctxExport.fillStyle = "#ffffff";
+				ctxExport.strokeRect = "#ffffff";
+				ctxExport.fillRect(
+					0,
+					0,
+					canvasExport.width,
+					canvasExport.height,
+				);
+			}
+
+			ctxExport.drawImage(
+				img,
+				0,
+				0,
+				canvasExport.width,
+				canvasExport.height,
+			);
+			let downloadLink = document.createElement("a");
+			downloadLink.href = canvasExport.toDataURL(`image/${mimeType}`, 1);
+			downloadLink.download = `${titreAlgo}.${mimeType}`;
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+			editeur.isCreatingBitmapImageFromSvg = false;
+		};
+	}
+
+	exporterPNG(nodeToCopy, download = true, isJSON = false) {
+		this.createBitmapImageFromSvg(
+			"png",
+			nodeToCopy,
+			(download = true),
+			(isJSON = false),
+		);
 	}
 }
 window.customElements.define("editeur-interface", Editeur);

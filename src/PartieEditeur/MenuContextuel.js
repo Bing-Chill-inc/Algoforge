@@ -267,8 +267,24 @@ class MenuContextuel extends HTMLElement {
 			exporter.ajouterElementMenu(sousTitreAlgorithme);
 
 			exporter.ajouterElementMenu(
+				new ElementMenu(".jpg", () => {
+					console.log("Exporter en .jpg");
+					this._editeur.exporterJPG(
+						this._editeur.copy(false),
+						true,
+						true,
+					);
+				}),
+			);
+
+			exporter.ajouterElementMenu(
 				new ElementMenu(".png", () => {
 					console.log("Exporter en .png");
+					this._editeur.exporterPNG(
+						this._editeur.copy(false),
+						true,
+						true,
+					);
 				}),
 			);
 
