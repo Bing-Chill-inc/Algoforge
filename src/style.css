@@ -1177,7 +1177,6 @@ selection-editeur {
 	border-radius: 0.5vw;
 	transition: all var(--transitionTime) ease;
 	z-index: auto;
-	transform: translate(-0.5vw, -0.5vw);
 }
 
 selection-simple {
