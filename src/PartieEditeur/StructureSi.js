@@ -101,6 +101,95 @@ class StructureSi extends StructureAlternative {
 		return [];
 	}
 
+	genererOptionsContextuelles(editeur) {
+		let listeOptions = super.genererOptionsContextuelles(editeur);
+
+		// Si la transformation en switch est possible (et pertinente)
+		const potentielTransformationSwitch =
+			this.detecterPotentielTransformationSwitch();
+		if (potentielTransformationSwitch.result) {
+			listeOptions.push(
+				new ElementMenu("Transformer en Switch", () => {
+					console.log("Transformer en Switch");
+					// On crée la nouvelle structure Switch
+					const newSwitch = this.parentNode.ajouterElement(
+						StructureSwitch,
+						this._abscisse,
+						this._ordonnee,
+						true,
+					);
+
+					potentielTransformationSwitch.valeurs.forEach((cond) => {
+						cond._libelle = cond._libelle.split("=")[1].trim();
+						newSwitch.ajouterCondition(cond);
+					});
+
+					Array.from(
+						newSwitch.querySelectorAll("condition-element"),
+					).forEach((cond) => {
+						if (cond._libelle.length == 0) {
+							newSwitch.supprimerCondition(cond);
+						}
+					});
+
+					newSwitch.expressionATester =
+						potentielTransformationSwitch.variable;
+
+					// On lie le parent de la structure Si à la structure Switch
+					this._parent.lierEnfant(newSwitch);
+					this._parent.delierEnfant(this);
+
+					this.supprimer();
+				}),
+			);
+		}
+		return listeOptions;
+	}
+
+	detecterPotentielTransformationSwitch() {
+		/* 
+        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
+        */
+		try {
+			const conditions = this._listeConditions.children;
+			if (conditions.length < 3) {
+				return { result: false };
+			}
+			let libelle = conditions[0].querySelector(".libelle").textContent;
+			let caracteresAvantEgal;
+			let valeurs = [];
+
+			if (libelle.includes("=")) {
+				caracteresAvantEgal = libelle.split("=")[0].trim();
+			}
+			// Vérifier si tout les conditions contient un = et que la variable traiter est constante
+			for (let condition of conditions) {
+				console.log(condition);
+				libelle = condition.querySelector(".libelle").textContent;
+				if (libelle.toLowerCase().includes("sinon")) {
+					// default statement structure switch
+					continue;
+				}
+				if (
+					!libelle.includes("=") ||
+					libelle.toLowerCase().includes("ou") ||
+					libelle.toLowerCase().includes("et")
+				) {
+					return { result: false };
+				}
+				if (caracteresAvantEgal != libelle.split("=")[0].trim()) {
+					return { result: false };
+				}
+				valeurs.push(condition);
+			}
+
+			return { result: true, variable: caracteresAvantEgal, valeurs };
+		} catch (e) {
+			console.error(e);
+			return { result: false };
+		}
+	}
+
 	/**
 	 * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci<br>
 	 * Liste des Erreurs :<br>
