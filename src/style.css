@@ -248,7 +248,7 @@ element-menu-compose > menu-deroulant {
 	position: absolute;
 	top: 0;
 	left: 97%;
-	width: fit-content;
+	min-width: fit-content;
 	background-color: var(--bgColorTertiary);
 	border: 1px solid var(--borderColor2);
 	color: var(--fgColor);
