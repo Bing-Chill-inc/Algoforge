@@ -1400,7 +1400,7 @@ probleme-element > div.containerDPR > div.nom {
 	grid-column: 2;
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	text-align: center;
-	font-size: calc(var(--sizeModifier) * var(--font-size2));
+	font-size: calc(var(--sizeModifier) * 0.75vw);
 	display: flex;
 	align-items: center;
 	justify-content: center;
