@@ -7,6 +7,7 @@
 class Selection extends HTMLElement {
 	_listeElementsSelectionnes;
 	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_planTravail = document.querySelector("plan-travail"); // Plan de travail
 
 	/**
 	 * @constructor
@@ -135,7 +136,7 @@ class Selection extends HTMLElement {
 	}
 
 	coordonneesMinEtMax() {
-		if (this._listeElementsSelectionnes.length == 0) {
+		if (this._listeElementsSelectionnes.length === 0) {
 			return {
 				coordonneesMin: { x: -100, y: -100 },
 				coordonneesMax: { x: -100, y: -100 },
@@ -147,10 +148,17 @@ class Selection extends HTMLElement {
 
 		for (const selection of this._listeElementsSelectionnes) {
 			const rect = selection.getBoundingClientRect();
-			coordonneesMin.x = Math.min(coordonneesMin.x, rect.left);
-			coordonneesMin.y = Math.min(coordonneesMin.y, rect.top);
-			coordonneesMax.x = Math.max(coordonneesMax.x, rect.right);
-			coordonneesMax.y = Math.max(coordonneesMax.y, rect.bottom);
+
+			const offsetX = this._planTravail.scrollLeft;
+			const offsetY = this._planTravail.scrollTop;
+
+			coordonneesMin.x = Math.min(coordonneesMin.x, rect.left + offsetX);
+			coordonneesMin.y = Math.min(coordonneesMin.y, rect.top + offsetY);
+			coordonneesMax.x = Math.max(coordonneesMax.x, rect.right + offsetX);
+			coordonneesMax.y = Math.max(
+				coordonneesMax.y,
+				rect.bottom + offsetY,
+			);
 		}
 
 		return {
