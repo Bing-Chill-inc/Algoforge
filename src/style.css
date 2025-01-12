@@ -575,6 +575,8 @@ dictionnaire-donnee > span.raffraichir {
 	aspect-ratio: 1 /1;
 	transition: 0.2s all ease;
 	color: var(--fgColor);
+	cursor: pointer;
+	user-select: none;
 }
 dictionnaire-donnee > span.raffraichir:hover {
 	color: var(--fgColorHover);
@@ -595,6 +597,8 @@ dictionnaire-donnee > span.fermeture {
 	font-size: 20px;
 	aspect-ratio: 1 /1;
 	color: var(--fgColor);
+	cursor: pointer;
+	user-select: none;
 }
 dictionnaire-donnee > span.fermeture:hover {
 	color: var(--fgColorHover);
@@ -752,6 +756,8 @@ bibliotheque-algorithmique > span.fermeture {
 	font-size: 20px;
 	rotate: 180deg;
 	color: var(--fgColor);
+	cursor: pointer;
+	user-select: none;
 }
 bibliotheque-algorithmique > span.fermeture:hover {
 	color: var(--fgColorHover);
@@ -1278,10 +1284,10 @@ plan-travail {
 }
 
 sous-plan-travail {
-	width: calc(100vw - 38px);
-	height: calc(100vh - 4vw - 56px);
+	width: calc(100% - 40px);
+	height: calc(100% - 120px);
 	position: absolute;
-	top: calc(36px + 4vw);
+	top: 100px;
 	left: 19px;
 	overflow: scroll;
 	scale: 0;
@@ -1300,13 +1306,19 @@ sous-plan-travail > span.fermeture {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: 15px;
-	font-size: 1.2em;
+	padding: 10px;
+	line-height: 8px;
+	font-size: 20px;
+	aspect-ratio: 1 /1;
+	color: var(--fgColor);
 	cursor: pointer;
+	user-select: none;
 }
-
 sous-plan-travail > span.fermeture:hover {
-	text-shadow: 0 0 0.5vw var(--fgColor);
+	color: var(--fgColorHover);
+}
+sous-plan-travail > span.fermeture:active {
+	scale: 0.9;
 }
 
 probleme-element {

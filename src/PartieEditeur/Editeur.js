@@ -300,18 +300,26 @@ class Editeur extends HTMLElement {
 		);
 		// this._themeSelect.appendChild(
 		// 	new ThemeEditeur(
-		// 		"Minuit",
-		// 		"#020012",
-		// 		"#838787",
-		// 		"#83878755",
-		// 		"#83878711",
-		// 		"#A6AAA9",
-		// 		"#8ABE5E",
-		// 		"#8ABE5E99",
-		// 		"#C82606",
-		// 		"#FFE989",
-		// 		"#FFFFFF",
-		// 		"Roboto, sans-serif",
+		// 		"Thème IUT de Bayonne", // nom
+		// 		"#F5F5F5", // bgColor
+		// 		"#FAFAFA", // bgColorSecondary
+		// 		"#1E8DBD", // borderColor
+		// 		"#1E8DBD", // fgColor
+		// 		"#1E8DBD55", // fgColorSemiTransparent
+		// 		"#1E8DBD11", // fgColorTransparent
+		// 		"#1F8AAD", // fgColorForward
+		// 		"#00FF00", // goodColor
+		// 		"#00FF0099", // goodColorTransparent
+		// 		"#FF0000", // errorColor
+		// 		"#FFA300", // warningColor
+		// 		"#D70021", // titleColor
+		// 		"Candara", // fontFamily
+		// 		"", // glowColor
+		// 		"#FFC2CB", // borderColor2
+		// 		"#F5F5F5", // bgColorTertiary
+		// 		"#888888", // fgColorHover
+		// 		"#666666", // fgColorDisabled
+		// 		0, // baseGlowColor
 		// 	),
 		// );
 		// this._themeSelect.appendChild(
@@ -1537,41 +1545,41 @@ class Editeur extends HTMLElement {
 			const cursor =
 				this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
 			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
-			let curseurÀAppliquer;
+			let goodCursor;
 			switch (idTool) {
 				// Lien
 				case 0:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 20 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 20 6, auto`;
 					break;
 				//Probleme, Procedure
 				case 1:
 				case 2:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 10 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 10 6, auto`;
 					break;
 				// Structure si, Structure switch
 				case 3:
 				case 4:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 14 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 14 6, auto`;
 					break;
 				// Boucle itérative non bornée
 				case 5:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 16 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 16 6, auto`;
 					break;
 				// Boucle itérative bornée
 				case 6:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 13 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 13 6, auto`;
 					break;
 				// Condition de sortie
 				case 7:
-					curseurÀAppliquer = `url(${cursor + urlColor}) 22 6, auto`;
+					goodCursor = `url(${cursor + urlColor}) 22 6, auto`;
 					break;
 				default:
-					curseurÀAppliquer = `url(${cursor + urlColor}), auto`;
+					goodCursor = `url(${cursor + urlColor}), auto`;
 					break;
 			}
-			planPrincipal.style.cursor = curseurÀAppliquer;
+			planPrincipal.style.cursor = goodCursor;
 			sousPlanTravail.forEach((sousPlan) => {
-				sousPlan.style.cursor = curseurÀAppliquer;
+				sousPlan.style.cursor = goodCursor;
 			});
 		} else {
 			// Pointeur

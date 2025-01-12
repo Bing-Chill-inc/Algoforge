@@ -148,9 +148,23 @@ class Selection extends HTMLElement {
 
 		for (const selection of this._listeElementsSelectionnes) {
 			const rect = selection.getBoundingClientRect();
+			const sousPlansTravail =
+				document.querySelectorAll("sous-plan-travail");
+			const sousPlansTravailArray = Array.from(sousPlansTravail);
+			const dernierSousPlanOuvert = sousPlansTravailArray
+				.reverse()
+				.find((element) => element.classList.contains("ouvert"));
 
-			const offsetX = this._planTravail.scrollLeft;
-			const offsetY = this._planTravail.scrollTop;
+			let offsetX = 0;
+			let offsetY = 0;
+
+			if (dernierSousPlanOuvert !== undefined) {
+				offsetX = dernierSousPlanOuvert.scrollLeft - 5;
+				offsetY = dernierSousPlanOuvert.scrollTop + 5;
+			} else {
+				offsetX = this._planTravail.scrollLeft;
+				offsetY = this._planTravail.scrollTop;
+			}
 
 			coordonneesMin.x = Math.min(coordonneesMin.x, rect.left + offsetX);
 			coordonneesMin.y = Math.min(coordonneesMin.y, rect.top + offsetY);

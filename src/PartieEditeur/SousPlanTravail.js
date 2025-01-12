@@ -24,10 +24,10 @@ class SousPlanTravail extends PlanTravail {
 		let parent = this.parentElement;
 
 		setInterval(() => {
-			if (this._proprietaire.parentElement == null) {
+			if (this._proprietaire.parentElement === null) {
 				this.remove();
-			} else if (this.parentElement == null) {
-				parent.appendChild(this);
+			} else if (this.parentElement === null) {
+				parent?.appendChild(this);
 			}
 		}, 1000);
 	}
@@ -61,6 +61,18 @@ class SousPlanTravail extends PlanTravail {
 			.parentNode.appendChild(this._spanSousTitre);
 
 		this._editeur._planActif = this;
+
+		const parentDiv = document.querySelector("[data-glow]");
+
+		this.addEventListener("mouseenter", () => {
+			if (preferences.glow) {
+				parentDiv.classList.add("active");
+			}
+		});
+
+		this.addEventListener("mouseleave", () => {
+			parentDiv.classList.remove("active");
+		});
 	}
 
 	fermer() {

@@ -789,6 +789,9 @@ class Probleme extends ElementGraphique {
 					elem.remove();
 				}
 			}
+
+			this._editeur.selectTool(this._editeur._currentTool);
+			this._sousPlan.ouvrir();
 		}
 	}
 
