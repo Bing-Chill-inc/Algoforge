@@ -87,7 +87,7 @@ class Bibliotheque extends HTMLElement {
 	 */
 	ouvrir() {
 		document.querySelector("dictionnaire-donnee").fermer();
-		document.getElementById("biblio_wrapper").style.zIndex = 300;
+		document.getElementById("biblio_wrapper").style.zIndex = 40;
 		document.getElementById("boutonBiblio").classList.add("elementIsOpen");
 
 		if (this._estOuvert) {
