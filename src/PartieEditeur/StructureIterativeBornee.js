@@ -58,15 +58,15 @@ class StructureIterativeBornee extends StructureIterative {
 		if (this.etatClassique()) {
 			this.querySelector(
 				".informationsBornes",
-			).innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
+			).innerHTML = `Pour ${this._variableAIterer} allant <br/> de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
 			this.querySelector(".informationsBornes").innerHTML = `Pour ${
 				this._variableAIterer
-			} allant de ${this._borneInferieure} à ${
+			} allant <br/> de ${this._borneInferieure} à ${
 				this._borneSuperieure
-			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${
-				this._pas
-			}`;
+			} <br/> par pas ${
+				this._estCroissant ? "Croissant" : "Décroissant"
+			} de ${this._pas}`;
 		}
 	}
 
@@ -127,15 +127,15 @@ class StructureIterativeBornee extends StructureIterative {
 		let divInformationsBornes = document.createElement("div");
 		divInformationsBornes.className = "informationsBornes";
 		if (this.etatClassique()) {
-			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
+			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant <br/> de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
 			divInformationsBornes.innerHTML = `Pour ${
 				this._variableAIterer
-			} allant de ${this._borneInferieure} à ${
+			} allant <br/> de ${this._borneInferieure} à ${
 				this._borneSuperieure
-			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${
-				this._pas
-			}`;
+			} <br/> par pas ${
+				this._estCroissant ? "Croissant" : "Décroissant"
+			} de ${this._pas}`;
 		}
 		this.appendChild(divInformationsBornes);
 	}
