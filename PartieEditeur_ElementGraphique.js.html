@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/ElementGraphique.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/ElementGraphique.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class ElementGraphique
+ * @classdesc La classe ElementGraphique est la base de tous les éléments de l'éditeur d'algorithmes.
+ * @description Est utilisé pour instancier les héritiers de la classe ElementGraphique. Par défaut, la position à la création de l'instance est à (0,0).
+ * @abstract
+ * @extends {HTMLElement}
+ */
+class ElementGraphique extends HTMLElement {
+	// ATTRIBUTS
+	_abscisse; // Entier
+	_ordonnee; // Entier
+	_parent; // ElementParent
+	_listeAnomalie; // List&lt;AnomalieConceptuelle>
+	_elementGraphique;
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {number} [abscisse=0] - L'abscisse de l'ElementGraphique.
+	 * @param {number} [ordonnee=0] - L'ordonnée de l'ElementGraphique.
+	 * @param {ElementParent} [parent=null] - Le parent de l'ElementGraphique, par défaut n'a pas de parent.
+	 */
+	constructor(abscisse = 0, ordonnee = 0, parent = null) {
+		super();
+		this._abscisse = abscisse;
+		this._ordonnee = ordonnee;
+		this._parent = parent;
+		this._elementGraphique = this;
+		this.setPosition(abscisse, ordonnee);
+
+		// Empêchez le focus automatique sur d'autres éléments
+		document.activeElement.blur();
+	}
+
+	// ENCAPSULATION
+	/**
+	 * @description Renvoie la valeur de l'abscisse de l'ElementGraphique.
+	 * @returns {number} L'abscisse.
+	 */
+	get _abscisse() {
+		return this._abscisse;
+	}
+
+	/**
+	 * @description Définit la valeur de l'abscisse de l'ElementGraphique.
+	 * @param {number} value - La nouvelle valeur de l'abscisse.
+	 */
+	set _abscisse(value) {
+		this._abscisse = value;
+	}
+
+	/**
+	 * @description Renvoie la valeur de l'ordonnée de l'ElementGraphique.
+	 * @returns {number} L'ordonnée.
+	 */
+	get _ordonnee() {
+		return this._ordonnee;
+	}
+
+	/**
+	 * @description Définit la valeur de l'ordonnée de l'ElementGraphique.
+	 * @param {number} value - La nouvelle valeur de l'ordonnée.
+	 */
+	set _ordonnee(value) {
+		this._ordonnee = value;
+	}
+
+	/**
+	 * @description Renvoie le parent de l'ElementGraphique.
+	 * @returns {ElementParent} Le parent de l'ElementGraphique.
+	 */
+	get _parent() {
+		return this._parent;
+	}
+
+	/**
+	 * @description Définit le parent de l'ElementGraphique.
+	 * @param {ElementParent} value - Le nouveau parent de l'ElementGraphique.
+	 */
+	set _parent(value) {
+		this._parent = value;
+	}
+
+	/**
+	 * @description Renvoie l'espace de travail de l'ElementGraphique.
+	 * @returns {HTMLElement} L'espace de travail.
+	 */
+	get espaceTravail() {
+		return this.parentNode;
+	}
+
+	/**
+	 * @description Renvoie l'ancre de sélection de l'ElementGraphique.
+	 * @returns {Object} L'ancre de sélection avec les coordonnées x et y.
+	 */
+	get selectAnchor() {
+		let anchor = { x: 0, y: 0 };
+		anchor.x = parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+		anchor.y = parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2;
+		return anchor;
+	}
+
+	/**
+	 * @description Renvoie la taille en abscisse de l'ElementGraphique.
+	 * @returns {number} La taille en abscisse.
+	 */
+	getTailleAbscisse() {
+		let rect = this.getBoundingClientRect();
+
+		// Calculez la largeur en unité vw
+		let largeurEnVw = ((rect.right - rect.left) / window.innerWidth) * 100;
+		return largeurEnVw;
+	}
+
+	/**
+	 * @description Renvoie la taille en ordonnée de l'ElementGraphique.
+	 * @returns {number} La taille en ordonnée.
+	 */
+	getTailleOrdonnee() {
+		let rect = this.getBoundingClientRect();
+
+		// Calculez la hauteur en unité vh
+		let hauteurEnVh = ((rect.bottom - rect.top) / window.innerHeight) * 100;
+		return hauteurEnVh;
+	}
+
+	/**
+	 * @description Renvoie le centre de l'ElementGraphique.
+	 * @returns {Object} Le centre avec les coordonnées x et y.
+	 */
+	getCentre() {
+		return {
+			x: parseFloat(this._abscisse) + this.getTailleAbscisse() / 2,
+			y: parseFloat(this._ordonnee) + this.getTailleOrdonnee() / 2,
+		};
+	}
+
+	/**
+	 * @description Définit la position de l'ElementGraphique.
+	 * @param {number} [abscisse=-1] - L'abscisse.
+	 * @param {number} [ordonnee=-1] - L'ordonnée.
+	 */
+	setPosition(abscisse = -1, ordonnee = -1) {
+		if (abscisse == -1 &amp;&amp; ordonnee == -1) {
+			this.style.left =
+				"calc(var(--sizeModifier) * " + this._abscisse + ")";
+			this.style.top =
+				"calc(var(--sizeModifier) * " + this._ordonnee + ")";
+		} else {
+			this.style.left = "calc(var(--sizeModifier) * " + abscisse + ")";
+			this.style.top = "calc(var(--sizeModifier) * " + ordonnee + ")";
+		}
+	}
+
+	/**
+	 * @description Renvoie la position de l'ElementGraphique sous forme de dictionnaire.
+	 * @returns {Object} Un objet contenant l'abscisse et l'ordonnée de l'ElementGraphique.
+	 */
+	getPosition() {
+		return { abscisse: this.style.left, ordonnee: this.style.top };
+	}
+
+	// METHODES
+	/**
+	 * @description Affiche dans la console la position de l'ElementGraphique.
+	 */
+	afficher() {
+		console.log(
+			`Abscisse : ${this._abscisse} Ordonnée : ${this._ordonnee}`,
+		);
+	}
+
+	/**
+	 * @description Comportement natif de extraireInformation(), affiche dans la console une erreur d'initialisation et sa position.
+	 * @returns {Array&lt;Information>} Une liste de classe Informations.
+	 */
+	extraireInformation() {
+		console.log(
+			"Extraire J'ai pas été initialisé abcisse " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
+		return [];
+	}
+
+	/**
+	 * @description Comportement natif de getEnfants(), ne renvoie rien.
+	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] - Le type demandé.
+	 * @returns {Array&lt;ElementGraphique>} La liste des enfants du type recherché.
+	 */
+	getEnfants(typeRechercher = ElementGraphique) {
+		return [];
+	}
+
+	/**
+	 * @description Renvoie l'arbre des descendants contenant les descendants des descendants.
+	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] - Le type recherché.
+	 * @returns {Array&lt;ElementGraphique>} L'arbre des descendants de l'ElementGraphique.
+	 */
+	getDescendants(typeRechercher = ElementGraphique) {
+		const listeDeMesEnfants = this.getEnfants();
+		let listeDeMesDescendants = listeDeMesEnfants;
+		for (let enfant of listeDeMesEnfants) {
+			listeDeMesDescendants = [
+				...listeDeMesDescendants,
+				...enfant.getDescendants(),
+			];
+		}
+		return PlanTravail.FiltrerElementsGraphique(
+			listeDeMesDescendants,
+			typeRechercher,
+		);
+	}
+
+	/**
+	 * @description Renvoie le parent de l'ElementGraphique du type recherché.
+	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] - Le type recherché.
+	 * @returns {ElementGraphique} Le parent.
+	 */
+	getParent(typeRechercher = ElementGraphique) {
+		if (this._parent) {
+			return this._parent._proprietaire._elementGraphique instanceof
+				typeRechercher
+				? this._parent._proprietaire._elementGraphique
+				: null;
+		}
+		return null;
+	}
+
+	/**
+	 * @description Renvoie la liste des antécédents d'ElementGraphique en fonction du type recherché.
+	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] - Le type recherché.
+	 * @returns {Array&lt;ElementGraphique>} L'arbre des antécédents de l'ElementGraphique.
+	 */
+	getAntescedants(typeRechercher = ElementGraphique) {
+		const parent = this.getParent();
+		let listeDeMesAntescedants = [];
+		if (parent !== null) {
+			listeDeMesAntescedants.push(parent);
+			listeDeMesAntescedants = [
+				...listeDeMesAntescedants,
+				...parent.getAntescedants(),
+			];
+		}
+		return PlanTravail.FiltrerElementsGraphique(
+			listeDeMesAntescedants,
+			typeRechercher,
+		);
+	}
+
+	/**
+	 * @description Comportement natif de include(), affiche dans la console une erreur d'initialisation et sa position.
+	 * @param {string} nameInformation - Les informations recherchées.
+	 * @returns {boolean} Renvoie false par défaut.
+	 */
+	include(nameInformation) {
+		console.log(
+			"Include J'ai pas été initialisé je suis " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
+		return false;
+	}
+
+	/**
+	 * @description Comportement natif de getPlanTravail(), retourne le plan de travail.
+	 * @returns {PlanTravail} Le plan de travail appartenant au résultat défini, dans Probleme.
+	 */
+	getPlanTravail() {
+		return this.parentElement;
+	}
+
+	/**
+	 * @description Comportement natif de getInformationResultat(), affiche dans la console une erreur d'initialisation et sa position.
+	 * @returns {Array&lt;Information>} Les informations contenues dans résultat défini, dans Probleme.
+	 */
+	getInformationResultat() {
+		console.log(
+			"get Information Resultat non défini dans ma classe abscisse" +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
+		return [];
+	}
+
+	/**
+	 * @description Comportement natif de getInformationDonnee(), affiche dans la console une erreur d'initialisation et sa position.
+	 * @returns {Array&lt;Information>} Les informations contenues dans données définies, dans Probleme.
+	 */
+	getInformationDonnee() {
+		console.log(
+			"get Information Donnée non défini dans ma classe je suis " +
+				this._abscisse +
+				" ordonee " +
+				this._ordonnee,
+		);
+		return [];
+	}
+
+	/**
+	 * @description Recherche les anomalies dans l'ElementGraphique et ses enfants.
+	 * @param {Array&lt;AnomalieConceptuelle>} mesAnomalies - La liste des anomalies à rechercher.
+	 * @returns {Array&lt;AnomalieConceptuelle>} La liste des anomalies trouvées.
+	 */
+	rechercherAnomalies(mesAnomalies) {
+		this._listeAnomalie = mesAnomalies;
+		let anomalieDeMesEnfantsEtLesMiennes = [];
+		let enfants = this.getEnfants();
+		for (let enfant of enfants) {
+			anomalieDeMesEnfantsEtLesMiennes = [
+				...anomalieDeMesEnfantsEtLesMiennes,
+				...enfant.rechercherAnomalies(),
+			];
+		}
+		anomalieDeMesEnfantsEtLesMiennes = [
+			...anomalieDeMesEnfantsEtLesMiennes,
+			...mesAnomalies,
+		];
+		return anomalieDeMesEnfantsEtLesMiennes;
+	}
+
+	/**
+	 * @description Colore l'ElementGraphique.
+	 */
+	colorierElement() {
+		//console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+	}
+
+	/**
+	 * @description Renomme une information dans l'ElementGraphique.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
+	renameInformation(ancienNom, nouveauNom) {}
+
+	/**
+	 * @description Renvoie l'ancre de décomposition de l'ElementGraphique.
+	 * @returns {Object} L'ancre de décomposition avec les coordonnées abscisse et ordonnee.
+	 */
+	getAncreDecomposition() {
+		let abscisse =
+			parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+		let ordonnee = parseFloat(this._ordonnee) + this.getTailleOrdonnee();
+		return { abscisse: abscisse, ordonnee: ordonnee - 0.7 };
+	}
+
+	/**
+	 * @description Renvoie l'ancre de composition de l'ElementGraphique.
+	 * @returns {Object} L'ancre de composition avec les coordonnées abscisse et ordonnee.
+	 */
+	getAncreComposition() {
+		let abscisse =
+			parseFloat(this._abscisse) + this.getTailleAbscisse() / 2;
+		let ordonnee = parseFloat(this._ordonnee);
+		return { abscisse: abscisse, ordonnee: ordonnee };
+	}
+
+	/**
+	 * @description Vérifie si l'ElementGraphique peut être décomposé.
+	 * @returns {boolean} Renvoie false par défaut.
+	 */
+	peutEtreDecompose() {
+		return false;
+	}
+
+	/**
+	 * @description Supprime l'ElementGraphique.
+	 */
+	supprimer() {
+		if (this._parent != null) this._parent.delierEnfant(this, true);
+		this.remove();
+	}
+
+	/**
+	 * @description Génère les options contextuelles pour l'ElementGraphique.
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes.
+	 * @returns {Array&lt;ElementMenu>} La liste des options contextuelles.
+	 */
+	genererOptionsContextuelles(editeur) {
+		let lesOptions = [];
+		if (this.peutEtreDecompose()) {
+			lesOptions.push(
+				new ElementMenu("Décomposer", () => {
+					editeur.selectTool(6); // Outil de liaison
+					editeur._pointePrecedementLien = this;
+					this.classList.add("pointePourLien");
+				}),
+			);
+			if (this._elemParent.nombreEnfants != 0) {
+				lesOptions.push(
+					new ElementMenu("Délier tous les enfants", () => {
+						this._elemParent.delierTousLesEnfants();
+					}),
+				);
+			}
+		}
+		if (this._parent != null) {
+			lesOptions.push(
+				new ElementMenu("Délier du parent", () => {
+					this._parent.delierEnfant(this);
+				}),
+			);
+		}
+		return lesOptions;
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

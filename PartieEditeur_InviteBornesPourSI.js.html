@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/InviteBornesPourSI.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/InviteBornesPourSI.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class InviteBornesPourSI
+ * @classdesc Représente une invite pour demander les bornes d'une structure itérative.
+ * @description Cette classe est utilisée pour créer une interface permettant de définir les bornes d'une structure itérative.
+ * @extends {HTMLElement}
+ */
+class InviteBornesPourSI extends HTMLElement {
+	_structureIterative;
+	_structureIterativeBornee;
+	_structureIterativeNonBornee;
+	_editeur = document.querySelector("editeur-interface"); // Editeur
+
+	/**
+	 * @constructor
+	 * @param {StructureIterative} uneStructureIterative - La structure itérative pour laquelle l'invite est créée.
+	 * @param {string} [oldIndice=""] - L'ancien indice à itérer.
+	 * @param {string} [oldBorneInf=""] - L'ancienne borne inférieure.
+	 * @param {string} [oldBorneSup=""] - L'ancienne borne supérieure.
+	 * @param {string} [oldPas=""] - L'ancien pas.
+	 */
+	constructor(
+		uneStructureIterative,
+		oldIndice = "",
+		oldBorneInf = "",
+		oldBorneSup = "",
+		oldPas = "",
+	) {
+		super();
+		if (verbose)
+			console.log(
+				`Une invite pour les bornes a été créée pour la structure itérative : ${uneStructureIterative}`,
+			);
+		this._structureIterative = uneStructureIterative;
+
+		if (uneStructureIterative instanceof StructureIterativeBornee) {
+			this._structureIterativeBornee = uneStructureIterative;
+			this._structureIterativeNonBornee =
+				new StructureIterativeNonBornee();
+			if (verbose)
+				console.log(
+					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`,
+				); // null normalement
+			this._structureIterativeNonBornee._inviteBornes = this;
+			if (verbose)
+				console.log(
+					`this._structureIterativeNonBornee._inviteBornes : ${this._structureIterativeNonBornee._inviteBornes}`,
+				); // this normalement
+			this._structureIterativeNonBornee.afficher();
+		} else if (
+			uneStructureIterative instanceof StructureIterativeNonBornee
+		) {
+			this._structureIterativeNonBornee = uneStructureIterative;
+			this._structureIterativeBornee = new StructureIterativeBornee();
+			if (verbose)
+				console.log(
+					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`,
+				); // null normalement
+			this._structureIterativeBornee._inviteBornes = this;
+			if (verbose)
+				console.log(
+					`this._structureIterativeBornee._inviteBornes : ${this._structureIterativeBornee._inviteBornes}`,
+				); // this normalement
+			this._structureIterativeBornee.afficher();
+		}
+
+		setInterval(() => {
+			this.style.left = `
+				calc(var(--sizeModifier) * ${
+					parseFloat(this._structureIterative._abscisse) +
+					this._structureIterative.getTailleAbscisse() +
+					1
+				}vw)`;
+			this.style.top = `
+            calc(var(--sizeModifier) * ${parseFloat(
+				this._structureIterative._ordonnee,
+			)}vw`;
+		}, 1000 / 48); // 48 images par seconde
+
+		let labelPour = document.createElement("label");
+		labelPour.innerText = "Pour";
+		labelPour.style.gridColumn = "1";
+		labelPour.style.gridRow = "1";
+		this.appendChild(labelPour);
+
+		this.indice = document.createElement("input");
+		this.indice.placeholder = "Indice à itérer";
+		this.indice.style.gridColumn = "2 / span 3";
+		this.indice.style.gridRow = "1";
+		this.indice.style.width = "100%";
+		this.indice.value = oldIndice;
+		this.appendChild(this.indice);
+
+		let labelDe = document.createElement("label");
+		labelDe.innerText = "allant De";
+		labelDe.style.gridColumn = "1";
+		labelDe.style.gridRow = "2";
+		this.appendChild(labelDe);
+
+		this.borneInf = document.createElement("input");
+		this.borneInf.placeholder = "Borne inférieure";
+		this.borneInf.style.gridColumn = "2";
+		this.borneInf.style.gridRow = "2";
+		this.borneInf.value = oldBorneInf;
+		this.appendChild(this.borneInf);
+
+		let labelA = document.createElement("label");
+		labelA.innerText = "à";
+		labelA.style.gridColumn = "3";
+		labelA.style.gridRow = "2";
+		this.appendChild(labelA);
+
+		this.borneSup = document.createElement("input");
+		this.borneSup.placeholder = "Borne supérieure";
+		this.borneSup.style.gridColumn = "4";
+		this.borneSup.style.gridRow = "2";
+		this.borneSup.value = oldBorneSup;
+		this.appendChild(this.borneSup);
+
+		let labelPas = document.createElement("label");
+		labelPas.innerText = "avec un pas";
+		labelPas.style.gridColumn = "1 / span 2";
+		labelPas.style.gridRow = "3";
+		this.appendChild(labelPas);
+
+		this.selectCroissant = document.createElement("select");
+		this.selectCroissant.style.gridColumn = "2";
+		this.selectCroissant.style.gridRow = "3";
+		let optionCroissant = document.createElement("option");
+		optionCroissant.value = "croissant";
+		optionCroissant.innerText = "croissant de";
+		let optionDecroissant = document.createElement("option");
+		optionDecroissant.value = "décroissant";
+		optionDecroissant.innerText = "décroissant de";
+		this.selectCroissant.appendChild(optionCroissant);
+		this.selectCroissant.appendChild(optionDecroissant);
+		this.appendChild(this.selectCroissant);
+
+		this.pas = document.createElement("input");
+		this.pas.placeholder = "Pas";
+		this.pas.style.gridColumn = "3 / span 2";
+		this.pas.style.gridRow = "3";
+		this.pas.value = oldPas;
+		this.appendChild(this.pas);
+
+		this.button = document.createElement("button");
+		this.button.innerText = "Valider";
+		this.button.classList.add("valider");
+		this.button.style.gridColumn = "3 / span 2";
+		this.button.style.gridRow = "4";
+		this.button.addEventListener("click", (e) => {
+			this.valider();
+		});
+		this.appendChild(this.button);
+
+		this.nBorne = document.createElement("button");
+		this.nBorne.innerText = "Non borné";
+		this.nBorne.classList.add("non-borne");
+		this.nBorne.style.gridColumn = "1 / span 2";
+		this.nBorne.style.gridRow = "4";
+		this.nBorne.addEventListener("click", (e) => {
+			this.nonBorne();
+		});
+		this.appendChild(this.nBorne);
+
+		this.classList.add("nonCiblable");
+
+		this.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				this.valider();
+			}
+			if (e.key === "Escape") {
+				e.preventDefault();
+				this.remove();
+			}
+		});
+	}
+
+	/**
+	 * @description Valide les bornes saisies et met à jour la structure itérative.
+	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
+	 */
+	valider(estAnnulation = false) {
+		// Vérifions que la structure active est bien celle qui est placée sur un plan de travail
+		if (this._structureIterative.parentNode == null) {
+			if (this._structureIterativeBornee.parentNode != null) {
+				this._structureIterative = this._structureIterativeBornee;
+			} else if (this._structureIterativeNonBornee.parentNode != null) {
+				this._structureIterative = this._structureIterativeNonBornee;
+			}
+		}
+
+		let ancienneStructure = {};
+		ancienneStructure.estBornee =
+			this._structureIterative instanceof StructureIterativeBornee;
+		ancienneStructure.indice = this._structureIterative._indice;
+		ancienneStructure.borneInf = this._structureIterative._borneInferieure;
+		ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
+		ancienneStructure.pas = this._structureIterative._pas;
+
+		let nouvelleStructure = {};
+		nouvelleStructure.estBornee = true;
+		nouvelleStructure.indice = this.indice.value;
+		nouvelleStructure.borneInf = this.borneInf.value;
+		nouvelleStructure.borneSup = this.borneSup.value;
+		nouvelleStructure.pas = this.pas.value;
+
+		if (!estAnnulation) {
+			this._editeur.ajouterEvenement(
+				new EvenementEditionStructureIterative(
+					this._structureIterative,
+					ancienneStructure,
+					nouvelleStructure,
+				),
+			);
+		}
+
+		if (estAnnulation &amp;&amp; verbose) {
+			console.log("---");
+			console.log(
+				`this._structureIterative instanceof StructureIterativeBornee : ${
+					this._structureIterative instanceof StructureIterativeBornee
+				}`,
+			);
+			console.log(
+				`this._structureIterative instanceof StructureIterativeNonBornee : ${
+					this._structureIterative instanceof
+					StructureIterativeNonBornee
+				}`,
+			);
+			console.log(
+				`this._structureIterative.parentNode : ${this._structureIterative.parentNode}`,
+			);
+			console.log(
+				`this._structureIterativeBornee.parentNode : ${this._structureIterativeBornee.parentNode}`,
+			);
+			console.log(
+				`this._structureIterativeNonBornee.parentNode : ${this._structureIterativeNonBornee.parentNode}`,
+			);
+			console.log(this._structureIterativeBornee);
+			console.log(this._structureIterativeNonBornee);
+		}
+
+		if (this._structureIterative instanceof StructureIterativeBornee) {
+			this._structureIterative._borneInferieure =
+				this.borneInf.value || "BORNE_INF";
+			this._structureIterative._borneSuperieure =
+				this.borneSup.value || "BORNE_SUP";
+			this._structureIterative._pas = this.pas.value || "1";
+			this._structureIterative._estCroissant =
+				this.selectCroissant.value == "croissant";
+			this._structureIterative.setVariableAIterer(
+				this.indice.value || "i",
+			);
+		} else if (
+			this._structureIterative instanceof StructureIterativeNonBornee
+		) {
+			let plan = this._structureIterative.parentNode;
+			// let nouvelleStructure = new StructureIterativeBornee(this._structureIterative._abscisse, this._structureIterative._ordonnee, this.indice.value, this.borneInf.value, this.borneSup.value, this.pas.value);
+			this._structureIterativeBornee._abscisse =
+				this._structureIterative._abscisse;
+			this._structureIterativeBornee._ordonnee =
+				this._structureIterative._ordonnee;
+			this._structureIterativeBornee.setPosition();
+			this._structureIterativeBornee._borneInferieure =
+				this.borneInf.value || "BORNE_INF";
+			this._structureIterativeBornee._borneSuperieure =
+				this.borneSup.value || "BORNE_SUP";
+			this._structureIterativeBornee._pas = this.pas.value || "1";
+			this._structureIterativeBornee._estCroissant =
+				this.selectCroissant.value == "croissant";
+			this._structureIterativeBornee.setVariableAIterer(
+				this.indice.value || "i",
+			);
+
+			// nouvelleStructure.afficher();
+			plan.removeChild(this._structureIterative);
+			plan.appendChild(this._structureIterativeBornee);
+
+			if (this._structureIterative._parent != null) {
+				this._structureIterative._parent.lierEnfant(
+					this._structureIterativeBornee,
+				);
+				this._structureIterative._parent.delierEnfant(
+					this._structureIterative,
+				);
+			}
+			this._structureIterative._elemParent._listeElementsEnfants.forEach(
+				(lien) => {
+					this._structureIterative._elemParent.delierEnfant(
+						lien.element,
+					);
+					this._structureIterativeBornee._elemParent.lierEnfant(
+						lien.element,
+					);
+				},
+			);
+			this._structureIterative = this._structureIterativeBornee;
+		}
+		if (this.parentNode) this.parentNode.removeChild(this);
+	}
+
+	/**
+	 * @description Définit la structure itérative comme non bornée.
+	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
+	 */
+	nonBorne(estAnnulation = false) {
+		let ancienneStructure = {};
+		ancienneStructure.estBornee =
+			this._structureIterative instanceof StructureIterativeBornee;
+		ancienneStructure.indice = this._structureIterative._indice;
+		ancienneStructure.borneInf = this._structureIterative._borneInferieure;
+		ancienneStructure.borneSup = this._structureIterative._borneSuperieure;
+		ancienneStructure.pas = this._structureIterative._pas;
+
+		let nouvelleStructureEvent = {};
+		nouvelleStructureEvent.estBornee = false;
+
+		if (!estAnnulation) {
+			this._editeur.ajouterEvenement(
+				new EvenementEditionStructureIterative(
+					this._structureIterative,
+					ancienneStructure,
+					nouvelleStructureEvent,
+				),
+			);
+		}
+
+		let plan =
+			this._structureIterativeNonBornee.parentNode ||
+			this._structureIterativeBornee.parentNode;
+		// let nouvelleStructure = new StructureIterativeNonBornee(this._structureIterative._abscisse, this._structureIterative._ordonnee);
+		this._structureIterativeNonBornee._abscisse =
+			this._structureIterative._abscisse;
+		this._structureIterativeNonBornee._ordonnee =
+			this._structureIterative._ordonnee;
+		this._structureIterativeNonBornee.setPosition();
+		// nouvelleStructure.afficher();
+		plan.removeChild(this._structureIterative);
+		plan.appendChild(this._structureIterativeNonBornee);
+
+		if (this._structureIterative._parent != null) {
+			this._structureIterative._parent.lierEnfant(
+				this._structureIterativeNonBornee,
+			);
+			this._structureIterative._parent.delierEnfant(
+				this._structureIterative,
+			);
+		}
+		this._structureIterative._elemParent._listeElementsEnfants.forEach(
+			(lien) => {
+				this._structureIterative._elemParent.delierEnfant(lien.element);
+				this._structureIterativeNonBornee._elemParent.lierEnfant(
+					lien.element,
+				);
+			},
+		);
+		this._structureIterative = this._structureIterativeNonBornee;
+		if (this.parentNode) this.parentNode.removeChild(this);
+	}
+}
+window.customElements.define("invite-bornes-pour-si", InviteBornesPourSI);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

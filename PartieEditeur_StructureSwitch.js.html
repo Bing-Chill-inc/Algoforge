@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/StructureSwitch.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/StructureSwitch.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class StructureSwitch
+ * @classdesc La Structure Switch
+ * @description Crée une instance de StructureSwitch
+ * @extends {StructureAlternative}
+ */
+class StructureSwitch extends StructureAlternative {
+	// ATTRIBUTS
+	_expressionATester; // String
+	_ancienneExpressionATester; // String
+	_editeur = document.querySelector("editeur-interface"); // Editeur
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {string|number} abscisse l'abscisse
+	 * @param {string|number} ordonnee l'ordonnée
+	 * @param {Array&lt;Condition>} listeConditions La liste des conditions
+	 * @param {string} expressionATester l'expression utilisé dans le switch
+	 */
+	constructor(
+		abscisse,
+		ordonnee,
+		listeConditions = [],
+		expressionATester = "",
+	) {
+		super(abscisse, ordonnee, listeConditions);
+		this._expressionATester = expressionATester;
+		this._ancienneExpressionATester = expressionATester;
+	}
+
+	// ENCAPSULATION
+	/**
+	 * @description Renvoie l'expression à tester de la StructureSwitch
+	 * @returns {string} l'expression de la StructureSwitch
+	 */
+	get expressionATester() {
+		return this.querySelector(".expressionATester").textContent;
+	}
+
+	/**
+	 * @description Définie l'expression à tester pour la StructureSwitch
+	 * @param {string} value La nouvelle expression à tester
+	 */
+	set expressionATester(value) {
+		this.querySelector(".expressionATester").innerText = value;
+	}
+
+	// METHODES
+	/**
+	 * @description afficher la StructureSwitch sur le plan de travail
+	 */
+	afficher() {
+		let divTriangleGauche = document.createElement("div");
+		divTriangleGauche.className = "triangleGauche";
+		divTriangleGauche.classList.add("triangle");
+		divTriangleGauche.innerHTML = "&lt;span>-&lt;span>";
+		divTriangleGauche.addEventListener("click", (e) => {
+			this.supprimerCondition();
+		});
+		this.appendChild(divTriangleGauche);
+
+		this.divExpressionATester = document.createElement("div");
+		this.divExpressionATester.className = "expressionATester";
+		this.divExpressionATester.contentEditable = "true";
+		this.divExpressionATester.innerText = this._expressionATester;
+		this.appendChild(this.divExpressionATester);
+
+		this.divExpressionATester.addEventListener("focusout", (e) => {
+			if (this._ancienneExpressionATester != this.expressionATester) {
+				this._editeur.ajouterEvenement(
+					new EvenementEditionExpressionSwitch(
+						this,
+						this._ancienneExpressionATester,
+						this.expressionATester,
+					),
+				);
+				this._ancienneExpressionATester = this.expressionATester;
+			}
+		});
+
+		let hrDiviseurGauche = document.createElement("hr");
+		hrDiviseurGauche.className = "diviseurGauche";
+		this.appendChild(hrDiviseurGauche);
+
+		let divConditionContainer = document.createElement("div");
+		divConditionContainer.className = "conditionContainer";
+		this.appendChild(divConditionContainer);
+
+		for (let i = 0; i &lt; this._listeConditions.length; i++) {
+			this._listeConditions[i]._structure = this;
+			divConditionContainer.appendChild(this._listeConditions[i]);
+		}
+
+		this._listeConditions = divConditionContainer;
+
+		let divTriangleDroit = document.createElement("div");
+		divTriangleDroit.className = "triangleDroit";
+		divTriangleDroit.classList.add("triangle");
+		divTriangleDroit.innerHTML = "&lt;span>+&lt;span>";
+		divTriangleDroit.addEventListener("click", (e) => {
+			this.ajouterCondition();
+		});
+		this.appendChild(divTriangleDroit);
+
+		let hrDiviseurDroit = document.createElement("hr");
+		hrDiviseurDroit.className = "diviseurDroit";
+		this.appendChild(hrDiviseurDroit);
+	}
+
+	/**
+	 * @description Enregistre les valeurs de la StructureSwitch dans une variables
+	 */
+	ExtraireVariables() {
+		let nameVariable = this.querySelector(".expressionATester").textContent;
+		let premiereCondition = this.querySelector(".conditionContainer");
+
+		return [];
+	}
+
+	/**
+	 * @description Renvoie le corp JSON des information contenu dans la StructureSwitch
+	 *
+	 * @returns {JSON} le corps json de la StructureSwitch
+	 * @property {ElementGraphique} typeElement Le type de la StructureSwitch (qui est StructureSwitch)
+	 * @property {string|number} abscisse l'abscisse
+	 * @property {string|number} ordonee l'ordonnée
+	 * @property {string} expressionATester l'expression actuellement tester par la StructureSwitch
+	 * @property {Array&lt;Condition>} conditions la liste des conditions actuelle dans la StructureSwitch
+	 */
+	toJSON() {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(condition.toJSON());
+		}
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			expressionATester:
+				this.querySelector(".expressionATester").textContent,
+			conditions: conditions,
+		};
+	}
+
+	/**
+	 * @description Renvoie le corp JSON des informations contenu dans la StructureSwitch en spécifiant les éléments enfants à conserver
+	 * @param {Array&lt;ElementGraphique>} listeElemEnfantsAConcerver La liste des éléments enfants à conserver
+	 * @returns {JSON} le corps json de la StructureSwitch
+	 */
+	toJSONspecifier(listeElemEnfantsAConcerver) {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(
+				condition.toJSONspecifier(listeElemEnfantsAConcerver),
+			);
+		}
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			expressionATester:
+				this.querySelector(".expressionATester").textContent,
+			conditions: conditions,
+		};
+	}
+
+	/**
+	 * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci
+	 * @returns {Array&lt;AnomalieConceptuelle>} La liste précédantes + les anomalies détecté par la StructureSwitch
+	 */
+	rechercherAnomalies() {
+		let mesAnomalies = [];
+		//8
+		if (ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+			mesAnomalies.push(new ErreurSyntaxeComparaison(this));
+		}
+		//12
+		let tropDeSousElements =
+			AvertissementTropDeSousElements.detecterAnomalie(this);
+		if (tropDeSousElements[0]) {
+			mesAnomalies.push(
+				new AvertissementTropDeSousElements(
+					this,
+					tropDeSousElements[1],
+				),
+			);
+		}
+		//16
+		let comparaisonSwitch = ErreurComparaisonSwitch.detecterAnomalie(this);
+		if (comparaisonSwitch[0]) {
+			mesAnomalies.push(
+				new ErreurComparaisonSwitch(this, comparaisonSwitch[1]),
+			);
+		}
+		if (!comparaisonSwitch[0]) {
+			let typesInconsistantsAlternatif =
+				ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+			if (typesInconsistantsAlternatif[0]) {
+				mesAnomalies.push(
+					new ErreurTypesInconsistantsAlternatif(
+						this,
+						typesInconsistantsAlternatif[1],
+						typesInconsistantsAlternatif[2],
+					),
+				);
+			}
+		}
+		return super.rechercherAnomalies(mesAnomalies);
+	}
+
+	/**
+	 * @description Extrait les informations de la StructureSwitch
+	 * @returns {Array&lt;Information>} Une liste de classe Informations.
+	 */
+	extraireInformation() {
+		if (this._expressionATester.trim() == "") {
+			return [new Information(this._expressionATester, Type.undefined)];
+		}
+		return [];
+	}
+}
+window.customElements.define("structure-switch-element", StructureSwitch);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

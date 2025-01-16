@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/InviteNouvelleBibliotheque.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/InviteNouvelleBibliotheque.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Classe représentant une invitation pour ajouter une nouvelle bibliothèque.
+ * @extends HTMLElement
+ */
+class InviteNouvelleBibliotheque extends HTMLElement {
+	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_algoJSON; // String (JSON.stringify())
+	inputNom = document.createElement("input");
+	inputDescription = document.createElement("input");
+	boutonAjouter = document.createElement("button");
+	boutonCancel = document.createElement("button");
+
+	/**
+	 * Crée une instance de InviteNouvelleBibliotheque.
+	 * @param {string} algoJSON - Le JSON de l'algorithme.
+	 */
+	constructor(algoJSON) {
+		super();
+		this._algoJSON = algoJSON;
+
+		let algoPreview = document.createElement("div");
+		// Paramétrage de la prévisualisation
+		let divTransparent = document.createElement("div"); // Pour empêcher l'utilisateur d'intéragir avec le plan de travail miniature
+		divTransparent.classList.add("divTransparent");
+		algoPreview.appendChild(divTransparent);
+
+		algoPreview.classList.add("previewAlgo");
+		try {
+			let planTravail = new PlanTravail();
+			planTravail.chargerDepuisJSON(JSON.parse(algoJSON), false);
+			let tailles = planTravail.getCoordMinEtMax();
+			if (verbose) console.log(tailles);
+			// À partir des tailles, on peut déterminer la taille de la prévisualisation, et ainsi calculer le zoom à appliquer
+			let largeur = tailles.coordMax.x - tailles.coordMin.x;
+			let hauteur = tailles.coordMax.y - tailles.coordMin.y;
+			planTravail.toutDeplacer(-tailles.coordMin.x, -tailles.coordMin.y);
+
+			// Compenser la taille avec un scale() pour obtenir du 25vw et 15vw
+			let scale = Math.min(25 / largeur, 15 / hauteur);
+			planTravail.style.setProperty("--sizeModifier", scale);
+			//planTravail.style.transform = `scale(${scale})`;
+
+			algoPreview.appendChild(planTravail);
+		} catch (e) {
+			console.error(e);
+			let error = document.createElement("p");
+			error.innerHTML = "Erreur lors de la prévisualisation";
+			algoPreview.appendChild(error);
+		}
+		this.appendChild(algoPreview);
+		this.appendChild(this.inputNom);
+		this.appendChild(this.inputDescription);
+		this.appendChild(this.boutonAjouter);
+		this.appendChild(this.boutonCancel);
+
+		this.inputNom.placeholder = "Nom de la bibliothèque";
+		this.inputDescription.placeholder = "Description de la bibliothèque";
+		this.boutonAjouter.textContent = "Ajouter";
+		this.boutonAjouter.addEventListener("click", () => {
+			this.ajouterBibliotheque();
+		});
+
+		this.boutonCancel.textContent = "Annuler";
+		this.boutonCancel.addEventListener("click", () => {
+			this.remove();
+		});
+	}
+
+	/**
+	 * Ajoute une bibliothèque personnalisée à l'éditeur.
+	 */
+	ajouterBibliotheque() {
+		const nom = this.inputNom.value;
+		const description = this.inputDescription.value;
+		const algo = this._algoJSON;
+
+		this._editeur._bibliotheque.ajouterAlgorithmeCustom(
+			nom,
+			algo,
+			description,
+		);
+
+		this.remove();
+	}
+}
+customElements.define(
+	"invite-nouvelle-bibliotheque",
+	InviteNouvelleBibliotheque,
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

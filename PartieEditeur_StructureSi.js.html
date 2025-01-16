@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/StructureSi.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/StructureSi.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class StructureSi
+ * @classdesc La StructureSi qui permet de vérifier une ou plusieurs conditions données
+ * @description Crée une instance de StructureSi
+ * @extends {StructureAlternative}
+ */
+class StructureSi extends StructureAlternative {
+	// ATTRIBUTS -non-
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {string|number} abscisse - L'abscisse de la structure
+	 * @param {string|number} ordonnee - L'ordonnée de la structure
+	 * @param {Array&lt;Condition>} listeConditions - La liste des conditions de la structure
+	 */
+	constructor(abscisse, ordonnee, listeConditions = []) {
+		super(abscisse, ordonnee, listeConditions);
+	}
+
+	// ENCAPSULATION -non-
+
+	// METHODES
+	/**
+	 * @description Affiche la StructureSi sur le plan de travail
+	 */
+	afficher() {
+		let divTriangleGauche = document.createElement("div");
+		divTriangleGauche.className = "triangleGauche";
+		divTriangleGauche.classList.add("triangle");
+		divTriangleGauche.innerHTML = "&lt;span>-&lt;span>";
+		divTriangleGauche.addEventListener("click", (e) => {
+			this.supprimerCondition();
+		});
+		this.appendChild(divTriangleGauche);
+
+		let divConditionContainer = document.createElement("div");
+		divConditionContainer.className = "conditionContainer";
+		this.appendChild(divConditionContainer);
+
+		for (let i = 0; i &lt; this._listeConditions.length; i++) {
+			this._listeConditions[i]._structure = this;
+			divConditionContainer.appendChild(this._listeConditions[i]);
+		}
+
+		this._listeConditions = divConditionContainer;
+
+		let divTriangleDroit = document.createElement("div");
+		divTriangleDroit.className = "triangleDroit";
+		divTriangleDroit.classList.add("triangle");
+		divTriangleDroit.innerHTML = "&lt;span>+&lt;span>";
+		divTriangleDroit.addEventListener("click", (e) => {
+			this.ajouterCondition();
+		});
+		this.appendChild(divTriangleDroit);
+	}
+
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi
+	 * @returns {JSON} Le corps JSON de la StructureSi
+	 */
+	toJSON() {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(condition.toJSON());
+		}
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			conditions: conditions,
+		};
+	}
+
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi en spécifiant les éléments enfants à conserver
+	 * @param {Array&lt;ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver
+	 * @returns {JSON} Le corps JSON de la StructureSi
+	 */
+	toJSONspecifier(listeElemEnfantsAConcerver) {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(
+				condition.toJSONspecifier(listeElemEnfantsAConcerver),
+			);
+		}
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			conditions: conditions,
+		};
+	}
+	/**
+	 * @deprecated
+	 * @returns {}
+	 */
+	extraireInformation() {
+		// A faire condition doit pouvoir dire la variable ou le type
+		return [];
+	}
+
+	/**
+	 * @description Génère les options contextuelles pour la StructureSi
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes
+	 * @returns {Array&lt;ElementMenu>} La liste des options contextuelles
+	 */
+	genererOptionsContextuelles(editeur) {
+		let listeOptions = super.genererOptionsContextuelles(editeur);
+
+		// Si la transformation en switch est possible (et pertinente)
+		const potentielTransformationSwitch =
+			this.detecterPotentielTransformationSwitch();
+		if (potentielTransformationSwitch.result) {
+			listeOptions.push(
+				new ElementMenu("Transformer en Switch", () => {
+					console.log("Transformer en Switch");
+					// On crée la nouvelle structure Switch
+					const newSwitch = this.parentNode.ajouterElement(
+						StructureSwitch,
+						this._abscisse,
+						this._ordonnee,
+						true,
+					);
+
+					potentielTransformationSwitch.valeurs.forEach((cond) => {
+						cond._libelle = cond._libelle.split("=")[1].trim();
+						newSwitch.ajouterCondition(cond);
+					});
+
+					Array.from(
+						newSwitch.querySelectorAll("condition-element"),
+					).forEach((cond) => {
+						if (cond._libelle.length == 0) {
+							newSwitch.supprimerCondition(cond);
+						}
+					});
+
+					newSwitch.expressionATester =
+						potentielTransformationSwitch.variable;
+
+					// On lie le parent de la structure Si à la structure Switch
+					this._parent.lierEnfant(newSwitch);
+					this._parent.delierEnfant(this);
+
+					this.supprimer();
+				}),
+			);
+		}
+		return listeOptions;
+	}
+
+	/**
+	 * @description Détecte si la transformation en switch est possible et pertinente
+	 * @returns {Object} Un objet contenant le résultat de la détection et les valeurs pertinentes
+	 */
+	detecterPotentielTransformationSwitch() {
+		/* 
+        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
+        */
+		try {
+			const conditions = this._listeConditions.children;
+			if (conditions.length &lt; 3) {
+				return { result: false };
+			}
+			let libelle = conditions[0].querySelector(".libelle").textContent;
+			let caracteresAvantEgal;
+			let valeurs = [];
+
+			if (libelle.includes("=")) {
+				caracteresAvantEgal = libelle.split("=")[0].trim();
+			}
+			// Vérifier si tout les conditions contient un = et que la variable traiter est constante
+			for (let condition of conditions) {
+				console.log(condition);
+				libelle = condition.querySelector(".libelle").textContent;
+				if (libelle.toLowerCase().includes("sinon")) {
+					// default statement structure switch
+					continue;
+				}
+				if (
+					!libelle.includes("=") ||
+					libelle.toLowerCase().includes("ou") ||
+					libelle.toLowerCase().includes("et")
+				) {
+					return { result: false };
+				}
+				if (caracteresAvantEgal != libelle.split("=")[0].trim()) {
+					return { result: false };
+				}
+				valeurs.push(condition);
+			}
+
+			return { result: true, variable: caracteresAvantEgal, valeurs };
+		} catch (e) {
+			console.error(e);
+			return { result: false };
+		}
+	}
+
+	/**
+	 * @description Récupère la liste actuelle des anomalies détectées et ajoute ses propres anomalies détectées à celle-ci
+	 * @returns {Array&lt;AnomalieConceptuelle>} La liste des anomalies déjà présentes + celles ajoutées par la StructureSi
+	 */
+	rechercherAnomalies() {
+		let mesAnomalies = [];
+		//8
+		if (ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+			mesAnomalies.push(new ErreurSyntaxeComparaison(this));
+		}
+		//12
+		let tropDeSousElements =
+			AvertissementTropDeSousElements.detecterAnomalie(this);
+		if (tropDeSousElements[0]) {
+			mesAnomalies.push(
+				new AvertissementTropDeSousElements(
+					this,
+					tropDeSousElements[1],
+				),
+			);
+		}
+		//15
+		let informationsInconsistantesSi =
+			AvertissementInformationsInconsistantesSi.detecterAnomalie(this);
+		if (informationsInconsistantesSi[0]) {
+			mesAnomalies.push(
+				new AvertissementInformationsInconsistantesSi(
+					this,
+					informationsInconsistantesSi[1],
+				),
+			);
+		}
+		//17
+		let structureInoptimale =
+			AvertissementStructureInoptimale.detecterAnomalie(this);
+		if (structureInoptimale[0]) {
+			mesAnomalies.push(
+				new AvertissementStructureInoptimale(
+					this,
+					structureInoptimale[1],
+					structureInoptimale[2],
+				),
+			);
+		}
+		if (!informationsInconsistantesSi[0]) {
+			let typesInconsistantsAlternatif =
+				ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+			if (typesInconsistantsAlternatif[0]) {
+				mesAnomalies.push(
+					new ErreurTypesInconsistantsAlternatif(
+						this,
+						typesInconsistantsAlternatif[1],
+						typesInconsistantsAlternatif[2],
+					),
+				);
+			}
+		}
+		return super.rechercherAnomalies(mesAnomalies);
+	}
+}
+window.customElements.define("structure-si-element", StructureSi);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

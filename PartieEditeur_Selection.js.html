@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/Selection.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/Selection.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class Selection
+ * @classdesc La classe Selection est une classe représentant une sélection d'éléments graphiques.
+ * @description Est utilisé pour instancier un objet de type Selection.
+ * @extends {HTMLElement}
+ */
+class Selection extends HTMLElement {
+	_listeElementsSelectionnes;
+	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_planTravail = document.querySelector("plan-travail"); // Plan de travail
+
+	/**
+	 * @constructor
+	 */
+	constructor() {
+		super();
+		this._listeElementsSelectionnes = [];
+
+		setInterval(() => {
+			this.update();
+		}, 1000 / 24); // 24 fps
+	}
+
+	/**
+	 * Retourne le nombre d'éléments sélectionnés.
+	 * @returns {number} Nombre d'éléments sélectionnés.
+	 */
+	get nbElementsSelectionnes() {
+		return this._listeElementsSelectionnes.length;
+	}
+
+	/**
+	 * Sélectionne un élément graphique.
+	 * @param {ElementGraphique} element - L'élément graphique à sélectionner.
+	 * @returns {boolean} Vrai si l'élément a été sélectionné, sinon faux.
+	 */
+	selectionnerElement(element) {
+		if (
+			element instanceof ElementGraphique &amp;&amp;
+			!this.estSelectionne(element)
+		) {
+			let rep = new RepresentationSelectionSimple(element, this);
+			this.parentNode.appendChild(rep);
+			this._listeElementsSelectionnes.push(rep);
+			this.update();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Sélectionne un arbre d'éléments graphiques.
+	 * @param {ElementGraphique} element - L'élément racine de l'arbre à sélectionner.
+	 */
+	selectionnerArbre(element) {
+		this.selectionnerElement(element);
+		if (element.peutEtreDecompose()) {
+			for (let enfant of element.getEnfants()) {
+				this.selectionnerArbre(enfant);
+			}
+		}
+		if (element instanceof StructureAlternative) {
+			for (let condition of element._listeConditions.children) {
+				this.selectionnerArbre(condition);
+			}
+		}
+	}
+
+	/**
+	 * Désélectionne un élément graphique.
+	 * @param {ElementGraphique} element - L'élément graphique à désélectionner.
+	 * @returns {boolean} Faux après la désélection.
+	 */
+	deselectionnerElement(element) {
+		if (element instanceof ElementGraphique) {
+			for (var selection of this._listeElementsSelectionnes) {
+				if (selection._element === element) {
+					selection.supprimer();
+					this._listeElementsSelectionnes.splice(
+						this._listeElementsSelectionnes.indexOf(selection),
+						1,
+					);
+					break;
+				}
+			}
+		}
+		this.update();
+		return false;
+	}
+
+	/**
+	 * Désélectionne tous les éléments graphiques.
+	 */
+	deselectionnerTout() {
+		for (var selection of this._listeElementsSelectionnes) {
+			selection.supprimer();
+		}
+		this._listeElementsSelectionnes = [];
+		this.style.width = "0vw";
+		this.style.height = "0vw";
+		this.style.left = "0vw";
+		this.style.top = "0vw";
+	}
+
+	/**
+	 * Supprime tous les éléments sélectionnés.
+	 */
+	supprimerTout() {
+		for (var selection of this._listeElementsSelectionnes) {
+			let event = new EvenementSuppressionElement(selection._element);
+			selection._element.supprimer();
+			this._editeur.ajouterEvenement(event);
+			selection.supprimer();
+		}
+		this._listeElementsSelectionnes = [];
+		this.style.width = "0vw";
+		this.style.height = "0vw";
+		this.style.left = "0vw";
+		this.style.top = "0vw";
+	}
+
+	/**
+	 * Retourne les coordonnées d'un coin du rectangle de sélection.
+	 * @param {string} topOuBottom - "top" ou "bottom".
+	 * @param {string} leftOuRight - "left" ou "right".
+	 * @returns {Object} Coordonnées du coin spécifié.
+	 */
+	coin(topOuBottom, leftOuRight) {
+		let coordonnees = this.coordonneesMinEtMax();
+		if (topOuBottom == "top") {
+			if (leftOuRight == "left") {
+				return {
+					x: coordonnees.coordonneesMin.x,
+					y: coordonnees.coordonneesMin.y,
+				};
+			} else if (leftOuRight == "right") {
+				return {
+					x: coordonnees.coordonneesMax.x,
+					y: coordonnees.coordonneesMin.y,
+				};
+			}
+		} else if (topOuBottom == "bottom") {
+			if (leftOuRight == "left") {
+				return {
+					x: coordonnees.coordonneesMin.x,
+					y: coordonnees.coordonneesMax.y,
+				};
+			} else if (leftOuRight == "right") {
+				return {
+					x: coordonnees.coordonneesMax.x,
+					y: coordonnees.coordonneesMax.y,
+				};
+			}
+		} else if (topOuBottom == "center") {
+			return {
+				x:
+					(coordonnees.coordonneesMin.x +
+						coordonnees.coordonneesMax.x) /
+					2,
+				y:
+					(coordonnees.coordonneesMin.y +
+						coordonnees.coordonneesMax.y) /
+					2,
+			};
+		}
+	}
+
+	/**
+	 * Retourne les coordonnées minimales et maximales des éléments sélectionnés.
+	 * @returns {Object} Coordonnées minimales et maximales.
+	 */
+	coordonneesMinEtMax() {
+		if (this._listeElementsSelectionnes.length === 0) {
+			return {
+				coordonneesMin: { x: -100, y: -100 },
+				coordonneesMax: { x: -100, y: -100 },
+			};
+		}
+
+		let coordonneesMin = { x: Number.MAX_VALUE, y: Number.MAX_VALUE };
+		let coordonneesMax = { x: Number.MIN_VALUE, y: Number.MIN_VALUE };
+
+		for (const selection of this._listeElementsSelectionnes) {
+			const rect = selection.getBoundingClientRect();
+			const sousPlansTravail =
+				document.querySelectorAll("sous-plan-travail");
+			const sousPlansTravailArray = Array.from(sousPlansTravail);
+			const dernierSousPlanOuvert = sousPlansTravailArray
+				.reverse()
+				.find((element) => element.classList.contains("ouvert"));
+
+			let offsetX = 0;
+			let offsetY = 0;
+
+			if (dernierSousPlanOuvert !== undefined) {
+				offsetX = dernierSousPlanOuvert.scrollLeft - 5;
+				offsetY = dernierSousPlanOuvert.scrollTop + 5;
+			} else {
+				offsetX = this._planTravail.scrollLeft;
+				offsetY = this._planTravail.scrollTop;
+			}
+
+			coordonneesMin.x = Math.min(coordonneesMin.x, rect.left + offsetX);
+			coordonneesMin.y = Math.min(coordonneesMin.y, rect.top + offsetY);
+			coordonneesMax.x = Math.max(coordonneesMax.x, rect.right + offsetX);
+			coordonneesMax.y = Math.max(
+				coordonneesMax.y,
+				rect.bottom + offsetY,
+			);
+		}
+
+		return {
+			coordonneesMin,
+			coordonneesMax,
+		};
+	}
+
+	/**
+	 * Met à jour la sélection.
+	 */
+	update() {
+		for (var selection of this._listeElementsSelectionnes) {
+			selection.update();
+		}
+		let coordonnees = this.coordonneesMinEtMax();
+
+		const left = coordonnees.coordonneesMin.x;
+		const top = coordonnees.coordonneesMin.y;
+		const width =
+			coordonnees.coordonneesMax.x - coordonnees.coordonneesMin.x;
+		const height =
+			coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y;
+
+		this.style.left = `${left - 15}px`;
+		this.style.top = `${top - 105}px`;
+		this.style.width = `${width}px`;
+		this.style.height = `${height}px`;
+	}
+
+	/**
+	 * Déplace tous les éléments sélectionnés.
+	 * @param {number} deplacementAbscisse - Déplacement en abscisse.
+	 * @param {number} deplacementOrdonnee - Déplacement en ordonnée.
+	 */
+	moveAllSelectedElements(deplacementAbscisse, deplacementOrdonnee) {
+		for (var selection of this._listeElementsSelectionnes) {
+			selection._element._abscisse =
+				parseFloat(selection._element._abscisse) +
+				deplacementAbscisse +
+				"vw";
+			selection._element._ordonnee =
+				parseFloat(selection._element._ordonnee) +
+				deplacementOrdonnee +
+				"vw";
+			selection._element.setPosition();
+			selection.update();
+			if (
+				selection._element instanceof Probleme ||
+				selection._element instanceof Procedure ||
+				selection._element instanceof StructureIterative
+			) {
+				selection._element._elemParent.updateAll();
+			} else if (selection._element instanceof StructureAlternative) {
+				for (let condition of selection._element._listeConditions
+					.children) {
+					condition._elemParent.updateAll();
+				}
+			}
+			if (selection._element._parent != null)
+				selection._element._parent.updateAll();
+		}
+		this.update();
+	}
+
+	/**
+	 * Vérifie si un élément est sélectionné.
+	 * @param {ElementGraphique} element - L'élément graphique à vérifier.
+	 * @returns {boolean} Vrai si l'élément est sélectionné, sinon faux.
+	 */
+	estSelectionne(element) {
+		for (var selection of this._listeElementsSelectionnes) {
+			if (selection._element === element) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Retourne la liste des éléments sélectionnés.
+	 * @returns {Array} Liste des éléments sélectionnés.
+	 */
+	getElementsSelectionnes() {
+		let listeElements = [];
+		for (var selection of this._listeElementsSelectionnes) {
+			listeElements.push(selection._element);
+		}
+		return listeElements;
+	}
+}
+window.customElements.define("selection-editeur", Selection);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

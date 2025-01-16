@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/StructureIterativeNonBornee.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/StructureIterativeNonBornee.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @class StructureIterativeNonBornee
+ * @classdesc Structure itérative non bornée qui boucle tant qu'une condition n'est pas remplie
+ * @description Crée une instance de StructureIterativeNonBornee
+ * @extends {StructureIterative}
+ */
+class StructureIterativeNonBornee extends StructureIterative {
+	// ATTRIBUTS -non-
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {string|number} abscisse - L'abscisse de la structure
+	 * @param {string|number} ordonnee - L'ordonnée de la structure
+	 */
+	constructor(abscisse, ordonnee) {
+		super(abscisse, ordonnee);
+	}
+
+	// ENCAPSULATION -non-
+
+	// METHODES
+	/**
+	 * @description Affiche sur le plan de travail la StructureIterativeNonBornee
+	 */
+	afficher() {
+		super.afficher(); // Affichage de la boucle seule
+	}
+
+	/**
+	 * @description Recherche et renvoie la liste des anomalies de la boucle itérative non bornée
+	 * @returns {Array&lt;AnomalieConceptuelle>} La liste des anomalies précédentes + celles trouvées par la structure
+	 */
+	rechercherAnomalies() {
+		let mesAnomalies = [];
+		// 10
+		if (ErreurBoucleSansSortie.detecterAnomalie(this)) {
+			mesAnomalies.push(new ErreurBoucleSansSortie(this));
+		}
+		// 12
+		let tropDeSousElements =
+			AvertissementTropDeSousElements.detecterAnomalie(this);
+		if (tropDeSousElements[0]) {
+			mesAnomalies.push(
+				new AvertissementTropDeSousElements(
+					this,
+					tropDeSousElements[1],
+				),
+			);
+		}
+		return super.rechercherAnomalies(mesAnomalies);
+	}
+
+	/**
+	 * @description Renvoie le corps JSON de l'instance de la StructureIterativeNonBornee
+	 * @returns {JSON} Le corps JSON de la StructureIterativeNonBornee
+	 */
+	toJSON() {
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			enfants: this._elemParent.toJSON(),
+		};
+	}
+
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureIterativeNonBornee en spécifiant les éléments enfants à conserver
+	 * @param {Array&lt;ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver
+	 * @returns {JSON} Le corps JSON de la StructureIterativeNonBornee
+	 */
+	toJSONspecifier(listeElemEnfantsAConcerver) {
+		return {
+			typeElement: this.constructor.name,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			enfants: this._elemParent.toJSONspecifier(
+				listeElemEnfantsAConcerver,
+			),
+		};
+	}
+
+	/**
+	 * @description Génère les options contextuelles pour la StructureIterativeNonBornee
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes
+	 * @returns {Array&lt;ElementMenu>} La liste des options contextuelles
+	 */
+	genererOptionsContextuelles(editeur) {
+		let listeOptions = super.genererOptionsContextuelles(editeur);
+
+		// Option d'ajout d'une condition d'arrêt
+		listeOptions.push(
+			new ElementMenu("Ajouter une condition d'arrêt", () => {
+				console.log("Ajouter une condition d'arrêt");
+				let nouveauIf = new StructureSi(
+					parseFloat(this._abscisse) - 3 + "vw",
+					parseFloat(this._ordonnee) + 10 + "vw",
+				);
+				nouveauIf.setPosition();
+				nouveauIf.afficher();
+				this.parentNode.appendChild(nouveauIf);
+
+				let sortie = new ConditionSortie(
+					parseFloat(this._abscisse) + "vw",
+					parseFloat(this._ordonnee) + 15 + "vw",
+				);
+				sortie.setPosition();
+				sortie.afficher();
+				this.parentNode.appendChild(sortie);
+
+				this._elemParent.lierEnfant(nouveauIf);
+				nouveauIf.getCondition(0)._elemParent.lierEnfant(sortie);
+			}),
+		);
+		return listeOptions;
+	}
+}
+window.customElements.define(
+	"structure-iterative-non-bornee-element",
+	StructureIterativeNonBornee,
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

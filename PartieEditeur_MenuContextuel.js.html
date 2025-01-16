@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PartieEditeur/MenuContextuel.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PartieEditeur/MenuContextuel.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @classdesc Le menu contextuel qui apparait lors d'un clic droit dans l'éditeur.
+ * @description Crée une instance de MenuContextuel.
+ * @class MenuContextuel
+ * @extends {HTMLElement}
+ */
+class MenuContextuel extends HTMLElement {
+	// ATTRIBUTS
+	_x; // Position x
+	_y; // Position y
+	_selection; // Selection
+	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_target;
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {number} x - La position x du menu.
+	 * @param {number} y - La position y du menu.
+	 * @param {Selection} selection - La sélection actuelle.
+	 * @param {HTMLElement} target - L'élément cible du clic droit.
+	 */
+	constructor(x, y, selection, target) {
+		super();
+		// Supprimer tout menu contextuel déjà ouvert
+		let menuContextuel = document.querySelectorAll("menu-contextuel");
+		for (let i = 0; i &lt; menuContextuel.length; i++) {
+			menuContextuel[i].remove();
+		}
+
+		// Prendre en compte le zoom
+		x = x / this._editeur._indicateurZoom._zoom;
+		y = y / this._editeur._indicateurZoom._zoom;
+
+		this._x = x;
+		this._y = y;
+
+		if (x > 90 / this._editeur._indicateurZoom._zoom) {
+			x = 90 / this._editeur._indicateurZoom._zoom; // Empêcher le menu de déborder à droite
+		}
+
+		this.style.left = `calc(var(--sizeModifier) * ${x}vw)`;
+		this.style.top = `calc(var(--sizeModifier) * ${y}vw)`;
+		this._selection = selection;
+		this._target = target;
+		this.genererOptions();
+	}
+
+	/**
+	 * @description Génère les options du menu contextuel en fonction de la cible et de la sélection.
+	 */
+	genererOptions() {
+		if (this._target instanceof Image) {
+			if (
+				this._target.classList.contains("algorithmeBibliotheque") &amp;&amp;
+				this._target.estCustom
+			) {
+				this.appendChild(
+					new ElementMenu("Supprimer de la bibliothèque", () => {
+						console.log("Supprimer de la bibliothèque");
+						this._target.supprimer();
+						this.remove();
+					}),
+				);
+				return;
+			}
+			this.appendChild(
+				new ElementMenu("Aucune action disponible.", () => {}),
+			);
+			return;
+		}
+		// Les options toujours disponibles
+		this.appendChild(
+			new ElementMenuKeyboardTip(
+				"Annuler",
+				() => {
+					console.log("Annuler");
+					this._editeur.undo();
+				},
+				`${this._editeur._toucheMeta}Z`,
+			),
+		);
+
+		this.appendChild(
+			new ElementMenuKeyboardTip(
+				"Rétablir",
+				() => {
+					console.log("Rétablir");
+					this._editeur.redo();
+				},
+				`${this._editeur._toucheMeta}Y`,
+			),
+		);
+
+		if (this._selection.nbElementsSelectionnes >= 1) {
+			this.appendChild(
+				new ElementMenuKeyboardTip(
+					"Supprimer",
+					() => {
+						console.log("Supprimer l'élément");
+						this._selection.supprimerTout();
+						this.remove();
+					},
+					`Suppr`,
+				),
+			);
+
+			this.appendChild(
+				new ElementMenuKeyboardTip(
+					"Couper",
+					() => {
+						console.log("Couper");
+						this._editeur.cut();
+					},
+					`${this._editeur._toucheMeta}X`,
+				),
+			);
+
+			this.appendChild(
+				new ElementMenuKeyboardTip(
+					"Copier",
+					() => {
+						console.log("Copier");
+						this._editeur.copy();
+					},
+					`${this._editeur._toucheMeta}C`,
+				),
+			);
+		}
+
+		this.appendChild(
+			new ElementMenuKeyboardTip(
+				"Coller",
+				() => {
+					console.log("Coller");
+					this._editeur._modaleNoPaste.ouvrir();
+				},
+				`${this._editeur._toucheMeta}V`,
+			),
+		);
+
+		/*
+            Il y a 3 cas de figures:
+            - Aucun élément n'est sélectionné, on affiche un menu pour ajouter un élément à l'espace de travail.
+            - Un seul élément est sélectionné, on affiche un menu avec des options pour cet élément spécifique.
+            - Plusieurs éléments sont sélectionnés, on affiche un menu avec des options pour ces éléments (donc des options communes).
+        */
+		if (this._selection.nbElementsSelectionnes == 0) {
+			let ajouterElem = new ElementMenuCompose(
+				"Ajouter un élément",
+				() => {
+					console.log("Ajouter un élément");
+				},
+			);
+			this.appendChild(ajouterElem);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Problème", () => {
+					console.log("Ajouter un Problème");
+					this._editeur._planActif.ajouterElement(
+						Probleme,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Procédure", () => {
+					console.log("Ajouter une Procédure");
+					this._editeur._planActif.ajouterElement(
+						Procedure,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Structure 'SI'", () => {
+					console.log("Ajouter une Structure 'SI'");
+					this._editeur._planActif.ajouterElement(
+						StructureSi,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Structure 'SWITCH'", () => {
+					console.log("Ajouter une Structure 'SWITCH'");
+					this._editeur._planActif.ajouterElement(
+						StructureSwitch,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Structure itérative non bornée", () => {
+					console.log("Ajouter une Structure itérative non bornée");
+					this._editeur._planActif.ajouterElement(
+						StructureIterativeNonBornee,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Structure itérative bornée", () => {
+					console.log("Ajouter une Structure itérative bornée");
+					let struc = this._editeur._planActif.ajouterElement(
+						StructureIterativeBornee,
+						this._x,
+						this._y,
+						true,
+					);
+					struc.inviteBornes();
+					this._editeur
+						.querySelector("invite-bornes-pour-si > input")
+						.focus();
+					this.remove();
+				}),
+			);
+
+			ajouterElem.ajouterElementMenu(
+				new ElementMenu("Instruction d'arrêt", () => {
+					console.log("Ajouter une Condition de sortie");
+					this._editeur._planActif.ajouterElement(
+						ConditionSortie,
+						this._x,
+						this._y,
+						true,
+					);
+					this.remove();
+				}),
+			);
+		} else if (this._selection.nbElementsSelectionnes == 1) {
+			let elem = this._selection._listeElementsSelectionnes[0]._element;
+			if (verbose) console.log(elem);
+			for (let optionContextuelle of elem.genererOptionsContextuelles(
+				this._editeur,
+			)) {
+				this.appendChild(optionContextuelle);
+			}
+		}
+
+		if (this._selection.nbElementsSelectionnes >= 1) {
+			let exporter = new ElementMenuCompose(
+				"Exporter la sélection",
+				() => {
+					console.log("Exporter la sélection");
+				},
+			);
+			this.appendChild(exporter);
+
+			let sousTitreGénéral = document.createElement("h3");
+			sousTitreGénéral.innerText = "Tout";
+			exporter.ajouterElementMenu(sousTitreGénéral);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".json", () => {
+					console.log("Exporter en .json");
+					this._editeur.exporterJSON(this._editeur.copy(false));
+				}),
+			);
+
+			let sousTitreAlgorithme = document.createElement("h3");
+			sousTitreAlgorithme.innerText = "Algorithme";
+			exporter.ajouterElementMenu(sousTitreAlgorithme);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".jpg", () => {
+					console.log("Exporter en .jpg");
+					this._editeur.exporterJPG(
+						this._editeur.copy(false),
+						true,
+						true,
+					);
+				}),
+			);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".png", () => {
+					console.log("Exporter en .png");
+					this._editeur.exporterPNG(
+						this._editeur.copy(false),
+						true,
+						true,
+					);
+				}),
+			);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".svg", () => {
+					console.log("Exporter en .svg");
+					this._editeur.exporterSVG(
+						this._editeur.copy(false),
+						true,
+						true,
+					);
+				}),
+			);
+
+			let sousTitreDictionnaire = document.createElement("h3");
+			sousTitreDictionnaire.innerText = "Dictionnaire";
+			exporter.ajouterElementMenu(sousTitreDictionnaire);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".csv", () => {
+					console.log("Exporter en .csv");
+					// On retire du plan de travail tout ce qui n'est pas dans la sélection
+					// On garde une trace des éléments à rerajouter
+					let listeElemSup = [];
+
+					for (let elem of this._editeur._planActif.children) {
+						if (
+							!this._selection.estSelectionne(elem) &amp;&amp;
+							elem != this &amp;&amp;
+							elem instanceof ElementGraphique
+						) {
+							listeElemSup.push(elem);
+							elem.remove();
+						}
+					}
+
+					// On effectue le dictionnaire
+					this._editeur._planActif.effectuerDictionnaireDesDonnee();
+
+					// On exporte le dictionnaire
+					this._editeur._planActif.leDictionnaireDesDonnees.exporter(
+						"csv",
+					);
+
+					// On remet les éléments retirés
+					setTimeout(() => {
+						for (let elem of listeElemSup) {
+							this._editeur._planActif.appendChild(elem);
+						}
+					}, 1000);
+				}),
+			);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".xls", () => {
+					console.log("Exporter en .xls");
+					// On retire du plan de travail tout ce qui n'est pas dans la sélection
+					// On garde une trace des éléments à rerajouter
+					let listeElemSup = [];
+
+					for (let elem of this._editeur._planActif.children) {
+						if (
+							!this._selection.estSelectionne(elem) &amp;&amp;
+							elem != this &amp;&amp;
+							elem instanceof ElementGraphique
+						) {
+							listeElemSup.push(elem);
+							elem.remove();
+						}
+					}
+
+					// On effectue le dictionnaire
+					this._editeur._planActif.effectuerDictionnaireDesDonnee();
+
+					// On exporte le dictionnaire
+					this._editeur._planActif.leDictionnaireDesDonnees.exporter(
+						"xls",
+					);
+
+					// On remet les éléments retirés
+					setTimeout(() => {
+						for (let elem of listeElemSup) {
+							this._editeur._planActif.appendChild(elem);
+						}
+					}, 1000);
+				}),
+			);
+
+			exporter.ajouterElementMenu(
+				new ElementMenu(".md", () => {
+					console.log("Exporter en .md");
+					// On retire du plan de travail tout ce qui n'est pas dans la sélection
+					// On garde une trace des éléments à rerajouter
+					let listeElemSup = [];
+
+					for (let elem of this._editeur._planActif.children) {
+						if (
+							!this._selection.estSelectionne(elem) &amp;&amp;
+							elem != this &amp;&amp;
+							elem instanceof ElementGraphique
+						) {
+							listeElemSup.push(elem);
+							elem.remove();
+						}
+					}
+
+					// On effectue le dictionnaire
+					this._editeur._planActif.effectuerDictionnaireDesDonnee();
+
+					// On exporte le dictionnaire
+					this._editeur._planActif.leDictionnaireDesDonnees.exporter(
+						"md",
+					);
+
+					// On remet les éléments retirés
+					setTimeout(() => {
+						for (let elem of listeElemSup) {
+							this._editeur._planActif.appendChild(elem);
+						}
+					}, 1000);
+				}),
+			);
+
+			this.appendChild(
+				new ElementMenu("Ajouter à la bibliothèque", () => {
+					console.log("Ajouter à la bibliothèque custom");
+					// On récupère le JSON des éléments sélectionnés
+					let json = this._editeur.copy(false);
+
+					// On crée une InviteNouvelleBibliotheque
+					let invite = new InviteNouvelleBibliotheque(json);
+
+					// On l'ajoute à l'éditeur
+					this._editeur.appendChild(invite);
+				}),
+			);
+		}
+	}
+}
+window.customElements.define("menu-contextuel", MenuContextuel);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 11:07:14 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
