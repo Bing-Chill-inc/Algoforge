@@ -1,3 +1,9 @@
+/**
+ * @classdesc Le menu contextuel qui apparait lors d'un clic droit dans l'éditeur.
+ * @description Crée une instance de MenuContextuel.
+ * @class MenuContextuel
+ * @extends {HTMLElement}
+ */
 class MenuContextuel extends HTMLElement {
 	// ATTRIBUTS
 	_x; // Position x
@@ -7,6 +13,13 @@ class MenuContextuel extends HTMLElement {
 	_target;
 
 	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {number} x - La position x du menu.
+	 * @param {number} y - La position y du menu.
+	 * @param {Selection} selection - La sélection actuelle.
+	 * @param {HTMLElement} target - L'élément cible du clic droit.
+	 */
 	constructor(x, y, selection, target) {
 		super();
 		// Supprimer tout menu contextuel déjà ouvert
@@ -33,6 +46,9 @@ class MenuContextuel extends HTMLElement {
 		this.genererOptions();
 	}
 
+	/**
+	 * @description Génère les options du menu contextuel en fonction de la cible et de la sélection.
+	 */
 	genererOptions() {
 		if (this._target instanceof Image) {
 			if (

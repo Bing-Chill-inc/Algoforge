@@ -1,9 +1,16 @@
+/**
+ * Classe représentant une bibliothèque d'algorithmes.
+ * @extends HTMLElement
+ */
 class Bibliotheque extends HTMLElement {
 	_estOuvert = false;
 	_arborescence = null;
 	_arborescenceCustom = [];
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
+	/**
+	 * Crée une instance de Bibliotheque.
+	 */
 	constructor() {
 		super();
 
@@ -55,6 +62,12 @@ class Bibliotheque extends HTMLElement {
 			);
 	}
 
+	/**
+	 * Ajoute un algorithme personnalisé à la bibliothèque.
+	 * @param {string} nom - Le nom de l'algorithme.
+	 * @param {string} algo - Le JSON de l'algorithme.
+	 * @param {string} descriptif - La description de l'algorithme.
+	 */
 	ajouterAlgorithmeCustom(nom, algo, descriptif) {
 		this._arborescenceCustom.push({
 			nom: nom,
@@ -69,6 +82,9 @@ class Bibliotheque extends HTMLElement {
 		this.update();
 	}
 
+	/**
+	 * Ouvre la bibliothèque.
+	 */
 	ouvrir() {
 		document.querySelector("dictionnaire-donnee").fermer();
 		document.getElementById("biblio_wrapper").style.zIndex = 300;
@@ -216,7 +232,9 @@ class Bibliotheque extends HTMLElement {
 				let descriptionAlgo = document.createElement("p");
 				descriptionAlgo.innerHTML = algorithmeElement.description;
 				algorithmeElement.preview.appendChild(descriptionAlgo);
-				algorithmeElement.src = `Bibliotheque/${algorithme.path}/icone.svg?fgColor=${document.body.style
+				algorithmeElement.src = `Bibliotheque/${
+					algorithme.path
+				}/icone.svg?fgColor=${document.body.style
 					.getPropertyValue("--fgColor")
 					.substring(1)}`;
 
@@ -501,6 +519,9 @@ class Bibliotheque extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Ferme la bibliothèque.
+	 */
 	fermer() {
 		document.getElementById("biblio_wrapper").style.zIndex = -300;
 		document
@@ -526,6 +547,9 @@ class Bibliotheque extends HTMLElement {
 		this._estOuvert = false;
 	}
 
+	/**
+	 * Met à jour l'affichage de la bibliothèque.
+	 */
 	update() {
 		// Mettre à jour l'affichage
 		if (this._estOuvert) {

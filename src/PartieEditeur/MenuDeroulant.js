@@ -9,6 +9,10 @@ class MenuDeroulant extends HTMLElement {
 		super();
 	}
 
+	/**
+	 * @description Ajoute un élément au menu déroulant.
+	 * @param {HTMLElement} elementMenu - L'élément à ajouter au menu.
+	 */
 	ajouterElementMenu(elementMenu) {
 		this.appendChild(elementMenu);
 	}

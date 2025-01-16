@@ -6,14 +6,15 @@
  */
 class Procedure extends Probleme {
 	// ATTRIBUTS -non-
+
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {number|string} abscisse L'abscisse
-	 * @param {number|string} ordonnee L'ordonnée
-	 * @param {string} libelle Le libellé de la Procedure
-	 * @param {Array} listeDonnes Obselète
-	 * @param {Array} listeResultats Obselète
+	 * @param {number|string} abscisse - L'abscisse de la procédure
+	 * @param {number|string} ordonnee - L'ordonnée de la procédure
+	 * @param {string} libelle - Le libellé de la procédure
+	 * @param {Array} listeDonnes - Obsolète
+	 * @param {Array} listeResultats - Obsolète
 	 */
 	constructor(
 		abscisse,
@@ -29,7 +30,7 @@ class Procedure extends Probleme {
 
 	// METHODES
 	/**
-	 * @description Affiche la procedure utilise la méthode de Probleme
+	 * @description Affiche la procédure en utilisant la méthode de Probleme
 	 */
 	afficher() {
 		super.afficher();

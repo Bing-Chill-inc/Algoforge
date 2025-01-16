@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de déplacement d'un élément graphique dans l'éditeur.
+ * @description Crée une instance de EvenementDeplacementElement.
+ * @class EvenementDeplacementElement
+ * @extends EvenementEdition
+ */
 class EvenementDeplacementElement extends EvenementEdition {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique déplaçé. Déclaré dans la classe parente.

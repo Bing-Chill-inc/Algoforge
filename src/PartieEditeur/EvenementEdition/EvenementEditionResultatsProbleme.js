@@ -1,3 +1,8 @@
+/**
+ * @class EvenementEditionResultatsProbleme
+ * @classdesc Classe représentant un événement de modification de la liste des résultats d'un problème.
+ * @extends EvenementEditionTexte
+ */
 class EvenementEditionResultatsProbleme extends EvenementEditionTexte {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.

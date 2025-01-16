@@ -1,6 +1,7 @@
 /**
  * @classdesc Classe représentant un événement dans l'éditeur. Utilisé pour constituer les piles d'annulation et de rétablissement. Principalement utilisée comme classe parente.
  * @description Crée une instance de EvenementEdition.
+ * @abstract
  * @class EvenementEdition
  */
 class EvenementEdition {

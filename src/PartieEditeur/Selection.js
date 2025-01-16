@@ -21,10 +21,19 @@ class Selection extends HTMLElement {
 		}, 1000 / 24); // 24 fps
 	}
 
+	/**
+	 * Retourne le nombre d'éléments sélectionnés.
+	 * @returns {number} Nombre d'éléments sélectionnés.
+	 */
 	get nbElementsSelectionnes() {
 		return this._listeElementsSelectionnes.length;
 	}
 
+	/**
+	 * Sélectionne un élément graphique.
+	 * @param {ElementGraphique} element - L'élément graphique à sélectionner.
+	 * @returns {boolean} Vrai si l'élément a été sélectionné, sinon faux.
+	 */
 	selectionnerElement(element) {
 		if (
 			element instanceof ElementGraphique &&
@@ -39,6 +48,10 @@ class Selection extends HTMLElement {
 		return false;
 	}
 
+	/**
+	 * Sélectionne un arbre d'éléments graphiques.
+	 * @param {ElementGraphique} element - L'élément racine de l'arbre à sélectionner.
+	 */
 	selectionnerArbre(element) {
 		this.selectionnerElement(element);
 		if (element.peutEtreDecompose()) {
@@ -53,6 +66,11 @@ class Selection extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Désélectionne un élément graphique.
+	 * @param {ElementGraphique} element - L'élément graphique à désélectionner.
+	 * @returns {boolean} Faux après la désélection.
+	 */
 	deselectionnerElement(element) {
 		if (element instanceof ElementGraphique) {
 			for (var selection of this._listeElementsSelectionnes) {
@@ -70,6 +88,9 @@ class Selection extends HTMLElement {
 		return false;
 	}
 
+	/**
+	 * Désélectionne tous les éléments graphiques.
+	 */
 	deselectionnerTout() {
 		for (var selection of this._listeElementsSelectionnes) {
 			selection.supprimer();
@@ -81,6 +102,9 @@ class Selection extends HTMLElement {
 		this.style.top = "0vw";
 	}
 
+	/**
+	 * Supprime tous les éléments sélectionnés.
+	 */
 	supprimerTout() {
 		for (var selection of this._listeElementsSelectionnes) {
 			let event = new EvenementSuppressionElement(selection._element);
@@ -95,6 +119,12 @@ class Selection extends HTMLElement {
 		this.style.top = "0vw";
 	}
 
+	/**
+	 * Retourne les coordonnées d'un coin du rectangle de sélection.
+	 * @param {string} topOuBottom - "top" ou "bottom".
+	 * @param {string} leftOuRight - "left" ou "right".
+	 * @returns {Object} Coordonnées du coin spécifié.
+	 */
 	coin(topOuBottom, leftOuRight) {
 		let coordonnees = this.coordonneesMinEtMax();
 		if (topOuBottom == "top") {
@@ -135,6 +165,10 @@ class Selection extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Retourne les coordonnées minimales et maximales des éléments sélectionnés.
+	 * @returns {Object} Coordonnées minimales et maximales.
+	 */
 	coordonneesMinEtMax() {
 		if (this._listeElementsSelectionnes.length === 0) {
 			return {
@@ -181,6 +215,9 @@ class Selection extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Met à jour la sélection.
+	 */
 	update() {
 		for (var selection of this._listeElementsSelectionnes) {
 			selection.update();
@@ -200,6 +237,11 @@ class Selection extends HTMLElement {
 		this.style.height = `${height}px`;
 	}
 
+	/**
+	 * Déplace tous les éléments sélectionnés.
+	 * @param {number} deplacementAbscisse - Déplacement en abscisse.
+	 * @param {number} deplacementOrdonnee - Déplacement en ordonnée.
+	 */
 	moveAllSelectedElements(deplacementAbscisse, deplacementOrdonnee) {
 		for (var selection of this._listeElementsSelectionnes) {
 			selection._element._abscisse =
@@ -230,6 +272,11 @@ class Selection extends HTMLElement {
 		this.update();
 	}
 
+	/**
+	 * Vérifie si un élément est sélectionné.
+	 * @param {ElementGraphique} element - L'élément graphique à vérifier.
+	 * @returns {boolean} Vrai si l'élément est sélectionné, sinon faux.
+	 */
 	estSelectionne(element) {
 		for (var selection of this._listeElementsSelectionnes) {
 			if (selection._element === element) return true;
@@ -237,6 +284,10 @@ class Selection extends HTMLElement {
 		return false;
 	}
 
+	/**
+	 * Retourne la liste des éléments sélectionnés.
+	 * @returns {Array} Liste des éléments sélectionnés.
+	 */
 	getElementsSelectionnes() {
 		let listeElements = [];
 		for (var selection of this._listeElementsSelectionnes) {

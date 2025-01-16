@@ -1,3 +1,9 @@
+/**
+ * @classdesc Le menu de compte utilisateur qui apparait lorsque l'on clique sur l'icône de compte.
+ * @description Crée une instance de MenuCompte.
+ * @class MenuCompte
+ * @extends {HTMLElement}
+ */
 class MenuCompte extends HTMLElement {
 	// ATTRIBUTS
 	_menuDiv;
@@ -35,6 +41,9 @@ class MenuCompte extends HTMLElement {
 		);
 	}
 
+	/**
+	 * @description Ouvre le menu de compte.
+	 */
 	ouvrirMenu() {
 		this._menuDiv = document.createElement("div");
 		this._menuDiv.id = "MenuCompteDiv";
@@ -146,6 +155,9 @@ class MenuCompte extends HTMLElement {
 		document.getElementById("boutonCompte").classList.add("elementIsOpen");
 	}
 
+	/**
+	 * @description Ferme le menu de compte.
+	 */
 	fermerMenu() {
 		this._selectionTheme = document.querySelector("select#theme");
 		this.appendChild(this._selectionTheme);
@@ -158,6 +170,9 @@ class MenuCompte extends HTMLElement {
 			.classList.remove("elementIsOpen");
 	}
 
+	/**
+	 * @description Déconnecte l'utilisateur.
+	 */
 	deconnexion() {
 		console.log("Déconnexion");
 	}

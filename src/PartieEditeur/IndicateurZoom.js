@@ -1,3 +1,8 @@
+/**
+ * @class IndicateurZoom
+ * @classdesc La classe IndicateurZoom gère le zoom de l'éditeur.
+ * @extends {HTMLElement}
+ */
 class IndicateurZoom extends HTMLElement {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur
@@ -6,6 +11,10 @@ class IndicateurZoom extends HTMLElement {
 		: 1; // Number
 
 	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * Initialise l'indicateur de zoom et configure les boutons de zoom.
+	 */
 	constructor() {
 		super();
 		document.body.style.setProperty("--sizeModifier", this._zoom);
@@ -60,14 +69,25 @@ class IndicateurZoom extends HTMLElement {
 	}
 
 	// ENCAPSULATION
+	/**
+	 * @description Obtient la valeur actuelle du zoom.
+	 * @returns {number} La valeur actuelle du zoom.
+	 */
 	get _zoom() {
 		return this._zoom;
 	}
 
+	/**
+	 * @description Définit une nouvelle valeur pour le zoom.
+	 * @param {number} value - La nouvelle valeur du zoom.
+	 */
 	set _zoom(value) {
 		this._zoom = value;
 	}
 
+	/**
+	 * @description Augmente le zoom de 0.1.
+	 */
 	zoomIn() {
 		this._zoom += 0.1;
 		this._zoom = Math.round(this._zoom * 10) / 10;
@@ -77,6 +97,9 @@ class IndicateurZoom extends HTMLElement {
 		this._editeur.setCookie("zoom", this._zoom, 365);
 	}
 
+	/**
+	 * @description Diminue le zoom de 0.1.
+	 */
 	zoomOut() {
 		this._zoom -= 0.1;
 		this._zoom = Math.round(this._zoom * 10) / 10;

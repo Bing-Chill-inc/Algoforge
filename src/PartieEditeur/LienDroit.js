@@ -14,6 +14,7 @@ class LienDroit extends Lien {
 	 * @constructor
 	 * @param {ElementGraphique} elemGraphiqueParent L'élément graphique parent de la relation
 	 * @param {ElementGraphique} elemGraphiqueEnfant L'élément graphique enfant de la relation
+	 * @param {HTMLElement} espaceTravail L'espace de travail
 	 */
 	constructor(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
 		super(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
@@ -22,6 +23,9 @@ class LienDroit extends Lien {
 		this._espaceTravail.appendChild(this._ligne);
 	}
 
+	/**
+	 * @description Met à jour le lien graphique
+	 */
 	update() {
 		let ancreParent = this._elemGraphiqueParent.getAncreDecomposition();
 		let ancreEnfant = this._elemGraphiqueEnfant.getAncreComposition();
@@ -29,6 +33,9 @@ class LienDroit extends Lien {
 		this._ligne.setFin(ancreEnfant.abscisse, ancreEnfant.ordonnee);
 	}
 
+	/**
+	 * @description Supprime le lien graphique
+	 */
 	supprimer() {
 		this._espaceTravail.removeChild(this._ligne);
 	}

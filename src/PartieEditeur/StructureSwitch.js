@@ -143,6 +143,11 @@ class StructureSwitch extends StructureAlternative {
 		};
 	}
 
+	/**
+	 * @description Renvoie le corp JSON des informations contenu dans la StructureSwitch en spécifiant les éléments enfants à conserver
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver La liste des éléments enfants à conserver
+	 * @returns {JSON} le corps json de la StructureSwitch
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		let conditions = [];
 		for (let condition of this._listeConditions.children) {
@@ -161,12 +166,7 @@ class StructureSwitch extends StructureAlternative {
 	}
 
 	/**
-	 * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci<br>
-	 * Liste des Erreurs :<br>
-	 * 8 : Pas double égal dans une condition mais un égal <br>
-	 * 12 : Plus de sept actions à la suite <br>
-	 * 16 : Comparaison dans un switch
-	 *
+	 * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci
 	 * @returns {Array<AnomalieConceptuelle>} La liste précédantes + les anomalies détecté par la StructureSwitch
 	 */
 	rechercherAnomalies() {
@@ -208,6 +208,11 @@ class StructureSwitch extends StructureAlternative {
 		}
 		return super.rechercherAnomalies(mesAnomalies);
 	}
+
+	/**
+	 * @description Extrait les informations de la StructureSwitch
+	 * @returns {Array<Information>} Une liste de classe Informations.
+	 */
 	extraireInformation() {
 		if (this._expressionATester.trim() == "") {
 			return [new Information(this._expressionATester, Type.undefined)];

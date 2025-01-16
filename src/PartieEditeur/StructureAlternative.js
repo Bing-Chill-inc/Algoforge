@@ -1,7 +1,7 @@
 /**
  * @class StructureAlternative
- * @classdesc Représente les différentes structure de contrôle
- * @description Est utilisé par les différentes structure de contrôle pour les instancier
+ * @classdesc Représente les différentes structures de contrôle.
+ * @description Utilisé par les différentes structures de contrôle pour les instancier.
  * @extends {ElementGraphique}
  */
 class StructureAlternative extends ElementGraphique {
@@ -12,9 +12,9 @@ class StructureAlternative extends ElementGraphique {
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {string|number} abscisse l'abscisse
-	 * @param {string|number} ordonnee
-	 * @param {Array<Condition>} listeConditions
+	 * @param {string|number} abscisse - L'abscisse.
+	 * @param {string|number} ordonnee - L'ordonnée.
+	 * @param {Array<Condition>} listeConditions - La liste des conditions.
 	 */
 	constructor(abscisse, ordonnee, listeConditions = []) {
 		super(abscisse, ordonnee);
@@ -36,16 +36,16 @@ class StructureAlternative extends ElementGraphique {
 
 	// ENCAPSULATION
 	/**
-	 * @description Renvoie la liste des conditions
-	 * @returns {Array<Condition>} La liste des conditions
+	 * @description Renvoie la liste des conditions.
+	 * @returns {Array<Condition>} La liste des conditions.
 	 */
 	get _listeConditions() {
 		return this._listeConditions;
 	}
 
 	/**
-	 * @description Définie la liste de conditions
-	 * @param {Array<Condition>} value La liste des conditions
+	 * @description Définit la liste des conditions.
+	 * @param {Array<Condition>} value - La nouvelle liste des conditions.
 	 */
 	set _listeConditions(value) {
 		this._listeConditions = value;
@@ -53,7 +53,7 @@ class StructureAlternative extends ElementGraphique {
 
 	// METHODES
 	/**
-	 * @description affiche la structure alternative
+	 * @description Affiche la structure alternative.
 	 */
 	afficher() {
 		console.log(
@@ -65,10 +65,9 @@ class StructureAlternative extends ElementGraphique {
 		});
 	}
 	/**
-	 * @description récupère les enfant de la structure alternative
-	 *
-	 * @param {ElementGraphique} typeRechercher Le type d'ElementGraphique rechercher
-	 * @returns {Array<ElementGraphique>} la liste des ElementGraphique correspondant au type rechercher
+	 * @description Récupère les enfants de la structure alternative.
+	 * @param {ElementGraphique} typeRechercher - Le type d'ElementGraphique recherché.
+	 * @returns {Array<ElementGraphique>} La liste des ElementGraphique correspondant au type recherché.
 	 */
 	getEnfants(typeRechercher = ElementGraphique) {
 		let listeEnfants = [];
@@ -85,9 +84,8 @@ class StructureAlternative extends ElementGraphique {
 	}
 
 	/**
-	 * @description Ajoute une condition à la structure alternative
-	 *
-	 * @param {Condition} condition la condition ajouter
+	 * @description Ajoute une condition à la structure alternative.
+	 * @param {Condition} condition - La condition à ajouter.
 	 */
 	ajouterCondition(condition = new Condition()) {
 		condition._structure = this;
@@ -98,9 +96,8 @@ class StructureAlternative extends ElementGraphique {
 	}
 
 	/**
-	 * @description Retire une condition de la structure alternative
-	 *
-	 * @param {Condition} condition
+	 * @description Retire une condition de la structure alternative.
+	 * @param {Condition} condition - La condition à retirer.
 	 */
 	supprimerCondition(condition = null) {
 		if (this._listeConditions.children.length == 1) {
@@ -132,6 +129,10 @@ class StructureAlternative extends ElementGraphique {
 		}
 	}
 
+	/**
+	 * @description Renvoie la taille en abscisse de la structure alternative.
+	 * @returns {number} La taille en abscisse.
+	 */
 	getTailleAbscisse() {
 		// Nombre de conditions * taille d'une condition
 		let taille = 0;
@@ -140,10 +141,21 @@ class StructureAlternative extends ElementGraphique {
 		}
 		return taille;
 	}
+
+	/**
+	 * @description Renvoie la taille en ordonnée de la structure alternative.
+	 * @returns {number} La taille en ordonnée.
+	 */
 	getTailleOrdonnee() {
 		return 4;
 	}
 
+	/**
+	 * @description Décale une condition dans la structure alternative.
+	 * @param {Condition} pCondition - La condition à décaler.
+	 * @param {number} decalage - Le décalage à appliquer.
+	 * @param {boolean} estAnnulation - Indique si le décalage est une annulation.
+	 */
 	decalerCondition(pCondition, decalage, estAnnulation = false) {
 		if (!estAnnulation)
 			this._editeur.ajouterEvenement(
@@ -157,33 +169,26 @@ class StructureAlternative extends ElementGraphique {
 					"jumpOverLeft var(--specialTransitionTime) ease-in-out";
 				autreCondition.style.animation =
 					"slideUnderRight var(--specialTransitionTime) ease-in-out";
-				setTimeout(
-					() => {
-						pCondition.parentElement.insertBefore(
-							pCondition,
-							autreCondition,
-						);
-						pCondition.style.animation = "";
-						autreCondition.style.animation = "";
-						// update les liens vers les enfants
-						pCondition._elemParent._listeElementsEnfants.forEach(
-							(lien) => {
-								lien.ligne.update();
-							},
-						);
+				setTimeout(() => {
+					pCondition.parentElement.insertBefore(
+						pCondition,
+						autreCondition,
+					);
+					pCondition.style.animation = "";
+					autreCondition.style.animation = "";
+					// update les liens vers les enfants
+					pCondition._elemParent._listeElementsEnfants.forEach(
+						(lien) => {
+							lien.ligne.update();
+						},
+					);
 
-						autreCondition._elemParent._listeElementsEnfants.forEach(
-							(lien) => {
-								lien.ligne.update();
-							},
-						);
-					},
-					parseFloat(
-						document.body.style.getPropertyValue(
-							"--specialTransitionTime",
-						),
-					) * 1000,
-				);
+					autreCondition._elemParent._listeElementsEnfants.forEach(
+						(lien) => {
+							lien.ligne.update();
+						},
+					);
+				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
 			}
 		} else if (decalage == 1 && pCondition instanceof Condition) {
 			// Décaler la condition vers la droite
@@ -193,36 +198,35 @@ class StructureAlternative extends ElementGraphique {
 					"jumpOverRight var(--specialTransitionTime) ease-in-out";
 				autreCondition.style.animation =
 					"slideUnderLeft var(--specialTransitionTime) ease-in-out";
-				setTimeout(
-					() => {
-						pCondition.parentElement.insertBefore(
-							autreCondition,
-							pCondition,
-						);
-						pCondition.style.animation = "";
-						autreCondition.style.animation = "";
-						pCondition._elemParent._listeElementsEnfants.forEach(
-							(lien) => {
-								lien.ligne.update();
-							},
-						);
+				setTimeout(() => {
+					pCondition.parentElement.insertBefore(
+						autreCondition,
+						pCondition,
+					);
+					pCondition.style.animation = "";
+					autreCondition.style.animation = "";
+					pCondition._elemParent._listeElementsEnfants.forEach(
+						(lien) => {
+							lien.ligne.update();
+						},
+					);
 
-						autreCondition._elemParent._listeElementsEnfants.forEach(
-							(lien) => {
-								lien.ligne.update();
-							},
-						);
-					},
-					parseFloat(
-						document.body.style.getPropertyValue(
-							"--specialTransitionTime",
-						),
-					) * 1000,
-				);
+					autreCondition._elemParent._listeElementsEnfants.forEach(
+						(lien) => {
+							lien.ligne.update();
+						},
+					);
+				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
 			}
 		}
 	}
 
+	/**
+	 * @description Ajoute une condition par rapport à une autre condition.
+	 * @param {Condition} pCondition - La condition de référence.
+	 * @param {number} decalage - Le décalage à appliquer.
+	 * @param {boolean} estAnnulation - Indique si l'ajout est une annulation.
+	 */
 	ajouterConditionParRapportA(pCondition, decalage, estAnnulation = false) {
 		if (decalage == -1 && pCondition instanceof Condition) {
 			// Ajouter une condition à gauche
@@ -260,6 +264,9 @@ class StructureAlternative extends ElementGraphique {
 		}, 200);
 	}
 
+	/**
+	 * @description Supprime la structure alternative.
+	 */
 	supprimer() {
 		for (let condition of this._listeConditions.children) {
 			condition._elemParent.delierTousLesEnfants();
@@ -268,6 +275,10 @@ class StructureAlternative extends ElementGraphique {
 		this.remove();
 	}
 
+	/**
+	 * @description Renvoie les enfants de la structure alternative par condition.
+	 * @returns {Array<Array<ElementGraphique>>} La liste des enfants par condition.
+	 */
 	getEnfantsParCondition() {
 		let listeConditionsEnfants = [];
 		for (let condition of this._listeConditions.children) {
@@ -283,10 +294,20 @@ class StructureAlternative extends ElementGraphique {
 		return listeConditionsEnfants;
 	}
 
+	/**
+	 * @description Renvoie une condition par son index.
+	 * @param {number} index - L'index de la condition.
+	 * @returns {Condition} La condition correspondante.
+	 */
 	getCondition(index) {
 		return this._listeConditions.children[index];
 	}
 
+	/**
+	 * @description Génère les options contextuelles pour la structure alternative.
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes.
+	 * @returns {Array<ElementMenu>} La liste des options contextuelles.
+	 */
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 

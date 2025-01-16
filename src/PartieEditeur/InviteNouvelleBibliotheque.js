@@ -1,3 +1,7 @@
+/**
+ * Classe représentant une invitation pour ajouter une nouvelle bibliothèque.
+ * @extends HTMLElement
+ */
 class InviteNouvelleBibliotheque extends HTMLElement {
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 	_algoJSON; // String (JSON.stringify())
@@ -6,6 +10,10 @@ class InviteNouvelleBibliotheque extends HTMLElement {
 	boutonAjouter = document.createElement("button");
 	boutonCancel = document.createElement("button");
 
+	/**
+	 * Crée une instance de InviteNouvelleBibliotheque.
+	 * @param {string} algoJSON - Le JSON de l'algorithme.
+	 */
 	constructor(algoJSON) {
 		super();
 		this._algoJSON = algoJSON;
@@ -58,6 +66,9 @@ class InviteNouvelleBibliotheque extends HTMLElement {
 		});
 	}
 
+	/**
+	 * Ajoute une bibliothèque personnalisée à l'éditeur.
+	 */
 	ajouterBibliotheque() {
 		const nom = this.inputNom.value;
 		const description = this.inputDescription.value;

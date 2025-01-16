@@ -53,6 +53,10 @@ class Editeur extends HTMLElement {
 	_transferInput = document.getElementById("corpAlgo");
 	_transferNomFichier = document.getElementById("nomFichier");
 
+	/**
+	 * @constructor
+	 * Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.
+	 */
 	constructor() {
 		super();
 
@@ -1488,6 +1492,13 @@ class Editeur extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Crée un cookie ou met à jour un cookie existant.
+	 *
+	 * @param {string} cname - Le nom du cookie.
+	 * @param {string} cvalue - La valeur du cookie.
+	 * @param {number} exdays - Le nombre de jours avant l'expiration du cookie.
+	 */
 	setCookie(cname, cvalue, exdays) {
 		const d = new Date();
 		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
@@ -1496,6 +1507,12 @@ class Editeur extends HTMLElement {
 			cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
 	}
 
+	/**
+	 * Récupère la valeur d'un cookie spécifié par son nom.
+	 *
+	 * @param {string} cname - Le nom du cookie à récupérer.
+	 * @returns {string} La valeur du cookie si trouvé, sinon une chaîne vide.
+	 */
 	getCookie(cname) {
 		let name = cname + "=";
 		let decodedCookie = decodeURIComponent(document.cookie);
@@ -1512,6 +1529,12 @@ class Editeur extends HTMLElement {
 		return "";
 	}
 
+	/**
+	 * Charge des éléments à partir d'un objet JSON et met à jour la sélection.
+	 *
+	 * @param {Object} json - L'objet JSON contenant les données des éléments à charger.
+	 * @returns {void}
+	 */
 	chargerDepuisJSON(json) {
 		let lesElements = this._planActif.chargerDepuisJSON(json);
 
@@ -1532,6 +1555,20 @@ class Editeur extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Sélectionne un outil et met à jour le curseur en fonction de l'outil sélectionné.
+	 *
+	 * @param {number} idTool - L'identifiant de l'outil à sélectionner. Si idTool est -1, le pointeur est sélectionné.
+	 *
+	 * @description
+	 * Cette méthode met à jour l'outil actuellement sélectionné et modifie le curseur du plan principal et des sous-plans de travail
+	 * en fonction de l'outil sélectionné. Si un outil autre que le lien est sélectionné, elle enlève la classe "pointePourLien" de l'élément
+	 * précédemment pointé.
+	 *
+	 * @example
+	 * // Sélectionne l'outil avec l'identifiant 3 (Structure si)
+	 * selectTool(3);
+	 */
 	selectTool(idTool) {
 		this._currentTool = idTool;
 		this._listeTools.forEach((tool) => {
@@ -1598,17 +1635,39 @@ class Editeur extends HTMLElement {
 	}
 
 	// Outils d'édition
+	/**
+	 * Annule la dernière action effectuée.
+	 * Appelle la méthode `annuler` pour effectuer l'annulation.
+	 */
 	undo() {
 		this.annuler();
 	}
+
+	/**
+	 * Refaire l'action précédente annulée.
+	 * Appelle la méthode `retablir` pour rétablir l'état précédent.
+	 */
 	redo() {
 		this.retablir();
 	}
+
+	/**
+	 * Coupe la sélection actuelle.
+	 * Si le mode verbose est activé, affiche "cut" dans la console.
+	 * Copie la sélection actuelle dans le presse-papiers et la supprime ensuite.
+	 */
 	cut() {
 		if (verbose) console.log("cut");
 		this.copy();
 		this.delete();
 	}
+
+	/**
+	 * Copie les éléments sélectionnés dans le presse-papiers ou retourne leur représentation JSON.
+	 *
+	 * @param {boolean} [toClipboard=true] - Indique si les éléments doivent être copiés dans le presse-papiers.
+	 * @returns {string} La représentation JSON des éléments copiés.
+	 */
 	copy(toClipboard = true) {
 		if (verbose) console.log("copy");
 		let elementsACopier = [];
@@ -1695,6 +1754,24 @@ class Editeur extends HTMLElement {
 			navigator.clipboard.writeText(JSON.stringify(elementsACopier));
 		return JSON.stringify(elementsACopier);
 	}
+
+	/**
+	 * Colle les données du presse-papiers et applique un décalage basé sur la position actuelle de la souris.
+	 *
+	 * @function
+	 * @name paste
+	 * @memberof Editeur
+	 * @throws {Error} Lance une erreur si les données du presse-papiers ne sont pas au format JSON.
+	 *
+	 * @description
+	 * Cette fonction lit les données du presse-papiers, les parse en JSON, puis applique un décalage aux coordonnées
+	 * de chaque élément basé sur la position actuelle de la souris. Si les éléments contiennent des enfants ou des conditions,
+	 * le décalage est également appliqué récursivement à ces sous-éléments. Enfin, les données modifiées sont chargées dans l'éditeur.
+	 *
+	 * @example
+	 * // Exemple d'utilisation
+	 * editeur.paste();
+	 */
 	paste() {
 		if (verbose) console.log("paste");
 		try {
@@ -1755,6 +1832,15 @@ class Editeur extends HTMLElement {
 			console.error("Le fichier n'est pas au format JSON.");
 		}
 	}
+
+	/**
+	 * Sélectionne tous les éléments graphiques trouvés dans le plan actif.
+	 * Utilise la méthode `trouverToutLesElementsGraphiques` pour récupérer les éléments graphiques,
+	 * puis les sélectionne en utilisant la méthode `selectionnerElement` de l'objet `_selection`.
+	 *
+	 * @memberof Editeur
+	 * @method selectAll
+	 */
 	selectAll() {
 		console.log("selectAll");
 		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
@@ -1762,14 +1848,27 @@ class Editeur extends HTMLElement {
 				this._selection.selectionnerElement(elem);
 		}
 	}
+
+	/**
+	 * Supprime les éléments sélectionnés.
+	 */
 	delete() {
 		console.log("delete");
 		this._selection.supprimerTout();
 	}
+
+	/**
+	 * Recherche des éléments (fonctionnalité non implémentée).
+	 */
 	search() {
 		console.log("search");
 	}
 
+	/**
+	 * Exporte le contenu de l'éditeur au format JSON.
+	 *
+	 * @param {string} jsonString - La chaîne JSON à exporter.
+	 */
 	exporterJSON(jsonString) {
 		// On crée un Blob avec le contenu JSON
 		var blob = new Blob([jsonString], { type: "application/json" });
@@ -1794,11 +1893,19 @@ class Editeur extends HTMLElement {
 	}
 
 	// Gestion des événements
+	/**
+	 * Ajoute un événement à la pile d'annulation.
+	 *
+	 * @param {Object} evenement - L'événement à ajouter.
+	 */
 	ajouterEvenement(evenement) {
 		this._pileAnnuler.push(evenement);
 		this._pileRétablir = [];
 	}
 
+	/**
+	 * Annule le dernier événement.
+	 */
 	annuler() {
 		if (this._pileAnnuler.length > 0) {
 			let evenement = this._pileAnnuler.pop();
@@ -1807,6 +1914,9 @@ class Editeur extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Rétablit le dernier événement annulé.
+	 */
 	retablir() {
 		if (this._pileRétablir.length > 0) {
 			let evenement = this._pileRétablir.pop();
@@ -1816,6 +1926,9 @@ class Editeur extends HTMLElement {
 	}
 
 	// Imports
+	/**
+	 * Importe des données JSON dans l'éditeur.
+	 */
 	importerJSON() {
 		// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 		var fileInput = document.createElement("input");
@@ -1839,6 +1952,14 @@ class Editeur extends HTMLElement {
 	}
 
 	// Exports
+	/**
+	 * Exporte le contenu de l'éditeur au format SVG.
+	 *
+	 * @param {Object} nodeToCopy - Le nœud à copier.
+	 * @param {boolean} [download=true] - Indique si le fichier doit être téléchargé.
+	 * @param {boolean} [isJSON=false] - Indique si le nœud est au format JSON.
+	 * @returns {string} La chaîne SVG exportée.
+	 */
 	exporterSVG(nodeToCopy, download = true, isJSON = false) {
 		console.log("exporterSVG() appelé");
 		// On crée une balise style pour embarquer le style dans le fichier SVG
@@ -2549,6 +2670,13 @@ class Editeur extends HTMLElement {
 		return templateHeader;
 	}
 
+	/**
+	 * Exporte le contenu de l'éditeur au format JPG.
+	 *
+	 * @param {Object} nodeToCopy - Le nœud à copier.
+	 * @param {boolean} [download=true] - Indique si le fichier doit être téléchargé.
+	 * @param {boolean} [isJSON=false] - Indique si le nœud est au format JSON.
+	 */
 	exporterJPG(nodeToCopy, download = true, isJSON = false) {
 		this.createBitmapImageFromSvg(
 			"jpeg",
@@ -2560,6 +2688,14 @@ class Editeur extends HTMLElement {
 
 	isCreatingBitmapImageFromSvg = false;
 
+	/**
+	 * Crée une image bitmap à partir d'un SVG.
+	 *
+	 * @param {string} mimeType - Le type MIME de l'image.
+	 * @param {Object} nodeToCopy - Le nœud à copier.
+	 * @param {boolean} [download=true] - Indique si le fichier doit être téléchargé.
+	 * @param {boolean} [isJSON=false] - Indique si le nœud est au format JSON.
+	 */
 	async createBitmapImageFromSvg(
 		mimeType,
 		nodeToCopy,
@@ -2627,6 +2763,13 @@ class Editeur extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Exporte le contenu de l'éditeur au format PNG.
+	 *
+	 * @param {Object} nodeToCopy - Le nœud à copier.
+	 * @param {boolean} [download=true] - Indique si le fichier doit être téléchargé.
+	 * @param {boolean} [isJSON=false] - Indique si le nœud est au format JSON.
+	 */
 	exporterPNG(nodeToCopy, download = true, isJSON = false) {
 		this.createBitmapImageFromSvg(
 			"png",

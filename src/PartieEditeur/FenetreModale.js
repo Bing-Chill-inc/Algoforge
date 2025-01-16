@@ -1,6 +1,15 @@
+/**
+ * @class FenetreModale
+ * @classdesc La classe FenetreModale gère l'affichage des fenêtres modales.
+ * @extends {HTMLElement}
+ */
 class FenetreModale extends HTMLElement {
 	content;
 
+	/**
+	 * @constructor
+	 * @param {string} contenu - Le contenu HTML de la fenêtre modale.
+	 */
 	constructor(contenu) {
 		super();
 		this.content = document.createElement("div");
@@ -24,10 +33,16 @@ class FenetreModale extends HTMLElement {
 		});
 	}
 
+	/**
+	 * @description Ouvre la fenêtre modale.
+	 */
 	ouvrir() {
 		this.style.display = "block";
 	}
 
+	/**
+	 * @description Ferme la fenêtre modale.
+	 */
 	fermer() {
 		this.style.display = "none";
 	}

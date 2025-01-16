@@ -1,3 +1,7 @@
+/**
+ * Classe représentant une condition dans l'éditeur.
+ * @extends HTMLElement
+ */
 class Condition extends HTMLElement {
 	// ATTRIBUTS
 	_elemParent; // ElementParent (liste des enfants)
@@ -7,6 +11,12 @@ class Condition extends HTMLElement {
 	_maxLines = 4;
 
 	// CONSTRUCTEUR
+	/**
+	 * Crée une nouvelle instance de Condition.
+	 * @param {string} [libelle=""] - Le libellé de la condition.
+	 * @param {ElementParent} [elemParent=new ElementParent()] - L'élément parent.
+	 * @param {StructureAlternative} [structure=null] - La structure contenant cette condition.
+	 */
 	constructor(
 		libelle = "",
 		elemParent = new ElementParent(),
@@ -24,43 +34,83 @@ class Condition extends HTMLElement {
 	}
 
 	// ENCAPSULATION
+	/**
+	 * Obtient l'élément graphique parent.
+	 * @returns {HTMLElement} L'élément graphique parent.
+	 */
 	get _elementGraphique() {
 		return this.parentNode.parentNode;
 	}
+
+	/**
+	 * Obtient le libellé de la condition.
+	 * @returns {string} Le libellé de la condition.
+	 */
 	get _libelle() {
 		return this.divLibelle.innerText;
 	}
 
+	/**
+	 * Définit le libellé de la condition.
+	 * @param {string} value - Le nouveau libellé.
+	 */
 	set _libelle(value) {
 		this.divLibelle.innerText = value;
 	}
 
+	/**
+	 * Obtient l'élément parent.
+	 * @returns {ElementParent} L'élément parent.
+	 */
 	get _elemParent() {
 		return this._elemParent;
 	}
 
+	/**
+	 * Définit l'élément parent.
+	 * @param {ElementParent} value - Le nouvel élément parent.
+	 */
 	set _elemParent(value) {
 		this._elemParent = value;
 	}
 
+	/**
+	 * Obtient la structure contenant cette condition.
+	 * @returns {StructureAlternative} La structure contenant cette condition.
+	 */
 	get _structure() {
 		return this._structure;
 	}
 
+	/**
+	 * Définit la structure contenant cette condition.
+	 * @param {StructureAlternative} value - La nouvelle structure.
+	 */
 	set _structure(value) {
 		this._structure = value;
 	}
 
+	/**
+	 * Obtient l'ordonnée pour le traitement des liens dans l'interface.
+	 * @returns {number} L'ordonnée.
+	 */
 	get _ordonnee() {
 		// Pour le traitement des liens dans l'interface
 		return this._structure._ordonnee;
 	}
 
+	/**
+	 * Obtient l'espace de travail.
+	 * @returns {HTMLElement} L'espace de travail.
+	 */
 	get espaceTravail() {
 		return this._structure.parentNode;
 	}
 
 	// METHODES
+	/**
+	 * Affiche les éléments graphiques de la condition.
+	 */
 	afficher() {
 		let buttonSupprimer = document.createElement("button");
 		buttonSupprimer.className = "supprimer";
@@ -151,12 +201,19 @@ class Condition extends HTMLElement {
 		}, 200);
 	}
 
+	/**
+	 * Supprime la condition.
+	 */
 	supprimer() {
 		this._editeur.ajouterEvenement(new EvenementSuppressionElement(this));
 		this._elemParent.delierTousLesEnfants();
 		this._structure.supprimerCondition(this);
 	}
 
+	/**
+	 * Convertit la condition en JSON.
+	 * @returns {Object} La représentation JSON de la condition.
+	 */
 	toJSON() {
 		return {
 			typeElement: this.constructor.name,
@@ -165,6 +222,11 @@ class Condition extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Convertit la condition en JSON en spécifiant les enfants à conserver.
+	 * @param {Array} listeElemEnfantsAConcerver - La liste des enfants à conserver.
+	 * @returns {Object} La représentation JSON de la condition.
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		return {
 			typeElement: this.constructor.name,
@@ -175,6 +237,10 @@ class Condition extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Calcule la taille en abscisse de la condition.
+	 * @returns {number} La taille en abscisse.
+	 */
 	getTailleAbscisse() {
 		let rect = this.getBoundingClientRect();
 
@@ -183,6 +249,10 @@ class Condition extends HTMLElement {
 		return 10; // largeurEnVw;
 	}
 
+	/**
+	 * Obtient l'ancre de décomposition de la condition.
+	 * @returns {Object} L'ancre de décomposition avec les coordonnées en abscisse et ordonnée.
+	 */
 	getAncreDecomposition() {
 		let abscisse = parseFloat(this._structure._abscisse);
 		for (let condition of this._structure._listeConditions.children) {
@@ -196,10 +266,19 @@ class Condition extends HTMLElement {
 		return { abscisse: abscisse, ordonnee: ordonnee - 0.7 };
 	}
 
+	/**
+	 * Vérifie si la condition peut être décomposée.
+	 * @returns {boolean} True si la condition peut être décomposée, sinon false.
+	 */
 	peutEtreDecompose() {
 		return true;
 	}
 
+	/**
+	 * Obtient les enfants de la condition.
+	 * @param {Function} [typeRechercher=ElementGraphique] - Le type d'élément à rechercher.
+	 * @returns {Array} La liste des enfants.
+	 */
 	getEnfants(typeRechercher = ElementGraphique) {
 		let listeDesEnfants = [];
 		for (let enfant of this._elemParent._listeElementsEnfants) {

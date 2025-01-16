@@ -92,7 +92,7 @@ class Ligne extends HTMLElement {
 
 	// METHODES
 	/**
-	 * @description Affiche la ligne sur le plan de travail
+	 * @description Affiche la ligne sur le plan de travail, et met à jour sa position et rotation.
 	 */
 	update() {
 		if (this._abscisse1 < this._abscisse2) {

@@ -15,13 +15,13 @@ class StructureIterativeBornee extends StructureIterative {
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {number|string} abscisse
-	 * @param {number|string} ordonnee
-	 * @type {Information}
-	 * @param {Information} variableAIterer
-	 * @param {string} borneInferieure
-	 * @param {string} borneSuperieure
-	 * @param {string} pas
+	 * @param {number|string} abscisse - L'abscisse de la structure
+	 * @param {number|string} ordonnee - L'ordonnée de la structure
+	 * @param {Information} variableAIterer - La variable à itérer
+	 * @param {string} borneInferieure - La borne inférieure
+	 * @param {string} borneSuperieure - La borne supérieure
+	 * @param {string} pas - Le pas de l'itération
+	 * @param {boolean} estCroissant - Indique si l'itération est croissante
 	 */
 	constructor(
 		abscisse,
@@ -42,27 +42,31 @@ class StructureIterativeBornee extends StructureIterative {
 
 	// ENCAPSULATION
 	/**
-	 * @description Renvoie la variable à altérer de la boucle iterative bornée
-	 * @returns {Information} la variable
+	 * @description Renvoie la variable à itérer de la boucle itérative bornée
+	 * @returns {Information} La variable
 	 */
 	get _variableAIterer() {
 		return this._variableAIterer;
 	}
 
 	/**
-	 * @description Remplace la variables actuelle par une nouvelle
-	 * @param {Information} value la variable qui remplacera l'ancienne
+	 * @description Remplace la variable actuelle par une nouvelle
+	 * @param {Information} value - La variable qui remplacera l'ancienne
 	 */
 	setVariableAIterer(value) {
 		this._variableAIterer = value;
 		if (this.etatClassique()) {
-			this.querySelector(".informationsBornes").innerHTML =
-				`Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
+			this.querySelector(
+				".informationsBornes",
+			).innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
-			this.querySelector(".informationsBornes").innerHTML =
-				`Pour ${this._variableAIterer} allant de ${
-					this._borneInferieure
-				} à ${this._borneSuperieure} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${this._pas}`;
+			this.querySelector(".informationsBornes").innerHTML = `Pour ${
+				this._variableAIterer
+			} allant de ${this._borneInferieure} à ${
+				this._borneSuperieure
+			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${
+				this._pas
+			}`;
 		}
 	}
 
@@ -125,13 +129,21 @@ class StructureIterativeBornee extends StructureIterative {
 		if (this.etatClassique()) {
 			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${this._borneSuperieure}`;
 		} else {
-			divInformationsBornes.innerHTML = `Pour ${this._variableAIterer} allant de ${this._borneInferieure} à ${
+			divInformationsBornes.innerHTML = `Pour ${
+				this._variableAIterer
+			} allant de ${this._borneInferieure} à ${
 				this._borneSuperieure
-			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${this._pas}`;
+			} par pas ${this._estCroissant ? "Croissant" : "Décroissant"} de ${
+				this._pas
+			}`;
 		}
 		this.appendChild(divInformationsBornes);
 	}
 
+	/**
+	 * @description Vérifie si l'état de la boucle est classique
+	 * @returns {boolean} true si l'état est classique, false sinon
+	 */
 	etatClassique() {
 		// Vérifions si les bornes sont des nombres
 		let borneInf = parseFloat(this._borneInferieure);
@@ -151,12 +163,7 @@ class StructureIterativeBornee extends StructureIterative {
 	}
 
 	/**
-	 * @description Recherche et renvoie la listes des anomalies de la boucle iterative bornée<br>
-	 * Liste des Erreurs :<br>
-	 *
-	 * 11 : Signe de la condition d’arrêt et du pas sont différents<br>
-	 * 12 : On vérifie que la boucle contient pas 7 sous-éléments ou plus
-	 *
+	 * @description Recherche et renvoie la listes des anomalies de la boucle iterative bornée
 	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies
 	 */
 	rechercherAnomalies() {
@@ -181,17 +188,7 @@ class StructureIterativeBornee extends StructureIterative {
 
 	/**
 	 * @description Renvoie le corp JSON de l'instance de la StructureItérative
-	 *
 	 * @returns {JSON} Le corps JSON de la StructureIterativeBornee
-	 * @type {ElementGraphique}
-	 * @property {ElementGraphique} typeElement Le type de la StructureIterativeBornee
-	 * @property {string|number} abscisse l'abscisse
-	 * @property {string|number} ordonnee l'ordonnée
-	 * @property {Information} variableAIterer La variable
-	 * @property {string} borneInferieure La borne inférieur
-	 * @property {string} borneSuperieure La borne supérieur
-	 * @property {string} pas Le pas
-	 * @property {JSON} enfants les enfants de la structure itérative
 	 */
 	toJSON() {
 		return {
@@ -207,6 +204,11 @@ class StructureIterativeBornee extends StructureIterative {
 		};
 	}
 
+	/**
+	 * @description Renvoie le corp JSON des informations contenu dans la StructureIterativeBornee en spécifiant les éléments enfants à conserver
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver La liste des éléments enfants à conserver
+	 * @returns {JSON} le corps json de la StructureIterativeBornee
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		return {
 			typeElement: this.constructor.name,
@@ -225,8 +227,7 @@ class StructureIterativeBornee extends StructureIterative {
 
 	/**
 	 * @description Extrait les information de la StructureItérativeBornée
-	 *
-	 * @returns {Array}
+	 * @returns {Array<Information>} La liste des informations extraites
 	 */
 	extraireInformation() {
 		let i = new Information();
@@ -237,6 +238,7 @@ class StructureIterativeBornee extends StructureIterative {
 		}
 		return [i];
 	}
+
 	/**
 	 * @deprecated
 	 * @returns {}
@@ -244,6 +246,7 @@ class StructureIterativeBornee extends StructureIterative {
 	getInformationDonnee() {
 		return this.extraireInformation();
 	}
+
 	/**
 	 * @deprecated
 	 * @returns {}
@@ -254,7 +257,6 @@ class StructureIterativeBornee extends StructureIterative {
 
 	/**
 	 * @description Recherche dans une chaine l'information demandé
-	 *
 	 * @param {string} nameInformation L'information Rechercher
 	 * @returns {string} L'information récupérer
 	 */
@@ -266,9 +268,9 @@ class StructureIterativeBornee extends StructureIterative {
 			this._borneSuperieure.includes(nameInformation)
 		);
 	}
+
 	/**
 	 * @description Renome le nom de la variables
-	 *
 	 * @param {string} ancienNom l'ancien Nom
 	 * @param {string} nouveauNom le nouveau Nom
 	 */

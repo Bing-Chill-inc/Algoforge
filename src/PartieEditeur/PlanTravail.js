@@ -1,8 +1,7 @@
 /**
- * @classdesc Le plan de travail pour éditer les algorithmes
- * @description Crée une instance de PlanTravail.
  * @class PlanTravail
  * @extends {HTMLElement}
+ * @classdesc Le plan de travail pour éditer les algorithmes.
  */
 class PlanTravail extends HTMLElement {
 	// ATTRIBUTS
@@ -50,16 +49,18 @@ class PlanTravail extends HTMLElement {
 
 	// ENCAPSULATION
 
+	/**
+	 * @returns {Object} Le dictionnaire des données.
+	 */
 	get leDictionnaireDesDonnees() {
 		return this._editeur._dictionnaireDesDonnees;
 	}
 
 	// METHODES
+
 	/**
-	 * @description Retourne lesProblèmes du plans de travail n'ayant pas de parent
-	 *
-	 * @type {Probleme}
-	 * @returns {Probleme} Le premier problème du plan de travail
+	 * Retourne les problèmes du plan de travail n'ayant pas de parent.
+	 * @returns {Array<Probleme>} La liste des problèmes principaux.
 	 */
 	getProblemePrincipal() {
 		let listeElementsGraphiques = PlanTravail.FiltrerElementsGraphique(
@@ -72,6 +73,10 @@ class PlanTravail extends HTMLElement {
 		return listeElementsGraphiques;
 	}
 
+	/**
+	 * Retourne le problème le plus haut dans le plan de travail.
+	 * @returns {Probleme} Le problème le plus haut.
+	 */
 	getProblemeLePlusHaut() {
 		let listeProblemes = this.getProblemePrincipal();
 		let problemeLePlusHaut = listeProblemes[0];
@@ -87,13 +92,8 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * Recherche les erreurs dans le plan de travail<br>
-	 *
-	 * Liste des erreurs :<br>
-	 *
-	 * 13 : Algorithme trop grand
-	 *
-	 * @returns {Array<AnomalieConceptuelle>} La liste des problèmes de plan de travail (actuellement qu'une erreur)
+	 * Recherche les erreurs dans le plan de travail.
+	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies trouvées.
 	 */
 	rechercherAnomalies() {
 		let listeAnomalies = [];
@@ -111,12 +111,10 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
-	 *
-	 * @static
-	 * @param {Array<ElementGraphique>} listeElementGraphique La listes de tous les ElementsGraphiques
-	 * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
-	 * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
+	 * Filtre les éléments graphiques d'un type donné.
+	 * @param {Array<ElementGraphique>} listeElementGraphique - La liste des éléments graphiques.
+	 * @param {ElementGraphique} typeRechercher - Le type d'élément graphique à rechercher.
+	 * @returns {Array<ElementGraphique>} La liste des éléments graphiques filtrés.
 	 */
 	static FiltrerElementsGraphique(listeElementGraphique, typeRechercher) {
 		let nouvelleListe = [];
@@ -129,12 +127,9 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * @description Renvoie une liste contenant les éléments ElementGraphique du type donné
-	 *
-	 * @static
-	 * @param {Array<ElementGraphique>} listeElementGraphique La listes de tous les ElementsGraphiques
-	 * @param {ElementGraphique} typeRechercher le type de l'ElementGraphique à rechercher dans la liste
-	 * @returns {Array<ElementGraphique>} La liste de tous les ElementGraphique du type rechercher
+	 * Trie les éléments graphiques par leur position en abscisse.
+	 * @param {Array<ElementGraphique>} listeElementGraphique - La liste des éléments graphiques.
+	 * @returns {Array<ElementGraphique>} La liste des éléments graphiques triés.
 	 */
 	static trierElementsGraphique(listeElementGraphique) {
 		const n = listeElementGraphique.length;
@@ -159,9 +154,8 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * @description Renvoie les informations de l'instance du PlanTravail sous forme JSON
-	 *
-	 * @returns {{}}
+	 * Exporte le plan de travail en JSON.
+	 * @returns {Array} Le plan de travail sous forme JSON.
 	 */
 	exporterEnJSON() {
 		let listeElementsSansParents = [];
@@ -183,6 +177,11 @@ class PlanTravail extends HTMLElement {
 		return corpsJSON;
 	}
 
+	/**
+	 * Exporte le plan de travail en JSON en spécifiant les enfants à conserver.
+	 * @param {Array} listeElemEnfantsAConcerver - La liste des enfants à conserver.
+	 * @returns {Array} Le plan de travail sous forme JSON.
+	 */
 	exporterEnJSONSpecifier(listeElemEnfantsAConcerver) {
 		let listeElementsSansParents = [];
 		for (let element of this.children) {
@@ -204,9 +203,8 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * @description Lis un fichier json et le charge en mémoire. Vérifie également si le fichier est bien un JSON
-	 *
-	 * @param {string} fichier Le fichier json à charger en mémoire
+	 * Charge un fichier JSON dans le plan de travail.
+	 * @param {string} fichier - Le fichier JSON à charger.
 	 */
 	chargerFichier(fichier) {
 		try {
@@ -219,10 +217,11 @@ class PlanTravail extends HTMLElement {
 	}
 
 	/**
-	 * @description Charge le corpsJSON donnée pour charger l'algorithme contenu à l'intérieur sur le plan de travail
-	 *
-	 * @param {JSON} corpsJSON le corps JSON à charger sur le plan de travail
-	 * @returns {Array<ElementGraphique>} La liste des ElementGraphique chargés
+	 * Charge un corps JSON dans le plan de travail.
+	 * @param {JSON} corpsJSON - Le corps JSON à charger.
+	 * @param {boolean} [cancellable=true] - Indique si l'opération est annulable.
+	 * @param {boolean} [dico=true] - Indique si le dictionnaire doit être chargé.
+	 * @returns {Array<ElementGraphique>} La liste des éléments graphiques chargés.
 	 */
 	chargerDepuisJSON(corpsJSON, cancellable = true, dico = true) {
 		if (corpsJSON == undefined) {
@@ -456,9 +455,8 @@ class PlanTravail extends HTMLElement {
 		return listeElems;
 	}
 
-	// Effectue le dictionnaire des données
 	/**
-	 * @description Recherche toutes les variables à l'intérieur du PlanTravail et les donne au dictionnaire de donnée
+	 * Effectue le dictionnaire des données.
 	 */
 	effectuerDictionnaireDesDonnee() {
 		// Suppression de toutes les Informations
@@ -479,6 +477,11 @@ class PlanTravail extends HTMLElement {
 
 		// this.leDictionnaireDesDonnees.retirerInformationsAbsentes(lesInformations);
 	}
+
+	/**
+	 * Trouve tous les éléments graphiques dans le plan de travail.
+	 * @returns {Array<ElementGraphique>} La liste des éléments graphiques.
+	 */
 	trouverToutLesElementsGraphiques() {
 		let elements = [];
 		for (let element of this.children) {
@@ -488,12 +491,26 @@ class PlanTravail extends HTMLElement {
 		}
 		return elements;
 	}
+
+	/**
+	 * Renomme une information dans tous les éléments graphiques.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
 	renameInformation(ancienNom, nouveauNom) {
 		for (let enfantGraphique of this.trouverToutLesElementsGraphiques()) {
 			enfantGraphique.renameInformation(ancienNom, nouveauNom);
 		}
 	}
 
+	/**
+	 * Ajoute un élément au plan de travail.
+	 * @param {ElementGraphique} element - L'élément à ajouter.
+	 * @param {number} abscisse - L'abscisse de l'élément.
+	 * @param {number} ordonnee - L'ordonnée de l'élément.
+	 * @param {boolean} estEnVW - Indique si les coordonnées sont en vw.
+	 * @returns {ElementGraphique} L'élément ajouté.
+	 */
 	ajouterElement(element, abscisse, ordonnee, estEnVW) {
 		if (element == null) {
 			return;
@@ -536,6 +553,9 @@ class PlanTravail extends HTMLElement {
 		return newElement;
 	}
 
+	/**
+	 * Met à jour toutes les lignes du plan de travail.
+	 */
 	updateAllLines() {
 		for (let element of this.children) {
 			if (element instanceof ElementGraphique) {
@@ -544,6 +564,10 @@ class PlanTravail extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Obtient les coordonnées minimales et maximales des éléments graphiques.
+	 * @returns {Object} Les coordonnées minimales et maximales.
+	 */
 	getCoordMinEtMax() {
 		let coordMin = { x: Infinity, y: Infinity };
 		let coordMax = { x: -Infinity, y: -Infinity };
@@ -571,6 +595,11 @@ class PlanTravail extends HTMLElement {
 		return { coordMin, coordMax };
 	}
 
+	/**
+	 * Déplace tous les éléments graphiques d'un certain décalage.
+	 * @param {number} x - Le décalage en abscisse.
+	 * @param {number} y - Le décalage en ordonnée.
+	 */
 	toutDeplacer(x, y) {
 		for (let element of this.children) {
 			if (element instanceof ElementGraphique) {

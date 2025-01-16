@@ -1,6 +1,6 @@
 /**
  * @class StructureSi
- * @classdesc La StructureSi qui permet de vérifier une ou plusieurs conditions donnée
+ * @classdesc La StructureSi qui permet de vérifier une ou plusieurs conditions données
  * @description Crée une instance de StructureSi
  * @extends {StructureAlternative}
  */
@@ -9,11 +9,10 @@ class StructureSi extends StructureAlternative {
 
 	// CONSTRUCTEUR
 	/**
-	 *
 	 * @constructor
-	 * @param {string|number} abscisse
-	 * @param {string|number} ordonnee
-	 * @param {Array<Condition>} listeConditions
+	 * @param {string|number} abscisse - L'abscisse de la structure
+	 * @param {string|number} ordonnee - L'ordonnée de la structure
+	 * @param {Array<Condition>} listeConditions - La liste des conditions de la structure
 	 */
 	constructor(abscisse, ordonnee, listeConditions = []) {
 		super(abscisse, ordonnee, listeConditions);
@@ -57,13 +56,8 @@ class StructureSi extends StructureAlternative {
 	}
 
 	/**
-	 * @description Renvoie le corp JSON des information contenu dans la StructureSi
-	 *
-	 * @returns {JSON} le corps json de la StructureSi
-	 * @property {ElementGraphique} typeElement Le type de la StructureSi (qui est StructureSwitch)
-	 * @property {string|number} abscisse l'abscisse
-	 * @property {string|number} ordonee l'ordonnée
-	 * @property {Array<Condition>} conditions la liste des conditions actuelle dans la StructureSi
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi
+	 * @returns {JSON} Le corps JSON de la StructureSi
 	 */
 	toJSON() {
 		let conditions = [];
@@ -78,6 +72,11 @@ class StructureSi extends StructureAlternative {
 		};
 	}
 
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi en spécifiant les éléments enfants à conserver
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver
+	 * @returns {JSON} Le corps JSON de la StructureSi
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		let conditions = [];
 		for (let condition of this._listeConditions.children) {
@@ -101,6 +100,11 @@ class StructureSi extends StructureAlternative {
 		return [];
 	}
 
+	/**
+	 * @description Génère les options contextuelles pour la StructureSi
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes
+	 * @returns {Array<ElementMenu>} La liste des options contextuelles
+	 */
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 
@@ -146,6 +150,10 @@ class StructureSi extends StructureAlternative {
 		return listeOptions;
 	}
 
+	/**
+	 * @description Détecte si la transformation en switch est possible et pertinente
+	 * @returns {Object} Un objet contenant le résultat de la détection et les valeurs pertinentes
+	 */
 	detecterPotentielTransformationSwitch() {
 		/* 
         Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
@@ -191,14 +199,8 @@ class StructureSi extends StructureAlternative {
 	}
 
 	/**
-	 * @description Récupère la liste actuelles des anomalies detecté et ajoute ces propres anomalies détecté à celle ci<br>
-	 * Liste des Erreurs :<br>
-	 * 8 : Pas double égal dans une condition mais un égal <br>
-	 * 12 : Plus de sept actions à la suite <br>
-	 * 15 : Informations dans une condition non consistante avec les autres conditions de la structure<br>
-	 * 17 : Utilisation à mauvais escient d’une structure conditionnel
-	 *
-	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies déjà présentes + celle ajouté par la StructureSi
+	 * @description Récupère la liste actuelle des anomalies détectées et ajoute ses propres anomalies détectées à celle-ci
+	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies déjà présentes + celles ajoutées par la StructureSi
 	 */
 	rechercherAnomalies() {
 		let mesAnomalies = [];

@@ -1,3 +1,8 @@
+/**
+ * @class SousPlanTravail
+ * @extends {PlanTravail}
+ * @classdesc Représente un sous-plan de travail dans l'éditeur.
+ */
 class SousPlanTravail extends PlanTravail {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur
@@ -5,6 +10,10 @@ class SousPlanTravail extends PlanTravail {
 	_spanSousTitre; // Span
 
 	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {Probleme} proprietaire - Le problème propriétaire de ce sous-plan de travail.
+	 */
 	constructor(proprietaire) {
 		super();
 		this._proprietaire = proprietaire;
@@ -33,6 +42,10 @@ class SousPlanTravail extends PlanTravail {
 	}
 
 	// Methodes
+
+	/**
+	 * Ouvre le sous-plan de travail.
+	 */
 	ouvrir() {
 		this.classList.add("ouvert");
 
@@ -75,6 +88,9 @@ class SousPlanTravail extends PlanTravail {
 		});
 	}
 
+	/**
+	 * Ferme le sous-plan de travail.
+	 */
 	fermer() {
 		this.classList.remove("ouvert");
 
@@ -102,6 +118,12 @@ class SousPlanTravail extends PlanTravail {
 		this._editeur._planActif = this._proprietaire.parentNode;
 	}
 
+	/**
+	 * Obtient les enfants relatifs au sommet.
+	 * @param {number} abscisseRelatif - L'abscisse relative.
+	 * @param {number} ordonneeRelatif - L'ordonnée relative.
+	 * @returns {Array} Les enfants relatifs au sommet.
+	 */
 	getRelativeChildrenToTop(abscisseRelatif, ordonneeRelatif) {
 		let topProbleme = this.getProblemeLePlusHaut();
 		abscisseRelatif = parseFloat(abscisseRelatif);

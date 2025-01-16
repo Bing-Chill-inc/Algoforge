@@ -1,3 +1,7 @@
+/**
+ * Classe représentant un dictionnaire de données.
+ * @extends HTMLElement
+ */
 class DictionnaireDonnee extends HTMLElement {
 	// ATTRIBUTS
 	_mesInformations; // Liste<Information> Liste de toutes les variables
@@ -14,6 +18,10 @@ class DictionnaireDonnee extends HTMLElement {
 	VARIABLE_SUPPR = "*variable_supprimee*";
 
 	// CONSTRUCTEUR
+	/**
+	 * Crée une instance de DictionnaireDonnee.
+	 * @param {Array} listeVariable - Liste des variables initiales.
+	 */
 	constructor(listeVariable = []) {
 		super();
 		this._mesInformations = listeVariable;
@@ -32,6 +40,9 @@ class DictionnaireDonnee extends HTMLElement {
 	// ENCAPSULATION
 
 	// METHODES
+	/**
+	 * Ouvre le dictionnaire de données.
+	 */
 	ouvrir() {
 		document.querySelector("bibliotheque-algorithmique").fermer();
 		document.getElementById("dico_wrapper").style.zIndex = 200;
@@ -75,6 +86,9 @@ class DictionnaireDonnee extends HTMLElement {
 		this.appendChild(boutonRaffraichir);
 	}
 
+	/**
+	 * Ferme le dictionnaire de données.
+	 */
 	fermer() {
 		document.getElementById("dico_wrapper").style.zIndex = -200;
 		document.getElementById("biblio_btn").removeAttribute("disabled");
@@ -92,6 +106,9 @@ class DictionnaireDonnee extends HTMLElement {
 		this._estOuvert = false;
 	}
 
+	/**
+	 * Génère le contenu du dictionnaire de données.
+	 */
 	genererDictionnaire() {
 		let table = document.createElement("table");
 		table.id = "tableDictionnaireDonnee";
@@ -223,6 +240,11 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Ajoute une variable au dictionnaire.
+	 * @param {Information} uneInformation - L'information à ajouter.
+	 * @returns {boolean} - Retourne vrai si l'ajout a réussi, sinon faux.
+	 */
 	AjouterUneVariable(uneInformation) {
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
 			return false;
@@ -253,6 +275,10 @@ class DictionnaireDonnee extends HTMLElement {
 		return reussis;
 	}
 
+	/**
+	 * Retire les informations absentes de la liste donnée.
+	 * @param {Array} listeInformations - La liste des informations présentes.
+	 */
 	retirerInformationsAbsentes(listeInformations) {
 		for (let info of this._mesInformations) {
 			if (!listeInformations.includes(info)) {
@@ -261,6 +287,11 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Retire une information du dictionnaire.
+	 * @param {string} nameVariable - Le nom de la variable à retirer.
+	 * @returns {boolean} - Retourne vrai si la suppression a réussi.
+	 */
 	retirerUneInformation(nameVariable) {
 		this._mesInformations = this._mesInformations.filter(
 			(element) => element._nom != nameVariable,
@@ -268,6 +299,12 @@ class DictionnaireDonnee extends HTMLElement {
 		return true;
 	}
 
+	/**
+	 * Vérifie si deux types sont compatibles.
+	 * @param {string} type1 - Le premier type.
+	 * @param {string} type2 - Le deuxième type.
+	 * @returns {boolean} - Retourne vrai si les types sont compatibles.
+	 */
 	TypeCompatible(type1, type2) {
 		if (type1 == undefined || type2 == undefined) {
 			return true;
@@ -297,6 +334,12 @@ class DictionnaireDonnee extends HTMLElement {
 		return false;
 	}
 
+	/**
+	 * Convertit une variable d'un type à un autre.
+	 * @param {string} informationUne - Le premier type.
+	 * @param {string} InformationDeux - Le deuxième type.
+	 * @returns {string} - Le type résultant de la conversion.
+	 */
 	convertionVariable(informationUne, InformationDeux) {
 		// undefined
 		// String
@@ -323,6 +366,13 @@ class DictionnaireDonnee extends HTMLElement {
 		// Si aucun des deux cas alors type1 est renvoyer
 		return this.getTypeLePlusBasEnCommun(type1, type2);
 	}
+
+	/**
+	 * Obtient le type le plus bas en commun entre deux types.
+	 * @param {string} type1 - Le premier type.
+	 * @param {string} type2 - Le deuxième type.
+	 * @returns {string} - Le type le plus bas en commun.
+	 */
 	getTypeLePlusBasEnCommun(type1, type2) {
 		let courant = type1;
 		while (true) {
@@ -346,6 +396,12 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 		return type1;
 	}
+
+	/**
+	 * Vérifie si le dictionnaire contient une information donnée.
+	 * @param {string} nameInformation - Le nom de l'information.
+	 * @returns {boolean} - Retourne vrai si l'information est présente.
+	 */
 	containInformation(nameInformation) {
 		let trouver = false;
 		this._mesInformations.forEach((element) => {
@@ -355,12 +411,25 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 		return trouver;
 	}
+
+	/**
+	 * Obtient une information par son nom.
+	 * @param {string} nameInformation - Le nom de l'information.
+	 * @returns {Information} - L'information trouvée.
+	 */
 	getInformation(nameInformation) {
 		const foundElement = this._mesInformations.find(
 			(element) => element._nom === nameInformation,
 		);
 		return foundElement;
 	}
+
+	/**
+	 * Renomme une variable.
+	 * @param {string} nameVariable - Le nom actuel de la variable.
+	 * @param {string} newName - Le nouveau nom de la variable.
+	 * @returns {boolean} - Retourne vrai si le renommage a réussi.
+	 */
 	renameInformation(nameVariable, newName) {
 		let resultat = false;
 		if (newName == "") {
@@ -377,6 +446,13 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 		return resultat;
 	}
+
+	/**
+	 * Change la signification d'une variable.
+	 * @param {string} nameVariable - Le nom de la variable.
+	 * @param {string} nouvelleSignification - La nouvelle signification.
+	 * @returns {boolean} - Retourne vrai si le changement a réussi.
+	 */
 	changeSignification(nameVariable, nouvelleSignification) {
 		let resultat = false;
 		this._mesInformations.forEach((element) => {
@@ -387,6 +463,13 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 		return resultat;
 	}
+
+	/**
+	 * Change le type d'une variable.
+	 * @param {string} nameVariable - Le nom de la variable.
+	 * @param {string} newType - Le nouveau type.
+	 * @returns {boolean} - Retourne vrai si le changement a réussi.
+	 */
 	changeType(nameVariable, newType) {
 		let resultat = false;
 		this._mesInformations.forEach((element) => {
@@ -398,6 +481,11 @@ class DictionnaireDonnee extends HTMLElement {
 		return resultat;
 	}
 
+	/**
+	 * Vérifie si un nom de variable est correct.
+	 * @param {string} nameVariable - Le nom de la variable.
+	 * @returns {boolean} - Retourne vrai si le nom est correct.
+	 */
 	nomCorrecte(nameVariable) {
 		let resultat = true;
 		if (nameVariable.trim() == "") {
@@ -415,6 +503,9 @@ class DictionnaireDonnee extends HTMLElement {
 		return resultat;
 	}
 
+	/**
+	 * Supprime les données inutilisées.
+	 */
 	suppressionDonneeInutiliser() {
 		this._mesInformations = this._mesInformations.filter((element) => {
 			return (
@@ -425,10 +516,17 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 	}
 
+	/**
+	 * Supprime toutes les informations du dictionnaire.
+	 */
 	suppressionTout() {
 		this._mesInformations = [];
 	}
 
+	/**
+	 * Convertit le dictionnaire en JSON.
+	 * @returns {Object} - L'objet JSON représentant le dictionnaire.
+	 */
 	toJSON() {
 		return {
 			typeElement: "DictionnaireDonnee",
@@ -437,6 +535,10 @@ class DictionnaireDonnee extends HTMLElement {
 		};
 	}
 
+	/**
+	 * Exporte le dictionnaire dans un format donné.
+	 * @param {string} format - Le format d'exportation (xls, csv, md).
+	 */
 	exporter(format) {
 		switch (format.toLowerCase()) {
 			case "xls":
@@ -447,7 +549,11 @@ class DictionnaireDonnee extends HTMLElement {
 				this._mesInformations.forEach((info) => {
 					aoa.push([
 						info._nom,
-						`${this._matchType[info._nom] ? this._matchType[info._nom] : info._type}`,
+						`${
+							this._matchType[info._nom]
+								? this._matchType[info._nom]
+								: info._type
+						}`,
 						this._matchSignification[info._nom]
 							? this._matchSignification[info._nom]
 							: "",
@@ -465,7 +571,9 @@ class DictionnaireDonnee extends HTMLElement {
 				/* Export to file (start a download) */
 				XLSX.writeFile(
 					wb,
-					`${document.querySelector("#titreAlgo").innerText}Dictionnaire.xls`,
+					`${
+						document.querySelector("#titreAlgo").innerText
+					}Dictionnaire.xls`,
 				);
 				this.fermer();
 				break;
@@ -494,7 +602,9 @@ class DictionnaireDonnee extends HTMLElement {
 				// On crée un élément <a> pour télécharger le fichier
 				var downloadLink = document.createElement("a");
 				downloadLink.href = url;
-				downloadLink.download = `${document.querySelector("#titreAlgo").innerText}Dictionnaire.csv`;
+				downloadLink.download = `${
+					document.querySelector("#titreAlgo").innerText
+				}Dictionnaire.csv`;
 
 				// Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
 				document.body.appendChild(downloadLink);
@@ -532,7 +642,9 @@ class DictionnaireDonnee extends HTMLElement {
 				// On crée un élément <a> pour télécharger le fichier
 				var downloadLink = document.createElement("a");
 				downloadLink.href = url;
-				downloadLink.download = `${document.querySelector("#titreAlgo").innerText}Dictionnaire.md`;
+				downloadLink.download = `${
+					document.querySelector("#titreAlgo").innerText
+				}Dictionnaire.md`;
 
 				// Pour des raisons de compatibilité, on simule un clic sur le lien et on le supprime après
 				document.body.appendChild(downloadLink);
@@ -547,11 +659,20 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Charge le dictionnaire depuis un objet JSON.
+	 * @param {Object} json - L'objet JSON contenant les données.
+	 */
 	chargerDepuisJSON(json) {
 		this._matchType = json.types;
 		this._matchSignification = json.signification;
 	}
 
+	/**
+	 * Convertit une chaîne CSV en Markdown.
+	 * @param {string} csvString - La chaîne CSV.
+	 * @returns {string} - La chaîne Markdown.
+	 */
 	csvToMarkdown(csvString) {
 		const rows = csvString.split("\n").filter((row) => row); // On sépare les lignes et ne gardons pas les lignes vides
 		let markdown = "";

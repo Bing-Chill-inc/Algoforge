@@ -1,3 +1,8 @@
+/**
+ * @class EvenementEditionStructureIterative
+ * @classdesc Classe représentant un événement de modification de structure itérative.
+ * @extends EvenementEdition
+ */
 class EvenementEditionStructureIterative extends EvenementEdition {
 	// ATTRIBUTS
 	// _elementConcerne; // StructureIterative. Déclaré dans la classe parente.
