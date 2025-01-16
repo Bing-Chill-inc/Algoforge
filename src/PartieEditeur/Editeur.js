@@ -2014,9 +2014,10 @@ class Editeur extends HTMLElement {
                 probleme-element > div.containerDPR > div.donnees {
                     width: 100%;
                     height: 100%;
-                    display: grid;
-                    grid-template-columns: 1fr 5fr 1fr;
-                    grid-template-rows: 1fr;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: right;
                     column-gap: calc(var(--sizeModifier) * 0.2vw);
                     place-items: center;
                     grid-column: 1;
@@ -2028,7 +2029,7 @@ class Editeur extends HTMLElement {
                     }
         
                     probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
-                        width: calc(var(--sizeModifier) * 6.3vw);
+                        min-width: calc(var(--sizeModifier) * 1vw);
                         height: 100%;
                         grid-column: 2;
                         resize: none;
@@ -2062,9 +2063,10 @@ class Editeur extends HTMLElement {
                 probleme-element > div.containerDPR > div.resultat {
                     width: 100%;
                     height: 100%;
-                    display: grid;
-                    grid-template-columns: 1fr 5fr 1fr;
-                    grid-template-rows: 1fr;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: left;
                     column-gap: calc(var(--sizeModifier) * 0.2vw);
                     place-items: center;
                     grid-column: 3;
@@ -2076,7 +2078,7 @@ class Editeur extends HTMLElement {
                     }
         
                     probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
-                        width: calc(var(--sizeModifier) * 6.3vw);
+                        min-width: calc(var(--sizeModifier) * 1vw);
                         height: 100%;
                         grid-column: 2;
                         resize: none;
@@ -2115,9 +2117,10 @@ class Editeur extends HTMLElement {
                 procedure-element > div.containerDPR > div.donnees {
                     width: 100%;
                     height: 100%;
-                    display: grid;
-                    grid-template-columns: 1fr 5fr 1fr;
-                    grid-template-rows: 1fr;
+                    display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: right;
                     column-gap: calc(var(--sizeModifier) * 0.2vw);
                     place-items: center;
                     grid-column: 1;
@@ -2129,7 +2132,7 @@ class Editeur extends HTMLElement {
                     }
         
                     procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
-                        width: calc(var(--sizeModifier) * 6.3vw);
+                        min-width: calc(var(--sizeModifier) * 1vw);
                         height: 100%;
                         grid-column: 2;
                         resize: none;
@@ -2185,9 +2188,10 @@ class Editeur extends HTMLElement {
                 procedure-element > div.containerDPR > div.resultat {
                     width: 100%;
                     height: 100%;
-                    display: grid;
-                    grid-template-columns: 1fr 5fr 1fr;
-                    grid-template-rows: 1fr;
+                    display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: right;
                     column-gap: calc(var(--sizeModifier) * 0.2vw);
                     place-items: center;
                     grid-column: 3;
@@ -2199,7 +2203,7 @@ class Editeur extends HTMLElement {
                     }
         
                     procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
-                        width: calc(var(--sizeModifier) * 6.3vw);
+                        min-width: calc(var(--sizeModifier) * 1vw);
                         height: 100%;
                         grid-column: 2;
                         resize: none;
@@ -2519,6 +2523,19 @@ class Editeur extends HTMLElement {
                 width: calc(var(--sizeModifier) * 4vw);
                 height: calc(var(--sizeModifier) * 4vw);
             }
+
+		structure-iterative-bornee-element {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			place-items: center;
+			width: fit-content;
+			height: calc(var(--sizeModifier) * 4vw);
+			position: absolute;
+			transition: all var(--transitionTime) ease;
+			z-index: 2;
+			gap: calc(var(--sizeModifier) * 0.5vw);
+		}
         
         structure-iterative-bornee-element {
             display: flex;
@@ -2531,16 +2548,17 @@ class Editeur extends HTMLElement {
             
             z-index: 2;
         }
-            structure-iterative-bornee-element > svg.boucleSVG {
-                width: calc(var(--sizeModifier) * 4vw);
-                height: calc(var(--sizeModifier) * 4vw);
-            }
+
+		structure-iterative-bornee-element > svg.boucleSVG {
+			width: calc(var(--sizeModifier) * 4vw);
+			height: calc(var(--sizeModifier) * 4vw);
+		}
         
-            structure-iterative-bornee-element > div.informationsBornes {
-                width: calc(var(--sizeModifier) * 8vw);
-                height: 100%;
-                font-size: calc(var(--sizeModifier) * 1vw);
-            }
+		structure-iterative-bornee-element > div.informationsBornes {
+			width: calc(var(--sizeModifier) * 16vw);
+			height: 100%;
+			font-size: calc(var(--sizeModifier) * 1vw);
+		}
         
         condition-sortie-element {
             position: absolute;
