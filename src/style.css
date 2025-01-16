@@ -410,10 +410,8 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition:
-		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out,
-		scale 500ms ease-in-out;
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -1361,9 +1359,10 @@ probleme-element > div.containerDPR {
 probleme-element > div.containerDPR > div.donnees {
 	width: calc(var(--sizeModifier) * 10vw);
 	height: calc(var(--sizeModifier) * 4vw);
-	display: grid;
-	grid-template-columns: 1fr 5fr 1fr;
-	grid-template-rows: 1fr;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: right;
 	column-gap: calc(var(--sizeModifier) * 0.2vw);
 	place-items: center;
 	grid-column: 1;
@@ -1379,7 +1378,7 @@ probleme-element > div.containerDPR > div.donnees > label.accolades {
 }
 
 probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
-	width: calc(var(--sizeModifier) * 6.3vw);
+	min-width: calc(var(--sizeModifier) * 1vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	grid-column: 2;
 	resize: none;
@@ -1432,9 +1431,10 @@ probleme-element > div.containerDPR > div.nom:focus-visible {
 probleme-element > div.containerDPR > div.resultat {
 	width: calc(var(--sizeModifier) * 10vw);
 	height: calc(var(--sizeModifier) * 4vw);
-	display: grid;
-	grid-template-columns: 1fr 5fr 1fr;
-	grid-template-rows: 1fr;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
 	column-gap: calc(var(--sizeModifier) * 0.2vw);
 	place-items: center;
 	grid-column: 3;
@@ -1450,7 +1450,7 @@ probleme-element > div.containerDPR > div.resultat > label.accolades {
 }
 
 probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
-	width: calc(var(--sizeModifier) * 6.3vw);
+	min-width: calc(var(--sizeModifier) * 1vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	grid-column: 2;
 	resize: none;
@@ -1501,9 +1501,10 @@ procedure-element > div.containerDPR {
 procedure-element > div.containerDPR > div.donnees {
 	width: calc(var(--sizeModifier) * 10vw);
 	height: calc(var(--sizeModifier) * 4vw);
-	display: grid;
-	grid-template-columns: 1fr 5fr 1fr;
-	grid-template-rows: 1fr;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: right;
 	column-gap: calc(var(--sizeModifier) * 0.2vw);
 	place-items: center;
 	grid-column: 1;
@@ -1519,7 +1520,7 @@ procedure-element > div.containerDPR > div.donnees > label.accolades {
 }
 
 procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
-	width: calc(var(--sizeModifier) * 6.3vw);
+	min-width: calc(var(--sizeModifier) * 1vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	grid-column: 2;
 	resize: none;
@@ -1593,9 +1594,10 @@ procedure-element > div.containerDPR > div.nom::after {
 procedure-element > div.containerDPR > div.resultat {
 	width: calc(var(--sizeModifier) * 10vw);
 	height: calc(var(--sizeModifier) * 4vw);
-	display: grid;
-	grid-template-columns: 1fr 5fr 1fr;
-	grid-template-rows: 1fr;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
 	column-gap: calc(var(--sizeModifier) * 0.2vw);
 	place-items: center;
 	grid-column: 3;
@@ -1612,7 +1614,7 @@ procedure-element > div.containerDPR > div.resultat > label.accolades {
 }
 
 procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
-	width: calc(var(--sizeModifier) * 6.3vw);
+	min-width: calc(var(--sizeModifier) * 1vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	grid-column: 2;
 	resize: none;
@@ -2372,9 +2374,7 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition:
-		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
-		margin 0.8s;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
 	transform-origin: bottom;
 }
 
