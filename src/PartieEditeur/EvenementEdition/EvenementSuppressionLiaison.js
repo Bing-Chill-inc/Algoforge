@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de suppression de liaison dans l'éditeur.
+ * @description Crée une instance de EvenementSuppressionLiaison.
+ * @class EvenementSuppressionLiaison
+ * @extends EvenementEdition
+ */
 class EvenementSuppressionLiaison extends EvenementEdition {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique, ici parent de la relation. Déclaré dans la classe parente.

@@ -1,6 +1,6 @@
 /**
  * @class LienTriple
- * @classdesc La classe LienTriple fait la liaison graphique décomposant un élément en sous-éléments, ce en trois lignes
+ * @classdesc La classe LienTriple fait la liaison graphique décomposant un élément en sous-éléments, ce en trois lignes perpendiculaires
  * @description Crée une instance de LienTriple
  * @extends {Lien}
  */
@@ -16,6 +16,7 @@ class LienTriple extends Lien {
 	 * @constructor
 	 * @param {ElementGraphique} elemGraphiqueParent L'élément graphique parent de la relation
 	 * @param {ElementGraphique} elemGraphiqueEnfant L'élément graphique enfant de la relation
+	 * @param {HTMLElement} espaceTravail L'espace de travail
 	 */
 	constructor(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
 		super(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
@@ -28,6 +29,9 @@ class LienTriple extends Lien {
 		this._espaceTravail.appendChild(this._ligneV);
 	}
 
+	/**
+	 * @description Met à jour le lien graphique
+	 */
 	update() {
 		if (this._elemGraphiqueParent._elemParent.nombreEnfants > 1) {
 			let ancreParent = this._elemGraphiqueParent.getAncreDecomposition();
@@ -123,6 +127,9 @@ class LienTriple extends Lien {
 		}
 	}
 
+	/**
+	 * @description Supprime le lien graphique
+	 */
 	supprimer() {
 		this._espaceTravail.removeChild(this._ligneDecomp);
 		this._espaceTravail.removeChild(this._ligneH);

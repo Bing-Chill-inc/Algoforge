@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de suppression d'élément dans l'éditeur.
+ * @description Crée une instance de EvenementSuppressionElement.
+ * @class EvenementSuppressionElement
+ * @extends EvenementEdition
+ */
 class EvenementSuppressionElement extends EvenementEdition {
 	// ATTRIBUTS
 	_planTravail; // PlanTravail

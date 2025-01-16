@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de modification des données d'un problème dans l'éditeur.
+ * @description Crée une instance de EvenementEditionDonneesProbleme.
+ * @class EvenementEditionDonneesProbleme
+ * @extends EvenementEditionTexte
+ */
 class EvenementEditionDonneesProbleme extends EvenementEditionTexte {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.

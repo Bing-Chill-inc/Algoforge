@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe ThemeEditeur, représente un thème pour l'éditeur.
+ * @description Crée une instance de ThemeEditeur.
+ * @class ThemeEditeur
+ * @extends {HTMLOptionElement}
+ */
 class ThemeEditeur extends HTMLOptionElement {
 	nom;
 	bgColor;
@@ -20,6 +26,29 @@ class ThemeEditeur extends HTMLOptionElement {
 
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
+	/**
+	 * @constructor
+	 * @param {string} nom - Le nom du thème.
+	 * @param {string} bgColor - La couleur de fond principale.
+	 * @param {string} bgColorSecondary - La couleur de fond secondaire.
+	 * @param {string} borderColor - La couleur de la bordure.
+	 * @param {string} fgColor - La couleur de premier plan.
+	 * @param {string} fgColorSemiTransparent - La couleur de premier plan semi-transparente.
+	 * @param {string} fgColorTransparent - La couleur de premier plan transparente.
+	 * @param {string} fgColorForward - La couleur de premier plan avancée.
+	 * @param {string} goodColor - La couleur pour les éléments corrects.
+	 * @param {string} goodColorTransparent - La couleur transparente pour les éléments corrects.
+	 * @param {string} errorColor - La couleur pour les erreurs.
+	 * @param {string} warningColor - La couleur pour les avertissements.
+	 * @param {string} titleColor - La couleur des titres.
+	 * @param {string} fontFamily - La famille de polices.
+	 * @param {string} glowColor - La couleur de l'effet de lueur.
+	 * @param {string} borderColor2 - La deuxième couleur de bordure.
+	 * @param {string} bgColorTertiary - La couleur de fond tertiaire.
+	 * @param {string} fgColorHover - La couleur de premier plan au survol.
+	 * @param {string} fgColorDisabled - La couleur de premier plan désactivée.
+	 * @param {number} baseGlowColor - La couleur de base de l'effet de lueur.
+	 */
 	constructor(
 		nom,
 		bgColor,
@@ -67,6 +96,9 @@ class ThemeEditeur extends HTMLOptionElement {
 		this.innerText = this.nom;
 	}
 
+	/**
+	 * Applique le thème à l'éditeur.
+	 */
 	appliquer() {
 		document.body.style.setProperty("--bgColor", this.bgColor);
 		document.body.style.setProperty(

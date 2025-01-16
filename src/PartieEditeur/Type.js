@@ -1,3 +1,7 @@
+/**
+ * @class Type
+ * @classdesc Représente les différents types de données.
+ */
 class Type {
 	// Enum type
 	static Boolean = "Booléen";
@@ -18,20 +22,37 @@ class Type {
 	];
 
 	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {string} nom - Le nom du type.
+	 */
 	constructor(nom) {
 		this._nom = nom;
 	}
 
 	// ENCAPSULATION
+	/**
+	 * @description Renvoie le nom du type.
+	 * @returns {string} Le nom du type.
+	 */
 	get _nom() {
 		return this._nom;
 	}
 
+	/**
+	 * @description Définit le nom du type.
+	 * @param {string} value - Le nouveau nom du type.
+	 */
 	set _nom(value) {
 		this._nom = value;
 	}
 
 	// METHODES
+	/**
+	 * @description Détecte le type d'une chaîne de caractères.
+	 * @param {string} unString - La chaîne de caractères à analyser.
+	 * @returns {string|undefined} Le type détecté ou undefined si aucun type n'est détecté.
+	 */
 	static DetecterLeType(unString) {
 		unString = unString.trim();
 		const ascii0 = "0".charCodeAt(0); // code ASCII de '0'
@@ -152,6 +173,10 @@ class Type {
 		return Type.undefined;
 	}
 
+	/**
+	 * @description Ajoute une fonction de conformité au type.
+	 * @param {Function} fonction - La fonction de conformité à ajouter.
+	 */
 	ajouterFonctionDeConformite(fonction) {
 		this.estConforme = fonction;
 	}

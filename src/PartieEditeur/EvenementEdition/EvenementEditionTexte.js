@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de modification de texte dans l'éditeur.
+ * @description Crée une instance de EvenementEditionTexte.
+ * @class EvenementEditionTexte
+ * @extends EvenementEdition
+ */
 class EvenementEditionTexte extends EvenementEdition {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.

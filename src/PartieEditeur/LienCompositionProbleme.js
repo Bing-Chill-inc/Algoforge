@@ -4,7 +4,6 @@
  * @description Crée une instance de LienCompositionProbleme
  * @extends {Lien}
  */
-
 class LienCompositionProbleme extends Lien {
 	// ATTRIBUTS
 	_symboleDecomposition; // Symbole de décomposition du lien (doubles barres)
@@ -16,6 +15,7 @@ class LienCompositionProbleme extends Lien {
 	 * @constructor
 	 * @param {ElementGraphique} elemGraphiqueParent L'élément graphique parent de la relation
 	 * @param {ElementGraphique} elemGraphiqueEnfant L'élément graphique enfant de la relation
+	 * @param {HTMLElement} espaceTravail L'espace de travail
 	 */
 	constructor(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
 		super(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail);
@@ -28,6 +28,9 @@ class LienCompositionProbleme extends Lien {
 		this._espaceTravail.appendChild(this._ligneV);
 	}
 
+	/**
+	 * @description Met à jour le lien graphique
+	 */
 	update() {
 		let ancreParent = this._elemGraphiqueParent.getAncreDecomposition();
 		let ancreEnfant = this._elemGraphiqueEnfant.getAncreComposition();
@@ -110,6 +113,9 @@ class LienCompositionProbleme extends Lien {
 		}
 	}
 
+	/**
+	 * @description Supprime le lien graphique
+	 */
 	supprimer() {
 		this._espaceTravail.removeChild(this._symboleDecomposition);
 		this._espaceTravail.removeChild(this._ligneH);

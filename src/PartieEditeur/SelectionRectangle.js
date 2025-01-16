@@ -17,17 +17,30 @@ class SelectionRectangle extends HTMLElement {
 		super();
 	}
 
+	/**
+	 * Place le rectangle de sélection aux coordonnées spécifiées.
+	 * @param {number} x1 - Abscisse du point de départ de la sélection.
+	 * @param {number} y1 - Ordonnée du point de départ de la sélection.
+	 * @param {number} x2 - Abscisse du point d'arrivée de la sélection.
+	 * @param {number} y2 - Ordonnée du point d'arrivée de la sélection.
+	 */
 	placer(x1, y1, x2, y2) {
 		this.style.left = `calc(var(--sizeModifier) * ${Math.min(x1, x2)}vw)`;
 		this.style.top = `calc(var(--sizeModifier) * ${Math.min(y1, y2)}vw)`;
 		this.style.width = `calc(var(--sizeModifier) * ${Math.abs(x1 - x2)}vw)`;
-		this.style.height = `calc(var(--sizeModifier) * ${Math.abs(y1 - y2)}vw)`;
+		this.style.height = `calc(var(--sizeModifier) * ${Math.abs(
+			y1 - y2,
+		)}vw)`;
 		this._x1 = Math.min(x1, x2);
 		this._y1 = Math.min(y1, y2);
 		this._x2 = Math.max(x1, x2);
 		this._y2 = Math.max(y1, y2);
 	}
 
+	/**
+	 * Liste les éléments graphiques contenus dans le rectangle de sélection.
+	 * @returns {Array} Liste des éléments graphiques sélectionnés.
+	 */
 	listerElementsGraphiques() {
 		let listeElems = [];
 		for (let element of this.parentNode.children) {

@@ -10,6 +10,8 @@ class RepresentationSelectionSimple extends HTMLElement {
 
 	/**
 	 * @constructor
+	 * @param {ElementGraphique} element - L'élément autour duquel la sélection est faite.
+	 * @param {Selection} monSelecteur - Sélection qui contient la représentation graphique de la sélection.
 	 */
 	constructor(element, monSelecteur) {
 		super();
@@ -19,6 +21,9 @@ class RepresentationSelectionSimple extends HTMLElement {
 		this.classList.add("nonCiblable");
 	}
 
+	/**
+	 * Met à jour la représentation graphique de la sélection.
+	 */
 	update() {
 		if (
 			this._element instanceof Probleme ||
@@ -88,6 +93,9 @@ class RepresentationSelectionSimple extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Supprime la représentation graphique de la sélection.
+	 */
 	supprimer() {
 		this.remove();
 	}

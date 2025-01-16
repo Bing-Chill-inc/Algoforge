@@ -1,6 +1,6 @@
 /**
  * @class StructureIterativeNonBornee
- * @classdesc Structure itérative non bornée qui boucle tant qu'une conditions n'est pas remplis
+ * @classdesc Structure itérative non bornée qui boucle tant qu'une condition n'est pas remplie
  * @description Crée une instance de StructureIterativeNonBornee
  * @extends {StructureIterative}
  */
@@ -10,8 +10,8 @@ class StructureIterativeNonBornee extends StructureIterative {
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {string|number} abscisse
-	 * @param {string|number} ordonnee
+	 * @param {string|number} abscisse - L'abscisse de la structure
+	 * @param {string|number} ordonnee - L'ordonnée de la structure
 	 */
 	constructor(abscisse, ordonnee) {
 		super(abscisse, ordonnee);
@@ -21,21 +21,15 @@ class StructureIterativeNonBornee extends StructureIterative {
 
 	// METHODES
 	/**
-	 * @description Affiche sur le plan de travail la StructureIterativeNonBornée
+	 * @description Affiche sur le plan de travail la StructureIterativeNonBornee
 	 */
 	afficher() {
 		super.afficher(); // Affichage de la boucle seule
 	}
 
 	/**
-	 * @description Recherche et renvoie la listes des anomalies de la boucle iterative bornée<br>
-	 * Liste des Erreurs :<br>
-	 *
-	 * 10 : Boucle infinie, on vérifie que la boucle contient une sortie<br>
-	 * 12 : On vérifie que la boucle contient pas 7 sous-éléments ou plus
-	 *
-	 * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies récupéré par les enfants
-	 * @returns {Array<AnomalieConceptuelle>} la liste des anomalies précédante+ celle trouvé par la structure
+	 * @description Recherche et renvoie la liste des anomalies de la boucle itérative non bornée
+	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies précédentes + celles trouvées par la structure
 	 */
 	rechercherAnomalies() {
 		let mesAnomalies = [];
@@ -58,14 +52,8 @@ class StructureIterativeNonBornee extends StructureIterative {
 	}
 
 	/**
-	 * @description Renvoie le corp JSON de l'instance de la StructureItérative
-	 *
+	 * @description Renvoie le corps JSON de l'instance de la StructureIterativeNonBornee
 	 * @returns {JSON} Le corps JSON de la StructureIterativeNonBornee
-	 * @type {ElementGraphique}
-	 * @property {ElementGraphique} typeElement Le type de la StructureIterativeNonBornee
-	 * @property {string|number} abscisse l'abscisse
-	 * @property {string|number} ordonnee l'ordonnée
-	 * @property {JSON} enfants les enfants de la structure itérative
 	 */
 	toJSON() {
 		return {
@@ -76,6 +64,11 @@ class StructureIterativeNonBornee extends StructureIterative {
 		};
 	}
 
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureIterativeNonBornee en spécifiant les éléments enfants à conserver
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver
+	 * @returns {JSON} Le corps JSON de la StructureIterativeNonBornee
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		return {
 			typeElement: this.constructor.name,
@@ -87,6 +80,11 @@ class StructureIterativeNonBornee extends StructureIterative {
 		};
 	}
 
+	/**
+	 * @description Génère les options contextuelles pour la StructureIterativeNonBornee
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes
+	 * @returns {Array<ElementMenu>} La liste des options contextuelles
+	 */
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 

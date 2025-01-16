@@ -1,3 +1,8 @@
+/**
+ * @class EvenementEditionLibelleProbleme
+ * @classdesc Classe représentant un événement de modification du libellé d'un problème.
+ * @extends EvenementEditionTexte
+ */
 class EvenementEditionLibelleProbleme extends EvenementEditionTexte {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.

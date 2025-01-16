@@ -1,3 +1,7 @@
+/**
+ * @class ElementParent
+ * @classdesc La classe ElementParent gère les éléments enfants d'un élément graphique.
+ */
 class ElementParent {
 	// ATTRIBUTS
 	_listeElementsEnfants; // Liste contient les ElementGraphiques et les Lignes
@@ -5,6 +9,11 @@ class ElementParent {
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
 	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {ElementGraphique} proprietaire - L'élément graphique propriétaire.
+	 * @param {Array} [listeElementsEnfants=[]] - La liste des éléments enfants.
+	 */
 	constructor(proprietaire, listeElementsEnfants = []) {
 		this._proprietaire = proprietaire;
 		this._listeElementsEnfants = listeElementsEnfants;
@@ -15,27 +24,53 @@ class ElementParent {
 	}
 
 	// ENCAPSULATION
+	/**
+	 * @description Obtient la liste des éléments enfants.
+	 * @returns {Array} La liste des éléments enfants.
+	 */
 	get _listeElementsEnfants() {
 		return this._listeElementsEnfants;
 	}
 
+	/**
+	 * @description Définit la liste des éléments enfants.
+	 * @param {Array} value - La nouvelle liste des éléments enfants.
+	 */
 	set _listeElementsEnfants(value) {
 		this._listeElementsEnfants = value;
 	}
 
+	/**
+	 * @description Obtient le propriétaire de l'élément parent.
+	 * @returns {ElementGraphique} Le propriétaire de l'élément parent.
+	 */
 	get _proprietaire() {
 		return this._proprietaire;
 	}
 
+	/**
+	 * @description Définit le propriétaire de l'élément parent.
+	 * @param {ElementGraphique} value - Le nouveau propriétaire de l'élément parent.
+	 */
 	set _proprietaire(value) {
 		this._proprietaire = value;
 	}
 
+	/**
+	 * @description Obtient le nombre d'enfants.
+	 * @returns {number} Le nombre d'enfants.
+	 */
 	get nombreEnfants() {
 		return this._listeElementsEnfants.length;
 	}
 
 	// METHODES
+	/**
+	 * @description Lie un élément enfant à l'élément parent.
+	 * @param {ElementGraphique} elementAAjouter - L'élément à ajouter.
+	 * @param {boolean} [provientAnnulation=false] - Indique si l'action provient d'une annulation.
+	 * @returns {boolean} Indique si l'élément a été ajouté avec succès.
+	 */
 	lierEnfant(elementAAjouter, provientAnnulation = false) {
 		if (!provientAnnulation)
 			this._editeur.ajouterEvenement(
@@ -76,6 +111,11 @@ class ElementParent {
 		return false;
 	}
 
+	/**
+	 * @description Délie un élément enfant de l'élément parent.
+	 * @param {ElementGraphique} elementASupprimer - L'élément à supprimer.
+	 * @param {boolean} [provientAnnulation=false] - Indique si l'action provient d'une annulation.
+	 */
 	delierEnfant(elementASupprimer, provientAnnulation = false) {
 		if (!provientAnnulation)
 			this._editeur.ajouterEvenement(
@@ -98,12 +138,19 @@ class ElementParent {
 		}
 	}
 
+	/**
+	 * @description Délie tous les éléments enfants de l'élément parent.
+	 */
 	delierTousLesEnfants() {
 		while (this._listeElementsEnfants.length > 0) {
 			this.delierEnfant(this._listeElementsEnfants[0].element);
 		}
 	}
 
+	/**
+	 * @description Convertit l'élément parent en JSON.
+	 * @returns {Array} La représentation JSON des éléments enfants.
+	 */
 	toJSON() {
 		let listeEnfants = [];
 		this._listeElementsEnfants.forEach((lien) => {
@@ -112,6 +159,11 @@ class ElementParent {
 		return listeEnfants;
 	}
 
+	/**
+	 * @description Convertit l'élément parent en JSON en spécifiant les éléments enfants à conserver.
+	 * @param {Array} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver.
+	 * @returns {Array} La représentation JSON des éléments enfants spécifiés.
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		let listeEnfants = [];
 		if (verbose) console.log(listeElemEnfantsAConcerver);
@@ -125,6 +177,13 @@ class ElementParent {
 		return listeEnfants;
 	}
 
+	/**
+	 * @description Crée un lien adéquat entre un élément graphique parent et un élément graphique enfant.
+	 * @param {ElementGraphique} elemGraphiqueParent - L'élément graphique parent.
+	 * @param {ElementGraphique} elemGraphiqueEnfant - L'élément graphique enfant.
+	 * @param {HTMLElement} espaceTravail - L'espace de travail.
+	 * @returns {Lien} Le lien créé.
+	 */
 	creerLienAdequat(elemGraphiqueParent, elemGraphiqueEnfant, espaceTravail) {
 		let nouveauLien;
 		switch (elemGraphiqueParent.constructor.name) {
@@ -188,6 +247,9 @@ class ElementParent {
 		return nouveauLien;
 	}
 
+	/**
+	 * @description Met à jour tous les liens des éléments enfants.
+	 */
 	updateAll() {
 		for (let lien of this._listeElementsEnfants) {
 			lien.ligne.update();

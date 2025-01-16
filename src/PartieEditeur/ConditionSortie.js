@@ -1,3 +1,9 @@
+/**
+ * @class ConditionSortie
+ * @classdesc Représente une condition de sortie dans une structure itérative
+ * @extends {ElementGraphique}
+ * @description Crée une instance de ConditionSortie
+ */
 class ConditionSortie extends ElementGraphique {
 	// ATTRIBUTS -non-
 

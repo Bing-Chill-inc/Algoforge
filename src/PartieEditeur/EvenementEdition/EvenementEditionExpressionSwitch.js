@@ -1,3 +1,8 @@
+/**
+ * @class EvenementEditionExpressionSwitch
+ * @classdesc Classe représentant un événement de modification de l'expression d'un switch.
+ * @extends EvenementEditionTexte
+ */
 class EvenementEditionExpressionSwitch extends EvenementEditionTexte {
 	// ATTRIBUTS
 	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.

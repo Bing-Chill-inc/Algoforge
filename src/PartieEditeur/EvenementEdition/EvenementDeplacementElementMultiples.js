@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de déplacement de plusieurs éléments graphiques dans l'éditeur.
+ * @description Crée une instance de EvenementDeplacementElementMultiples.
+ * @class EvenementDeplacementElementMultiples
+ * @extends EvenementEdition
+ */
 class EvenementDeplacementElementMultiples extends EvenementEdition {
 	// ATTRIBUTS
 	_elementsDeplaces = []; // Array<EvenementDeplacementElement>
@@ -11,10 +17,18 @@ class EvenementDeplacementElementMultiples extends EvenementEdition {
 	}
 
 	// METHODES
+	/**
+	 * @description Ajoute un élément déplacé à la liste des éléments déplacés
+	 * @param {EvenementDeplacementElement} elementDeplace L'élément déplacé à ajouter
+	 */
 	ajouterElementDeplace(elementDeplace) {
 		this._elementsDeplaces.push(elementDeplace);
 	}
 
+	/**
+	 * @description Vérifie si les éléments ont été déplacés
+	 * @returns {boolean} True si les éléments ont été déplacés, sinon False
+	 */
 	estDecale() {
 		if (this._elementsDeplaces.length == 0) return false;
 

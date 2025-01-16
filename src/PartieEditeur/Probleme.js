@@ -1,5 +1,5 @@
 /**
- * @classdesc Classe Probleme l'élément de base d'un algorithme
+ * @classdesc Classe Probleme l'élément de base d'un algorithme.
  * @description Crée une instance de Probleme.
  * @class Probleme
  * @extends {ElementGraphique}
@@ -16,14 +16,12 @@ class Probleme extends ElementGraphique {
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @type {Information}
-	 * @type {ElementParent}
-	 * @param {number} [abscisse=0] l'abscisse
-	 * @param {number} [ordonnee=0] l'ordonnée
-	 * @param {string} [libelle=""] le libéllé du Problem
-	 * @param {Array<Information>} [listeDonnes=[]] Pas Utilisé
-	 * @param {Array<Information>} [listeResultats=[]] Pas Utilisé
-	 * @param {ElementParent} [elemParent=new ElementParent()] L'ElementParent du Probleme
+	 * @param {number} [abscisse=0] - L'abscisse.
+	 * @param {number} [ordonnee=0] - L'ordonnée.
+	 * @param {string} [libelle=""] - Le libellé du Probleme.
+	 * @param {Array<Information>} [listeDonnes=[]] - La liste des données.
+	 * @param {Array<Information>} [listeResultats=[]] - La liste des résultats.
+	 * @param {ElementParent} [elemParent=new ElementParent()] - L'ElementParent du Probleme.
 	 */
 	constructor(
 		abscisse = 0,
@@ -52,33 +50,32 @@ class Probleme extends ElementGraphique {
 
 	// ENCAPSULATION
 	/**
-	 * @description Renvoie la valeur de la variable _libelle
-	 *
-	 * @type {string}
+	 * @description Renvoie la valeur de la variable _libelle.
+	 * @returns {string} Le libellé.
 	 */
 	get libelle() {
 		return this.divNom.textContent;
 	}
 
 	/**
-	 * @description Définie la valeur de la variable _libelle par la valeur donné
+	 * @description Définit la valeur de la variable _libelle.
+	 * @param {string} value - Le nouveau libellé.
 	 */
 	set libelle(value) {
 		this.divNom.innerText = value;
 	}
 
 	/**
-	 * @description Renvoie la valeur de la variable _listeDonnes
-	 *
-	 *
+	 * @description Renvoie la valeur de la variable _listeDonnes.
+	 * @returns {Array<string>} La liste des données.
 	 */
 	get listeDonnes() {
 		return this.divDonneesEditable.innerText.split(",");
 	}
 
 	/**
-	 * @description Définie la valeur de la variable _listeDonnes par la valeur donné
-	 *
+	 * @description Définit la valeur de la variable _listeDonnes.
+	 * @param {Array<string>} value - La nouvelle liste des données.
 	 * @deprecated
 	 */
 	set listeDonnes(value) {
@@ -86,17 +83,16 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Renvoie la valeur de la variable _listeResultats
-	 *
-	 *
+	 * @description Renvoie la valeur de la variable _listeResultats.
+	 * @returns {Array<string>} La liste des résultats.
 	 */
 	get listeResultats() {
 		return this.divResultatsEditable.innerText.split(",");
 	}
 
 	/**
-	 * @description Définie la valeur de la variable _listeResultats par la valeur donné
-	 *
+	 * @description Définit la valeur de la variable _listeResultats.
+	 * @param {Array<string>} value - La nouvelle liste des résultats.
 	 * @deprecated
 	 */
 	set listeResultats(value) {
@@ -104,31 +100,34 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * Renvoie la valeur de la variable _elemParent
-	 *
-	 * @type {*}
+	 * @description Renvoie la valeur de la variable _elemParent.
+	 * @returns {ElementParent} Le parent de l'élément.
 	 */
 	get _elemParent() {
 		return this._elemParent;
 	}
 
 	/**
-	 * @description Définie la valeur de la variable _libelle par la valeur donné
+	 * @description Définit la valeur de la variable _elemParent.
+	 * @param {ElementParent} value - Le nouveau parent de l'élément.
 	 */
 	set _elemParent(value) {
 		this._elemParent = value;
 	}
 
 	/**
-	 * @description Retourne le contenu du probleme Texte Principale
-	 *
-	 * @returns {string} Les information de la boîte
+	 * @description Retourne le contenu du problème Texte Principale.
+	 * @returns {string} Les informations de la boîte.
 	 */
-
 	getTexte() {
 		return this.querySelector(".nom").textContent;
 	}
 
+	/**
+	 * @description Remplace une chaîne de caractères par une autre dans le texte principal.
+	 * @param {string} chaineAChercher - La chaîne à chercher.
+	 * @param {string} chaineARemplacer - La chaîne de remplacement.
+	 */
 	replaceTexte(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".nom").textContent = this.querySelector(
 			".nom",
@@ -139,16 +138,26 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Retourne les données du Probleme
-	 *
-	 * @returns {string} Les informations des données
+	 * @description Retourne les données du Probleme.
+	 * @returns {string} Les informations des données.
 	 */
 	getDonnee() {
 		return this.querySelector(".donneesEditable").textContent;
 	}
+
+	/**
+	 * @description Définit les données du Probleme.
+	 * @param {string} value - Les nouvelles données.
+	 */
 	setDonnee(value) {
 		this.querySelector(".donneesEditable").textContent = value;
 	}
+
+	/**
+	 * @description Remplace une chaîne de caractères par une autre dans les données.
+	 * @param {string} chaineAChercher - La chaîne à chercher.
+	 * @param {string} chaineARemplacer - La chaîne de remplacement.
+	 */
 	replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".donneesEditable").textContent = this.querySelector(
 			".donneesEditable",
@@ -157,17 +166,28 @@ class Probleme extends ElementGraphique {
 			chaineARemplacer,
 		);
 	}
+
 	/**
-	 * @description Retourne les résultats du Probleme
-	 *
-	 * @returns {string} Les informations des résultats
+	 * @description Retourne les résultats du Probleme.
+	 * @returns {string} Les informations des résultats.
 	 */
 	getResultat() {
 		return this.querySelector(".resultatEditable").textContent;
 	}
+
+	/**
+	 * @description Définit les résultats du Probleme.
+	 * @param {string} value - Les nouveaux résultats.
+	 */
 	setResultat(value) {
 		this.querySelector(".resultatEditable").textContent = value;
 	}
+
+	/**
+	 * @description Remplace une chaîne de caractères par une autre dans les résultats.
+	 * @param {string} chaineAChercher - La chaîne à chercher.
+	 * @param {string} chaineARemplacer - La chaîne de remplacement.
+	 */
 	replaceTexteResultat(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".resultatEditable").textContent =
 			this.querySelector(".resultatEditable").textContent.replace(
@@ -176,6 +196,9 @@ class Probleme extends ElementGraphique {
 			);
 	}
 
+	/**
+	 * @description Met à jour l'affichage des accolades en fonction des données et des résultats.
+	 */
 	updateAccolades() {
 		if (this.divDonneesEditable.textContent == "") {
 			for (let accolade of this.getElementsByClassName(
@@ -213,7 +236,7 @@ class Probleme extends ElementGraphique {
 	// METHODES
 
 	/**
-	 * @description Affiche le Problème à l'écran
+	 * @description Affiche le Problème à l'écran.
 	 */
 	afficher() {
 		let divContainerDPR = document.createElement("div");
@@ -447,17 +470,8 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Renvoie les informations de l'instance du Probleme sous forme JSON
-	 *
-	 * @type {ElementGraphique}
-	 * @returns {JSON}
-	 * @property {*} typeElement le type de l'ElementGraphique
-	 * @property {number|string} abscisse l'abscisse
-	 * @property {number|string} ordonee l'ordonnée
-	 * @property {string} libelle Le libellée du Probleme
-	 * @property {Array} listeDonnee obselète
-	 * @property {Array} listeResultats obselète
-	 * @property {ElementGraphique} enfants la liste des enfants directes
+	 * @description Renvoie les informations de l'instance du Probleme sous forme JSON.
+	 * @returns {Object} Les informations de l'instance du Probleme.
 	 */
 	toJSON() {
 		if (this._sousPlan != null) {
@@ -493,6 +507,11 @@ class Probleme extends ElementGraphique {
 		};
 	}
 
+	/**
+	 * @description Renvoie les informations de l'instance du Probleme sous forme JSON en spécifiant les éléments à conserver.
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments à conserver.
+	 * @returns {Object} Les informations de l'instance du Probleme.
+	 */
 	toJSONspecifier(listeElemEnfantsAConcerver) {
 		return {
 			typeElement: this.constructor.name,
@@ -508,11 +527,9 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Renvoie l'arbres des enfants du Probleme par ordre
-	 *
-	 * @type {ElementGraphique}
-	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] Le type d'ElementGraphique recherché
-	 * @returns {Array<typeRechercher>} La liste des enfants du type rechercher
+	 * @description Renvoie l'arbre des enfants du Probleme par ordre.
+	 * @param {ElementGraphique} [typeRechercher=ElementGraphique] - Le type d'ElementGraphique recherché.
+	 * @returns {Array<ElementGraphique>} La liste des enfants du type recherché.
 	 */
 	getEnfants(typeRechercher = ElementGraphique) {
 		let listeDesEnfants = [];
@@ -527,16 +544,8 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Méthodes principales qui recherchent les erreurs dans l'instance de Problème<br>
-	 * Liste des Erreurs :<br>
-	 * 1 : Sous-problème avec données magique<br>
-	 * 2 : Données uniquement sur les problèmes<br>
-	 * 3 : Résultat non utilisé dans la suite de l’algorithme<br>
-	 * 9 : Pas un égal pour l’assignation mais une flèche<br>
-	 * 12 : Plus de sept actions à la suite<br>
-	 * 18 : Variable dynamique<br>
-	 * @param {Array<AnomalieConceptuelle>} listeAnomaliesPrecedent la liste des anomalies présent dans les ElementGraphique précédant
-	 * @returns {Array<AnomalieConceptuelle>} La liste précédante en rajoutant ce du Probleme actuelle
+	 * @description Recherche les anomalies dans l'instance de Problème.
+	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies trouvées.
 	 */
 	rechercherAnomalies() {
 		let mesAnomalies = [];
@@ -598,10 +607,8 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Retourne les Donnees sous Formes d'informations
-	 *
-	 * @type {Information}
-	 * @returns {Array<Information>} La liste des données du problèmes du type Information
+	 * @description Retourne les Donnees sous Formes d'informations.
+	 * @returns {Array<Information>} La liste des données du problème du type Information.
 	 */
 	getInformationDonnee() {
 		let listeDonnee = this.getDonnee().trim().split(",");
@@ -618,10 +625,8 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Retourne les Resultat sous Formes d'informations
-	 *
-	 * @type {Information}
-	 * @returns {Array<Information>} La liste des résultats du problème du type Information
+	 * @description Retourne les Resultat sous Formes d'informations.
+	 * @returns {Array<Information>} La liste des résultats du problème du type Information.
 	 */
 	getInformationResultat() {
 		let listeDonnee = this.getResultat().trim().split(",");
@@ -638,9 +643,8 @@ class Probleme extends ElementGraphique {
 	}
 
 	/**
-	 * @description Retourne les variables du textes sous forme de string
-	 *
-	 * @returns {string}
+	 * @description Retourne les variables du texte sous forme de string.
+	 * @returns {string} Les variables du texte.
 	 */
 	extraireInformationTextes() {
 		let i = new Information();
@@ -664,24 +668,35 @@ class Probleme extends ElementGraphique {
 		return i;
 	}
 
+	/**
+	 * @description Colore l'ElementGraphique.
+	 */
 	colorierElement() {
 		this.querySelector(".donnees").style.color = this._couleurPrimaire;
 		this.querySelector(".resultat").style.color = this._couleurPrimaire;
 		this.querySelector(".nom").style.borderColor = this._couleurPrimaire;
 	}
 
-	// Retourne les variables
 	/**
-	 * @description Retourne les variables sous forme de liste
-	 *
-	 * @returns {Array} liste des variables
+	 * @description Renvoie les variables sous forme de liste.
+	 * @returns {Array} La liste des variables.
 	 */
 	getTailleAbscisse() {
 		return 30;
 	}
+
+	/**
+	 * @description Renvoie la taille en ordonnée de l'ElementGraphique.
+	 * @returns {number} La taille en ordonnée.
+	 */
 	getTailleOrdonnee() {
 		return 4.75;
 	}
+
+	/**
+	 * @description Extrait les informations du problème.
+	 * @returns {Array<Information>} La liste des informations extraites.
+	 */
 	extraireInformation() {
 		let listeInformation = [];
 		if (this.extraireInformationTextes()) {
@@ -697,11 +712,11 @@ class Probleme extends ElementGraphique {
 		];
 		return listeInformation;
 	}
+
 	/**
-	 * @description Regarde si la chaine donnée est dans le problème
-	 *
-	 * @param {string} nameInformation La chaine de caractère à chercher
-	 * @returns {boolean} true si trouvé faux sinon
+	 * @description Vérifie si la chaîne donnée est dans le problème.
+	 * @param {string} nameInformation - La chaîne de caractères à chercher.
+	 * @returns {boolean} true si trouvé, false sinon.
 	 */
 	include(nameInformation) {
 		return (
@@ -710,16 +725,29 @@ class Probleme extends ElementGraphique {
 			this.getResultat().includes(nameInformation)
 		);
 	}
+
+	/**
+	 * @description Renomme une information dans le problème.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
 	renameInformation(ancienNom, nouveauNom) {
 		this.replaceTexte(ancienNom, nouveauNom);
 		this.replaceTexteDonnee(ancienNom, nouveauNom);
 		this.replaceTexteResultat(ancienNom, nouveauNom);
 	}
 
+	/**
+	 * @description Vérifie si le problème peut être décomposé.
+	 * @returns {boolean} true si le problème peut être décomposé, false sinon.
+	 */
 	peutEtreDecompose() {
 		return this._sousPlan == null;
 	}
 
+	/**
+	 * @description Supprime le problème.
+	 */
 	supprimer() {
 		this._elemParent.delierTousLesEnfants();
 		if (this._parent != null) this._parent.delierEnfant(this);
@@ -727,6 +755,9 @@ class Probleme extends ElementGraphique {
 		this.remove();
 	}
 
+	/**
+	 * @description Décompose le problème sur un autre plan.
+	 */
 	decomposerAutrePlan() {
 		if (verbose) console.log("Décomposer sur un autre plan");
 		if (this._sousPlan != null) {
@@ -795,6 +826,11 @@ class Probleme extends ElementGraphique {
 		}
 	}
 
+	/**
+	 * @description Génère les options contextuelles pour le problème.
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes.
+	 * @returns {Array<ElementMenu>} La liste des options contextuelles.
+	 */
 	genererOptionsContextuelles(editeur) {
 		let listeOptions = super.genererOptionsContextuelles(editeur);
 

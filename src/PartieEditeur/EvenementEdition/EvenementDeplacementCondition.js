@@ -1,3 +1,9 @@
+/**
+ * @classdesc Classe représentant un événement de déplacement d'une condition dans l'éditeur.
+ * @description Crée une instance de EvenementDeplacementCondition.
+ * @class EvenementDeplacementCondition
+ * @extends EvenementEdition
+ */
 class EvenementDeplacementCondition extends EvenementEdition {
 	// ATTRIBUTS
 	// _elementConcerne; // Condition. Déclaré dans la classe parente.

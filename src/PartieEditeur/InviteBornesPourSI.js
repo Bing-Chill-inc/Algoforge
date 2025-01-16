@@ -1,9 +1,23 @@
+/**
+ * @class InviteBornesPourSI
+ * @classdesc Représente une invite pour demander les bornes d'une structure itérative.
+ * @description Cette classe est utilisée pour créer une interface permettant de définir les bornes d'une structure itérative.
+ * @extends {HTMLElement}
+ */
 class InviteBornesPourSI extends HTMLElement {
 	_structureIterative;
 	_structureIterativeBornee;
 	_structureIterativeNonBornee;
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 
+	/**
+	 * @constructor
+	 * @param {StructureIterative} uneStructureIterative - La structure itérative pour laquelle l'invite est créée.
+	 * @param {string} [oldIndice=""] - L'ancien indice à itérer.
+	 * @param {string} [oldBorneInf=""] - L'ancienne borne inférieure.
+	 * @param {string} [oldBorneSup=""] - L'ancienne borne supérieure.
+	 * @param {string} [oldPas=""] - L'ancien pas.
+	 */
 	constructor(
 		uneStructureIterative,
 		oldIndice = "",
@@ -57,7 +71,9 @@ class InviteBornesPourSI extends HTMLElement {
 					1
 				}vw)`;
 			this.style.top = `
-            calc(var(--sizeModifier) * ${parseFloat(this._structureIterative._ordonnee)}vw`;
+            calc(var(--sizeModifier) * ${parseFloat(
+				this._structureIterative._ordonnee,
+			)}vw`;
 		}, 1000 / 48); // 48 images par seconde
 
 		let labelPour = document.createElement("label");
@@ -160,6 +176,10 @@ class InviteBornesPourSI extends HTMLElement {
 		});
 	}
 
+	/**
+	 * @description Valide les bornes saisies et met à jour la structure itérative.
+	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
+	 */
 	valider(estAnnulation = false) {
 		// Vérifions que la structure active est bien celle qui est placée sur un plan de travail
 		if (this._structureIterative.parentNode == null) {
@@ -280,6 +300,10 @@ class InviteBornesPourSI extends HTMLElement {
 		if (this.parentNode) this.parentNode.removeChild(this);
 	}
 
+	/**
+	 * @description Définit la structure itérative comme non bornée.
+	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
+	 */
 	nonBorne(estAnnulation = false) {
 		let ancienneStructure = {};
 		ancienneStructure.estBornee =

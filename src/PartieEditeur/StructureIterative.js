@@ -1,7 +1,7 @@
 /**
  * @class StructureIterative
- * @classdesc Représente les différentes structure itérative
- * @description Est utilisé par les différentes structure itérative pour les instancier
+ * @classdesc Représente les différentes structures itératives
+ * @description Est utilisé par les différentes structures itératives pour les instancier
  * @extends {ElementGraphique}
  */
 class StructureIterative extends ElementGraphique {
@@ -12,9 +12,9 @@ class StructureIterative extends ElementGraphique {
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {number|string} abscisse l'abscisse
-	 * @param {number|string} ordonnee l'ordonnée
-	 * @param {ElementParent} elemParent l'element parent à la structure itérative
+	 * @param {number|string} abscisse - L'abscisse de la structure
+	 * @param {number|string} ordonnee - L'ordonnée de la structure
+	 * @param {ElementParent} elemParent - L'élément parent de la structure itérative
 	 */
 	constructor(abscisse, ordonnee, elemParent = new ElementParent()) {
 		super(abscisse, ordonnee);
@@ -47,11 +47,11 @@ class StructureIterative extends ElementGraphique {
 		imgBoucleSVG.setAttribute("draggable", false);
 		this.appendChild(imgBoucleSVG);
 	}
+
 	/**
-	 * @description Renvoie une liste des enfants de la StructureIterative du type donnée
-	 *
-	 * @param {ElementGraphique} typeRechercher le type d'ElementGraphique rechercher
-	 * @returns {Array<ElementGraphique>} la liste des enfants du type donné
+	 * @description Renvoie une liste des enfants de la StructureIterative du type donné
+	 * @param {ElementGraphique} typeRechercher - Le type d'ElementGraphique recherché
+	 * @returns {Array<ElementGraphique>} La liste des enfants du type donné
 	 */
 	getEnfants(typeRechercher = ElementGraphique) {
 		let listeDesEnfants = [];
@@ -65,22 +65,37 @@ class StructureIterative extends ElementGraphique {
 		return PlanTravail.trierElementsGraphique(listeDesEnfants);
 	}
 
+	/**
+	 * @description Renvoie l'ancre de décomposition de la StructureIterative
+	 * @returns {Object} L'ancre de décomposition avec les coordonnées abscisse et ordonnee
+	 */
 	getAncreDecomposition() {
 		let abscisse = parseFloat(this._abscisse) + 2;
 		let ordonnee = parseFloat(this._ordonnee) + 4;
 		return { abscisse: abscisse, ordonnee: ordonnee };
 	}
 
+	/**
+	 * @description Renvoie l'ancre de composition de la StructureIterative
+	 * @returns {Object} L'ancre de composition avec les coordonnées abscisse et ordonnee
+	 */
 	getAncreComposition() {
 		let abscisse = parseFloat(this._abscisse) + 2;
 		let ordonnee = parseFloat(this._ordonnee);
 		return { abscisse: abscisse, ordonnee: ordonnee };
 	}
 
+	/**
+	 * @description Vérifie si la StructureIterative peut être décomposée
+	 * @returns {boolean} true si elle peut être décomposée, false sinon
+	 */
 	peutEtreDecompose() {
 		return true;
 	}
 
+	/**
+	 * @description Affiche une invite pour demander les bornes de la structure
+	 */
 	inviteBornes() {
 		if (verbose) console.log(`this._inviteBornes : ${this._inviteBornes}`);
 		if (this._inviteBornes == null) {
@@ -97,6 +112,9 @@ class StructureIterative extends ElementGraphique {
 		this.parentNode.appendChild(this._inviteBornes);
 	}
 
+	/**
+	 * @description Supprime la StructureIterative
+	 */
 	supprimer() {
 		this._elemParent.delierTousLesEnfants();
 		if (this._parent != null) this._parent.delierEnfant(this);
