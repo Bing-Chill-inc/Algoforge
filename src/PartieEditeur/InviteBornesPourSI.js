@@ -305,6 +305,11 @@ class InviteBornesPourSI extends HTMLElement {
 	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
 	 */
 	nonBorne(estAnnulation = false) {
+		if (this._structureIterative == this._structureIterativeNonBornee) {
+			this.parentNode.removeChild(this);
+			return;
+		}
+
 		let ancienneStructure = {};
 		ancienneStructure.estBornee =
 			this._structureIterative instanceof StructureIterativeBornee;
