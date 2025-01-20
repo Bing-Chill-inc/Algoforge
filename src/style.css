@@ -2437,7 +2437,7 @@ menu-compte-element > #MenuCompte {
 menu-compte-element > div.menu-compte {
 	position: absolute;
 	top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
-	left: 50%; /* Centre la div par rapport au bouton */
+	left: 0;
 	transform: translateX(
 		-84%
 	); /* Décale la div vers la gauche pour aligner la bordure droite */
@@ -2500,4 +2500,10 @@ menu-compte-element > div.menu-compte {
 	position: absolute;
 	top: 0.1vw;
 	transition: all 0.2s ease;
+	border: 1px solid var(--fgColor);
+	box-sizing: border-box;
+}
+
+#boutonDeconnexion {
+	display: none;
 }
