@@ -1375,6 +1375,7 @@ probleme-element > div.containerDPR > div.donnees > label.accolades {
 	width: calc(var(--sizeModifier) * 1.5vw);
 	line-height: 0.9;
 	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
 }
 
 probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
@@ -1447,6 +1448,7 @@ probleme-element > div.containerDPR > div.resultat > label.accolades {
 	width: calc(var(--sizeModifier) * 1.5vw);
 	line-height: 0.9;
 	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
 }
 
 probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
@@ -1517,6 +1519,7 @@ procedure-element > div.containerDPR > div.donnees > label.accolades {
 	width: calc(var(--sizeModifier) * 1.5vw);
 	line-height: 0.9;
 	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
 }
 
 procedure-element > div.containerDPR > div.donnees > div.donneesEditable {
@@ -1611,6 +1614,7 @@ procedure-element > div.containerDPR > div.resultat > label.accolades {
 	width: calc(var(--sizeModifier) * 1.5vw);
 	line-height: 0.9;
 	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
 }
 
 procedure-element > div.containerDPR > div.resultat > div.resultatEditable {
