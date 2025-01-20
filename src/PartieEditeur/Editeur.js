@@ -486,6 +486,20 @@ class Editeur extends HTMLElement {
 				let titre = this.querySelector("#titreAlgo");
 				// On met le focus sur le titre
 				titre.focus();
+
+				// On referme le menu en persuadant le navigateur que l'utilisateur n'a plus la souris dessus
+				this._menuDeroulantFichier.style.display = "none";
+				setTimeout(() => {
+					this._menuDeroulantFichier.style.display = "";
+				}, 2);
+
+				// Et on sélectionne tout le texte sans execCommand car il est déprécié
+				let range = document.createRange();
+				range.selectNodeContents(titre);
+				let selection = window.getSelection();
+				selection.removeAllRanges();
+
+				selection.addRange(range);
 			}),
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
