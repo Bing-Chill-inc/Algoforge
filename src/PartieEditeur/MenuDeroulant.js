@@ -15,6 +15,23 @@ class MenuDeroulant extends HTMLElement {
 	 */
 	ajouterElementMenu(elementMenu) {
 		this.appendChild(elementMenu);
+
+		// On vérifie si le menu se retrouve trop bas
+		this.style.opacity = 0;
+		this.style.scale = 1;
+
+		setTimeout(() => {
+			const rect = this.getBoundingClientRect();
+			console.log(rect);
+			if (rect.bottom > window.innerHeight) {
+				this.style.top = "auto";
+				this.style.bottom = "0";
+			}
+			this.style.scale = null;
+			setTimeout(() => {
+				this.style.opacity = 1;
+			}, 100);
+		});
 	}
 }
 window.customElements.define("menu-deroulant", MenuDeroulant);
