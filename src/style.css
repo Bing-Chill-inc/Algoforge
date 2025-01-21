@@ -2507,3 +2507,8 @@ menu-compte-element > div.menu-compte {
 #boutonDeconnexion {
 	display: none;
 }
+
+/* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */
+sous-plan-travail > selection-editeur {
+	translate: 3.5px -6.5px;
+}
