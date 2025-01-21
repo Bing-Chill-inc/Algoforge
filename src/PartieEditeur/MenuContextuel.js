@@ -38,12 +38,21 @@ class MenuContextuel extends HTMLElement {
 		if (x > 90 / this._editeur._indicateurZoom._zoom) {
 			x = 90 / this._editeur._indicateurZoom._zoom; // Empêcher le menu de déborder à droite
 		}
-
 		this.style.left = `calc(var(--sizeModifier) * ${x}vw)`;
 		this.style.top = `calc(var(--sizeModifier) * ${y}vw)`;
+		this.style.opacity = 0;
 		this._selection = selection;
 		this._target = target;
 		this.genererOptions();
+
+		setTimeout(() => {
+			const rect = this.getBoundingClientRect();
+			console.log(rect);
+			if (rect.top + rect.height > window.innerHeight) {
+				this.style.top = `calc(var(--sizeModifier) * ${y}vw - ${rect.height}px)`;
+			}
+			this.style.opacity = 1;
+		});
 	}
 
 	/**
