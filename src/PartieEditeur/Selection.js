@@ -231,8 +231,10 @@ class Selection extends HTMLElement {
 		const height =
 			coordonnees.coordonneesMax.y - coordonnees.coordonneesMin.y;
 
-		this.style.left = `${left - 15}px`;
-		this.style.top = `${top - 105}px`;
+		const boundingRect = this.parentNode.getBoundingClientRect();
+
+		this.style.left = `${left - boundingRect.x}px`;
+		this.style.top = `${top - boundingRect.y}px`;
 		this.style.width = `${width}px`;
 		this.style.height = `${height}px`;
 	}
