@@ -904,6 +904,17 @@ class Editeur extends HTMLElement {
 			}
 		});
 
+		document.body.addEventListener("wheel", (e) => {
+			if (e.ctrlKey || e.metaKey) {
+				e.preventDefault();
+				if (e.deltaY < 0) {
+					this._indicateurZoom.zoomIn(0.01, false);
+				} else {
+					this._indicateurZoom.zoomOut(0.01, false);
+				}
+			}
+		});
+
 		this.addEventListener("dragover", (event) => {
 			event.stopPropagation();
 			event.preventDefault();
