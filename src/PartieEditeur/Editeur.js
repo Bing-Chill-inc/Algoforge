@@ -317,11 +317,11 @@ class Editeur extends HTMLElement {
 				"#D4E7C599", // goodColorTransparent
 				"#FFA8A8", // errorColor
 				"#FFD6AD", // warningColor
-				"#8E1F1F", // titleColor
+				"#D33636", // titleColor
 				"Avenir next", // fontFamily
 				"", // glowColor
 				"#1f2b38", // borderColor2
-				"rgba(28,39,51,0.35)", // bgColorTertiary
+				"rgba(28,28,28,0.35)", // bgColorTertiary
 				"#bdc6c9", // fgColorHover
 				"rgba(166, 170, 169, .6)", // fgColorDisabled
 				0, // baseGlowColor
