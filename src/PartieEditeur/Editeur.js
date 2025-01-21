@@ -302,6 +302,31 @@ class Editeur extends HTMLElement {
 				0, // baseGlowColor
 			),
 		);
+
+		this._themeSelect.appendChild(
+			new ThemeEditeur(
+				"Thème Founder", // nom
+				"#181818", // bgColor
+				"#121212", // bgColorSecondary
+				"#838787", // borderColor
+				"#F2FBFF", // fgColor
+				"#83878755", // fgColorSemiTransparent
+				"#83878711", // fgColorTransparent
+				"#A6AAA9", // fgColorForward
+				"#D4E7C5", // goodColor
+				"#D4E7C599", // goodColorTransparent
+				"#FFA8A8", // errorColor
+				"#FFD6AD", // warningColor
+				"#8E1F1F", // titleColor
+				"Avenir next", // fontFamily
+				"", // glowColor
+				"#1f2b38", // borderColor2
+				"rgba(28,39,51,0.35)", // bgColorTertiary
+				"#bdc6c9", // fgColorHover
+				"rgba(166, 170, 169, .6)", // fgColorDisabled
+				0, // baseGlowColor
+			),
+		);
 		// this._themeSelect.appendChild(
 		// 	new ThemeEditeur(
 		// 		"Thème IUT de Bayonne", // nom
