@@ -41,8 +41,8 @@ class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel {
 	 * @static
 	 * @param {Probleme} unProbleme - Instance de la classe Probleme.
 	 * @type {Probleme}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste qui contient des information.
-	 * @description La méthode detecterAnomalie cherche si il y a une variable qui est dynamiquement type dans un Probleme.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste qui contient des informations.
+	 * @description La méthode detecterAnomalie cherche si il y a une ariable qui est dynamiquement typée dans un Probleme.
 	 */
 	static detecterAnomalie(unProbleme) {
 		try {

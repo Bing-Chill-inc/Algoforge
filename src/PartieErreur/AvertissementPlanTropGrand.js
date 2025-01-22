@@ -31,7 +31,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel {
 	 * @static
 	 * @param {PlanTravail} unElementGraphique - Instance de la classe ConditionSortie.
 	 * @type {PlanTravail}
-	 * @returns {boolean} - Renvoi true si le plan est trop grand sinon false.
+	 * @returns {boolean} - Renvoie true si le plan est trop grand sinon false.
 	 * @description La méthode detecterAnomalie cherche si la taille d'un PlanTravail n'est pas plus grande que la distance maximale définie.
 	 */
 	static detecterAnomalie(unPlan) {
@@ -80,8 +80,8 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel {
 	 * @param {number} y1
 	 * @param {number} x2
 	 * @param {number} y2
-	 * @returns {number} - Renvoi la distance entre deux points.
-	 * @description La méthode calculerDistance calcule la distance entre deux points dont les coordonner sont données en paramètre.
+	 * @returns {number} - Renvoie la distance entre deux points.
+	 * @description La méthode calculerDistance calcule la distance entre deux points dont les coordonnées sont données en paramètre.
 	 */
 	static calculerDistance(x1, y1, x2, y2) {
 		const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));

@@ -27,7 +27,7 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle {
 		this._structureIterative = value;
 	}
 	/**
-	 * @returns {StructureIterative} - Renvoi une StructureIterative.
+	 * @returns {StructureIterative} - Renvoie une StructureIterative.
 	 * @description Retourne la valeur de _structureIterative de ErreurArretIteratifBornee.
 	 */
 	get _structureIterative() {
@@ -46,7 +46,7 @@ class ErreurArretIteratifBornee extends ErreurConceptuelle {
 	 * @static
 	 * @param {ConditionSortie} unArret - Instance de la classe ConditionSortie.
 	 * @type {ConditionSortie}
-	 * @returns {boolean} - Renvoi true ou false.
+	 * @returns {boolean} - Renvoie true ou false.
 	 * @description La méthode detecterAnomalie vérifie si une condition de sortie est située dans une boucle itérative bornée et renvoie true si c'est le cas, sinon false.
 	 */
 	static detecterAnomalie(unArret) {
