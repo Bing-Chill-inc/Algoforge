@@ -37,8 +37,8 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel {
 		this._nomVariable = value;
 	}
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères.
-	 * @description Renvoie le nom de la variable concernés par l'avertissement.
+	 * @returns {string} - Renvoie une chaine de caractères.
+	 * @description Renvoie le nom de la variable concernée par l'avertissement.
 	 */
 	get _nomVariable() {
 		return this._nomVariable;
@@ -51,7 +51,7 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel {
 		this._valeurs = value;
 	}
 	/**
-	 * @returns {Array<string>} - Renvoi une liste de chaine de caractères.
+	 * @returns {Array<string>} - Renvoie une liste de chaine de caractères.
 	 * @description Renvoie les valeurs associées à la variable dans l'avertissement.
 	 */
 	get _valeurs() {
@@ -60,22 +60,22 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel {
 
 	// METHODES
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères.
+	 * @returns {string} - Renvoie une chaine de caractères.
 	 * @description Cette méthode renvoie un message indiquant qu'une structure conditionnelle en surbrillance est mal utilisée.
 	 */
 	toString() {
-		return "La structure conditionnel en surbrillance est mal utilisée. Un switch est préférable.";
+		return "La structure conditionnelle en surbrillance est mal utilisée. Un switch est préférable.";
 	}
 	/**
 	 * @static
 	 * @param {StructureSi} StructureSi - Instance de la classe StructureSi.
 	 * @type {StructureSi}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est la variable concernée par l'élément et le troisième élément est la valeur.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est la variable concernée par l'élément et le troisième élément est la valeur.
 	 * @description La méthode detecterAnomalie cherche s'il y a une StructureSi mal utilisée.
 	 */
 	static detecterAnomalie(StructureAlternative) {
 		/* 
-        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
+        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adaptée
         */
 		try {
 			const conditions = StructureAlternative._listeConditions.children;

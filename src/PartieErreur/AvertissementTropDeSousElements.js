@@ -30,7 +30,7 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel {
 		this._listeElementsConcernes = value;
 	}
 	/**
-	 * @returns {Array<ElementGraphique>} - Renvoi une liste d'ElementGraphique.
+	 * @returns {Array<ElementGraphique>} - Renvoie une liste d'ElementGraphique.
 	 * @description Renvoie la liste des éléments concernés par l'avertissement.
 	 */
 	get _listeElementsConcernes() {
@@ -48,8 +48,8 @@ class AvertissementTropDeSousElements extends AvertissementConceptuel {
 	 * @static
 	 * @param {ElementGraphique} unElementGraphique - Instance de la classe ConditionSortie.
 	 * @type {ElementGraphique}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
-	 * @description La méthode detecterAnomalie regarde si un ElementGraphique posède plus de 7 enfants.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste d'ElementGraphique.
+	 * @description La méthode detecterAnomalie regarde si un ElementGraphique possède plus de 7 enfants.
 	 */
 	static detecterAnomalie(unElementGraphique) {
 		try {

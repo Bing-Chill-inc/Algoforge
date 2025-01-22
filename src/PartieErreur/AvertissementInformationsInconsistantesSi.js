@@ -30,7 +30,7 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel 
 		this._nomsVariablesConcernees = value;
 	}
 	/**
-	 * @returns {Array<String>} - Renvoi une liste de chaine de caractères.
+	 * @returns {Array<String>} - Renvoie une liste de chaine de caractères.
 	 * @description Renvoie la liste des noms de variables concernées par l'avertissement.
 	 */
 	get _nomsVariablesConcernees() {
@@ -43,7 +43,7 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel 
 	 */
 	toString() {
 		return (
-			"La structure conditionelle en surbrillance contient les variables suvantes qui ne sont pas consistantes : " +
+			"La structure conditionnelle en surbrillance contient les variables suivantes qui ne sont pas consistantes : " +
 			this._nomsVariablesConcernees +
 			" ."
 		);
@@ -52,7 +52,7 @@ class AvertissementInformationsInconsistantesSi extends AvertissementConceptuel 
 	 * @static
 	 * @param {StructureSi} StructureAlternative
 	 * @type {StructureSi}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est la variable inconsistant.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est la variable inconsistant.
 	 * @description La méthode detecterAnomalie cherche si dans une StructureSi il y a des variables qui n'ont aucun lien entre eux.
 	 */
 	static detecterAnomalie(StructureAlternative) {

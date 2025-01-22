@@ -29,8 +29,8 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle {
 		this._nomDonnee = value;
 	}
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères.
-	 * @description Renvoie le nom de la variable concernés par l'erreur.
+	 * @returns {string} - Renvoie une chaine de caractères.
+	 * @description Renvoie le nom de la variable concernée par l'erreur.
 	 */
 	get _nomDonnee() {
 		return this._nomDonnee;
@@ -39,7 +39,7 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle {
 	// METHODES
 	/**
 	 * @returns {string} - Renvoie une chaine de caractères.
-	 * @description Renvoie un message indiquant que une comparaisons contient une comparaisons.
+	 * @description Renvoie un message indiquant qu'une comparaison est présente dans la structure switch.
 	 */
 	toString() {
 		return "La structure conditionnelle 'switch' en surbrillance contient des comparaisons.";
@@ -48,7 +48,7 @@ class ErreurComparaisonSwitch extends ErreurConceptuelle {
 	 * @static
 	 * @param {StructureSwitch} StructureSwitch - Instance de la classe StructureSwitch.
 	 * @type {StructureSwitch}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est l'expression a tester de la StructureSwitch.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est l'expression à tester de la StructureSwitch.
 	 * @description La méthode detecterAnomalie cherche si dans une StructureSwitch il y a des comparaisons.
 	 */
 	static detecterAnomalie(StructureSwitch) {

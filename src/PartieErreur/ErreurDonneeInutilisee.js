@@ -23,13 +23,13 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
 	// ENCAPSULATION
 	/**
 	 * @param {Array<String>} value - Nouvelle liste de noms de données associées à l'erreur.
-	 * @description Définit la valeur de _nomsDonnees d'ErreurDonneInutilisee.
+	 * @description Définit la valeur de _nomsDonnees de ErreurDonneeInutilisee.
 	 */
 	set _nomsDonnees(value) {
 		this._nomsDonnees = value;
 	}
 	/**
-	 * @returns {Array<String>} - Renvoi une liste de noms de données.
+	 * @returns {Array<String>} - Renvoie une liste de noms de données.
 	 * @description Renvoie la liste des noms de données associées à l'erreur.
 	 */
 	get _nomsDonnees() {
@@ -38,7 +38,7 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
 
 	// METHODES
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères contenant les données inutilisées.
+	 * @returns {string} - Renvoie une chaine de caractères contenant les données inutilisées.
 	 * @description Renvoie un message indiquant les données inutilisées dans l'algorithme.
 	 */
 	toString() {
@@ -61,7 +61,7 @@ class ErreurDonneeInutilisee extends ErreurConceptuelle {
 	 * @static
 	 * @param {Probleme} unProbleme - Instance de la classe Probleme.
 	 * @type {Probleme}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
 	 * @description La méthode detecterAnomalie cherche les données inutilisées dans l'algorithme et retourne une liste contenant les noms des données inutilisées trouvées.
 	 */
 	static detecterAnomalie(unProbleme) {
