@@ -410,8 +410,10 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition:
+		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out,
+		scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -705,7 +707,6 @@ bibliotheque-algorithmique {
 	align-items: end;
 	justify-content: start;
 	font-size: var(--font-size2);
-	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
 	position: relative;
@@ -785,7 +786,6 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie {
 	align-items: start;
 	justify-content: start;
 	border-bottom: 2px solid var(--fgColor);
-	cursor: pointer;
 	margin: 5px 0;
 	transition: 0.2s all ease;
 }
@@ -802,6 +802,7 @@ bibliotheque-algorithmique > div.listeCategories > div.categorie > h3 {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	cursor: pointer;
 	font-size: var(--font-size1);
 }
 
@@ -847,33 +848,54 @@ bibliotheque-algorithmique
 	flex-wrap: wrap;
 	align-items: start;
 	justify-content: start;
-	gap: 0.2vw;
 }
 
 bibliotheque-algorithmique
 	> div.listeCategories
 	> div.categorie.ouvert
 	> div.listeAlgorithmes
-	> img.algorithmeBibliotheque {
-	width: 5vw;
-	height: 5vw;
-	min-width: 60px;
-	min-height: 60px;
+	> .algorithmeBibliotheque {
 	margin: 0.5vw;
-	cursor: pointer;
 	transition: 0.2s all ease;
 	border: 0.1vw solid var(--fgColor);
 	border-radius: 0.75vw;
 	padding: 0.5vw;
+	cursor: grab;
+	padding-left: 20px;
+	position: relative;
 }
 
 bibliotheque-algorithmique
 	> div.listeCategories
 	> div.categorie.ouvert
 	> div.listeAlgorithmes
-	> img.algorithmeBibliotheque:hover {
+	> .algorithmeBibliotheque:hover {
 	border: 0.1vw solid var(--fgColorForward);
 	box-shadow: 0 0 0.5vw var(--fgColor);
+}
+
+.algorithmeBibliotheque:active {
+	cursor: grabbing !important;
+}
+
+.algorithmeBibliotheque::after {
+	content: ".";
+	position: absolute;
+	top: 50%;
+	left: 10px;
+	width: fit-content;
+	height: fit-content;
+	transform: translateY(-50%);
+	font-size: 20px;
+	line-height: 20px;
+	color: var(--fgColor);
+	pointer-events: none;
+	text-shadow:
+		0px -5px var(--fgColor),
+		0px -10px var(--fgColor),
+		-5px -10px var(--fgColor),
+		-5px -5px var(--fgColor),
+		-5px 0px var(--fgColor);
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
@@ -2379,7 +2401,9 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transition:
+		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+		margin 0.8s;
 	transform-origin: bottom;
 }
 
