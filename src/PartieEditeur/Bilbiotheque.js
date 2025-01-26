@@ -154,12 +154,12 @@ class Bibliotheque extends HTMLElement {
 
 		const clearButton = document.createElement("span");
 		clearButton.innerHTML = "×";
-		clearButton.classList.add("clearButton");
+		clearButton.classList.add("clearButtonSearchBibliotheque");
 		clearButton.style.display = "none";
 		clearButton.addEventListener("click", () => {
 			searchInput.value = "";
 			clearButton.style.display = "none";
-			this.rechercher(""); // Fermer toutes les catégories
+			this.rechercher("");
 		});
 		searchDiv.appendChild(clearButton);
 
@@ -187,7 +187,9 @@ class Bibliotheque extends HTMLElement {
 					".algorithmeBibliotheque",
 				);
 				algorithmes.forEach((algorithme) => {
-					algorithme.classList.remove("highlight");
+					algorithme.classList.remove(
+						"highlightAlgorithmeBibliotheque",
+					);
 				});
 			});
 			return;
@@ -209,10 +211,12 @@ class Bibliotheque extends HTMLElement {
 				);
 
 				if (match) {
-					algorithme.classList.add("highlight");
+					algorithme.classList.add("highlightAlgorithmeBibliotheque");
 					categorieVisible = true;
 				} else {
-					algorithme.classList.remove("highlight");
+					algorithme.classList.remove(
+						"highlightAlgorithmeBibliotheque",
+					);
 				}
 			});
 

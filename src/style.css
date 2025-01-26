@@ -968,11 +968,11 @@ bibliotheque-algorithmique
 	fill: var(--bgColor);
 }
 
-.highlight {
+.highlightAlgorithmeBibliotheque {
 	background-color: var(--fgColorSemiTransparent);
 }
 
-.clearButton {
+.clearButtonSearchBibliotheque {
 	position: absolute;
 	right: 40px;
 	padding: 0 5px;
@@ -981,11 +981,11 @@ bibliotheque-algorithmique
 	color: var(--fgColor);
 }
 
-.clearButton:hover {
+.clearButtonSearchBibliotheque:hover {
 	color: var(--fgColorHover);
 }
 
-.clearButton:active {
+.clearButtonSearchBibliotheque:active {
 	scale: 0.9;
 }
 
