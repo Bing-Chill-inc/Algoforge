@@ -98,7 +98,7 @@ class Bibliotheque extends HTMLElement {
 		this.classList.add("ouvert");
 		this._estOuvert = true;
 
-		this._ajouterCroixFermeture();
+		this._ajouterHeader();
 		if (verbose) {
 			console.log("Ouverture de la bibliothèque");
 			console.log(this._arborescence);
@@ -119,18 +119,109 @@ class Bibliotheque extends HTMLElement {
 	}
 
 	/**
-	 * Ajoute une croix de fermeture à la bibliothèque.
+	 * Ajoute le header à la bibliothèque.
 	 * @private
 	 */
-	_ajouterCroixFermeture() {
+	_ajouterHeader() {
+		const header = document.createElement("div");
+		header.classList.add("header");
+
+		// Croix de fermeture
 		const croixFermeture = document.createElement("span");
-		croixFermeture.innerHTML = "X";
-		croixFermeture.classList.add("fermeture");
+		croixFermeture.innerHTML = "⛌";
+		croixFermeture.classList.add("fermetureBibliotheque");
 		croixFermeture.addEventListener("click", (e) => {
 			e.stopPropagation();
 			this.fermer();
 		});
-		this.appendChild(croixFermeture);
+		header.appendChild(croixFermeture);
+
+		// Barre de recherche
+		const searchDiv = document.createElement("div");
+		searchDiv.classList.add("searchBibliotheque");
+
+		const searchInput = document.createElement("input");
+		searchInput.type = "text";
+		searchInput.classList.add("searchTermBibliotheque");
+		searchInput.placeholder = "Chercher un algorithme...";
+		searchDiv.appendChild(searchInput);
+
+		const searchButton = document.createElement("div");
+		searchButton.classList.add("searchButtonBibliotheque");
+		searchButton.innerHTML =
+			'<svg id="searchButtonSVGBibliotheque" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" ><path d="M 20.5 6 C 12.509634 6 6 12.50964 6 20.5 C 6 28.49036 12.509634 35 20.5 35 C 23.956359 35 27.133709 33.779044 29.628906 31.75 L 39.439453 41.560547 A 1.50015 1.50015 0 1 0 41.560547 39.439453 L 31.75 29.628906 C 33.779044 27.133709 35 23.956357 35 20.5 C 35 12.50964 28.490366 6 20.5 6 z M 20.5 9 C 26.869047 9 32 14.130957 32 20.5 C 32 23.602612 30.776198 26.405717 28.791016 28.470703 A 1.50015 1.50015 0 0 0 28.470703 28.791016 C 26.405717 30.776199 23.602614 32 20.5 32 C 14.130953 32 9 26.869043 9 20.5 C 9 14.130957 14.130953 9 20.5 9 z"/></svg>';
+		searchDiv.appendChild(searchButton);
+
+		const clearButton = document.createElement("span");
+		clearButton.innerHTML = "×";
+		clearButton.classList.add("clearButton");
+		clearButton.style.display = "none";
+		clearButton.addEventListener("click", () => {
+			searchInput.value = "";
+			clearButton.style.display = "none";
+			this.rechercher(""); // Fermer toutes les catégories
+		});
+		searchDiv.appendChild(clearButton);
+
+		searchInput.addEventListener("input", () => {
+			clearButton.style.display = searchInput.value ? "inline" : "none";
+			this.rechercher(searchInput.value);
+		});
+
+		header.appendChild(searchDiv);
+		this.appendChild(header);
+	}
+
+	/**
+	 * Recherche dans la liste des catégories et des algorithmes.
+	 * @param {string} terme - Le terme de recherche.
+	 */
+	rechercher(terme) {
+		const categories = this.querySelectorAll(".categorie");
+		const termesRecherche = terme.toLowerCase().split(/\s+/);
+
+		if (terme === "") {
+			categories.forEach((categorie) => {
+				categorie.classList.remove("ouvert");
+				const algorithmes = categorie.querySelectorAll(
+					".algorithmeBibliotheque",
+				);
+				algorithmes.forEach((algorithme) => {
+					algorithme.classList.remove("highlight");
+				});
+			});
+			return;
+		}
+
+		categories.forEach((categorie) => {
+			const algorithmes = categorie.querySelectorAll(
+				".algorithmeBibliotheque",
+			);
+			let categorieVisible = false;
+
+			algorithmes.forEach((algorithme) => {
+				const titre = algorithme.innerText.toLowerCase();
+				const description = algorithme.description.toLowerCase();
+
+				const match = termesRecherche.every(
+					(terme) =>
+						titre.includes(terme) || description.includes(terme),
+				);
+
+				if (match) {
+					algorithme.classList.add("highlight");
+					categorieVisible = true;
+				} else {
+					algorithme.classList.remove("highlight");
+				}
+			});
+
+			if (categorieVisible) {
+				categorie.classList.add("ouvert");
+			} else {
+				categorie.classList.remove("ouvert");
+			}
+		});
 	}
 
 	/**
@@ -178,7 +269,7 @@ class Bibliotheque extends HTMLElement {
 		titreCategorie.innerHTML = nom;
 
 		const flecheOuverture = document.createElement("div");
-		flecheOuverture.innerHTML = "▼";
+		flecheOuverture.innerHTML = "›";
 		flecheOuverture.classList.add("flecheOuverture");
 		titreCategorie.appendChild(flecheOuverture);
 
@@ -217,7 +308,9 @@ class Bibliotheque extends HTMLElement {
 		algorithmeElement.description = algorithme.descriptif;
 		algorithmeElement.preview = this._creerPreview(algorithme);
 
-		algorithmeElement.innerText = algorithme.nom;
+		if (algorithme.nomCourt)
+			algorithmeElement.innerText = algorithme.nomCourt;
+		else algorithmeElement.innerText = algorithme.nom;
 
 		const algoElements = this._transformerAlgorithmeEnRelatif(
 			algorithme.algo,
