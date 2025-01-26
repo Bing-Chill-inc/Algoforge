@@ -178,7 +178,7 @@ class Bibliotheque extends HTMLElement {
 	 */
 	rechercher(terme) {
 		const categories = this.querySelectorAll(".categorie");
-		const termesRecherche = terme.toLowerCase().split(/\s+/);
+		const termesRecherche = terme.toLowerCase().split(" ");
 
 		if (terme === "") {
 			categories.forEach((categorie) => {
