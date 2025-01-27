@@ -7,6 +7,7 @@ import {
 	existsSync,
 	mkdirSync,
 } from "fs";
+import { build } from "bun";
 
 const filePath = join(__dirname, "src/index.html");
 const fileContent = readFileSync(filePath, "utf-8");
@@ -27,25 +28,39 @@ const concatenatedScripts = localScriptSrcs
 	.map((src) => readFileSync(join(__dirname, "src", src), "utf-8"))
 	.join("\n");
 
-console.log(concatenatedScripts);
-
 // Create the 'out' directory if it doesn't exist
 const outDir = join(__dirname, "out");
 if (!existsSync(outDir)) {
 	mkdirSync(outDir);
 }
 
-// // Write the concatenated scripts to 'main.js' in the 'out' directory
-// const mainJsPath = join(outDir, "main.js");
-// writeFileSync(mainJsPath, concatenatedScripts, "utf-8");
-
 // Copy all CSS files to the 'out' directory
 const cssFiles = readdirSync(join(__dirname, "src")).filter((file) =>
 	file.endsWith(".css"),
 );
-cssFiles.forEach((cssFile) => {
-	copyFileSync(join(__dirname, "src", cssFile), join(outDir, cssFile));
-});
+await Promise.all(
+	cssFiles.map(async (cssFile) => {
+		return new Promise<void>(async (resolve, reject) => {
+			try {
+				await build({
+					entrypoints: [join(__dirname, "src", cssFile)],
+					outdir: outDir,
+					minify: true,
+					naming: cssFile,
+					target: "browser", // default
+				});
+				resolve();
+			} catch (error) {
+				console.log(error, "Copying instead");
+				copyFileSync(
+					join(__dirname, "src", cssFile),
+					join(outDir, cssFile),
+				);
+				resolve();
+			}
+		});
+	}),
+);
 
 // Copy the "modales" directory to the 'out' directory
 const modalesDir = join(outDir, "modales");
@@ -73,11 +88,11 @@ indexContent = indexContent.replace(
 	`<script>${concatenatedScripts}</script></body>`,
 );
 
-// // Add the new script tag for 'main.js'
-// indexContent = indexContent.replace(
-// 	"</body>",
-// 	`<script src="main.js"></script></body>`,
-// );
+// Replace the style.css link tag with the minified CSS file
+indexContent = indexContent.replace(
+	'<link rel="stylesheet" href="style.css" />',
+	`<style>${readFileSync(join(outDir, "style.css"), "utf-8")}</style>`,
+);
 
 // Write the updated 'index.html' to the 'out' directory
 const outIndexPath = join(outDir, "index.html");
