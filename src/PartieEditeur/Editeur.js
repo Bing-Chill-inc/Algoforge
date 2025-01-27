@@ -173,8 +173,10 @@ class Editeur extends HTMLElement {
 			document.title = "Algoforge - " + event.target.innerText;
 		});
 
-		document.title =
-			"Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		setTimeout(() => {
+			document.title =
+				"Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		}, 1000);
 
 		this.querySelector("#titreAlgo").addEventListener(
 			"keydown",
