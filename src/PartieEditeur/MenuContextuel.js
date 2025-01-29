@@ -50,11 +50,11 @@ class MenuContextuel extends HTMLElement {
 	 * @description Génère les options du menu contextuel en fonction de la cible et de la sélection.
 	 */
 	genererOptions() {
-		if (this._target instanceof Image) {
-			if (
-				this._target.classList.contains("algorithmeBibliotheque") &&
-				this._target.estCustom
-			) {
+		if (
+			this._target instanceof HTMLDivElement &&
+			this._target.classList.contains("algorithmeBibliotheque")
+		) {
+			if (this._target.estCustom) {
 				this.appendChild(
 					new ElementMenu("Supprimer de la bibliothèque", () => {
 						console.log("Supprimer de la bibliothèque");
