@@ -2321,8 +2321,8 @@ structure-iterative-bornee-element > div.boucleSVG {
 }
 
 structure-iterative-bornee-element > div.informationsBornes {
-	width: calc(var(--sizeModifier) * 16vw);
-	height: 100%;
+	width: fit-content;
+	height: fit-content;
 	font-size: calc(var(--sizeModifier) * 1vw);
 }
 

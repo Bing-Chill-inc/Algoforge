@@ -47,7 +47,7 @@ class MenuContextuel extends HTMLElement {
 
 		setTimeout(() => {
 			const rect = this.getBoundingClientRect();
-			console.log(rect);
+			if (verbose) console.log(rect);
 			if (rect.top + rect.height > window.innerHeight) {
 				this.style.top = `calc(var(--sizeModifier) * ${y}vw - ${rect.height}px)`;
 			}
@@ -455,8 +455,10 @@ class MenuContextuel extends HTMLElement {
 
 			this.appendChild(
 				new ElementMenu("Aligner la sélection ici", () => {
-					console.log("Aligner la sélection ici");
-					console.log("target", this._target);
+					if (verbose) {
+						console.log("Aligner la sélection ici");
+						console.log("target", this._target);
+					}
 					// On aligne le y de tous les éléments sélectionnés sur les coordonnées de la target
 
 					// On trouve à quel ElementGraphique correspond la target
