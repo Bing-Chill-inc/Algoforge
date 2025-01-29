@@ -66,6 +66,7 @@ h1 {
 }
 
 #titreAlgo_wrapper > span {
+	outline: none;
 	margin: 0 5px 0 0;
 	font-size: var(--font-size1);
 }
@@ -866,7 +867,6 @@ bibliotheque-algorithmique
 	> div.listeAlgorithmes
 	> .algorithmeBibliotheque {
 	margin: 0.5vw;
-	transition: 0.2s all ease;
 	border: 0.1vw solid var(--fgColor);
 	color: var(--fgColor);
 	border-radius: 0.75vw;
@@ -938,11 +938,10 @@ bibliotheque-algorithmique
 	border: none;
 	font-size: 12px;
 	padding: 5px;
-	margin: 0 auto 0 5px;
 	outline: none;
 	border-radius: 10px 0 0 10px;
 	background-color: var(--bgColor);
-	width: calc(100% - 70px);
+	width: calc(100% - 65px);
 	color: var(--fgColor);
 }
 
@@ -952,7 +951,7 @@ bibliotheque-algorithmique
 }
 
 .searchButtonBibliotheque {
-	background: var(--titleColor);
+	background: var(--bgColor);
 	border: none;
 	padding: 5px;
 	border-radius: 0 10px 10px 0;
@@ -965,7 +964,7 @@ bibliotheque-algorithmique
 #searchButtonSVGBibliotheque {
 	width: 24px;
 	height: 24px;
-	fill: var(--bgColor);
+	fill: var(--titleColor);
 }
 
 .highlightAlgorithmeBibliotheque {
@@ -974,7 +973,7 @@ bibliotheque-algorithmique
 
 .clearButtonSearchBibliotheque {
 	position: absolute;
-	right: 40px;
+	right: 5px;
 	padding: 0 5px;
 	cursor: pointer;
 	font-size: 16px;
@@ -1045,61 +1044,140 @@ bibliotheque-algorithmique > div.previewAlgo > plan-travail label.accolades {
 invite-nouvelle-bibliotheque {
 	position: fixed;
 	width: 30vw;
+	min-width: fit-content;
+	max-width: 500px;
 	aspect-ratio: 1/1;
 	top: 50vh;
 	left: 50vw;
 	translate: -50% -50%;
-	background-color: var(--bgColor);
-	border: 0.1vw solid var(--fgColor);
-	box-shadow: 0 0 1vw var(--fgColor);
-	border-radius: 0.5vw;
+	background-color: var(--bgColorTertiary);
+	box-shadow: 0 0 1vw var(--glowColor);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	z-index: 2048;
-	padding-top: 1vw;
-	padding-bottom: 1vw;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 12px;
+	backdrop-filter: blur(5px);
+	outline: 1px solid var(--borderColor2);
 }
 
-invite-nouvelle-bibliotheque > input {
+invite-nouvelle-bibliotheque > h2 {
+	font-size: calc(var(--font-size1) * 1.5);
+	text-align: center;
+	color: var(--titleColor);
+	margin: 5px 20px 20px 20px;
+	padding: 0 10px;
+}
+
+invite-nouvelle-bibliotheque > label {
+	color: var(--titleColor);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-left: 13%;
+	margin-top: 10px;
+	font-size: var(--font-size2);
+	font-weight: 700;
+}
+
+invite-nouvelle-bibliotheque > label > input {
 	width: 80%;
-	height: 10%;
-	margin-top: 5%;
-	font-size: 1vw;
-	padding: 0.5vw;
-	border: 0.1vw solid var(--fgColor);
-	border-radius: 0.5vw;
+	height: fit-content;
+	min-height: 10%;
+	margin-top: 5px;
+	font-size: var(--font-size2);
+	padding: 5px;
+	border: 1px solid var(--fgColor);
+	border-radius: 5px;
 	background-color: var(--bgColor);
 	color: var(--fgColor);
 }
 
-invite-nouvelle-bibliotheque > button {
+invite-nouvelle-bibliotheque > label > div {
 	width: 80%;
-	height: 10%;
-	margin-top: 5%;
-	font-size: 1vw;
-	padding: 0.5vw;
-	border: 0.1vw solid var(--bgColor);
-	border-radius: 0.5vw;
-	background-color: var(--fgColor);
-	color: var(--bgColor);
-	cursor: pointer;
-	transition: all 0.2s ease;
+	height: fit-content;
+	min-height: 10%;
+	margin-top: 5px;
+	font-size: var(--font-size2);
+	padding: 5px;
+	border: 1px solid var(--fgColor);
+	border-radius: 5px;
+	background-color: var(--bgColor);
+	color: var(--fgColor);
+	font-weight: normal;
+	max-height: 100px;
+	overflow-y: scroll;
 }
 
-invite-nouvelle-bibliotheque > button:hover {
-	background-color: var(--fgColorForward);
-	box-shadow: 0 0 0.5vw var(--fgColor);
+invite-nouvelle-bibliotheque > label > div[placeholder]:empty:before {
+	content: attr(placeholder);
+	color: var(--fgColorDisabled);
+	font-weight: 400;
+}
+
+invite-nouvelle-bibliotheque > label > p.errorMessage {
+	color: var(--errorColor);
+	font-size: var(--font-size2);
+	height: fit-content;
+	width: fit-content;
+	pointer-events: none;
+	margin: 5px 0 0 0;
+	font-weight: normal;
+}
+
+invite-nouvelle-bibliotheque > .actionButtons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+	height: fit-content;
+	gap: 10px;
+	padding-top: 10px;
+	margin-top: auto;
+}
+
+invite-nouvelle-bibliotheque > .actionButtons > button {
+	margin: 5px;
+	border: 1px solid var(--fgColor);
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+	position: relative;
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
+		background-color 0.3s ease;
+}
+
+invite-nouvelle-bibliotheque > div > button:hover {
+	color: var(--bgColor);
+	background-color: var(--fgColorHover);
+	border: 1px solid var(--fgColorForward);
+	box-shadow: 0 0 5px var(--fgColor);
+}
+
+.primaryButton {
+	color: var(--bgColor);
+	background-color: var(--titleColor);
+}
+
+.secondaryButton {
+	color: var(--fgColor);
+	background-color: var(--bgColorTertiary);
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo {
 	width: 25vw;
 	height: fit-content;
 	background-color: var(--bgColor);
-	border: 0.1vw solid var(--fgColor);
-	border-radius: 0.5vw;
-	padding: 0.5vw;
+	border: 1px solid var(--fgColor);
+	border-radius: 5px;
+	padding: 5px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1119,8 +1197,12 @@ invite-nouvelle-bibliotheque > div.previewAlgo > div.divTransparent {
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail {
+	max-width: 500px;
 	width: 25vw;
+	min-width: fit-content;
+	max-height: 700px;
 	height: 15vw;
+	min-height: fit-content;
 	border: none;
 	position: relative;
 	overflow: hidden;
@@ -1138,11 +1220,16 @@ invite-nouvelle-bibliotheque > div.previewAlgo > plan-travail label.accolades {
 	font-size: calc(var(--sizeModifier) * 4vw) !important;
 }
 
+.noActionsElementMenu {
+	pointer-events: none;
+}
+
 menu-contextuel {
 	position: fixed;
 	width: 180px;
 	height: fit-content;
 	min-height: 2vw;
+	min-width: fit-content;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
@@ -1153,6 +1240,7 @@ menu-contextuel {
 	color: var(--fgColor);
 	padding: 6px;
 	gap: 6px;
+	cursor: pointer;
 }
 menu-contextuel::before {
 	content: "";
@@ -2422,6 +2510,7 @@ button,
 }
 
 .crayon {
+	user-select: none;
 	transition: all 0.5s ease;
 }
 

@@ -67,10 +67,12 @@ class Bibliotheque extends HTMLElement {
 	 * @param {string} nom - Le nom de l'algorithme.
 	 * @param {string} algo - Le JSON de l'algorithme.
 	 * @param {string} descriptif - La description de l'algorithme.
+	 * @param {string} nomCourt - Le nom court de l'algorithme.
 	 */
-	ajouterAlgorithmeCustom(nom, algo, descriptif) {
+	ajouterAlgorithmeCustom(nom, algo, descriptif, nomCourt) {
 		this._arborescenceCustom.push({
 			nom: nom,
+			nomCourt: nomCourt,
 			algo: algo,
 			descriptif: descriptif,
 		});
@@ -140,17 +142,17 @@ class Bibliotheque extends HTMLElement {
 		const searchDiv = document.createElement("div");
 		searchDiv.classList.add("searchBibliotheque");
 
-		const searchInput = document.createElement("input");
-		searchInput.type = "text";
-		searchInput.classList.add("searchTermBibliotheque");
-		searchInput.placeholder = "Chercher un algorithme...";
-		searchDiv.appendChild(searchInput);
-
 		const searchButton = document.createElement("div");
 		searchButton.classList.add("searchButtonBibliotheque");
 		searchButton.innerHTML =
 			'<svg id="searchButtonSVGBibliotheque" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" ><path d="M 20.5 6 C 12.509634 6 6 12.50964 6 20.5 C 6 28.49036 12.509634 35 20.5 35 C 23.956359 35 27.133709 33.779044 29.628906 31.75 L 39.439453 41.560547 A 1.50015 1.50015 0 1 0 41.560547 39.439453 L 31.75 29.628906 C 33.779044 27.133709 35 23.956357 35 20.5 C 35 12.50964 28.490366 6 20.5 6 z M 20.5 9 C 26.869047 9 32 14.130957 32 20.5 C 32 23.602612 30.776198 26.405717 28.791016 28.470703 A 1.50015 1.50015 0 0 0 28.470703 28.791016 C 26.405717 30.776199 23.602614 32 20.5 32 C 14.130953 32 9 26.869043 9 20.5 C 9 14.130957 14.130953 9 20.5 9 z"/></svg>';
 		searchDiv.appendChild(searchButton);
+
+		const searchInput = document.createElement("input");
+		searchInput.type = "text";
+		searchInput.classList.add("searchTermBibliotheque");
+		searchInput.placeholder = "Chercher un algorithme...";
+		searchDiv.appendChild(searchInput);
 
 		const clearButton = document.createElement("span");
 		clearButton.innerHTML = "×";
@@ -202,12 +204,17 @@ class Bibliotheque extends HTMLElement {
 			let categorieVisible = false;
 
 			algorithmes.forEach((algorithme) => {
-				const titre = algorithme.innerText.toLowerCase();
 				const description = algorithme.description.toLowerCase();
+				const nomCourt = algorithme.nomCourt
+					? algorithme.nomCourt.toLowerCase()
+					: "";
+				const nom = algorithme.nom ? algorithme.nom.toLowerCase() : "";
 
 				const match = termesRecherche.every(
 					(terme) =>
-						titre.includes(terme) || description.includes(terme),
+						description.includes(terme) ||
+						nomCourt.includes(terme) ||
+						nom.includes(terme),
 				);
 
 				if (match) {
@@ -310,6 +317,8 @@ class Bibliotheque extends HTMLElement {
 		algorithmeElement.setAttribute("draggable", "true");
 		algorithmeElement.contenu = algorithme.algo;
 		algorithmeElement.description = algorithme.descriptif;
+		algorithmeElement.nom = algorithme.nom;
+		algorithmeElement.nomCourt = algorithme.nomCourt;
 		algorithmeElement.preview = this._creerPreview(algorithme);
 
 		if (algorithme.nomCourt)
@@ -503,8 +512,10 @@ class Bibliotheque extends HTMLElement {
 	 * @private
 	 */
 	_creerAlgorithmeElementPersonnalise(algorithme) {
-		const algorithmeElement = document.createElement("img");
+		const algorithmeElement = document.createElement("div");
 		algorithmeElement.estCustom = true;
+		algorithmeElement.classList.add("algorithmeBibliotheque");
+		algorithmeElement.setAttribute("draggable", "true");
 		algorithmeElement.supprimer = () => {
 			this._arborescenceCustom.splice(
 				this._arborescenceCustom.indexOf(algorithme),
@@ -517,13 +528,15 @@ class Bibliotheque extends HTMLElement {
 			);
 			this.update();
 		};
-		algorithmeElement.classList.add("algorithmeBibliotheque");
-		algorithmeElement.title = "";
 		algorithmeElement.contenu = algorithme.algo;
 		algorithmeElement.description = algorithme.descriptif;
+		algorithmeElement.nom = algorithme.nom;
+		algorithmeElement.nomCourt = algorithme.nomCourt;
 		algorithmeElement.preview = this._creerPreview(algorithme);
 
-		algorithmeElement.src = `assetsDynamiques/bibliocustom.svg?fgColor=${document.body.style.getPropertyValue("--fgColor").substring(1)}&nom=${algorithme.nom}`;
+		if (algorithme.nomCourt)
+			algorithmeElement.innerText = algorithme.nomCourt;
+		else algorithmeElement.innerText = algorithme.nom;
 
 		const algoElements = this._transformerAlgorithmeEnRelatif(
 			algorithme.algo,
@@ -533,6 +546,7 @@ class Bibliotheque extends HTMLElement {
 
 		return algorithmeElement;
 	}
+
 	/**
 	 * Ferme la bibliothèque.
 	 */
