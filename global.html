@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: PartieErreur/AvertissementDonneeDynamiquementTypee.js</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,135 +17,414 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: PartieErreur/AvertissementDonneeDynamiquementTypee.js</h1>
+    <h1 class="page-title">Global</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @class AvertissementDonneeDynamiquementTypee
- * @extends {AvertissementConceptuel}
- * @classdesc La Classe AvertissementDonneeDynamiquementTypee stocke les variables qui sont dynamiquement typées.
- * @description Crée une instance d'AvertissementDonneeDynamiquementTypee.
- */
-class AvertissementDonneeDynamiquementTypee extends AvertissementConceptuel {
-	// ATTRIBUTS
-	_nomsVariables; // array&lt;String>
+        <h2></h2>
+        
+    
+</header>
 
-	// CONSTRUCTEUR
-	/**
-	 * @constructor
-	 * @param {ElementGraphique} elementEmetteur - L'élément émetteur de l'avertissement.
-	 * @type {ElementGraphique}
-	 * @param {Array&lt;String>} [nomsVariables=new Array()] - La liste des noms de variables (par défaut, une liste vide).
-	 */
-	constructor(elementEmetteur, nomsVariables = new Array()) {
-		super(elementEmetteur);
-		this._nomsVariables = nomsVariables;
-	}
+<article>
+    <div class="container-overview">
+    
+        
 
-	// ENCAPSULATION
-	/**
-	 * @param {Array&lt;String>} value - Nouvelle valeur pour _nomsVariables.
-	 * @description Définit la valeur de _nomsVariables de AvertissementDonneeDynamiquementTypee.
-	 */
-	set _nomsVariables(value) {
-		this._nomsVariables = value;
-	}
-	/**
-	 * @returns {Array&lt;String>}
-	 * @description Renvoie la liste des noms de variables stockées dans l'avertissement.
-	 */
-	get _nomsVariables() {
-		return this._nomsVariables;
-	}
+        
 
-	// METHODES
-	/**
-	 * @static
-	 * @param {Probleme} unProbleme - Instance de la classe Probleme.
-	 * @type {Probleme}
-	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste qui contient des informations.
-	 * @description La méthode detecterAnomalie cherche si il y a une ariable qui est dynamiquement typée dans un Probleme.
-	 */
-	static detecterAnomalie(unProbleme) {
-		try {
-			const lesInformations = unProbleme.extraireInformation();
-			let lesInformationsPasTypeCorrectement = lesInformations;
-			for (let information of lesInformations) {
-				if (
-					unProbleme
-						.getPlanTravail()
-						.leDictionnaireDesDonnees.containInformation(
-							information._nom,
-						)
-				) {
-					const informationDictionnaire = document
-						.getElementById("espace1")
-						.leDictionnaireDesDonnees.getInformation(
-							information._nom,
-						);
-					const informationBienType = document
-						.getElementById("espace1")
-						.leDictionnaireDesDonnees.TypeCompatible(
-							informationDictionnaire._type,
-							information._type,
-						);
-					if (informationBienType) {
-						lesInformationsPasTypeCorrectement =
-							lesInformationsPasTypeCorrectement.filter(
-								(uneinformation) =>
-									uneinformation._nom != information._nom,
-							);
-					}
-				}
-			}
-			if (lesInformationsPasTypeCorrectement.length != 0) {
-				let pasTypeCorrectement = [];
-				for (let information of lesInformationsPasTypeCorrectement) {
-					pasTypeCorrectement.push(information._nom);
-				}
-				return [true, pasTypeCorrectement];
-			} else {
-				return [false];
-			}
-		} catch (e) {
-			console.error(e);
-			return [false];
-		}
-	}
-	/**
-	 * @returns {string}
-	 * @description Cette méthode renvoie un message indiquant que des variables sont dynamiquement typées.
-	 */
-	toString() {
-		if (this._nomsVariables.length == 1) {
-			return (
-				"La variable " +
-				this._nomsVariables[0] +
-				" est dynamiquement typée."
-			);
-		} else {
-			let chaine = "Les variables ";
-			for (let i = 0; i &lt; this._nomsVariables.length; i++) {
-				if (i == this._nomsVariables.length - 1) {
-					chaine += this._nomsVariables[i] + " ";
-				} else {
-					chaine += this._nomsVariables[i] + ", ";
-				}
-			}
-			chaine += "sont dynamiquement typées.";
-			return chaine;
-		}
-	}
-}
-</code></pre>
-        </article>
-    </section>
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="sanitizeHTML"><span class="type-signature"></span>sanitizeHTML<span class="signature">(html)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Nettoie le contenu HTML en supprimant les balises <script> et leurs contenus.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>html</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Le contenu HTML à nettoyer.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="PartieEditeur_InviteNouvelleBibliotheque.js.html">PartieEditeur/InviteNouvelleBibliotheque.js</a>, <a href="PartieEditeur_InviteNouvelleBibliotheque.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Le contenu HTML nettoyé.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="sanitizeHTML"><span class="type-signature"></span>sanitizeHTML<span class="signature">(html)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Nettoie le contenu HTML en supprimant les balises <script> et leurs contenus.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>html</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Le contenu HTML à nettoyer.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="PartieEditeur_InviteNouvelleBibliotheque.js.html">PartieEditeur/InviteNouvelleBibliotheque.js</a>, <a href="PartieEditeur_InviteNouvelleBibliotheque.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Le contenu HTML nettoyé.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

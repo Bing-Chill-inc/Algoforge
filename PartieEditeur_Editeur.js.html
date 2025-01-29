@@ -359,14 +359,14 @@ class Editeur extends HTMLElement {
 		// Fichier
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
-				console.log("Nouveau");
+				if (verbose) console.log("Nouveau");
 				// On ouvre un nouvel onglet avec un éditeur vide
 				window.open(window.location.href, "_blank");
 			}),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Ouvrir", () => {
-				console.log("Ouvrir");
+				if (verbose) console.log("Ouvrir");
 				// On importe
 				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 				var fileInput = document.createElement("input");
@@ -416,7 +416,7 @@ class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Créer une copie", () => {
-				console.log("Créer une copie");
+				if (verbose) console.log("Créer une copie");
 				// On post le contenu de l'éditeur actuel dans un nouvel onglet
 				this._transferInput.value = JSON.stringify(
 					this._espacePrincipal.exporterEnJSON(),
@@ -430,7 +430,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Partager",
 				() => {
-					console.log("Partager");
+					if (verbose) console.log("Partager");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -459,17 +459,17 @@ class Editeur extends HTMLElement {
 			}),
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
-			console.log("Exporter");
+			if (verbose) console.log("Exporter");
 		});
 		this._menuDeroulantFichier.ajouterElementMenu(exporter);
 
 		let sousTitreGénéral = document.createElement("h3");
-		sousTitreGénéral.innerText = "Tout";
+		sousTitreGénéral.innerText = "Algorithme";
 		exporter.ajouterElementMenu(sousTitreGénéral);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".json", () => {
-				console.log("Exporter en .json");
+				if (verbose) console.log("Exporter en .json");
 				this.exporterJSON(
 					JSON.stringify(this._espacePrincipal.exporterEnJSON()),
 				);
@@ -477,14 +477,14 @@ class Editeur extends HTMLElement {
 		);
 
 		let sousTitreAlgorithme = document.createElement("h3");
-		sousTitreAlgorithme.innerText = "Algorithme";
+		sousTitreAlgorithme.innerText = "Image";
 		exporter.ajouterElementMenu(sousTitreAlgorithme);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(
 				".png",
 				() => {
-					console.log("Exporter en .png");
+					if (verbose) console.log("Exporter en .png");
 					const plansTravail = this.querySelectorAll("plan-travail");
 					const sousPlansTravail =
 						this.querySelectorAll("sous-plan-travail");
@@ -507,7 +507,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				".jpg",
 				() => {
-					console.log("Exporter en .jpg");
+					if (verbose) console.log("Exporter en .jpg");
 					const plansTravail = this.querySelectorAll("plan-travail");
 					const sousPlansTravail =
 						this.querySelectorAll("sous-plan-travail");
@@ -528,7 +528,7 @@ class Editeur extends HTMLElement {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
-				console.log("Exporter en .svg");
+				if (verbose) console.log("Exporter en .svg");
 				this.exporterSVG(this._planActif);
 			}),
 		);
@@ -545,21 +545,21 @@ class Editeur extends HTMLElement {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".xls", () => {
-				console.log("Exporter en .xls");
+				if (verbose) console.log("Exporter en .xls");
 				this._dictionnaireDesDonnees.exporter("xls");
 			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
-				console.log("Exporter en .csv");
+				if (verbose) console.log("Exporter en .csv");
 				this._dictionnaireDesDonnees.exporter("csv");
 			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".md", () => {
-				console.log("Exporter en .md");
+				if (verbose) console.log("Exporter en .md");
 				this._dictionnaireDesDonnees.exporter("md");
 			}),
 		);
@@ -568,7 +568,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Supprimer",
 				() => {
-					console.log("Supprimer");
+					if (verbose) console.log("Supprimer");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -578,7 +578,7 @@ class Editeur extends HTMLElement {
 		// Edition
 		this._menuDeroulantEdition.ajouterElementMenu(
 			new ElementMenu("Importer", () => {
-				console.log("Importer");
+				if (verbose) console.log("Importer");
 				this.importerJSON();
 			}),
 		);
@@ -587,7 +587,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Annuler",
 				() => {
-					console.log("Annuler");
+					if (verbose) console.log("Annuler");
 					this.undo();
 				},
 				`${this._toucheMeta}Z`,
@@ -598,7 +598,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Rétablir",
 				() => {
-					console.log("Rétablir");
+					if (verbose) console.log("Rétablir");
 					this.redo();
 				},
 				`${this._toucheMeta}Y`,
@@ -609,7 +609,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Couper",
 				() => {
-					console.log("Couper");
+					if (verbose) console.log("Couper");
 					this.cut();
 				},
 				`${this._toucheMeta}X`,
@@ -620,7 +620,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Copier",
 				() => {
-					console.log("Copier");
+					if (verbose) console.log("Copier");
 					this.copy();
 				},
 				`${this._toucheMeta}C`,
@@ -631,7 +631,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Coller",
 				() => {
-					console.log("Coller");
+					if (verbose) console.log("Coller");
 					this._modaleNoPaste.ouvrir();
 				},
 				`${this._toucheMeta}V`,
@@ -642,7 +642,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Sélectionner tout",
 				() => {
-					console.log("Sélectionner tout");
+					if (verbose) console.log("Sélectionner tout");
 					this.selectAll();
 				},
 				`${this._toucheMeta}A`,
@@ -653,7 +653,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Supprimer",
 				() => {
-					console.log("Supprimer");
+					if (verbose) console.log("Supprimer");
 					this.delete();
 				},
 				`Suppr / ${this._toucheMeta}⌫`,
@@ -664,7 +664,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Rechercher",
 				() => {
-					console.log("Rechercher");
+					if (verbose) console.log("Rechercher");
 					// this.search();
 					this._modaleNonImp.ouvrir();
 				},
@@ -678,7 +678,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Tutoriels",
 				() => {
-					console.log("Tutoriels");
+					if (verbose) console.log("Tutoriels");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -687,14 +687,14 @@ class Editeur extends HTMLElement {
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("Raccourcis clavier", () => {
-				console.log("Raccourcis clavier");
+				if (verbose) console.log("Raccourcis clavier");
 				this._modaleRaccourcisClavier.ouvrir();
 			}),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("À propos", () => {
-				console.log("À propos");
+				if (verbose) console.log("À propos");
 				this._modaleAPropos.ouvrir();
 			}),
 		);
@@ -823,7 +823,11 @@ class Editeur extends HTMLElement {
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
-					console.log("Ctrl + C", window.getSelection().toString());
+					if (verbose)
+						console.log(
+							"Ctrl + C",
+							window.getSelection().toString(),
+						);
 					if (window.getSelection().toString().length == 0) {
 						e.preventDefault();
 						this.copy();
@@ -1076,7 +1080,7 @@ class Editeur extends HTMLElement {
 			}
 			if (verbose) console.log(maTarget);
 			if (maTarget instanceof PlanTravail) {
-				console.log("Clic sur le plan de travail");
+				if (verbose) console.log("Clic sur le plan de travail");
 				if (verbose)
 					console.log(
 						"currentTool = " +
@@ -1123,7 +1127,7 @@ class Editeur extends HTMLElement {
 				maTarget instanceof ElementGraphique ||
 				maTarget instanceof Condition
 			) {
-				//console.log("Clic sur un élément graphique");
+				if (verbose) console.log("Clic sur un élément graphique");
 				if (this._currentTool === 0) {
 					if (this._pointePrecedementLien === null) {
 						if (verbose)
@@ -1251,15 +1255,14 @@ class Editeur extends HTMLElement {
 				console.log(`this._currentTool = ${this._currentTool}`);
 
 			if (maTarget instanceof PlanTravail &amp;&amp; this._currentTool == -1) {
-				console.log("event 1");
-
+				if (verbose) console.log("event 1");
 				this._isSelecting = true;
 				this._coordonneesSelection.x =
 					(this._curMousePos.x / 100) * window.innerWidth;
 				this._coordonneesSelection.y =
 					(this._curMousePos.y / 100) * window.innerWidth;
 			} else {
-				//console.log("event 2");
+				if (verbose) console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
@@ -1685,7 +1688,7 @@ class Editeur extends HTMLElement {
 
 			// Soustraire les coordonnées du coin supérieur gauche pour que les coordonnées soient relatives
 			const appliquerDecalage = (elem) => {
-				if (true)
+				if (verbose)
 					console.log(
 						`parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(
 							elem.abscisse,
@@ -1694,7 +1697,7 @@ class Editeur extends HTMLElement {
 							parseFloat(elem.abscisse) - coinSupGauche.x + "vw"
 						}`,
 					);
-				if (true)
+				if (verbose)
 					console.log(
 						`parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(
 							elem.ordonnee,
@@ -1823,7 +1826,7 @@ class Editeur extends HTMLElement {
 	 * @method selectAll
 	 */
 	selectAll() {
-		console.log("selectAll");
+		if (verbose) console.log("selectAll");
 		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 			if (elem instanceof ElementGraphique)
 				this._selection.selectionnerElement(elem);
@@ -1834,15 +1837,8 @@ class Editeur extends HTMLElement {
 	 * Supprime les éléments sélectionnés.
 	 */
 	delete() {
-		console.log("delete");
+		if (verbose) console.log("delete");
 		this._selection.supprimerTout();
-	}
-
-	/**
-	 * Recherche des éléments (fonctionnalité non implémentée).
-	 */
-	search() {
-		console.log("search");
 	}
 
 	/**
@@ -1942,7 +1938,7 @@ class Editeur extends HTMLElement {
 	 * @returns {string} La chaîne SVG exportée.
 	 */
 	exporterSVG(nodeToCopy, download = true, isJSON = false) {
-		console.log("exporterSVG() appelé");
+		if (verbose) console.log("exporterSVG() appelé");
 		// On crée une balise style pour embarquer le style dans le fichier SVG
 		var styleElement = document.createElement("style");
 		var cssStyles = `
@@ -2784,13 +2780,13 @@ window.customElements.define("editeur-interface", Editeur);
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="DictionnaireDonnee.html">DictionnaireDonnee</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeHTML">sanitizeHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Jan 28 2025 14:23:58 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 29 2025 15:15:33 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
