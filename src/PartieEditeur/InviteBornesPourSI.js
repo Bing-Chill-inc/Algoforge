@@ -86,15 +86,14 @@ class InviteBornesPourSI extends HTMLElement {
 		this.indice.placeholder = "Indice à itérer";
 		this.indice.style.gridColumn = "2 / span 3";
 		this.indice.style.gridRow = "1";
-		this.indice.style.width = "100%";
 		this.indice.value = oldIndice;
 		this.appendChild(this.indice);
 
-		let labelDe = document.createElement("label");
-		labelDe.innerText = "allant De";
-		labelDe.style.gridColumn = "1";
-		labelDe.style.gridRow = "2";
-		this.appendChild(labelDe);
+		let labelAllantDe = document.createElement("label");
+		labelAllantDe.innerText = "allant de";
+		labelAllantDe.style.gridColumn = "1";
+		labelAllantDe.style.gridRow = "2";
+		this.appendChild(labelAllantDe);
 
 		this.borneInf = document.createElement("input");
 		this.borneInf.placeholder = "Borne inférieure";
@@ -118,7 +117,7 @@ class InviteBornesPourSI extends HTMLElement {
 
 		let labelPas = document.createElement("label");
 		labelPas.innerText = "avec un pas";
-		labelPas.style.gridColumn = "1 / span 2";
+		labelPas.style.gridColumn = "1";
 		labelPas.style.gridRow = "3";
 		this.appendChild(labelPas);
 
@@ -127,40 +126,47 @@ class InviteBornesPourSI extends HTMLElement {
 		this.selectCroissant.style.gridRow = "3";
 		let optionCroissant = document.createElement("option");
 		optionCroissant.value = "croissant";
-		optionCroissant.innerText = "croissant de";
+		optionCroissant.innerText = "croissant";
 		let optionDecroissant = document.createElement("option");
 		optionDecroissant.value = "décroissant";
-		optionDecroissant.innerText = "décroissant de";
+		optionDecroissant.innerText = "décroissant";
 		this.selectCroissant.appendChild(optionCroissant);
 		this.selectCroissant.appendChild(optionDecroissant);
 		this.appendChild(this.selectCroissant);
 
+		let labelDe = document.createElement("label");
+		labelDe.innerText = "de";
+		labelDe.style.gridColumn = "3";
+		labelDe.style.gridRow = "3";
+		this.appendChild(labelDe);
+
 		this.pas = document.createElement("input");
 		this.pas.placeholder = "Pas";
-		this.pas.style.gridColumn = "3 / span 2";
+		this.pas.style.gridColumn = "4";
 		this.pas.style.gridRow = "3";
 		this.pas.value = oldPas;
 		this.appendChild(this.pas);
 
+		const actionButtons = document.createElement("div");
+		actionButtons.classList.add("actionButtons");
+
 		this.button = document.createElement("button");
 		this.button.innerText = "Valider";
-		this.button.classList.add("valider");
-		this.button.style.gridColumn = "3 / span 2";
-		this.button.style.gridRow = "4";
+		this.button.classList.add("primaryButton");
 		this.button.addEventListener("click", (e) => {
 			this.valider();
 		});
-		this.appendChild(this.button);
+		actionButtons.appendChild(this.button);
 
 		this.nBorne = document.createElement("button");
 		this.nBorne.innerText = "Non borné";
-		this.nBorne.classList.add("non-borne");
-		this.nBorne.style.gridColumn = "1 / span 2";
-		this.nBorne.style.gridRow = "4";
+		this.nBorne.classList.add("secondaryButton");
 		this.nBorne.addEventListener("click", (e) => {
 			this.nonBorne();
 		});
-		this.appendChild(this.nBorne);
+		actionButtons.appendChild(this.nBorne);
+
+		this.appendChild(actionButtons);
 
 		this.classList.add("nonCiblable");
 

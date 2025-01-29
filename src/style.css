@@ -1142,9 +1142,14 @@ invite-nouvelle-bibliotheque > .actionButtons {
 
 invite-nouvelle-bibliotheque > .actionButtons > button {
 	margin: 5px;
-	border: 1px solid var(--fgColor);
+}
+
+.primaryButton {
+	color: var(--bgColor);
+	background-color: var(--titleColor);
 	border-radius: 5px;
 	padding: 5px 10px;
+	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
 	transition:
@@ -1154,21 +1159,27 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 		background-color 0.3s ease;
 }
 
-invite-nouvelle-bibliotheque > div > button:hover {
+.secondaryButton {
+	color: var(--fgColor);
+	background-color: var(--bgColorTertiary);
+	border-radius: 5px;
+	padding: 5px 10px;
+	border: 1px solid var(--fgColor);
+	cursor: pointer;
+	position: relative;
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
+		background-color 0.3s ease;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
 	color: var(--bgColor);
 	background-color: var(--fgColorHover);
 	border: 1px solid var(--fgColorForward);
 	box-shadow: 0 0 5px var(--fgColor);
-}
-
-.primaryButton {
-	color: var(--bgColor);
-	background-color: var(--titleColor);
-}
-
-.secondaryButton {
-	color: var(--fgColor);
-	background-color: var(--bgColorTertiary);
 }
 
 invite-nouvelle-bibliotheque > div.previewAlgo {
@@ -2209,75 +2220,65 @@ condition-element:hover > button.supprimer {
 }
 
 invite-bornes-pour-si {
-	min-width: calc(var(--sizeModifier) * 22vw);
-	height: calc(var(--sizeModifier) * 8vw);
-	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	border-radius: 0.5vw;
-	background-color: var(--bgColor);
+	width: 30vw;
+	min-width: fit-content;
+	max-width: 500px;
+	aspect-ratio: 4 / 1;
+	border-radius: 5px;
+	background-color: var(--bgColorTertiary);
 	position: absolute;
 	transition: all var(--transitionTime) ease;
 	display: grid;
-	grid-template-columns: 2fr 2fr 1fr 2fr;
-	grid-template-rows: 1fr 1fr 1fr 1fr;
-	place-items: center;
-	padding: calc(var(--sizeModifier) * 1.5vw);
+	grid-template-columns: repeat(4, auto);
+	grid-template-rows: auto auto 1fr auto;
+	grid-auto-flow: dense;
+	align-items: center;
+	padding: 10px;
 	z-index: 3;
-	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	box-shadow: 0 0 10px var(--glowColor);
+	outline: 1px solid var(--borderColor2);
+	backdrop-filter: blur(5px);
+	cursor: default;
 }
 
-invite-bornes-pour-si > input {
+invite-bornes-pour-si > input,
+invite-bornes-pour-si > select {
 	border: none;
-	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
+	border-bottom: 1px solid var(--fgColor);
 	background: none;
-	color: var(--fgColorForward);
+	color: var(--titleColor);
 	font-weight: bold;
-	font-size: calc(var(--sizeModifier) * 0.75vw);
+	font-size: var(--font-size2);
 	display: inline-block;
-	width: 90%;
-	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	margin: 5px;
+	box-shadow: 0 0 10px var(--glowColor);
+	text-shadow: 0 0 10px var(--glowColor);
+	outline: none;
+	width: auto;
 }
 
 invite-bornes-pour-si > label {
 	border: none;
 	background: none;
-	font-size: calc(var(--sizeModifier) * 0.75vw);
-	display: inline-block;
-	white-space: nowrap;
-	width: 100%;
-	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-}
-
-invite-bornes-pour-si > select {
-	border: none;
-	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
-	background: none;
-	color: var(--fgColorForward);
+	font-size: var(--font-size2);
 	font-weight: bold;
-	font-size: calc(var(--sizeModifier) * 0.75vw);
-	display: inline-block;
-	width: 90%;
-	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
-	height: calc(var(--sizeModifier) * 1.5vw);
-}
-
-invite-bornes-pour-si > button {
-	border: none;
-	border-radius: calc(var(--sizeModifier) * 0.5vw);
-	background-color: var(--titleColor);
-	font-size: calc(var(--sizeModifier) * var(--font-size2));
 	display: inline-block;
 	white-space: nowrap;
-	padding: 6px 10px;
-	margin-top: 30px;
-	color: var(--bgColor);
-	cursor: pointer;
+	width: auto;
+	text-shadow: 0 0 2px var(--glowColor);
 }
 
-invite-bornes-pour-si > button:hover {
-	background-color: var(--fgColorHover);
-	color: var(--bgColor);
+invite-bornes-pour-si > .actionButtons {
+	grid-column: 1 / -1;
+	display: flex;
+	justify-content: center;
+	gap: 20%;
+}
+
+invite-bornes-pour-si > .actionButtons > button {
+	font-size: var(--font-size2);
+	white-space: nowrap;
+	margin-top: 20px;
 }
 
 structure-iterative-non-bornee-element {
