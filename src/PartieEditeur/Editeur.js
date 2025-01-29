@@ -508,7 +508,7 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier.ajouterElementMenu(exporter);
 
 		let sousTitreGénéral = document.createElement("h3");
-		sousTitreGénéral.innerText = "Tout";
+		sousTitreGénéral.innerText = "Algorithme";
 		exporter.ajouterElementMenu(sousTitreGénéral);
 
 		exporter.ajouterElementMenu(
@@ -521,7 +521,7 @@ class Editeur extends HTMLElement {
 		);
 
 		let sousTitreAlgorithme = document.createElement("h3");
-		sousTitreAlgorithme.innerText = "Algorithme";
+		sousTitreAlgorithme.innerText = "Image";
 		exporter.ajouterElementMenu(sousTitreAlgorithme);
 
 		exporter.ajouterElementMenu(
