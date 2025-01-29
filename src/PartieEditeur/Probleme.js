@@ -900,7 +900,7 @@ class Probleme extends ElementGraphique {
 		}
 
 		let exporter = new ElementMenuCompose("Exporter le sous-arbre", () => {
-			console.log("Exporter le sous-arbre");
+			if (verbose) console.log("Exporter le sous-arbre");
 		});
 		listeOptions.push(exporter);
 
@@ -910,7 +910,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".json", () => {
-				console.log("Exporter en .json");
+				if (verbose) console.log("Exporter en .json");
 				this._editeur.exporterJSON(JSON.stringify([this.toJSON()]));
 			}),
 		);
@@ -921,7 +921,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".png", () => {
-				console.log("Exporter en .png");
+				if (verbose) console.log("Exporter en .png");
 				this._editeur.exporterPNG(
 					JSON.stringify([this.toJSON()]),
 					true,
@@ -932,7 +932,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".jpg", () => {
-				console.log("Exporter en .jpg");
+				if (verbose) console.log("Exporter en .jpg");
 				this._editeur.exporterJPG(
 					JSON.stringify([this.toJSON()]),
 					true,
@@ -943,7 +943,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
-				console.log("Exporter en .svg");
+				if (verbose) console.log("Exporter en .svg");
 				this._editeur.exporterSVG(
 					JSON.stringify([this.toJSON()]),
 					true,
@@ -958,7 +958,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
-				console.log("Exporter en .csv");
+				if (verbose) console.log("Exporter en .csv");
 				// On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
 				let listeElemEnfantsAConcerver = this.getDescendants();
 
@@ -994,7 +994,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".xlsx", () => {
-				console.log("Exporter en .xlsx");
+				if (verbose) console.log("Exporter en .xlsx");
 				// On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
 				let listeElemEnfantsAConcerver = this.getDescendants();
 
@@ -1030,7 +1030,7 @@ class Probleme extends ElementGraphique {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".md", () => {
-				console.log("Exporter en .md");
+				if (verbose) console.log("Exporter en .md");
 				// On retire du plan de travail tout ce qui n'est pas dans le sous-arbre
 				let listeElemEnfantsAConcerver = this.getDescendants();
 

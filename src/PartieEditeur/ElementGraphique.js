@@ -326,7 +326,7 @@ class ElementGraphique extends HTMLElement {
 	 * @description Colore l'ElementGraphique.
 	 */
 	colorierElement() {
-		//console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
+		console.log(`Coloriage Couleur primaire: ${this._couleurPrimaire}`);
 	}
 
 	/**

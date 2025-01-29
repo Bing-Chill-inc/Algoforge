@@ -25,7 +25,10 @@ class EvenementDeplacementCondition extends EvenementEdition {
 	 * @description Annule l'événement
 	 */
 	annuler() {
-		console.log("Annulation de l'événement de déplacement de condition");
+		if (verbose)
+			console.log(
+				"Annulation de l'événement de déplacement de condition",
+			);
 		this._elementConcerne._structure.decalerCondition(
 			this._elementConcerne,
 			-this._indiceDecalage,
@@ -37,9 +40,10 @@ class EvenementDeplacementCondition extends EvenementEdition {
 	 * @description Rétablit l'événement
 	 */
 	retablir() {
-		console.log(
-			"Rétablissement de l'événement de déplacement de condition",
-		);
+		if (verbose)
+			console.log(
+				"Rétablissement de l'événement de déplacement de condition",
+			);
 		this._elementConcerne._structure.decalerCondition(
 			this._elementConcerne,
 			this._indiceDecalage,

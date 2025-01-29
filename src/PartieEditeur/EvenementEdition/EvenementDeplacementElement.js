@@ -40,7 +40,7 @@ class EvenementDeplacementElement extends EvenementEdition {
 	 * @description Annule l'événement
 	 */
 	annuler() {
-		console.log("Annulation de l'événement de déplacement");
+		if (verbose) console.log("Annulation de l'événement de déplacement");
 		this._elementConcerne._abscisse = this._anciennePos[0];
 		this._elementConcerne._ordonnee = this._anciennePos[1];
 		this._elementConcerne.setPosition();
@@ -50,7 +50,8 @@ class EvenementDeplacementElement extends EvenementEdition {
 	 * @description Rétablit l'événement
 	 */
 	retablir() {
-		console.log("Rétablissement de l'événement de déplacement");
+		if (verbose)
+			console.log("Rétablissement de l'événement de déplacement");
 		this._elementConcerne._abscisse = this._nouvellePos[0];
 		this._elementConcerne._ordonnee = this._nouvellePos[1];
 		this._elementConcerne.setPosition();

@@ -64,7 +64,7 @@ class AvertissementPlanTropGrand extends AvertissementConceptuel {
 				parseFloat(elementBasDroite._abscisse),
 				parseFloat(elementBasDroite._ordonnee),
 			);
-			console.log(distance);
+			if (verbose) console.log(distance);
 			if (distance > distanceMax) {
 				return true;
 			}

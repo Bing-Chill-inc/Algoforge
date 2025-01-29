@@ -91,7 +91,7 @@ class StructureIterativeNonBornee extends StructureIterative {
 		// Option d'ajout d'une condition d'arrêt
 		listeOptions.push(
 			new ElementMenu("Ajouter une condition d'arrêt", () => {
-				console.log("Ajouter une condition d'arrêt");
+				if (verbose) console.log("Ajouter une condition d'arrêt");
 				let nouveauIf = new StructureSi(
 					parseFloat(this._abscisse) - 3 + "vw",
 					parseFloat(this._ordonnee) + 10 + "vw",

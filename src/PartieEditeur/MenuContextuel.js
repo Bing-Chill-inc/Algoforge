@@ -57,7 +57,8 @@ class MenuContextuel extends HTMLElement {
 			if (this._target.estCustom) {
 				this.appendChild(
 					new ElementMenu("Supprimer de la bibliothèque", () => {
-						console.log("Supprimer de la bibliothèque");
+						if (verbose)
+							console.log("Supprimer de la bibliothèque");
 						this._target.supprimer();
 						this.remove();
 					}),
@@ -74,7 +75,7 @@ class MenuContextuel extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Annuler",
 				() => {
-					console.log("Annuler");
+					if (verbose) console.log("Annuler");
 					this._editeur.undo();
 				},
 				`${this._editeur._toucheMeta}Z`,
@@ -85,7 +86,7 @@ class MenuContextuel extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Rétablir",
 				() => {
-					console.log("Rétablir");
+					if (verbose) console.log("Rétablir");
 					this._editeur.redo();
 				},
 				`${this._editeur._toucheMeta}Y`,
@@ -97,7 +98,7 @@ class MenuContextuel extends HTMLElement {
 				new ElementMenuKeyboardTip(
 					"Supprimer",
 					() => {
-						console.log("Supprimer l'élément");
+						if (verbose) console.log("Supprimer l'élément");
 						this._selection.supprimerTout();
 						this.remove();
 					},
@@ -109,7 +110,7 @@ class MenuContextuel extends HTMLElement {
 				new ElementMenuKeyboardTip(
 					"Couper",
 					() => {
-						console.log("Couper");
+						if (verbose) console.log("Couper");
 						this._editeur.cut();
 					},
 					`${this._editeur._toucheMeta}X`,
@@ -120,7 +121,7 @@ class MenuContextuel extends HTMLElement {
 				new ElementMenuKeyboardTip(
 					"Copier",
 					() => {
-						console.log("Copier");
+						if (verbose) console.log("Copier");
 						this._editeur.copy();
 					},
 					`${this._editeur._toucheMeta}C`,
@@ -132,7 +133,7 @@ class MenuContextuel extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Coller",
 				() => {
-					console.log("Coller");
+					if (verbose) console.log("Coller");
 					this._editeur._modaleNoPaste.ouvrir();
 				},
 				`${this._editeur._toucheMeta}V`,
@@ -149,14 +150,14 @@ class MenuContextuel extends HTMLElement {
 			let ajouterElem = new ElementMenuCompose(
 				"Ajouter un élément",
 				() => {
-					console.log("Ajouter un élément");
+					if (verbose) console.log("Ajouter un élément");
 				},
 			);
 			this.appendChild(ajouterElem);
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Problème", () => {
-					console.log("Ajouter un Problème");
+					if (verbose) console.log("Ajouter un Problème");
 					this._editeur._planActif.ajouterElement(
 						Probleme,
 						this._x,
@@ -169,7 +170,7 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Procédure", () => {
-					console.log("Ajouter une Procédure");
+					if (verbose) console.log("Ajouter une Procédure");
 					this._editeur._planActif.ajouterElement(
 						Procedure,
 						this._x,
@@ -182,7 +183,7 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Structure 'SI'", () => {
-					console.log("Ajouter une Structure 'SI'");
+					if (verbose) console.log("Ajouter une Structure 'SI'");
 					this._editeur._planActif.ajouterElement(
 						StructureSi,
 						this._x,
@@ -195,7 +196,7 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Structure 'SWITCH'", () => {
-					console.log("Ajouter une Structure 'SWITCH'");
+					if (verbose) console.log("Ajouter une Structure 'SWITCH'");
 					this._editeur._planActif.ajouterElement(
 						StructureSwitch,
 						this._x,
@@ -208,7 +209,10 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Structure itérative non bornée", () => {
-					console.log("Ajouter une Structure itérative non bornée");
+					if (verbose)
+						console.log(
+							"Ajouter une Structure itérative non bornée",
+						);
 					this._editeur._planActif.ajouterElement(
 						StructureIterativeNonBornee,
 						this._x,
@@ -221,7 +225,8 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Structure itérative bornée", () => {
-					console.log("Ajouter une Structure itérative bornée");
+					if (verbose)
+						console.log("Ajouter une Structure itérative bornée");
 					let struc = this._editeur._planActif.ajouterElement(
 						StructureIterativeBornee,
 						this._x,
@@ -238,7 +243,7 @@ class MenuContextuel extends HTMLElement {
 
 			ajouterElem.ajouterElementMenu(
 				new ElementMenu("Instruction d'arrêt", () => {
-					console.log("Ajouter une Condition de sortie");
+					if (verbose) console.log("Ajouter une Condition de sortie");
 					this._editeur._planActif.ajouterElement(
 						ConditionSortie,
 						this._x,
@@ -262,7 +267,7 @@ class MenuContextuel extends HTMLElement {
 			let exporter = new ElementMenuCompose(
 				"Exporter la sélection",
 				() => {
-					console.log("Exporter la sélection");
+					if (verbose) console.log("Exporter la sélection");
 				},
 			);
 			this.appendChild(exporter);
@@ -273,7 +278,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".json", () => {
-					console.log("Exporter en .json");
+					if (verbose) console.log("Exporter en .json");
 					this._editeur.exporterJSON(this._editeur.copy(false));
 				}),
 			);
@@ -284,7 +289,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".jpg", () => {
-					console.log("Exporter en .jpg");
+					if (verbose) console.log("Exporter en .jpg");
 					this._editeur.exporterJPG(
 						this._editeur.copy(false),
 						true,
@@ -295,7 +300,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".png", () => {
-					console.log("Exporter en .png");
+					if (verbose) console.log("Exporter en .png");
 					this._editeur.exporterPNG(
 						this._editeur.copy(false),
 						true,
@@ -306,7 +311,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".svg", () => {
-					console.log("Exporter en .svg");
+					if (verbose) console.log("Exporter en .svg");
 					this._editeur.exporterSVG(
 						this._editeur.copy(false),
 						true,
@@ -321,7 +326,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".csv", () => {
-					console.log("Exporter en .csv");
+					if (verbose) console.log("Exporter en .csv");
 					// On retire du plan de travail tout ce qui n'est pas dans la sélection
 					// On garde une trace des éléments à rerajouter
 					let listeElemSup = [];
@@ -356,7 +361,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".xls", () => {
-					console.log("Exporter en .xls");
+					if (verbose) console.log("Exporter en .xls");
 					// On retire du plan de travail tout ce qui n'est pas dans la sélection
 					// On garde une trace des éléments à rerajouter
 					let listeElemSup = [];
@@ -391,7 +396,7 @@ class MenuContextuel extends HTMLElement {
 
 			exporter.ajouterElementMenu(
 				new ElementMenu(".md", () => {
-					console.log("Exporter en .md");
+					if (verbose) console.log("Exporter en .md");
 					// On retire du plan de travail tout ce qui n'est pas dans la sélection
 					// On garde une trace des éléments à rerajouter
 					let listeElemSup = [];
@@ -426,7 +431,8 @@ class MenuContextuel extends HTMLElement {
 
 			this.appendChild(
 				new ElementMenu("Ajouter à la bibliothèque", () => {
-					console.log("Ajouter à la bibliothèque custom");
+					if (verbose)
+						console.log("Ajouter à la bibliothèque custom");
 					// On récupère le JSON des éléments sélectionnés
 					let json = this._editeur.copy(false);
 
