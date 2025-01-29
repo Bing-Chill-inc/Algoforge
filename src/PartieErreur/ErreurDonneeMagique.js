@@ -2,7 +2,7 @@
  * @class ErreurDonneeMagique
  * @extends {ErreurConceptuelle}
  * @classdesc La classe ErreurDonneeMagique représente une anomalie signalant la présence de données magiques dans l'algorithme.
- * @description Crée une instance d'ErreurDonneMagique
+ * @description Crée une instance d'ErreurDonneeMagique
  */
 class ErreurDonneeMagique extends ErreurConceptuelle {
 	// ATTRIBUTS
@@ -29,7 +29,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
 		this._nomsDonnees = value;
 	}
 	/**
-	 * @returns {Array<String>} - Renvoi une liste de noms de données.
+	 * @returns {Array<String>} - Renvoie une liste de noms de données.
 	 * @description Renvoie la liste des noms de données associées à l'erreur.
 	 */
 	get _nomsDonnees() {
@@ -38,7 +38,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
 
 	// METHODES
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères contenant les données inutilisées.
+	 * @returns {string} - Renvoie une chaine de caractères contenant les données inutilisées.
 	 * @description Renvoie un message indiquant les données magiques présentes dans l'algorithme.
 	 */
 	toString() {
@@ -57,7 +57,7 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
 					chaine += this._nomsDonnees[i] + ", ";
 				}
 			}
-			return "Les donnée " + chaine + " ne provient de nulle part.";
+			return "Les données " + chaine + " ne provient de nulle part.";
 		}
 	}
 
@@ -65,13 +65,13 @@ class ErreurDonneeMagique extends ErreurConceptuelle {
 	 * @static
 	 * @param {Probleme} unProbleme - Instance de la classe Probleme.
 	 * @type {Probleme}
-	 * @returns {Array} - Renvoi une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données magiques.
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données magiques.
 	 * @description La méthode detecterAnomalie cherche les données magiques dans l'algorithme et retourne une liste contenant les noms des données magiques trouvées.
 	 */
 	static detecterAnomalie(unProbleme) {
 		// Etapes
 		// 1 - Regarder si il la un parent sinon y'a pas d'erreur
-		// 2 - Regarder si les antescedents contient pas en donnée val
+		// 2 - Regarder si les antécédants contient pas en donnée val
 		// 3 - Regarder si les éléments précédents du probleme courant ne contient pas val
 		try {
 			// Etape 1:

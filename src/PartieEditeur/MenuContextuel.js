@@ -38,12 +38,21 @@ class MenuContextuel extends HTMLElement {
 		if (x > 90 / this._editeur._indicateurZoom._zoom) {
 			x = 90 / this._editeur._indicateurZoom._zoom; // Empêcher le menu de déborder à droite
 		}
-
 		this.style.left = `calc(var(--sizeModifier) * ${x}vw)`;
 		this.style.top = `calc(var(--sizeModifier) * ${y}vw)`;
+		this.style.opacity = 0;
 		this._selection = selection;
 		this._target = target;
 		this.genererOptions();
+
+		setTimeout(() => {
+			const rect = this.getBoundingClientRect();
+			console.log(rect);
+			if (rect.top + rect.height > window.innerHeight) {
+				this.style.top = `calc(var(--sizeModifier) * ${y}vw - ${rect.height}px)`;
+			}
+			this.style.opacity = 1;
+		});
 	}
 
 	/**
@@ -441,6 +450,49 @@ class MenuContextuel extends HTMLElement {
 
 					// On l'ajoute à l'éditeur
 					this._editeur.appendChild(invite);
+				}),
+			);
+
+			this.appendChild(
+				new ElementMenu("Aligner la sélection ici", () => {
+					console.log("Aligner la sélection ici");
+					console.log("target", this._target);
+					// On aligne le y de tous les éléments sélectionnés sur les coordonnées de la target
+
+					// On trouve à quel ElementGraphique correspond la target
+					// La première node parente de la target qui est un ElementGraphique est l'ElementGraphique correspondant
+					let target = this._target;
+					while (!(target instanceof ElementGraphique)) {
+						if (target.parentNode == null) {
+							break;
+						}
+						target = target.parentNode;
+					}
+
+					const eventDeplacementMultiples =
+						new EvenementDeplacementElementMultiples();
+
+					// On récupère les éléments sélectionnés
+					const selections =
+						this._selection._listeElementsSelectionnes;
+
+					selections.forEach((selection) => {
+						const evenementDeplacement =
+							new EvenementDeplacementElement(selection._element);
+
+						selection._element._ordonnee = target._ordonnee;
+						selection._element.setPosition();
+						selection.update();
+
+						evenementDeplacement.ajouterNouvellePos();
+						eventDeplacementMultiples.ajouterElementDeplace(
+							evenementDeplacement,
+						);
+					});
+
+					this._editeur.ajouterEvenement(eventDeplacementMultiples);
+
+					this._selection.update();
 				}),
 			);
 		}

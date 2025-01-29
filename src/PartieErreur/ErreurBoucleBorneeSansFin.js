@@ -1,7 +1,7 @@
 /**
  * @class ErreurBoucleBorneeSansFin
  * @extends {ErreurConceptuelle}
- * @classdesc La Classe ErreurBoucleBorneeSansFin stocke les StructureIterativebornee dont les bornes ne sont pas correctes ce qui une boucle infinie.
+ * @classdesc La Classe ErreurBoucleBorneeSansFin stocke les StructureIterativebornee dont les bornes ne sont pas correctes e qui en fait une boucle infinie.
  * @description Crée une instance de ErreurBoucleBorneeSansFin
  */
 class ErreurBoucleBorneeSansFin extends ErreurConceptuelle {
@@ -33,19 +33,19 @@ class ErreurBoucleBorneeSansFin extends ErreurConceptuelle {
 	 * @static
 	 * @param {StructureIterativebornee} uneBoucleBornee - Instance de la classe ConditionSortie.
 	 * @type {StructureIterativebornee}
-	 * @returns {boolean} - Renvoi true ou false.
+	 * @returns {boolean} - Renvoie true ou false.
 	 * @description La méthode detecterAnomalie vérifie si la boucle bornée est bien bornée.
 	 */
 	static detecterAnomalie(uneBoucleBornee) {
 		try {
-			// On vérifie que la borne inférieure et superieur sont des nombres
+			// On vérifie que la borne inférieure et supérieure sont des nombres
 			if (
 				isNaN(uneBoucleBornee._borneInferieure) ||
 				isNaN(uneBoucleBornee._borneSuperieure)
 			) {
 				return false;
 			} else {
-				// convertion des bornes en nombre
+				// conversion des bornes en nombre
 				borneInferieure = Number(uneBoucleBornee._borneInferieure);
 				borneSuperieure = Number(uneBoucleBornee._borneSuperieure);
 				pas = Number(uneBoucleBornee._pas);

@@ -21,7 +21,7 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle {
 
 	// METHODES
 	/**
-	 * @returns {string} - Renvoi une chaine de caractères.
+	 * @returns {string} - Renvoie une chaine de caractères.
 	 * @description Cette méthode renvoie un message indiquant qu'une boucle non bornée en surbrillance n'a pas de condition de sortie.
 	 */
 	toString() {
@@ -33,13 +33,13 @@ class ErreurBoucleSansSortie extends ErreurConceptuelle {
 	 * @static
 	 * @param {StructureIterativeNonBornee} uneBoucleNonBornee - Instance de la classe StructureIterativeNonBornee.
 	 * @type {StructureIterativeNonBornee}
-	 * @returns {boolean} - Renvoi true ou false.
+	 * @returns {boolean} - Renvoie true ou false.
 	 * @description Cette méthode vérifie que dans les descendants d'une boucle non bornée, il y a une condition de sortie.
 	 */
 	static detecterAnomalie(uneBoucleNonBornee) {
-		let listeDescandants =
+		let listeDescendants =
 			uneBoucleNonBornee.getDescendants(ConditionSortie);
-		for (let descendant of listeDescandants) {
+		for (let descendant of listeDescendants) {
 			if (
 				descendant.getAntescedants(StructureIterativeNonBornee)[0] ==
 				uneBoucleNonBornee

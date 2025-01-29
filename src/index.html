@@ -6,16 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>AlgoForge</title>
 		<link rel="stylesheet" href="style.css" />
-		<link rel="stylesheet" media="print" href="printStyle.css" />
-
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
-			rel="stylesheet" />
 	</head>
 
-	<body>
+	<body spellcheck="false">
 		<canvas id="canvasExport" style="position: absolute; z-index: -33333333"></canvas>
 		<editeur-interface>
 			<header>
@@ -262,226 +255,227 @@
 			<input type="hidden" name="corpAlgo" id="corpAlgo" />
 			<input type="hidden" name="nomFichier" id="nomFichier" />
 		</form>
-	</body>
-	<!-- Externes -->
-	<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-	<!-- Pour la lecture et l'écriture de fichiers Excel -->
 
-	<script>
-		const isElectron = false;
-		const isExam = false;
+		<script>
+			const isElectron = false;
+			const isExam = false;
 
-		if (isExam) {
-			// On ajoute le exam-style.css
-			const link = document.createElement("link");
-			link.rel = "stylesheet";
-			link.href = "exam-style.css";
-			document.head.appendChild(link);
-		}
-
-		const editeur = document.querySelector("editeur-interface");
-		const verbose = false;
-		let titreAlgo = document.getElementById("titreAlgo");
-
-		const box = document.querySelector("[data-glow]");
-
-		const preferences = {
-			glow: false,
-			dockEffect: true,
-			renderScale: 4,
-		};
-
-		setTimeout(async () => {
-			await customElements.whenDefined("editeur-interface");
-			preferences.glow =
-				editeur.getCookie("glow") === "true"
-					? true
-					: editeur.getCookie("glow") === "false"
-						? false
-						: navigator.userAgent.includes("Chrome");
-			preferences.dockEffect =
-				editeur.getCookie("dockEffect") === "false" ? false : true;
-			if (!preferences.glow) {
-				box.classList.remove("active");
-			}
 			if (isExam) {
-				preferences.glow = false;
-				preferences.dockEffect = false;
+				// On ajoute le exam-style.css
+				const link = document.createElement("link");
+				link.rel = "stylesheet";
+				link.href = "exam-style.css";
+				document.head.appendChild(link);
 			}
-		});
 
-		box.addEventListener("mouseenter", () => {
-			if (preferences.glow) {
-				box.classList.add("active");
-			}
-		});
+			const editeur = document.querySelector("editeur-interface");
+			const verbose = false;
+			let titreAlgo = document.getElementById("titreAlgo");
 
-		box.addEventListener("mouseleave", () => {
-			box.classList.remove("active");
-		});
+			const box = document.querySelector("[data-glow]");
 
-		const syncPointer = ({ x, y }) => {
-			document.documentElement.style.setProperty("--x", x.toFixed(2));
-			document.documentElement.style.setProperty(
-				"--xp",
-				(x / window.innerWidth).toFixed(2),
-			);
-			document.documentElement.style.setProperty("--y", y.toFixed(2));
-			document.documentElement.style.setProperty(
-				"--yp",
-				(y / window.innerHeight).toFixed(2),
-			);
-		};
-		document.body.addEventListener("pointermove", syncPointer);
+			const preferences = {
+				glow: false,
+				dockEffect: true,
+				renderScale: 4,
+			};
 
-		document.addEventListener("DOMContentLoaded", () => {
-			const parentDiv = document.querySelector("[data-glow]");
-			const childDiv = document.querySelector(".barreOutilsHorizontale");
-
-			childDiv.addEventListener("mouseenter", () => {
-				if (preferences.glow) {
-					parentDiv.classList.add("active");
+			setTimeout(async () => {
+				await customElements.whenDefined("editeur-interface");
+				preferences.glow =
+					editeur.getCookie("glow") === "true"
+						? true
+						: editeur.getCookie("glow") === "false"
+							? false
+							: navigator.userAgent.includes("Chrome");
+				preferences.dockEffect =
+					editeur.getCookie("dockEffect") === "false" ? false : true;
+				if (!preferences.glow) {
+					box.classList.remove("active");
+				}
+				if (isExam) {
+					preferences.glow = false;
+					preferences.dockEffect = false;
 				}
 			});
 
-			childDiv.addEventListener("mouseleave", () => {
-				parentDiv.classList.remove("active");
+			box.addEventListener("mouseenter", () => {
+				if (preferences.glow) {
+					box.classList.add("active");
+				}
 			});
-		});
 
-		/* Dock animation */
-		const dock = document.querySelector(".dock");
-		const icons = document.querySelectorAll(".dock-item");
-
-		function updateDock() {
-			icons.forEach((icon) => {
-				let scale = 1;
-				let margin = "1px";
-				const updateIcon = (s, m) => (scale = s) && (margin = m);
-				icon.isHover && updateIcon(1.5, ".6em");
-				icon.isNext && updateIcon(1.25, ".6em");
-				icon.style.transform = `scale(${scale})`;
-				icon.style.margin = `0 ${margin}`;
+			box.addEventListener("mouseleave", () => {
+				box.classList.remove("active");
 			});
-		}
 
-		function reset() {
-			icons.forEach((icon) => (icon.isHover = icon.isNext = false));
-			updateDock();
-		}
+			const syncPointer = ({ x, y }) => {
+				document.documentElement.style.setProperty("--x", x.toFixed(2));
+				document.documentElement.style.setProperty(
+					"--xp",
+					(x / window.innerWidth).toFixed(2),
+				);
+				document.documentElement.style.setProperty("--y", y.toFixed(2));
+				document.documentElement.style.setProperty(
+					"--yp",
+					(y / window.innerHeight).toFixed(2),
+				);
+			};
+			document.body.addEventListener("pointermove", syncPointer);
 
-		function activate(e) {
-			if (!preferences.dockEffect) return;
-			if (e.target.matches(".dock-item")) {
-				icons.forEach((icon) => {
-					icon.isHover = icon === e.target;
-					icon.isNext =
-						Math.abs(
-							[...icons].indexOf(icon) -
-							[...icons].indexOf(e.target),
-						) === 1;
+			document.addEventListener("DOMContentLoaded", () => {
+				const parentDiv = document.querySelector("[data-glow]");
+				const childDiv = document.querySelector(".barreOutilsHorizontale");
+
+				childDiv.addEventListener("mouseenter", () => {
+					if (preferences.glow) {
+						parentDiv.classList.add("active");
+					}
 				});
+
+				childDiv.addEventListener("mouseleave", () => {
+					parentDiv.classList.remove("active");
+				});
+			});
+
+			/* Dock animation */
+			const dock = document.querySelector(".dock");
+			const icons = document.querySelectorAll(".dock-item");
+
+			function updateDock() {
+				icons.forEach((icon) => {
+					let scale = 1;
+					let margin = "1px";
+					const updateIcon = (s, m) => (scale = s) && (margin = m);
+					icon.isHover && updateIcon(1.5, ".6em");
+					icon.isNext && updateIcon(1.25, ".6em");
+					icon.style.transform = `scale(${scale})`;
+					icon.style.margin = `0 ${margin}`;
+				});
+			}
+
+			function reset() {
+				icons.forEach((icon) => (icon.isHover = icon.isNext = false));
 				updateDock();
 			}
-		}
 
-		dock.addEventListener("pointermove", activate, false);
-		dock.addEventListener("pointerleave", reset, false);
-	</script>
+			function activate(e) {
+				if (!preferences.dockEffect) return;
+				if (e.target.matches(".dock-item")) {
+					icons.forEach((icon) => {
+						icon.isHover = icon === e.target;
+						icon.isNext =
+							Math.abs(
+								[...icons].indexOf(icon) -
+								[...icons].indexOf(e.target),
+							) === 1;
+					});
+					updateDock();
+				}
+			}
 
-	<script src="modules/safari-pollyfill.js"></script>
+			dock.addEventListener("pointermove", activate, false);
+			dock.addEventListener("pointerleave", reset, false);
+		</script>
 
-	<!-- Dictionnaire des données-->
-	<script src="PartieEditeur/Type.js"></script>
-	<script src="PartieEditeur/Information.js"></script>
-	<script src="PartieEditeur/DictionnaireDonnee.js"></script>
+		<!-- Externes -->
+		<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+		<!-- Pour la lecture et l'écriture de fichiers Excel -->
 
-	<!--Gestion des anomalies conceptuelles-->
-	<script src="PartieErreur/AnomalieConceptuelle.js"></script>
-	<script src="PartieErreur/ErreurConceptuelle.js"></script>
-	<script src="PartieErreur/AvertissementConceptuel.js"></script>
-	<script src="PartieErreur/AvertissementDonneeDynamiquementTypee.js"></script>
-	<script src="PartieErreur/AvertissementInformationsInconsistantesSi.js"></script>
-	<script src="PartieErreur/AvertissementPlanTropGrand.js"></script>
-	<script src="PartieErreur/AvertissementSProblemeJamaisExecute.js"></script>
-	<script src="PartieErreur/AvertissementStructureInoptimale.js"></script>
-	<script src="PartieErreur/AvertissementTropDeSousElements.js"></script>
-	<script src="PartieErreur/ErreurArretHorsIteratif.js"></script>
-	<script src="PartieErreur/ErreurArretIteratifBornee.js"></script>
-	<script src="PartieErreur/ErreurBoucleBorneeSansFin.js"></script>
-	<script src="PartieErreur/ErreurBoucleSansSortie.js"></script>
-	<script src="PartieErreur/ErreurComparaisonSwitch.js"></script>
-	<script src="PartieErreur/ErreurDonneeInutilisee.js"></script>
-	<script src="PartieErreur/ErreurDonneeMagique.js"></script>
-	<script src="PartieErreur/ErreurResultatInutilisee.js"></script>
-	<script src="PartieErreur/ErreurSyntaxeAssignation.js"></script>
-	<script src="PartieErreur/ErreurSyntaxeComparaison.js"></script>
-	<script src="PartieErreur/ErreurTypesInconsistantsAlternatif.js"></script>
-	<script src="PartieErreur/ErreurVariableMagique.js"></script>
-	<script src="PartieErreur/AffichageErreur.js"></script>
+		<script src="modules/safari-pollyfill.js"></script>
 
-	<!--Éléments utilisés par l'éditeur-->
-	<script src="PartieEditeur/PlanTravail.js"></script>
-	<script src="PartieEditeur/SousPlanTravail.js"></script>
-	<script src="PartieEditeur/ElementGraphique.js"></script>
-	<script src="PartieEditeur/Probleme.js"></script>
-	<script src="PartieEditeur/StructureAlternative.js"></script>
-	<script src="PartieEditeur/StructureIterative.js"></script>
-	<script src="PartieEditeur/InviteBornesPourSI.js"></script>
-	<script src="PartieEditeur/ConditionSortie.js"></script>
-	<script src="PartieEditeur/Procedure.js"></script>
-	<script src="PartieEditeur/Condition.js"></script>
-	<script src="PartieEditeur/StructureSi.js"></script>
-	<script src="PartieEditeur/StructureSwitch.js"></script>
-	<script src="PartieEditeur/StructureIterativeBornee.js"></script>
-	<script src="PartieEditeur/StructureIterativeNonBornee.js"></script>
-	<script src="PartieEditeur/ElementParent.js"></script>
-	<script src="PartieEditeur/Ligne.js"></script>
-	<script src="PartieEditeur/Lien.js"></script>
-	<script src="PartieEditeur/LienDroit.js"></script>
-	<script src="PartieEditeur/LienCompositionProbleme.js"></script>
-	<script src="PartieEditeur/LienTriple.js"></script>
-	<script src="PartieEditeur/SymboleDecomposition.js"></script>
+		<!-- Dictionnaire des données-->
+		<script src="PartieEditeur/Type.js"></script>
+		<script src="PartieEditeur/Information.js"></script>
+		<script src="PartieEditeur/DictionnaireDonnee.js"></script>
 
-	<script src="PartieEditeur/Selection.js"></script>
-	<script src="PartieEditeur/RepresentationSelectionSimple.js"></script>
-	<script src="PartieEditeur/SelectionRectangle.js"></script>
+		<!--Gestion des anomalies conceptuelles-->
+		<script src="PartieErreur/AnomalieConceptuelle.js"></script>
+		<script src="PartieErreur/ErreurConceptuelle.js"></script>
+		<script src="PartieErreur/AvertissementConceptuel.js"></script>
+		<script src="PartieErreur/AvertissementDonneeDynamiquementTypee.js"></script>
+		<script src="PartieErreur/AvertissementInformationsInconsistantesSi.js"></script>
+		<script src="PartieErreur/AvertissementPlanTropGrand.js"></script>
+		<script src="PartieErreur/AvertissementSProblemeJamaisExecute.js"></script>
+		<script src="PartieErreur/AvertissementStructureInoptimale.js"></script>
+		<script src="PartieErreur/AvertissementTropDeSousElements.js"></script>
+		<script src="PartieErreur/ErreurArretHorsIteratif.js"></script>
+		<script src="PartieErreur/ErreurArretIteratifBornee.js"></script>
+		<script src="PartieErreur/ErreurBoucleBorneeSansFin.js"></script>
+		<script src="PartieErreur/ErreurBoucleSansSortie.js"></script>
+		<script src="PartieErreur/ErreurComparaisonSwitch.js"></script>
+		<script src="PartieErreur/ErreurDonneeInutilisee.js"></script>
+		<script src="PartieErreur/ErreurDonneeMagique.js"></script>
+		<script src="PartieErreur/ErreurResultatInutilisee.js"></script>
+		<script src="PartieErreur/ErreurSyntaxeAssignation.js"></script>
+		<script src="PartieErreur/ErreurSyntaxeComparaison.js"></script>
+		<script src="PartieErreur/ErreurTypesInconsistantsAlternatif.js"></script>
+		<script src="PartieErreur/ErreurVariableMagique.js"></script>
+		<script src="PartieErreur/AffichageErreur.js"></script>
 
-	<script src="PartieEditeur/MenuDeroulant.js"></script>
-	<script src="PartieEditeur/ElementMenu.js"></script>
-	<script src="PartieEditeur/ElementMenuCompose.js"></script>
-	<script src="PartieEditeur/ElementMenuKeyboardTip.js"></script>
+		<!--Éléments utilisés par l'éditeur-->
+		<script src="PartieEditeur/PlanTravail.js"></script>
+		<script src="PartieEditeur/SousPlanTravail.js"></script>
+		<script src="PartieEditeur/ElementGraphique.js"></script>
+		<script src="PartieEditeur/Probleme.js"></script>
+		<script src="PartieEditeur/StructureAlternative.js"></script>
+		<script src="PartieEditeur/StructureIterative.js"></script>
+		<script src="PartieEditeur/InviteBornesPourSI.js"></script>
+		<script src="PartieEditeur/ConditionSortie.js"></script>
+		<script src="PartieEditeur/Procedure.js"></script>
+		<script src="PartieEditeur/Condition.js"></script>
+		<script src="PartieEditeur/StructureSi.js"></script>
+		<script src="PartieEditeur/StructureSwitch.js"></script>
+		<script src="PartieEditeur/StructureIterativeBornee.js"></script>
+		<script src="PartieEditeur/StructureIterativeNonBornee.js"></script>
+		<script src="PartieEditeur/ElementParent.js"></script>
+		<script src="PartieEditeur/Ligne.js"></script>
+		<script src="PartieEditeur/Lien.js"></script>
+		<script src="PartieEditeur/LienDroit.js"></script>
+		<script src="PartieEditeur/LienCompositionProbleme.js"></script>
+		<script src="PartieEditeur/LienTriple.js"></script>
+		<script src="PartieEditeur/SymboleDecomposition.js"></script>
 
-	<script src="PartieEditeur/ThemeEditeur.js"></script>
-	<script src="PartieEditeur/IndicateurZoom.js"></script>
-	<script src="PartieEditeur/MenuContextuel.js"></script>
-	<script src="PartieEditeur/Bilbiotheque.js"></script>
-	<script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
-	<script src="PartieEditeur/FenetreModale.js"></script>
-	<script src="PartieEditeur/MenuCompte.js"></script>
+		<script src="PartieEditeur/Selection.js"></script>
+		<script src="PartieEditeur/RepresentationSelectionSimple.js"></script>
+		<script src="PartieEditeur/SelectionRectangle.js"></script>
 
-	<!--Gestion des évenement de l'éditeur-->
-	<script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementCreationElement.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementSuppressionElement.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementLiaison.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementSuppressionLiaison.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementDeplacementElement.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementDeplacementElementMultiples.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementDeplacementCondition.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionTexte.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionLibelleProbleme.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionDonneesProbleme.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionResultatsProbleme.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionLibelleCondition.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionExpressionSwitch.js"></script>
-	<script src="PartieEditeur/EvenementEdition/EvenementEditionStructureIterative.js"></script>
+		<script src="PartieEditeur/MenuDeroulant.js"></script>
+		<script src="PartieEditeur/ElementMenu.js"></script>
+		<script src="PartieEditeur/ElementMenuCompose.js"></script>
+		<script src="PartieEditeur/ElementMenuKeyboardTip.js"></script>
 
-	<script src="PartieEditeur/Editeur.js"></script>
+		<script src="PartieEditeur/ThemeEditeur.js"></script>
+		<script src="PartieEditeur/IndicateurZoom.js"></script>
+		<script src="PartieEditeur/MenuContextuel.js"></script>
+		<script src="PartieEditeur/Bilbiotheque.js"></script>
+		<script src="PartieEditeur/InviteNouvelleBibliotheque.js"></script>
+		<script src="PartieEditeur/FenetreModale.js"></script>
+		<script src="PartieEditeur/MenuCompte.js"></script>
 
-	<script>
-		document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src
-			}), auto`;
-	</script>
+		<!--Gestion des évenement de l'éditeur-->
+		<script src="PartieEditeur/EvenementEdition/EvenementEdition.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementCreationElement.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementSuppressionElement.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementLiaison.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementSuppressionLiaison.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementDeplacementElement.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementDeplacementElementMultiples.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementDeplacementCondition.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionTexte.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionLibelleProbleme.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionDonneesProbleme.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionResultatsProbleme.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionLibelleCondition.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionExpressionSwitch.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementEditionStructureIterative.js"></script>
+
+		<script src="PartieEditeur/Editeur.js"></script>
+
+		<script>
+			document.querySelector("#espacePrincipal").style.cursor = `url(${document.querySelector("#boutonPointeur").src
+				}), auto`;
+		</script>
+	</body>
 
 </html>

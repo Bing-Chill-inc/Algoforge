@@ -173,8 +173,10 @@ class Editeur extends HTMLElement {
 			document.title = "Algoforge - " + event.target.innerText;
 		});
 
-		document.title =
-			"Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		setTimeout(() => {
+			document.title =
+				"Algoforge - " + this.querySelector("#titreAlgo").innerText;
+		}, 1000);
 
 		this.querySelector("#titreAlgo").addEventListener(
 			"keydown",
@@ -302,80 +304,6 @@ class Editeur extends HTMLElement {
 				0, // baseGlowColor
 			),
 		);
-		// this._themeSelect.appendChild(
-		// 	new ThemeEditeur(
-		// 		"Thème IUT de Bayonne", // nom
-		// 		"#F5F5F5", // bgColor
-		// 		"#FAFAFA", // bgColorSecondary
-		// 		"#1E8DBD", // borderColor
-		// 		"#1E8DBD", // fgColor
-		// 		"#1E8DBD55", // fgColorSemiTransparent
-		// 		"#1E8DBD11", // fgColorTransparent
-		// 		"#1F8AAD", // fgColorForward
-		// 		"#00FF00", // goodColor
-		// 		"#00FF0099", // goodColorTransparent
-		// 		"#FF0000", // errorColor
-		// 		"#FFA300", // warningColor
-		// 		"#D70021", // titleColor
-		// 		"Candara", // fontFamily
-		// 		"", // glowColor
-		// 		"#FFC2CB", // borderColor2
-		// 		"#F5F5F5", // bgColorTertiary
-		// 		"#888888", // fgColorHover
-		// 		"#666666", // fgColorDisabled
-		// 		0, // baseGlowColor
-		// 	),
-		// );
-		// this._themeSelect.appendChild(
-		// 	new ThemeEditeur(
-		// 		"H@ck3r",
-		// 		"#001202",
-		// 		"#00ff00",
-		// 		"#00ff0055",
-		// 		"#00ff0011",
-		// 		"#85f299",
-		// 		"#00aaff",
-		// 		"#00aaff99",
-		// 		"#C82606",
-		// 		"#FFE989",
-		// 		"#FFFFFF",
-		// 		"White Rabbit",
-		// 	),
-		// );
-
-		// this._themeSelect.appendChild(
-		// 	new ThemeEditeur(
-		// 		"Cyberpunk",
-		// 		"#000000",
-		// 		"#FAFC06",
-		// 		"#FAFC0655",
-		// 		"#FAFC0611",
-		// 		"#2BF0FB",
-		// 		"#F2E307",
-		// 		"#F2E30799",
-		// 		"#C82606",
-		// 		"#FFE989",
-		// 		"#F2E307",
-		// 		"Cyberpunk",
-		// 		"#EB9EBB",
-		// 	),
-		// );
-
-		// this._themeSelect.appendChild(
-		// 	new ThemeEditeur(
-		// 		nom,
-		// 		bgColor,
-		// 		fgColor,
-		// 		fgColorSemiTransparent,
-		// 		fgColorTransparent,
-		// 		fgColorForward,
-		// 		goodColor,
-		// 		goodColorTransparent,
-		// 		errorColor,
-		// 		warningColor,
-		// 		titleColor
-		// 	)
-		// );
 
 		// Gestion des événements de thème
 		this._themeSelect.addEventListener("change", () => {
@@ -904,6 +832,17 @@ class Editeur extends HTMLElement {
 					// Ctrl + -
 					e.preventDefault();
 					this._indicateurZoom.zoomOut();
+				}
+			}
+		});
+
+		document.body.addEventListener("wheel", (e) => {
+			if (e.ctrlKey || e.metaKey) {
+				e.preventDefault();
+				if (e.deltaY < 0) {
+					this._indicateurZoom.zoomIn(0.01, false);
+				} else {
+					this._indicateurZoom.zoomOut(0.01, false);
 				}
 			}
 		});
@@ -2799,12 +2738,7 @@ class Editeur extends HTMLElement {
 	 * @param {boolean} [isJSON=false] - Indique si le nœud est au format JSON.
 	 */
 	exporterPNG(nodeToCopy, download = true, isJSON = false) {
-		this.createBitmapImageFromSvg(
-			"png",
-			nodeToCopy,
-			(download = true),
-			(isJSON = false),
-		);
+		this.createBitmapImageFromSvg("png", nodeToCopy, download, isJSON);
 	}
 }
 window.customElements.define("editeur-interface", Editeur);

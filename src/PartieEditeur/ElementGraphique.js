@@ -384,7 +384,7 @@ class ElementGraphique extends HTMLElement {
 		if (this.peutEtreDecompose()) {
 			lesOptions.push(
 				new ElementMenu("Décomposer", () => {
-					editeur.selectTool(6); // Outil de liaison
+					editeur.selectTool(0); // Outil de liaison
 					editeur._pointePrecedementLien = this;
 					this.classList.add("pointePourLien");
 				}),
