@@ -411,10 +411,8 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition:
-		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out,
-		scale 500ms ease-in-out;
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -551,8 +549,7 @@ dictionnaire-donnee.ouvert {
 	height: fit-content;
 	max-height: calc(80vh - 10vw);
 	min-height: 15vw;
-	min-width: 350px;
-
+	min-width: 400px;
 	/* Version en haut */
 	background-color: var(--bgColor);
 	border-radius: 0.8em;
@@ -874,10 +871,7 @@ bibliotheque-algorithmique
 	cursor: grab;
 	padding-left: 20px;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -908,12 +902,9 @@ bibliotheque-algorithmique
 	font-size: 20px;
 	line-height: 20px;
 	color: var(--color-icon-drag);
-	text-shadow:
-		0px -5px var(--color-icon-drag),
-		0px -10px var(--color-icon-drag),
-		-5px -10px var(--color-icon-drag),
-		-5px -5px var(--color-icon-drag),
-		-5px 0px var(--color-icon-drag);
+	text-shadow: 0px -5px var(--color-icon-drag),
+		0px -10px var(--color-icon-drag), -5px -10px var(--color-icon-drag),
+		-5px -5px var(--color-icon-drag), -5px 0px var(--color-icon-drag);
 }
 
 .algorithmeBibliotheque:hover::after {
@@ -1152,10 +1143,7 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -1167,10 +1155,7 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -2345,6 +2330,223 @@ ligne-element {
 	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
 }
 
+#dico-table {
+	width: 100%;
+	height: 70vh;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: start;
+	scrollbar-width: none;
+	position: relative;
+}
+
+#dico-table tbody {
+	overflow-y: scroll;
+	width: 100%;
+	height: calc(100% - 80px);
+}
+
+#dico-close,
+#dico-refresh {
+	background-color: transparent;
+	color: var(--fgColor);
+	border: none;
+	font-size: 16px;
+	padding: 0;
+	cursor: pointer;
+	transition: transform 0.1s ease-in-out;
+}
+
+#dico-close:hover,
+#dico-refresh:hover {
+	transform: scale(1.2);
+}
+
+#dico-close svg,
+#dico-refresh svg {
+	color: var(--fgColor);
+	width: 16px;
+}
+
+#dico-ctrl {
+	position: absolute;
+	display: flex;
+	gap: 7px;
+	z-index: 1;
+	top: 5px;
+	right: 10px;
+}
+
+/* #dico-table th {
+  width: 95%;
+  height: 5vw;
+  min-height: 5vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.1vw solid var(--borderColor2);
+} */
+
+#dico-table thead {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/* border-bottom: 1px solid var(--borderColor); */
+}
+
+#dico-table tfoot {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/* border-top: 1px solid var(--borderColor); */
+	padding: 10px 0 0 0;
+}
+
+#dico-table tfoot tr td {
+	border: none;
+	margin: 0;
+	height: 28px;
+}
+
+#dico-table tfoot tr td input {
+	width: calc(100% - 10px);
+	height: 100%;
+	background-color: transparent;
+	border: 1px solid var(--borderColor);
+	border-radius: 1.2em;
+	color: var(--fgColor);
+	padding: 0 0 0 10px;
+}
+
+#dico-table tfoot tr td input::placeholder {
+	font-size: 12px;
+	font-style: italic;
+}
+
+#dico-table th td {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	border-right: 0.1vw solid var(--borderColor2);
+	margin-left: 1%;
+	color: var(--fgColor);
+	font-weight: 500;
+}
+
+#dico-table th td:last-child {
+	border-right: none;
+}
+
+#dico-table thead tr {
+	width: 95%;
+	height: 40px;
+	min-height: 3vw;
+}
+
+#dico-table thead tr td {
+	margin: 0 0 0 5px;
+}
+
+#dico-table tr {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#dico-table tbody tr {
+	padding: 5px;
+	height: fit-content;
+	background-color: var(--bgColorSecondary);
+	margin: 5px 0 0 0;
+	width: calc(100% - 15px);
+	border-radius: 0.6em;
+}
+
+#dico-table tbody tr td {
+	word-break: break-all;
+}
+
+#dico-table tr td {
+	/* width: 100%; */
+	height: 100%;
+	/* margin-left: 1%; */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	/* border-right: 1px solid var(--borderColor); */
+	cursor: text;
+	font-size: 12px;
+}
+
+#dico-table thead tr td:nth-child(1),
+#dico-table thead tr td:nth-child(2) {
+	width: calc(25% - 5px);
+	padding: 0 5px 0 0;
+}
+
+#dico-table tbody tr td:nth-child(1),
+#dico-table tbody tr td:nth-child(2) {
+	width: calc(25% - 12px);
+	padding: 0 12px 0 0;
+}
+
+#dico-table tr td:nth-child(3) {
+	width: 50%;
+	border-right: none;
+}
+
+#dico-table tfoot tr td:nth-child(1),
+#dico-table tfoot tr td:nth-child(2) {
+	width: calc(25% - 20px);
+}
+
+#dico-table tfoot tr td:nth-child(4) {
+	width: 20px;
+}
+
+#dico-table tfoot tr td:nth-child(4) button {
+	border: none;
+	background-color: transparent;
+}
+
+#dico-table tfoot tr td:nth-child(3) {
+	width: calc(50% - 10px);
+	border-right: none;
+}
+
+#dico-table tr.ajout {
+	opacity: 0.75;
+}
+
+#dico-table tr td select.selectType {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: var(--bgColor);
+	color: var(--fgColor);
+	font-size: 1vw;
+	cursor: pointer;
+}
+
+#dico-table > tr > td > select.selectType:hover {
+	text-shadow: 0 0 0.5vw var(--fgColor);
+}
+
 #transferForm {
 	display: none;
 }
@@ -2572,9 +2774,7 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition:
-		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
-		margin 0.8s;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
 	transform-origin: bottom;
 }
 
