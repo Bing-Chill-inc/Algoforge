@@ -30,7 +30,8 @@ class DictionnaireDonnee extends HTMLElement {
 		this._closeBtn;
 		this._refreshBtn;
 		this._tableBody;
-		this._currentRow;
+		this._currentRow = "";
+		this._lastRow = "";
 		this._template = document.getElementById("dico-row");
 		this.#creerSquelette();
 		this.#demarrerEcouteurs();
@@ -39,22 +40,21 @@ class DictionnaireDonnee extends HTMLElement {
 	#creerSquelette() {
 		this.innerHTML = `
 		<div id="dico-ctrl">
-			<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
-			<button id="dico-close"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+			<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
+			<button id="dico-close"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
 		</div>
 		<table id="dico-table">
 			<thead>
 				<tr><td>Nom</td><td>Type</td><td>Signification</td></tr>
 			</thead>
 			<tbody></tbody>
-            <tfoot>
-                <tr><td><input type="text" name="" minlength="1" id="" placeholder="Nom"></td>
-                <td><input type="text" name="" minlength="1" id="" placeholder="Type"></td>
-                <td><input type="text" name="" minlength="1" id="" placeholder="Signification"></td>
-                <td><button><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button></td>
-                </tr>
-            </tfoot>
-		</table>`;
+		</table>
+		<div id="dico-inputs">
+			<input type="text" name="" minlength="1" id="" placeholder="Nom">
+            <input type="text" name="" minlength="1" id="" placeholder="Type">
+            <input type="text" name="" minlength="1" id="" placeholder="Signification">
+            <button><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+        </div>`;
 	}
 
 	#demarrerEcouteurs() {
@@ -76,14 +76,29 @@ class DictionnaireDonnee extends HTMLElement {
 			});
 
 			this._tableBody.addEventListener("click", (e) => {
-				if (e.target.localName == "td") {
-					document.getElementById(
-						e.target.parentNode.id,
-					).style.backgroundColor = "#fdfdfd";
-				} else if (e.target.localName == "tr") {
-					document.getElementById(e.target.id).style.backgroundColor =
-						"#fdfdfd";
+				if (this._lastRow != "") {
+					document
+						.getElementById(this._lastRow)
+						.removeAttribute("class");
 				}
+
+				if (e.target.localName == "td") {
+					this._currentRow = e.target.parentNode.id;
+				} else if (e.target.localName == "tr") {
+					this._currentRow = e.target.id;
+				}
+
+				let allTds = document.getElementById(this._currentRow).children;
+				for (let i = 0; i < allTds.length; i++) {
+					document.getElementById("dico-inputs").children[i].value =
+						allTds[i].textContent;
+				}
+
+				document
+					.getElementById(this._currentRow)
+					.setAttribute("class", "row-selected");
+
+				this._lastRow = this._currentRow;
 			});
 		}, 500);
 	}

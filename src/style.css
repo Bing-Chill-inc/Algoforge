@@ -2366,7 +2366,7 @@ ligne-element {
 
 #dico-close svg,
 #dico-refresh svg {
-	color: var(--fgColor);
+	fill: var(--fgColor);
 	width: 16px;
 }
 
@@ -2409,13 +2409,16 @@ ligne-element {
 	padding: 10px 0 0 0;
 }
 
-#dico-table tfoot tr td {
-	border: none;
-	margin: 0;
-	height: 28px;
+#dico-inputs {
+	width: 100%;
+	height: 40px;
+	margin: 0 0 10px 0;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
-#dico-table tfoot tr td input {
+#dico-inputs input {
 	width: calc(100% - 10px);
 	height: 100%;
 	background-color: transparent;
@@ -2425,7 +2428,7 @@ ligne-element {
 	padding: 0 0 0 10px;
 }
 
-#dico-table tfoot tr td input::placeholder {
+#dico-inputs input::placeholder {
 	font-size: 12px;
 	font-style: italic;
 }
@@ -2464,17 +2467,23 @@ ligne-element {
 	justify-content: space-between;
 }
 
+.row-selected {
+	border: 1px solid var(--borderColor);
+}
+
 #dico-table tbody tr {
 	padding: 5px;
 	height: fit-content;
 	background-color: var(--bgColorSecondary);
 	margin: 5px 0 0 0;
-	width: calc(100% - 15px);
+	width: calc(100% - 17px);
 	border-radius: 0.6em;
+	cursor: pointer;
 }
 
 #dico-table tbody tr td {
 	word-break: break-all;
+	cursor: pointer;
 }
 
 #dico-table tr td {
@@ -2507,22 +2516,22 @@ ligne-element {
 	border-right: none;
 }
 
-#dico-table tfoot tr td:nth-child(1),
-#dico-table tfoot tr td:nth-child(2) {
+#dico-inputs input:nth-child(1),
+#dico-inputs input:nth-child(2) {
 	width: calc(25% - 20px);
 }
 
-#dico-table tfoot tr td:nth-child(4) {
+#dico-inputs input:nth-child(4) {
 	width: 20px;
 }
 
-#dico-table tfoot tr td:nth-child(4) button {
+#dico-inputs button {
 	border: none;
 	background-color: transparent;
 }
 
-#dico-table tfoot tr td:nth-child(3) {
-	width: calc(50% - 10px);
+#dico-inputs input:nth-child(3) {
+	width: calc(38% - 10px);
 	border-right: none;
 }
 
