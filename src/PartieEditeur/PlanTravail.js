@@ -106,7 +106,7 @@ class PlanTravail extends HTMLElement {
 				...elementgraphique.rechercherAnomalies(),
 			];
 		}
-		console.log(listeAnomalies);
+		if (verbose) console.log(listeAnomalies);
 		return listeAnomalies;
 	}
 

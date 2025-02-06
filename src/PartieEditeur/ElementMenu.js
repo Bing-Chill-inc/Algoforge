@@ -14,6 +14,8 @@ class ElementMenu extends HTMLElement {
 		super();
 		this._texte = texte;
 		this._action = action;
+		if (this._texte === "Aucune action disponible.")
+			this.classList.add("noActionsElementMenu");
 		if (!isActive) {
 			this.classList.add("disabled");
 		}

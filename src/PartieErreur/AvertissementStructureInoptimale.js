@@ -91,7 +91,7 @@ class AvertissementStructureInoptimale extends AvertissementConceptuel {
 			}
 			// Vérifier si tout les conditions contient un = et que la variable traiter est constante
 			for (let condition of conditions) {
-				console.log(condition);
+				if (verbose) console.log(condition);
 				libelle = condition.querySelector(".libelle").textContent;
 				if (libelle.toLowerCase().includes("sinon")) {
 					// default statement structure switch

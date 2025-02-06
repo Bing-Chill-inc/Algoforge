@@ -169,26 +169,33 @@ class StructureAlternative extends ElementGraphique {
 					"jumpOverLeft var(--specialTransitionTime) ease-in-out";
 				autreCondition.style.animation =
 					"slideUnderRight var(--specialTransitionTime) ease-in-out";
-				setTimeout(() => {
-					pCondition.parentElement.insertBefore(
-						pCondition,
-						autreCondition,
-					);
-					pCondition.style.animation = "";
-					autreCondition.style.animation = "";
-					// update les liens vers les enfants
-					pCondition._elemParent._listeElementsEnfants.forEach(
-						(lien) => {
-							lien.ligne.update();
-						},
-					);
+				setTimeout(
+					() => {
+						pCondition.parentElement.insertBefore(
+							pCondition,
+							autreCondition,
+						);
+						pCondition.style.animation = "";
+						autreCondition.style.animation = "";
+						// update les liens vers les enfants
+						pCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
 
-					autreCondition._elemParent._listeElementsEnfants.forEach(
-						(lien) => {
-							lien.ligne.update();
-						},
-					);
-				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
+						autreCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
+					},
+					parseFloat(
+						document.body.style.getPropertyValue(
+							"--specialTransitionTime",
+						),
+					) * 1000,
+				);
 			}
 		} else if (decalage == 1 && pCondition instanceof Condition) {
 			// Décaler la condition vers la droite
@@ -198,25 +205,32 @@ class StructureAlternative extends ElementGraphique {
 					"jumpOverRight var(--specialTransitionTime) ease-in-out";
 				autreCondition.style.animation =
 					"slideUnderLeft var(--specialTransitionTime) ease-in-out";
-				setTimeout(() => {
-					pCondition.parentElement.insertBefore(
-						autreCondition,
-						pCondition,
-					);
-					pCondition.style.animation = "";
-					autreCondition.style.animation = "";
-					pCondition._elemParent._listeElementsEnfants.forEach(
-						(lien) => {
-							lien.ligne.update();
-						},
-					);
+				setTimeout(
+					() => {
+						pCondition.parentElement.insertBefore(
+							autreCondition,
+							pCondition,
+						);
+						pCondition.style.animation = "";
+						autreCondition.style.animation = "";
+						pCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
 
-					autreCondition._elemParent._listeElementsEnfants.forEach(
-						(lien) => {
-							lien.ligne.update();
-						},
-					);
-				}, parseFloat(document.body.style.getPropertyValue("--specialTransitionTime")) * 1000);
+						autreCondition._elemParent._listeElementsEnfants.forEach(
+							(lien) => {
+								lien.ligne.update();
+							},
+						);
+					},
+					parseFloat(
+						document.body.style.getPropertyValue(
+							"--specialTransitionTime",
+						),
+					) * 1000,
+				);
 			}
 		}
 	}
@@ -314,7 +328,7 @@ class StructureAlternative extends ElementGraphique {
 		// Ajouter la possibilité de délier les enfants
 		listeOptions.push(
 			new ElementMenu("Délier toutes les conditions", () => {
-				console.log("Supprimer");
+				if (verbose) console.log("Supprimer");
 				for (let condition of this._listeConditions.children) {
 					condition._elemParent.delierTousLesEnfants();
 				}

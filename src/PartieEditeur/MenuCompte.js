@@ -174,7 +174,7 @@ class MenuCompte extends HTMLElement {
 	 * @description Déconnecte l'utilisateur.
 	 */
 	deconnexion() {
-		console.log("Déconnexion");
+		if (verbose) console.log("Déconnexion");
 	}
 }
 

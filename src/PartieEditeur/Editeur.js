@@ -331,14 +331,14 @@ class Editeur extends HTMLElement {
 		// Fichier
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
-				console.log("Nouveau");
+				if (verbose) console.log("Nouveau");
 				// On ouvre un nouvel onglet avec un éditeur vide
 				window.open(window.location.href, "_blank");
 			}),
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Ouvrir", () => {
-				console.log("Ouvrir");
+				if (verbose) console.log("Ouvrir");
 				// On importe
 				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 				var fileInput = document.createElement("input");
@@ -388,7 +388,7 @@ class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Créer une copie", () => {
-				console.log("Créer une copie");
+				if (verbose) console.log("Créer une copie");
 				// On post le contenu de l'éditeur actuel dans un nouvel onglet
 				this._transferInput.value = JSON.stringify(
 					this._espacePrincipal.exporterEnJSON(),
@@ -402,7 +402,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Partager",
 				() => {
-					console.log("Partager");
+					if (verbose) console.log("Partager");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -431,17 +431,17 @@ class Editeur extends HTMLElement {
 			}),
 		);
 		let exporter = new ElementMenuCompose("Exporter", () => {
-			console.log("Exporter");
+			if (verbose) console.log("Exporter");
 		});
 		this._menuDeroulantFichier.ajouterElementMenu(exporter);
 
 		let sousTitreGénéral = document.createElement("h3");
-		sousTitreGénéral.innerText = "Tout";
+		sousTitreGénéral.innerText = "Algorithme";
 		exporter.ajouterElementMenu(sousTitreGénéral);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".json", () => {
-				console.log("Exporter en .json");
+				if (verbose) console.log("Exporter en .json");
 				this.exporterJSON(
 					JSON.stringify(this._espacePrincipal.exporterEnJSON()),
 				);
@@ -449,14 +449,14 @@ class Editeur extends HTMLElement {
 		);
 
 		let sousTitreAlgorithme = document.createElement("h3");
-		sousTitreAlgorithme.innerText = "Algorithme";
+		sousTitreAlgorithme.innerText = "Image";
 		exporter.ajouterElementMenu(sousTitreAlgorithme);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(
 				".png",
 				() => {
-					console.log("Exporter en .png");
+					if (verbose) console.log("Exporter en .png");
 					const plansTravail = this.querySelectorAll("plan-travail");
 					const sousPlansTravail =
 						this.querySelectorAll("sous-plan-travail");
@@ -479,7 +479,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				".jpg",
 				() => {
-					console.log("Exporter en .jpg");
+					if (verbose) console.log("Exporter en .jpg");
 					const plansTravail = this.querySelectorAll("plan-travail");
 					const sousPlansTravail =
 						this.querySelectorAll("sous-plan-travail");
@@ -500,7 +500,7 @@ class Editeur extends HTMLElement {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".svg", () => {
-				console.log("Exporter en .svg");
+				if (verbose) console.log("Exporter en .svg");
 				this.exporterSVG(this._planActif);
 			}),
 		);
@@ -517,21 +517,21 @@ class Editeur extends HTMLElement {
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".xls", () => {
-				console.log("Exporter en .xls");
+				if (verbose) console.log("Exporter en .xls");
 				this._dictionnaireDesDonnees.exporter("xls");
 			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
-				console.log("Exporter en .csv");
+				if (verbose) console.log("Exporter en .csv");
 				this._dictionnaireDesDonnees.exporter("csv");
 			}),
 		);
 
 		exporter.ajouterElementMenu(
 			new ElementMenu(".md", () => {
-				console.log("Exporter en .md");
+				if (verbose) console.log("Exporter en .md");
 				this._dictionnaireDesDonnees.exporter("md");
 			}),
 		);
@@ -540,7 +540,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Supprimer",
 				() => {
-					console.log("Supprimer");
+					if (verbose) console.log("Supprimer");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -550,7 +550,7 @@ class Editeur extends HTMLElement {
 		// Edition
 		this._menuDeroulantEdition.ajouterElementMenu(
 			new ElementMenu("Importer", () => {
-				console.log("Importer");
+				if (verbose) console.log("Importer");
 				this.importerJSON();
 			}),
 		);
@@ -559,7 +559,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Annuler",
 				() => {
-					console.log("Annuler");
+					if (verbose) console.log("Annuler");
 					this.undo();
 				},
 				`${this._toucheMeta}Z`,
@@ -570,7 +570,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Rétablir",
 				() => {
-					console.log("Rétablir");
+					if (verbose) console.log("Rétablir");
 					this.redo();
 				},
 				`${this._toucheMeta}Y`,
@@ -581,7 +581,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Couper",
 				() => {
-					console.log("Couper");
+					if (verbose) console.log("Couper");
 					this.cut();
 				},
 				`${this._toucheMeta}X`,
@@ -592,7 +592,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Copier",
 				() => {
-					console.log("Copier");
+					if (verbose) console.log("Copier");
 					this.copy();
 				},
 				`${this._toucheMeta}C`,
@@ -603,7 +603,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Coller",
 				() => {
-					console.log("Coller");
+					if (verbose) console.log("Coller");
 					this._modaleNoPaste.ouvrir();
 				},
 				`${this._toucheMeta}V`,
@@ -614,7 +614,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Sélectionner tout",
 				() => {
-					console.log("Sélectionner tout");
+					if (verbose) console.log("Sélectionner tout");
 					this.selectAll();
 				},
 				`${this._toucheMeta}A`,
@@ -625,7 +625,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Supprimer",
 				() => {
-					console.log("Supprimer");
+					if (verbose) console.log("Supprimer");
 					this.delete();
 				},
 				`Suppr / ${this._toucheMeta}⌫`,
@@ -636,7 +636,7 @@ class Editeur extends HTMLElement {
 			new ElementMenuKeyboardTip(
 				"Rechercher",
 				() => {
-					console.log("Rechercher");
+					if (verbose) console.log("Rechercher");
 					// this.search();
 					this._modaleNonImp.ouvrir();
 				},
@@ -650,7 +650,7 @@ class Editeur extends HTMLElement {
 			new ElementMenu(
 				"Tutoriels",
 				() => {
-					console.log("Tutoriels");
+					if (verbose) console.log("Tutoriels");
 					this._modaleNonImp.ouvrir();
 				},
 				false,
@@ -659,14 +659,14 @@ class Editeur extends HTMLElement {
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("Raccourcis clavier", () => {
-				console.log("Raccourcis clavier");
+				if (verbose) console.log("Raccourcis clavier");
 				this._modaleRaccourcisClavier.ouvrir();
 			}),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
 			new ElementMenu("À propos", () => {
-				console.log("À propos");
+				if (verbose) console.log("À propos");
 				this._modaleAPropos.ouvrir();
 			}),
 		);
@@ -795,7 +795,11 @@ class Editeur extends HTMLElement {
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
-					console.log("Ctrl + C", window.getSelection().toString());
+					if (verbose)
+						console.log(
+							"Ctrl + C",
+							window.getSelection().toString(),
+						);
 					if (window.getSelection().toString().length == 0) {
 						e.preventDefault();
 						this.copy();
@@ -1048,7 +1052,7 @@ class Editeur extends HTMLElement {
 			}
 			if (verbose) console.log(maTarget);
 			if (maTarget instanceof PlanTravail) {
-				console.log("Clic sur le plan de travail");
+				if (verbose) console.log("Clic sur le plan de travail");
 				if (verbose)
 					console.log(
 						"currentTool = " +
@@ -1095,7 +1099,7 @@ class Editeur extends HTMLElement {
 				maTarget instanceof ElementGraphique ||
 				maTarget instanceof Condition
 			) {
-				//console.log("Clic sur un élément graphique");
+				if (verbose) console.log("Clic sur un élément graphique");
 				if (this._currentTool === 0) {
 					if (this._pointePrecedementLien === null) {
 						if (verbose)
@@ -1223,15 +1227,14 @@ class Editeur extends HTMLElement {
 				console.log(`this._currentTool = ${this._currentTool}`);
 
 			if (maTarget instanceof PlanTravail && this._currentTool == -1) {
-				console.log("event 1");
-
+				if (verbose) console.log("event 1");
 				this._isSelecting = true;
 				this._coordonneesSelection.x =
 					(this._curMousePos.x / 100) * window.innerWidth;
 				this._coordonneesSelection.y =
 					(this._curMousePos.y / 100) * window.innerWidth;
 			} else {
-				//console.log("event 2");
+				if (verbose) console.log("event 2");
 				this._isDragging = true;
 				this._lastPosX = e.clientX;
 				this._lastPosY = e.clientY;
@@ -1657,7 +1660,7 @@ class Editeur extends HTMLElement {
 
 			// Soustraire les coordonnées du coin supérieur gauche pour que les coordonnées soient relatives
 			const appliquerDecalage = (elem) => {
-				if (true)
+				if (verbose)
 					console.log(
 						`parseFloat(elem.abscisse) - coinSupGauche.x + "vw" = ${parseFloat(
 							elem.abscisse,
@@ -1666,7 +1669,7 @@ class Editeur extends HTMLElement {
 							parseFloat(elem.abscisse) - coinSupGauche.x + "vw"
 						}`,
 					);
-				if (true)
+				if (verbose)
 					console.log(
 						`parseFloat(elem.ordonnee) - coinSupGauche.y + "vw" = ${parseFloat(
 							elem.ordonnee,
@@ -1795,7 +1798,7 @@ class Editeur extends HTMLElement {
 	 * @method selectAll
 	 */
 	selectAll() {
-		console.log("selectAll");
+		if (verbose) console.log("selectAll");
 		for (let elem of this._planActif.trouverToutLesElementsGraphiques()) {
 			if (elem instanceof ElementGraphique)
 				this._selection.selectionnerElement(elem);
@@ -1806,15 +1809,8 @@ class Editeur extends HTMLElement {
 	 * Supprime les éléments sélectionnés.
 	 */
 	delete() {
-		console.log("delete");
+		if (verbose) console.log("delete");
 		this._selection.supprimerTout();
-	}
-
-	/**
-	 * Recherche des éléments (fonctionnalité non implémentée).
-	 */
-	search() {
-		console.log("search");
 	}
 
 	/**
@@ -1914,7 +1910,7 @@ class Editeur extends HTMLElement {
 	 * @returns {string} La chaîne SVG exportée.
 	 */
 	exporterSVG(nodeToCopy, download = true, isJSON = false) {
-		console.log("exporterSVG() appelé");
+		if (verbose) console.log("exporterSVG() appelé");
 		// On crée une balise style pour embarquer le style dans le fichier SVG
 		var styleElement = document.createElement("style");
 		var cssStyles = `
