@@ -22,7 +22,7 @@ class MenuDeroulant extends HTMLElement {
 
 		setTimeout(() => {
 			const rect = this.getBoundingClientRect();
-			console.log(rect);
+			if (verbose) console.log(rect);
 			if (rect.bottom > window.innerHeight) {
 				this.style.top = "auto";
 				this.style.bottom = "0";
