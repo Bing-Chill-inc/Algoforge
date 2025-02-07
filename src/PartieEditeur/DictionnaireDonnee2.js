@@ -30,14 +30,15 @@ class DictionnaireDonnee extends HTMLElement {
 		this._closeBtn;
 		this._refreshBtn;
 		this._tableBody;
+		this._validInputs;
 		this._currentRow = "";
 		this._lastRow = "";
 		this._template = document.getElementById("dico-row");
-		this.#creerSquelette();
-		this.#demarrerEcouteurs();
+		this.#createHtmlTable();
+		this.#launchListeners();
 	}
 
-	#creerSquelette() {
+	#createHtmlTable() {
 		this.innerHTML = `
 		<div id="dico-ctrl">
 			<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
@@ -51,22 +52,85 @@ class DictionnaireDonnee extends HTMLElement {
 		</table>
 		<div id="dico-inputs">
 			<input type="text" name="" minlength="1" id="" placeholder="Nom">
-            <input type="text" name="" minlength="1" id="" placeholder="Type">
+            <input type="search" list="primitives" name="" minlength="1" id="" placeholder="Type">
             <input type="text" name="" minlength="1" id="" placeholder="Signification">
-            <button><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+			<datalist id="primitives">
+				<option value="Chaine de caractère"></option>
+				<option value="Tableau"></option>
+				<option value="Entier"></option>
+				<option value="Décimale"></option>
+			</datalist>
+            <button id="valid-inputs"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
         </div>`;
 	}
 
-	#demarrerEcouteurs() {
+	#handleSelectedRow(htmlTarget) {
+		if (this._lastRow != "") {
+			document.getElementById(this._lastRow).removeAttribute("class");
+		}
+
+		if (htmlTarget.localName == "td") {
+			this._currentRow = htmlTarget.parentNode.id;
+		} else if (htmlTarget.localName == "tr") {
+			this._currentRow = htmlTarget.id;
+		}
+
+		document
+			.getElementById(this._currentRow)
+			.setAttribute("class", "row-selected");
+
+		this._lastRow = this._currentRow;
+	}
+
+	#insertSelectedRowTextOnInputs(rowId) {
+		let allTds = document.getElementById(rowId).children;
+		for (let i = 0; i < allTds.length; i++) {
+			document.getElementById("dico-inputs").children[i].value =
+				allTds[i].textContent;
+		}
+	}
+
+	#updateVariableNameInAlgo() {
+		let allTds = document.getElementById(this._currentRow).children;
+		document
+			.querySelector("editeur-interface")
+			._planActif.renameInformation(
+				this._currentRow,
+				allTds[0].textContent,
+			);
+		let idx = this._mesInformations.findIndex(
+			(info) => info._nom == this._currentRow,
+		);
+		this._mesInformations[idx]._nom = allTds[0].textContent;
+	}
+
+	#updateSelectedRowValues() {
+		let allTds = document.getElementById(this._currentRow).children;
+		for (let i = 0; i < allTds.length; i++) {
+			allTds[i].textContent =
+				document.getElementById("dico-inputs").children[i].value;
+		}
+	}
+
+	#resetInputsText() {
+		for (
+			let i = 0;
+			i < document.getElementById("dico-inputs").children.length;
+			i++
+		) {
+			document.getElementById("dico-inputs").children[i].value = "";
+		}
+	}
+
+	#launchListeners() {
 		setTimeout(() => {
 			this._closeBtn = document.getElementById("dico-close");
-			this._refreshBtn = document.getElementById("dico-refresh");
-			this._tableBody = document.querySelector("#dico-table>tbody");
 			this._closeBtn.addEventListener("click", (e) => {
 				e.stopPropagation();
 				this.fermer();
 			});
 
+			this._refreshBtn = document.getElementById("dico-refresh");
 			this._refreshBtn.addEventListener("click", (e) => {
 				e.stopPropagation();
 				setTimeout(() => {
@@ -75,30 +139,22 @@ class DictionnaireDonnee extends HTMLElement {
 				}, 200);
 			});
 
+			this._tableBody = document.querySelector("#dico-table>tbody");
 			this._tableBody.addEventListener("click", (e) => {
-				if (this._lastRow != "") {
-					document
-						.getElementById(this._lastRow)
-						.removeAttribute("class");
-				}
+				this.#handleSelectedRow(e.target);
+				this.#insertSelectedRowTextOnInputs(this._currentRow);
+			});
 
-				if (e.target.localName == "td") {
-					this._currentRow = e.target.parentNode.id;
-				} else if (e.target.localName == "tr") {
-					this._currentRow = e.target.id;
-				}
+			this._validInputs = document.getElementById("valid-inputs");
+			this._validInputs.addEventListener("click", () => {
+				this.#updateSelectedRowValues();
+				this.#updateVariableNameInAlgo();
+				this.#resetInputsText();
 
-				let allTds = document.getElementById(this._currentRow).children;
-				for (let i = 0; i < allTds.length; i++) {
-					document.getElementById("dico-inputs").children[i].value =
-						allTds[i].textContent;
-				}
-
+				// Suppression des bordures sur la ligne sélectionnée
 				document
 					.getElementById(this._currentRow)
-					.setAttribute("class", "row-selected");
-
-				this._lastRow = this._currentRow;
+					.removeAttribute("class");
 			});
 		}, 500);
 	}
@@ -144,6 +200,8 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	AjouterUneVariable(uneInformation) {
+		console.log(uneInformation);
+
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
 			return false;
 		}
