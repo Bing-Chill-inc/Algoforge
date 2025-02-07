@@ -1304,8 +1304,8 @@ class Editeur extends HTMLElement {
 						100) /
 					this._indicateurZoom._zoom,
 			}; // En vw
-			if (verbose) console.log(`mousemove avec ${this._isDragging}`);
-			if (verbose) console.log(this._curMousePos);
+			if (verbose) console.info(`mousemove avec ${this._isDragging}`);
+			if (verbose) console.info(this._curMousePos);
 			if (this._isDragging) {
 				let abscisseEnPx = e.clientX;
 				let ordonneeEnPx = e.clientY;
@@ -1370,7 +1370,7 @@ class Editeur extends HTMLElement {
 						elemLePlusProche = elem;
 					}
 				}
-				if (verbose) console.log(elemLePlusProche);
+				if (verbose) console.info(elemLePlusProche);
 				if (
 					elemLePlusProche != this._ancienPlusProche &&
 					elemLePlusProche != null
@@ -1492,7 +1492,30 @@ class Editeur extends HTMLElement {
 	 * @returns {void}
 	 */
 	chargerDepuisJSON(json) {
-		let lesElements = this._planActif.chargerDepuisJSON(json);
+		this.ajouterEvenement(new EvenementPlaceholder()); // Marqueur de début d'événements
+		const lesElements = this._planActif.chargerDepuisJSON(json);
+
+		// On va aller chercher les événements qui viennent d'être créés et les aglomérer dans un événement composite
+		const evenementComposite = new EvenementComposite();
+
+		// On va parcourir this._pileAnnuler jusqu'à trouver le marqueur de début d'événements
+		let index = this._pileAnnuler.length - 1;
+		while (
+			index >= 0 &&
+			!(this._pileAnnuler[index] instanceof EvenementPlaceholder)
+		) {
+			evenementComposite.ajouterEvenement(this._pileAnnuler[index]);
+			this._pileAnnuler.pop();
+			index--;
+		}
+
+		// On retire aussi le marqueur de début d'événements
+		this._pileAnnuler.pop();
+
+		// evenementComposite.reverse();
+
+		// On ajoute l'événement composite à la pile d'annulation
+		this.ajouterEvenement(evenementComposite);
 
 		// Désélectionner tout
 		this._selection.deselectionnerTout();
