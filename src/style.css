@@ -978,6 +978,7 @@ bibliotheque-algorithmique
 	cursor: pointer;
 	font-size: 16px;
 	color: var(--fgColor);
+	user-select: none;
 }
 
 .clearButtonSearchBibliotheque:hover {
