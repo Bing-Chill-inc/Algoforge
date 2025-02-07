@@ -38,6 +38,8 @@ class EvenementComposite extends EvenementEdition {
 	 */
 	retablir() {
 		if (verbose) console.log("Rétablissement de l'événement composite");
-		this._evenements.forEach((evenement) => evenement.retablir());
+		this._evenements.toReversed().forEach((evenement) => {
+			evenement.retablir();
+		});
 	}
 }
