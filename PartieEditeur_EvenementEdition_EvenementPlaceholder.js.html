@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: PartieEditeur/EvenementEdition/EvenementEditionTexte.js</title>
+    <title>JSDoc: Source: PartieEditeur/EvenementEdition/EvenementPlaceholder.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: PartieEditeur/EvenementEdition/EvenementEditionTexte.js</h1>
+    <h1 class="page-title">Source: PartieEditeur/EvenementEdition/EvenementPlaceholder.js</h1>
 
     
 
@@ -27,47 +27,37 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @classdesc Classe représentant un événement de modification de texte dans l'éditeur.
- * @description Crée une instance de EvenementEditionTexte.
- * @class EvenementEditionTexte
+ * @classdesc Classe représentant un événement placeholder.
+ * @description Crée une instance de EvenementPlaceholder.
+ * @class EvenementPlaceholder
  * @extends EvenementEdition
  */
-class EvenementEditionTexte extends EvenementEdition {
+class EvenementPlaceholder extends EvenementEdition {
 	// ATTRIBUTS
-	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.
-	_ancienTexte; // Texte antérieur à l'événement
-	_nouveauTexte; // Texte postérieur
+	// - NON -
 
 	// CONSTRUCTEUR
 	/**
 	 * @constructor
-	 * @param {ElementGraphique} elementConcerne L'élément graphique concerné par l'événement
-	 * @param {String} ancienTexte Le texte antérieur à l'événement
-	 * @param {String} nouveauTexte Le texte postérieur
 	 */
-	constructor(elementConcerne, ancienTexte, nouveauTexte) {
-		super(elementConcerne);
-		this._ancienTexte = ancienTexte;
-		this._nouveauTexte = nouveauTexte;
+	constructor() {
+		super(null);
 	}
 
 	// METHODES
+
 	/**
-	 * @description Annule l'événement
+	 * @description Annule les événements
 	 */
 	annuler() {
-		if (verbose)
-			console.log("Annulation de l'événement de modification de texte");
+		if (verbose) console.log("Annulation de l'événement placeholder");
 	}
 
 	/**
-	 * @description Rétablit l'événement
+	 * @description Rétablit les événements
 	 */
 	retablir() {
-		if (verbose)
-			console.log(
-				"Rétablissement de l'événement de modification de texte",
-			);
+		if (verbose) console.log("Rétablissement de l'événement placeholder");
 	}
 }
 </code></pre>
