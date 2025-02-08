@@ -13,7 +13,8 @@ const filePath = join(__dirname, "src/index.html");
 const fileContent = readFileSync(filePath, "utf-8");
 
 const scriptSrcs: string[] = [];
-const scriptTagRegex = /<script\s+[^>]*src="([^"]+)"[^>]*><\/script>/g;
+const scriptTagRegex =
+	/<script\s+[^>]*src="(?!https?:\/\/)([^"]+)"[^>]*><\/script>/g;
 let match: string[] | null;
 
 while ((match = scriptTagRegex.exec(fileContent)) !== null) {
