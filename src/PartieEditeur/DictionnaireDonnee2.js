@@ -187,21 +187,21 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	genererDictionnaire() {
+		let index = 0;
 		for (let info of this._mesInformations) {
 			const clone = this._template.content.cloneNode(true);
 			let tr = clone.querySelector("tr");
-			tr.setAttribute("id", info._nom);
+			tr.setAttribute("id", `var_${index}`);
 			let td = clone.querySelectorAll("td");
-			td[0].textContent = info._nom;
+			td[0].textContent = `${info._nom}`;
 			td[1].textContent = "Non défini";
 			td[2].textContent = "Non défini";
 			this._tableBody.appendChild(clone);
+			index++;
 		}
 	}
 
 	AjouterUneVariable(uneInformation) {
-		console.log(uneInformation);
-
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
 			return false;
 		}
@@ -209,6 +209,8 @@ class DictionnaireDonnee extends HTMLElement {
 		const nameInformation = uneInformation._nom;
 		if (uneInformation instanceof Information) {
 			if (this.nomCorrecte(nameInformation)) {
+				console.log("ok", nameInformation);
+
 				if (this.containInformation(nameInformation)) {
 					const ancienType =
 						this.getInformation(nameInformation)._type;
@@ -224,10 +226,14 @@ class DictionnaireDonnee extends HTMLElement {
 					}
 				} else {
 					this._mesInformations.push(uneInformation);
+					console.log(this._mesInformations);
+
 					reussis = true;
 				}
 			}
 		}
+		//console.log(reussis);
+
 		return reussis;
 	}
 
@@ -365,6 +371,7 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 		return resultat;
 	}
+
 	changeType(nameVariable, newType) {
 		let resultat = false;
 		this._mesInformations.forEach((element) => {
@@ -377,20 +384,8 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	nomCorrecte(nameVariable) {
-		let resultat = true;
-		if (nameVariable.trim() == "") {
-			resultat = false;
-		}
-		for (let char of nameVariable) {
-			if (
-				!(char >= "a" && char <= "z") &&
-				!(char >= "A" && char <= "Z") &&
-				char !== "_"
-			) {
-				resultat = false;
-			}
-		}
-		return resultat;
+		let regex = /^[a-zA-Z0-9\-\_]{1,60}$/g;
+		return regex.test(nameVariable.trim());
 	}
 
 	suppressionDonneeInutiliser() {
