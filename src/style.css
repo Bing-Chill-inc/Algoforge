@@ -545,7 +545,7 @@ dictionnaire-donnee:hover {
 }
 
 dictionnaire-donnee.ouvert {
-	width: 40vw;
+	width: 50vw;
 	height: fit-content;
 	max-height: calc(80vh - 10vw);
 	min-height: 15vw;
@@ -2416,6 +2416,7 @@ ligne-element {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	gap: 8px;
 }
 
 #dico-inputs input {
@@ -2526,13 +2527,22 @@ ligne-element {
 }
 
 #dico-inputs button {
-	border: none;
+	width: 40px;
+	height: 40px;
+	border: 1px solid var(--borderColor);
+	border-radius: 50%;
 	background-color: transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#dico-inputs button svg {
+	fill: var(--fgColor);
 }
 
 #dico-inputs input:nth-child(3) {
-	width: calc(38% - 10px);
-	border-right: none;
+	width: calc(38% - 50px);
 }
 
 #dico-table tr.ajout {

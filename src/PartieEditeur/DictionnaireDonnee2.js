@@ -31,7 +31,9 @@ class DictionnaireDonnee extends HTMLElement {
 		this._refreshBtn;
 		this._tableBody;
 		this._validInputs;
+		this._removeInputs;
 		this._currentRow = "";
+		this._currentVariableName = "";
 		this._lastRow = "";
 		this._template = document.getElementById("dico-row");
 		this.#createHtmlTable();
@@ -54,13 +56,9 @@ class DictionnaireDonnee extends HTMLElement {
 			<input type="text" name="" minlength="1" id="" placeholder="Nom">
             <input type="search" list="primitives" name="" minlength="1" id="" placeholder="Type">
             <input type="text" name="" minlength="1" id="" placeholder="Signification">
-			<datalist id="primitives">
-				<option value="Chaine de caractère"></option>
-				<option value="Tableau"></option>
-				<option value="Entier"></option>
-				<option value="Décimale"></option>
-			</datalist>
-            <button id="valid-inputs"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+			<datalist id="primitives"></datalist>
+            <button id="valid-inputs" title="Valider vos modifications"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+			<button id="remove-inputs" title="Supprimer la variable"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
         </div>`;
 	}
 
@@ -74,6 +72,10 @@ class DictionnaireDonnee extends HTMLElement {
 		} else if (htmlTarget.localName == "tr") {
 			this._currentRow = htmlTarget.id;
 		}
+
+		this._currentVariableName = document.getElementById(
+			this._currentRow,
+		).children[0].textContent;
 
 		document
 			.getElementById(this._currentRow)
@@ -90,6 +92,18 @@ class DictionnaireDonnee extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Permet de mettre à jour la liste des
+	 * types de l'objet Type, si le type ajouté n'est
+	 * pas déjà présent.
+	 * @param {String} type
+	 */
+	#updateTypeList(type) {
+		if (!Type.allTypes.includes(type)) {
+			Type.allTypes.push(type);
+		}
+	}
+
 	#updateVariableNameInAlgo() {
 		let allTds = document.getElementById(this._currentRow).children;
 		document
@@ -98,10 +112,42 @@ class DictionnaireDonnee extends HTMLElement {
 				this._currentRow,
 				allTds[0].textContent,
 			);
-		let idx = this._mesInformations.findIndex(
-			(info) => info._nom == this._currentRow,
-		);
-		this._mesInformations[idx]._nom = allTds[0].textContent;
+
+		this._mesInformations.forEach((element) => {
+			if (element._nom == this._currentVariableName) {
+				document
+					.querySelector("editeur-interface")
+					._planActif.renameInformation(
+						element._nom,
+						allTds[0].textContent,
+					);
+
+				element._nom = allTds[0].textContent;
+
+				if (allTds[1].textContent !== "Non Défini") {
+					element._type = allTds[1].textContent;
+					this.#updateTypeList(element._type);
+
+					// TODO: A voir avec Jokin
+					delete this._matchType[this._currentVariableName];
+					//this._matchType[this._currentVariableName] = undefined;
+					this._matchType[element._nom] = allTds[1].textContent;
+				}
+
+				if (allTds[2].textContent !== "Non Défini") {
+					element._signification = allTds[2].textContent;
+					// TODO: A voir avec Jokin
+					delete this._matchSignification[this._currentVariableName];
+					/*this._matchSignification[this._currentVariableName] =
+						undefined;*/
+					this._matchSignification[element._nom] =
+						allTds[2].textContent;
+				}
+			}
+		});
+
+		this.fermer();
+		this.ouvrir();
 	}
 
 	#updateSelectedRowValues() {
@@ -110,6 +156,27 @@ class DictionnaireDonnee extends HTMLElement {
 			allTds[i].textContent =
 				document.getElementById("dico-inputs").children[i].value;
 		}
+	}
+
+	#removeVariable() {
+		document
+			.querySelector("plan-travail")
+			.renameInformation(this._currentVariableName, this.VARIABLE_SUPPR);
+
+		// Nettoyage du dictionnaire
+		delete this._matchType[this._currentVariableName];
+		delete this._matchSignification[this._currentVariableName];
+
+		this._mesInformations.splice(
+			this._mesInformations.findIndex(
+				(info) => info._nom === this._currentVariableName,
+			),
+			1,
+		);
+
+		this.#resetInputsText();
+		this.fermer();
+		this.ouvrir();
 	}
 
 	#resetInputsText() {
@@ -156,6 +223,12 @@ class DictionnaireDonnee extends HTMLElement {
 					.getElementById(this._currentRow)
 					.removeAttribute("class");
 			});
+
+			this._removeInputs = document.getElementById("remove-inputs");
+			// TODO: Voir avec jokin pour virer css min-width ligne 1578 (bug d'affichage)
+			this._removeInputs.addEventListener("click", () => {
+				this.#removeVariable();
+			});
 		}, 500);
 	}
 
@@ -190,15 +263,33 @@ class DictionnaireDonnee extends HTMLElement {
 		let index = 0;
 		for (let info of this._mesInformations) {
 			const clone = this._template.content.cloneNode(true);
+
 			let tr = clone.querySelector("tr");
 			tr.setAttribute("id", `var_${index}`);
 			let td = clone.querySelectorAll("td");
+
 			td[0].textContent = `${info._nom}`;
-			td[1].textContent = "Non défini";
-			td[2].textContent = "Non défini";
+			if (this._matchType[info._nom] != undefined) {
+				td[1].textContent = this._matchType[info._nom];
+			} else {
+				td[1].textContent = "Non défini";
+			}
+
+			if (this._matchSignification[info._nom] != undefined) {
+				td[2].textContent = this._matchSignification[info._nom];
+			} else {
+				td[2].textContent = "Non défini";
+			}
+
 			this._tableBody.appendChild(clone);
 			index++;
 		}
+
+		Type.allTypes.forEach((type) => {
+			this.querySelector(
+				"datalist",
+			).innerHTML += `<option value="${type}"></option>`;
+		});
 	}
 
 	AjouterUneVariable(uneInformation) {
@@ -206,11 +297,9 @@ class DictionnaireDonnee extends HTMLElement {
 			return false;
 		}
 		let reussis = false;
-		const nameInformation = uneInformation._nom;
+		const nameInformation = uneInformation._nom.trim();
 		if (uneInformation instanceof Information) {
 			if (this.nomCorrecte(nameInformation)) {
-				console.log("ok", nameInformation);
-
 				if (this.containInformation(nameInformation)) {
 					const ancienType =
 						this.getInformation(nameInformation)._type;
@@ -226,14 +315,10 @@ class DictionnaireDonnee extends HTMLElement {
 					}
 				} else {
 					this._mesInformations.push(uneInformation);
-					console.log(this._mesInformations);
-
 					reussis = true;
 				}
 			}
 		}
-		//console.log(reussis);
-
 		return reussis;
 	}
 
