@@ -2332,7 +2332,8 @@ ligne-element {
 
 #dico-table {
 	width: 100%;
-	height: 70vh;
+	height: fit-content;
+	margin: 0 0 10px 0;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
@@ -2345,7 +2346,7 @@ ligne-element {
 #dico-table tbody {
 	overflow-y: scroll;
 	width: 100%;
-	height: calc(100% - 80px);
+	height: calc(60vh - 80px);
 }
 
 #dico-close,
@@ -2535,6 +2536,19 @@ ligne-element {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+#valid-inputs:disabled {
+	opacity: 0.6;
+	filter: blur(0.5px);
+}
+
+#inputs-error {
+	margin: 0;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	padding: 2px 0 7px 15px;
 }
 
 #dico-inputs button svg {
