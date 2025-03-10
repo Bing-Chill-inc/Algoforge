@@ -1891,10 +1891,9 @@ structure-si-element > div.triangleGauche {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: -45deg;
 	grid-column: 1;
 	background-color: var(--bgColor);
-	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(-2%, 2%) rotate(-45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-si-element > div.triangleGauche > span {
@@ -1930,10 +1929,9 @@ structure-si-element > div.triangleDroit {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: 45deg;
 	grid-column: 3;
 	background-color: var(--bgColor);
-	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(2%, 2%) rotate(45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-si-element > div.triangleDroit > span {
@@ -1980,11 +1978,10 @@ structure-switch-element > div.triangleGauche {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: -45deg;
 	grid-column: 1;
 	grid-row: 1/3;
 	background-color: var(--bgColor);
-	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(-2%, 2%) rotate(-45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-switch-element > div.triangleGauche > span {
@@ -2059,11 +2056,10 @@ structure-switch-element > div.triangleDroit {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: 45deg;
 	grid-column: 3;
 	grid-row: 1/3;
 	background-color: var(--bgColor);
-	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(2%, 2%) rotate(45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-switch-element > div.triangleDroit > span {
