@@ -1,7 +1,3 @@
-/**
- * Classe représentant un dictionnaire de données.
- * @extends HTMLElement
- */
 class DictionnaireDonnee extends HTMLElement {
 	// ATTRIBUTS
 	_mesInformations; // Liste<Information> Liste de toutes les variables
@@ -14,14 +10,11 @@ class DictionnaireDonnee extends HTMLElement {
 
 	_matchSignification = {};
 	_matchType = {};
+	_inputsValid = [];
 
 	VARIABLE_SUPPR = "*variable_supprimee*";
 
 	// CONSTRUCTEUR
-	/**
-	 * Crée une instance de DictionnaireDonnee.
-	 * @param {Array} listeVariable - Liste des variables initiales.
-	 */
 	constructor(listeVariable = []) {
 		super();
 		this._mesInformations = listeVariable;
@@ -32,225 +25,496 @@ class DictionnaireDonnee extends HTMLElement {
 		this.appendChild(iconeDico);
 
 		document.getElementById("dico_btn").addEventListener("click", () => {
-			if (this._estOuvert) this.fermer();
-			else this.ouvrir();
+			this.ouvrir();
 		});
+
+		this._closeBtn;
+		this._refreshBtn;
+		this._tableBody;
+		this._validInputs;
+		this._removeInputs;
+		this._inputName;
+		this._inputType;
+		this._inputSignification;
+
+		this._errorMsg = "";
+		this._currentRow = "";
+		this._inputsValid = [true, true, true];
+		this._currentVariableName = "";
+		this._lastRow = "";
+
+		this._template = document.getElementById("dico-row");
+		this.#createHtmlTable();
+		this.#launchListeners();
 	}
 
-	// ENCAPSULATION
-
-	// METHODES
 	/**
-	 * Ouvre le dictionnaire de données.
+	 * Permet de créer dynamiquement la structure
+	 * HTML du dictionnaire.
 	 */
-	ouvrir() {
-		document.querySelector("bibliotheque-algorithmique").fermer();
-		document.getElementById("dico_wrapper").style.zIndex = 200;
-		document.getElementById("boutonDico").classList.add("elementIsOpen");
+	#createHtmlTable() {
+		this.innerHTML = `
+		<div id="dico-ctrl">
+			<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
+			<button id="dico-close"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+		</div>
+		<table id="dico-table">
+			<thead>
+				<tr><td>Nom</td><td>Type</td><td>Signification</td></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<div id="dico-inputs">
+			<input id="inputs-name" type="text" name="" minlength="1" placeholder="Nom">
+            <input id="inputs-type" type="search" list="primitives" name="" minlength="1" placeholder="Type">
+            <input id="inputs-signification" type="text" name="" minlength="1" placeholder="Signification">
+			<datalist id="primitives"></datalist>
+            <button id="valid-inputs" title="Valider vos modifications"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+			<button id="remove-inputs" title="Supprimer la variable"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+        </div>
+		<p id="inputs-error"></p>`;
+	}
+
+	/**
+	 * Permet de récupérer l'id de l'élément
+	 * HTML sélectionné par l'utilisateur.
+	 * L'élément représente une variable de l'algorithme.
+	 * @param {HTMLElement} htmlTarget
+	 */
+	#handleSelectedRow(htmlTarget) {
+		if (this._lastRow != "") {
+			document.getElementById(this._lastRow).removeAttribute("class");
+		}
+
+		if (htmlTarget.localName == "td") {
+			this._currentRow = htmlTarget.parentNode.id;
+		} else if (htmlTarget.localName == "tr") {
+			this._currentRow = htmlTarget.id;
+		}
+
+		this._currentVariableName = document.getElementById(
+			this._currentRow,
+		).children[0].textContent;
 
 		document
-			.querySelector("editeur-interface")
-			._planActif.effectuerDictionnaireDesDonnee();
-		if (this._estOuvert) return;
-		// Supprimer tout le contenu
-		this.innerHTML = "";
+			.getElementById(this._currentRow)
+			.setAttribute("class", "row-selected");
 
-		this.classList.add("ouvert");
-
-		this.genererDictionnaire();
-
-		// Ajout de la flèche de fermeture
-		let flecheFermeture = document.createElement("span");
-		flecheFermeture.innerHTML = "x";
-		flecheFermeture.classList.add("fermeture");
-		flecheFermeture.addEventListener("click", (e) => {
-			e.stopPropagation();
-			this.fermer();
-		});
-		this.appendChild(flecheFermeture);
-		this._estOuvert = true;
-
-		// Ajout d'un bouton de raffraichissement
-		let boutonRaffraichir = document.createElement("span");
-		boutonRaffraichir.innerHTML = "⟳";
-		boutonRaffraichir.classList.add("raffraichir");
-		boutonRaffraichir.addEventListener("click", (e) => {
-			e.stopPropagation();
-			boutonRaffraichir.classList.add("rotation");
-			setTimeout(() => {
-				boutonRaffraichir.classList.remove("rotation");
-				this.fermer();
-				this.ouvrir();
-			}, 200);
-		});
-		this.appendChild(boutonRaffraichir);
+		this._lastRow = this._currentRow;
 	}
 
 	/**
-	 * Ferme le dictionnaire de données.
+	 * Permet de préremplir les inputs du dictionnaire
+	 * avec les informations de la variable sélectionnée.
 	 */
-	fermer() {
-		document.getElementById("dico_wrapper").style.zIndex = -200;
-		document.getElementById("biblio_btn").removeAttribute("disabled");
-		document.getElementById("boutonDico").classList.remove("elementIsOpen");
-
-		// Supprimer tout le contenu
-		this.innerHTML = "";
-
-		this.classList.remove("ouvert");
-
-		// Affichage de l'icone
-		let iconeDico = document.createElement("div");
-		iconeDico.classList.add("img");
-		this.appendChild(iconeDico);
-		this._estOuvert = false;
-	}
-
-	/**
-	 * Génère le contenu du dictionnaire de données.
-	 */
-	genererDictionnaire() {
-		let table = document.createElement("table");
-		table.id = "tableDictionnaireDonnee";
-		this.appendChild(table);
-
-		// Entête
-		let thEntete = document.createElement("th");
-		table.appendChild(thEntete);
-
-		let tdNom = document.createElement("td");
-		tdNom.textContent = "Nom";
-		thEntete.appendChild(tdNom);
-
-		let tdType = document.createElement("td");
-		tdType.textContent = "Type";
-		thEntete.appendChild(tdType);
-
-		let tdSignification = document.createElement("td");
-		tdSignification.textContent = "Signification";
-		thEntete.appendChild(tdSignification);
-
-		// Contenu
-		for (let info of this._mesInformations) {
-			let trContent = document.createElement("tr");
-			table.appendChild(trContent);
-
-			let tdNom = document.createElement("td");
-			tdNom.textContent = info._nom;
-			tdNom.setAttribute("contenteditable", "true");
-			trContent.append(tdNom);
-			tdNom.addEventListener("keydown", (event) => {
-				// On vérifie si la touche appuyée est "Entrée" ou "Espace"
-				if (event.key === "Enter" || event.key === " ") {
-					// On l'empêche pour éviter le saut de ligne, qui casse le design
-					event.preventDefault();
-				}
-				// Demander confirmation pour la suppression si il ne reste qu'un caractère
-				if (event.key === "Backspace" && tdNom.innerText.length == 1) {
-					if (
-						!confirm(
-							"Voulez-vous vraiment supprimer cette variable?",
-						)
-					) {
-						event.preventDefault();
-					} else {
-						if (verbose) console.log(info);
-						document
-							.querySelector("plan-travail")
-							.renameInformation(info._nom, this.VARIABLE_SUPPR);
-						this._mesInformations.splice(
-							this._mesInformations.indexOf(info),
-							1,
-						);
-						this.fermer();
-						this.ouvrir();
-					}
-				}
-			});
-
-			tdNom.addEventListener("input", () => {
-				document
-					.querySelector("editeur-interface")
-					._planActif.renameInformation(info._nom, tdNom.innerText);
-				this._matchSignification[tdNom.innerText] =
-					this._matchSignification[info._nom];
-				this._matchSignification[info._nom] = undefined;
-				this._matchType[tdNom.innerText] = this._matchType[info._nom];
-				this._matchType[info._nom] = undefined;
-				info._nom = tdNom.innerText;
-				// this._mesInformations.forEach((element) => {
-				// 	if (element._nom == info._nom) {
-				// 		document
-				// 			.querySelector("editeur-interface")
-				// 			._planActif.renameInformation(element._nom, tdNom.innerText);
-				// 		this._matchSignification[tdNom.innerText] = this._matchSignification[element._nom];
-				// 		this._matchSignification[element._nom] = undefined;
-				// 		element._nom = tdNom.innerText;
-				// 	}
-				// });
-			});
-
-			let tdType = document.createElement("td");
-			let selectType = document.createElement("select");
-			selectType.classList.add("selectType");
-			tdType.appendChild(selectType);
-
-			let auto = document.createElement("option");
-			auto.value = "automatique";
-			auto.textContent = "automatique";
-			selectType.appendChild(auto);
-
-			auto.addEventListener("click", () => {
-				this._matchType[info._nom] = undefined;
-				// selectType.value = info._type; // Pour recharger automatiquement le type
-			});
-
-			for (let type of Type.allTypes) {
-				let option = document.createElement("option");
-				option.value = type;
-				option.textContent = type;
-				selectType.appendChild(option);
-				option.addEventListener("click", () => {
-					this._matchType[info._nom] = type;
-				});
-			}
-
-			if (this._matchType) {
-				if (this._matchType[info._nom] != undefined) {
-					selectType.value = this._matchType[info._nom];
-				} else {
-					selectType.value = info._type;
-					if (info._type == undefined) {
-						selectType.value = "automatique";
-					}
-				}
-			}
-			trContent.append(tdType);
-
-			let tdSignification = document.createElement("td");
-			if (this._matchSignification) {
-				tdSignification.textContent =
-					this._matchSignification[info._nom];
-			}
-			tdSignification.setAttribute("contenteditable", "true");
-			trContent.append(tdSignification);
-			tdSignification.addEventListener("input", () => {
-				this._matchSignification[info._nom] = tdSignification.innerText;
-			});
+	#insertSelectedRowTextOnInputs(rowId) {
+		let allTds = document.getElementById(rowId).children;
+		for (let i = 0; i < allTds.length; i++) {
+			document.getElementById("dico-inputs").children[i].value =
+				allTds[i].textContent;
 		}
 	}
 
 	/**
-	 * Ajoute une variable au dictionnaire.
-	 * @param {Information} uneInformation - L'information à ajouter.
-	 * @returns {boolean} - Retourne vrai si l'ajout a réussi, sinon faux.
+	 * Permet de mettre à jour la liste des
+	 * types de l'objet Type, si le type ajouté n'est
+	 * pas déjà présent.
+	 * @param {String} type
+	 */
+	#updateTypeList(type) {
+		if (!Type.allTypes.includes(type)) {
+			console.log(Type.allTypes);
+
+			Type.allTypes.push(type);
+		}
+	}
+
+	/**
+	 * Permet de mettre à jour le type de l'information.
+	 * @param {String} type
+	 * @param {Information} information
+	 */
+	#updateTypeInformation(type, information) {
+		if (type !== "Non Défini") {
+			information._type = type;
+			this.#updateTypeList(information._type);
+			// TODO: A voir avec Jokin
+			delete this._matchType[this._currentVariableName];
+			this._matchType[information._nom] = type;
+		}
+	}
+
+	/**
+	 * Permet de mettre à jour la signification de l'information.
+	 * @param {String} signification
+	 * @param {Information} information
+	 */
+	#updateSignificationInformation(signification, information) {
+		if (signification !== "Non Défini") {
+			information._signification = signification;
+			// TODO: A voir avec Jokin
+			delete this._matchSignification[this._currentVariableName];
+			this._matchSignification[information._nom] = signification;
+		}
+	}
+
+	/**
+	 * Permet de mettre à jour la variable après modification
+	 * dans l'algorithme.
+	 */
+	#updateVariableInAlgo() {
+		let allTds = document.getElementById(this._currentRow).children;
+		document
+			.querySelector("editeur-interface")
+			._planActif.renameInformation(
+				this._currentRow,
+				allTds[0].textContent,
+			);
+
+		this._mesInformations.forEach((element) => {
+			if (element._nom == this._currentVariableName) {
+				document
+					.querySelector("editeur-interface")
+					._planActif.renameInformation(
+						element._nom,
+						allTds[0].textContent,
+					);
+
+				element._nom = allTds[0].textContent;
+				this.#updateTypeInformation(allTds[1].textContent, element);
+				this.#updateSignificationInformation(
+					allTds[2].textContent,
+					element,
+				);
+			}
+		});
+
+		this.fermer();
+		this.ouvrir();
+	}
+
+	/**
+	 * Permet de nettoyer les proprétées inutilisées
+	 * du dictionnaire.
+	 */
+	#cleanDictionaryData() {
+		delete this._matchType[this._currentVariableName];
+		delete this._matchSignification[this._currentVariableName];
+	}
+
+	/**
+	 * Permet de mettre à jour la variable séléectionnée
+	 * avec les informations saisies par l'utilisateur.
+	 */
+	#updateSelectedRowValues() {
+		let allTds = document.getElementById(this._currentRow).children;
+		for (let i = 0; i < allTds.length; i++) {
+			allTds[i].textContent =
+				document.getElementById("dico-inputs").children[i].value;
+		}
+	}
+
+	/**
+	 * Permet de supprimer une variable, dans le dictionnaire
+	 * mais aussi au niveau de l'algorithme.
+	 */
+	#removeVariable() {
+		document
+			.querySelector("plan-travail")
+			.renameInformation(this._currentVariableName, this.VARIABLE_SUPPR);
+
+		this.#cleanDictionaryData();
+		console.log(this._currentVariableName);
+
+		this._mesInformations.splice(
+			this._mesInformations.findIndex(
+				(info) => info._nom === this._currentVariableName,
+			),
+			1,
+		);
+
+		this.#resetInputsText();
+		this.fermer();
+		this.ouvrir();
+	}
+
+	/**
+	 * Permet de réinitialiser les inputs du dictionnaire
+	 * en effaçant les données de chaque inputs.
+	 */
+	#resetInputsText() {
+		for (
+			let i = 0;
+			i < document.getElementById("dico-inputs").children.length;
+			i++
+		) {
+			document.getElementById("dico-inputs").children[i].value = "";
+		}
+	}
+
+	/**
+	 * Permet de déverrouiller le bouton de validation
+	 */
+	#enableValidBtn() {
+		if (this._validInputs != undefined) {
+			console.log("enable");
+
+			this._validInputs.removeAttribute("disabled");
+		}
+	}
+
+	/**
+	 * Permet de verrouiller le bouton de validation
+	 */
+	#disableValidBtn() {
+		if (this._validInputs != undefined) {
+			this._validInputs.setAttribute("disabled", true);
+		}
+	}
+
+	/**
+	 * Permet de vérifier si tout les inputs du dictionnaire
+	 * sont conforme au format que l'application attend.
+	 * Format défini par des regex.
+	 * Si conforme alors on déverrouille le bouton de validation,
+	 * Sinon on le verrouille.
+	 */
+	#checkInputsAreValid() {
+		if (this._inputsValid.includes(false)) {
+			this.#disableValidBtn();
+		} else {
+			this.#enableValidBtn();
+		}
+	}
+
+	/**
+	 * Permet de mettre à jour la liste des types
+	 * proposée à l'utilisateur dans le champ réservé
+	 * à la définition du type de la variable.
+	 */
+	#populateTypeChoice() {
+		this.querySelector("datalist").innerHTML = "";
+
+		Type.allTypes.forEach((type) => {
+			this.querySelector(
+				"datalist",
+			).innerHTML += `<option value="${type}"></option>`;
+		});
+	}
+
+	/**
+	 * Permet de lancer l'écouteur d'évenment sur l'input
+	 * dédié à la modification du type de la variable.
+	 */
+	#launchInputTypeListener() {
+		this._inputType.addEventListener("input", (e) => {
+			let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
+			if (regex.test(e.target.value)) {
+				this._inputsValid[1] = true;
+				document.getElementById("inputs-error").textContent = "";
+			} else {
+				this._inputsValid[1] = false;
+				this._errorMsg =
+					"Le type ne peut pas contenir de nombre et de caractères spéciaux";
+				document.getElementById("inputs-error").textContent =
+					this._errorMsg;
+			}
+
+			this.#checkInputsAreValid();
+		});
+	}
+
+	/**
+	 * Permet de lancer l'écouteur d'évenment sur l'input
+	 * dédié à la modification de la signification de la variable.
+	 */
+	#launchInputSignificationListener() {
+		this._inputSignification.addEventListener("input", (e) => {
+			if (e.target.value.trim() != "") {
+				this._inputsValid[2] = true;
+				document.getElementById("inputs-error").textContent = "";
+			} else {
+				this._inputsValid[2] = false;
+				this._errorMsg = "La signification ne peut pas être vide";
+				document.getElementById("inputs-error").textContent =
+					this._errorMsg;
+			}
+
+			this.#checkInputsAreValid();
+		});
+	}
+
+	/**
+	 * Permet de lancer l'écouteur d'évenment sur l'input
+	 * dédié à la modification du nom de la variable.
+	 */
+	#launchInputNameListener() {
+		this._inputName.addEventListener("input", (e) => {
+			let regex = /^[a-zA-Z0-9\-\_]{2,60}$/g;
+			if (regex.test(e.target.value)) {
+				this._inputsValid[0] = true;
+				document.getElementById("inputs-error").textContent = "";
+			} else {
+				this._inputsValid[0] = false;
+				this._errorMsg =
+					"Le nom ne peut pas contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf - et _ ";
+				document.getElementById("inputs-error").textContent =
+					this._errorMsg;
+			}
+
+			this.#checkInputsAreValid();
+		});
+	}
+
+	/**
+	 * Permet de lancer l'écouteur d'évenment sur le
+	 * bouton dédié à la validation de la modification
+	 * d'une variable.
+	 */
+	#launchValidBtnListener() {
+		this._validInputs.addEventListener("click", () => {
+			this.#updateSelectedRowValues();
+			this.#updateVariableInAlgo();
+			this.#resetInputsText();
+
+			// Suppression des bordures sur la ligne sélectionnée
+			document.getElementById(this._currentRow).removeAttribute("class");
+		});
+	}
+
+	/**
+	 * Permet de déclencher tout les écouteurs d'évenements
+	 * liés au différents éléments HTML du dictionnaire afin
+	 * de mettre à jour dynamiquement ses données.
+	 */
+	#launchListeners() {
+		setTimeout(() => {
+			this._closeBtn = document.getElementById("dico-close");
+			this._refreshBtn = document.getElementById("dico-refresh");
+			this._tableBody = document.querySelector("#dico-table>tbody");
+			this._validInputs = document.getElementById("valid-inputs");
+			this._removeInputs = document.getElementById("remove-inputs");
+			this._inputName = document.getElementById("inputs-name");
+			this._inputType = document.getElementById("inputs-type");
+			this._inputSignification = document.getElementById(
+				"inputs-signification",
+			);
+
+			this._closeBtn.addEventListener("click", (e) => {
+				e.stopPropagation();
+				this.fermer();
+			});
+
+			this._refreshBtn.addEventListener("click", (e) => {
+				e.stopPropagation();
+				setTimeout(() => {
+					this.fermer();
+					this.ouvrir();
+				}, 200);
+			});
+
+			this._tableBody.addEventListener("click", (e) => {
+				this.#handleSelectedRow(e.target);
+				this.#insertSelectedRowTextOnInputs(this._currentRow);
+			});
+
+			this.#launchValidBtnListener();
+			// TODO: Voir avec jokin pour virer css min-width ligne 1578 (bug d'affichage)
+			this._removeInputs.addEventListener("click", () => {
+				if (
+					window.confirm(
+						"Voulez-vous vraiment supprimer cette variable?",
+					)
+				) {
+					this.#removeVariable();
+				}
+			});
+
+			this.#launchInputNameListener();
+			this.#launchInputTypeListener();
+			this.#launchInputSignificationListener();
+		}, 500);
+	}
+
+	/**
+	 * Permet d'ouvrir le dictionnaire de données,
+	 * il sera alors construit et généré à la volée.
+	 */
+	ouvrir() {
+		if (this._estOuvert) {
+			this.fermer();
+		} else {
+			this.style.transform = "scale(1)";
+			document.querySelector("bibliotheque-algorithmique").fermer();
+			document.getElementById("dico_wrapper").style.zIndex = 200;
+			document
+				.querySelector("editeur-interface")
+				._planActif.effectuerDictionnaireDesDonnee();
+
+			this.classList.add("ouvert");
+			this._tableBody.innerHTML = "";
+			this.genererDictionnaire();
+			this._estOuvert = true;
+		}
+	}
+
+	/**
+	 * Permet de fermer le dictionnaire.
+	 */
+	fermer() {
+		this.style.transform = "scale(0)";
+		document.getElementById("dico_wrapper").style.zIndex = -200;
+		document.getElementById("biblio_btn").removeAttribute("disabled");
+		this.classList.remove("ouvert");
+		this._estOuvert = false;
+	}
+
+	/**
+	 * Permet de générer le dictionnaire de données
+	 * à partir des variables définies dans l'algorithme
+	 * et stockées dans this._mesInformations.
+	 */
+	genererDictionnaire() {
+		let index = 0;
+		for (let info of this._mesInformations) {
+			const clone = this._template.content.cloneNode(true);
+
+			let tr = clone.querySelector("tr");
+			tr.setAttribute("id", `var_${index}`);
+			let td = clone.querySelectorAll("td");
+
+			td[0].textContent = `${info._nom}`;
+			if (this._matchType[info._nom] != undefined) {
+				td[1].textContent = this._matchType[info._nom];
+			} else {
+				td[1].textContent = "Non défini";
+			}
+
+			if (this._matchSignification[info._nom] != undefined) {
+				td[2].textContent = this._matchSignification[info._nom];
+			} else {
+				td[2].textContent = "Non défini";
+			}
+
+			this._tableBody.appendChild(clone);
+			index++;
+		}
+
+		this.#populateTypeChoice();
+	}
+
+	/**
+	 * Permet d'ajouter une nouvelle information, en
+	 * s'assurant que son nom et son type sont correct.
+	 * @param {Information} uneInformation
+	 * @returns Boolean
 	 */
 	AjouterUneVariable(uneInformation) {
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
 			return false;
 		}
 		let reussis = false;
-		const nameInformation = uneInformation._nom;
+		const nameInformation = uneInformation._nom.trim();
 		if (uneInformation instanceof Information) {
 			if (this.nomCorrecte(nameInformation)) {
 				if (this.containInformation(nameInformation)) {
@@ -276,8 +540,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Retire les informations absentes de la liste donnée.
-	 * @param {Array} listeInformations - La liste des informations présentes.
+	 * Permet de retirer les informations absentes pour
+	 * nettoyer le tableau des informations qui ne sont plus
+	 * utilisés
+	 * @param {Array<Information>} listeInformations
 	 */
 	retirerInformationsAbsentes(listeInformations) {
 		for (let info of this._mesInformations) {
@@ -288,9 +554,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Retire une information du dictionnaire.
-	 * @param {string} nameVariable - Le nom de la variable à retirer.
-	 * @returns {boolean} - Retourne vrai si la suppression a réussi.
+	 * Permet avec le nom d'une information de la retirer
+	 * du tableau this._mesInformations.
+	 * @param {String} nameVariable
+	 * @returns Boolean
 	 */
 	retirerUneInformation(nameVariable) {
 		this._mesInformations = this._mesInformations.filter(
@@ -300,10 +567,11 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Vérifie si deux types sont compatibles.
-	 * @param {string} type1 - Le premier type.
-	 * @param {string} type2 - Le deuxième type.
-	 * @returns {boolean} - Retourne vrai si les types sont compatibles.
+	 * Permet de vérifier si les types passés en paramètres
+	 * sont compatibles avec les types acceptés par l'application.
+	 * @param {String} type1
+	 * @param {String} type2
+	 * @returns Boolean
 	 */
 	TypeCompatible(type1, type2) {
 		if (type1 == undefined || type2 == undefined) {
@@ -335,10 +603,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Convertit une variable d'un type à un autre.
-	 * @param {string} informationUne - Le premier type.
-	 * @param {string} InformationDeux - Le deuxième type.
-	 * @returns {string} - Le type résultant de la conversion.
+	 *
+	 * @param {Information} informationUne
+	 * @param {Information} InformationDeux
+	 * @returns
 	 */
 	convertionVariable(informationUne, InformationDeux) {
 		// undefined
@@ -368,10 +636,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Obtient le type le plus bas en commun entre deux types.
-	 * @param {string} type1 - Le premier type.
-	 * @param {string} type2 - Le deuxième type.
-	 * @returns {string} - Le type le plus bas en commun.
+	 *
+	 * @param {String} type1
+	 * @param {String} type2
+	 * @returns
 	 */
 	getTypeLePlusBasEnCommun(type1, type2) {
 		let courant = type1;
@@ -398,9 +666,9 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Vérifie si le dictionnaire contient une information donnée.
-	 * @param {string} nameInformation - Le nom de l'information.
-	 * @returns {boolean} - Retourne vrai si l'information est présente.
+	 *
+	 * @param {String} nameInformation
+	 * @returns Boolean
 	 */
 	containInformation(nameInformation) {
 		let trouver = false;
@@ -413,9 +681,9 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Obtient une information par son nom.
-	 * @param {string} nameInformation - Le nom de l'information.
-	 * @returns {Information} - L'information trouvée.
+	 *
+	 * @param {String} nameInformation
+	 * @returns Information
 	 */
 	getInformation(nameInformation) {
 		const foundElement = this._mesInformations.find(
@@ -425,10 +693,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Renomme une variable.
-	 * @param {string} nameVariable - Le nom actuel de la variable.
-	 * @param {string} newName - Le nouveau nom de la variable.
-	 * @returns {boolean} - Retourne vrai si le renommage a réussi.
+	 *
+	 * @param {String} nameVariable
+	 * @param {String} newName
+	 * @returns Boolean
 	 */
 	renameInformation(nameVariable, newName) {
 		let resultat = false;
@@ -448,10 +716,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Change la signification d'une variable.
-	 * @param {string} nameVariable - Le nom de la variable.
-	 * @param {string} nouvelleSignification - La nouvelle signification.
-	 * @returns {boolean} - Retourne vrai si le changement a réussi.
+	 *
+	 * @param {String} nameVariable
+	 * @param {String} nouvelleSignification
+	 * @returns Boolean
 	 */
 	changeSignification(nameVariable, nouvelleSignification) {
 		let resultat = false;
@@ -465,10 +733,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Change le type d'une variable.
-	 * @param {string} nameVariable - Le nom de la variable.
-	 * @param {string} newType - Le nouveau type.
-	 * @returns {boolean} - Retourne vrai si le changement a réussi.
+	 *
+	 * @param {String} nameVariable
+	 * @param {String} newType
+	 * @returns
 	 */
 	changeType(nameVariable, newType) {
 		let resultat = false;
@@ -482,29 +750,17 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Vérifie si un nom de variable est correct.
-	 * @param {string} nameVariable - Le nom de la variable.
-	 * @returns {boolean} - Retourne vrai si le nom est correct.
+	 *
+	 * @param {String} nameVariable
+	 * @returns Boolean
 	 */
 	nomCorrecte(nameVariable) {
-		let resultat = true;
-		if (nameVariable.trim() == "") {
-			resultat = false;
-		}
-		for (let char of nameVariable) {
-			if (
-				!(char >= "a" && char <= "z") &&
-				!(char >= "A" && char <= "Z") &&
-				char !== "_"
-			) {
-				resultat = false;
-			}
-		}
-		return resultat;
+		let regex = /^[a-zA-Z0-9\-\_]{1,60}$/g;
+		return regex.test(nameVariable.trim());
 	}
 
 	/**
-	 * Supprime les données inutilisées.
+	 *
 	 */
 	suppressionDonneeInutiliser() {
 		this._mesInformations = this._mesInformations.filter((element) => {
@@ -517,15 +773,15 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Supprime toutes les informations du dictionnaire.
+	 *
 	 */
 	suppressionTout() {
 		this._mesInformations = [];
 	}
 
 	/**
-	 * Convertit le dictionnaire en JSON.
-	 * @returns {Object} - L'objet JSON représentant le dictionnaire.
+	 *
+	 * @returns
 	 */
 	toJSON() {
 		return {
@@ -536,8 +792,10 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Exporte le dictionnaire dans un format donné.
-	 * @param {string} format - Le format d'exportation (xls, csv, md).
+	 * Permet d'exporter le dictionnaire de données
+	 * au format souhaité. Le type de format souhaité
+	 * est passé en paramètre sous forme de chaine de caractères
+	 * @param {String} format
 	 */
 	exporter(format) {
 		switch (format.toLowerCase()) {
@@ -660,8 +918,8 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Charge le dictionnaire depuis un objet JSON.
-	 * @param {Object} json - L'objet JSON contenant les données.
+	 *
+	 * @param {JSON} json
 	 */
 	chargerDepuisJSON(json) {
 		this._matchType = json.types;
@@ -669,9 +927,9 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
-	 * Convertit une chaîne CSV en Markdown.
-	 * @param {string} csvString - La chaîne CSV.
-	 * @returns {string} - La chaîne Markdown.
+	 *
+	 * @param {String} csvString
+	 * @returns
 	 */
 	csvToMarkdown(csvString) {
 		const rows = csvString.split("\n").filter((row) => row); // On sépare les lignes et ne gardons pas les lignes vides
