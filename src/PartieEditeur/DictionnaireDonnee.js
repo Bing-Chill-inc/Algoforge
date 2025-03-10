@@ -46,6 +46,9 @@ class DictionnaireDonnee extends HTMLElement {
 		this._template = document.getElementById("dico-row");
 		this.#createHtmlTable();
 		this.#launchListeners();
+
+		this._matchSignification = {};
+		this._matchType = {};
 	}
 
 	/**
@@ -475,6 +478,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 * et stockées dans this._mesInformations.
 	 */
 	genererDictionnaire() {
+		if (!this._matchType) this._matchType = {};
+		if (!this._matchSignification) this._matchSignification = {};
+
 		let index = 0;
 		for (let info of this._mesInformations) {
 			const clone = this._template.content.cloneNode(true);
