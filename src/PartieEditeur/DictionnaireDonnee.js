@@ -123,6 +123,8 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateTypeList(type) {
 		if (!Type.allTypes.includes(type)) {
+			console.log(Type.allTypes);
+
 			Type.allTypes.push(type);
 		}
 	}
@@ -291,6 +293,8 @@ class DictionnaireDonnee extends HTMLElement {
 	 * à la définition du type de la variable.
 	 */
 	#populateTypeChoice() {
+		this.querySelector("datalist").innerHTML = "";
+
 		Type.allTypes.forEach((type) => {
 			this.querySelector(
 				"datalist",
