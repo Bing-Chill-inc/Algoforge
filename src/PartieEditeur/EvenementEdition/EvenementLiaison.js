@@ -37,6 +37,11 @@ class EvenementLiaison extends EvenementEdition {
 	 */
 	retablir() {
 		if (verbose) console.log("Rétablissement de l'événement de liaison");
-		this._elementConcerne._elemParent.lierEnfant(this._elementEnfant, true);
+		setTimeout(() => {
+			this._elementConcerne._elemParent.lierEnfant(
+				this._elementEnfant,
+				true,
+			);
+		}, 16);
 	}
 }
