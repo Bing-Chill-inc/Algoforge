@@ -805,42 +805,6 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	exporter(format) {
 		switch (format.toLowerCase()) {
-			case "xls":
-				this.ouvrir();
-				// Code snippet de la doc de SheetJS
-				let aoa = [["Nom", "Type", "Signification"]];
-
-				this._mesInformations.forEach((info) => {
-					aoa.push([
-						info._nom,
-						`${
-							this._matchType[info._nom]
-								? this._matchType[info._nom]
-								: info._type
-						}`,
-						this._matchSignification[info._nom]
-							? this._matchSignification[info._nom]
-							: "",
-					]);
-				});
-				/* Create worksheet from Array of arrays */
-				var ws = XLSX.utils.aoa_to_sheet(aoa);
-
-				// Create a new workbook
-				var wb = XLSX.utils.book_new();
-
-				// Append the worksheet to the workbook
-				XLSX.utils.book_append_sheet(wb, ws, "Dictionnaire"); // "Dictionnaire" is the worksheet name
-
-				/* Export to file (start a download) */
-				XLSX.writeFile(
-					wb,
-					`${
-						document.querySelector("#titreAlgo").innerText
-					}Dictionnaire.xls`,
-				);
-				this.fermer();
-				break;
 			case "csv":
 				// On crée le contenu du fichier
 				var contenuTexte = "Nom;Type;Signification\n";
@@ -848,10 +812,14 @@ class DictionnaireDonnee extends HTMLElement {
 				this.fermer();
 
 				this._mesInformations.forEach((info) => {
-					contenuTexte += `${info._nom};${info._type};${
+					contenuTexte += `${info._nom};${
+						this._matchType[info._nom]
+							? this._matchType[info._nom]
+							: "Non défini"
+					};${
 						this._matchSignification[info._nom]
 							? this._matchSignification[info._nom]
-							: ""
+							: "Non défini"
 					}\n`;
 				});
 
@@ -885,10 +853,14 @@ class DictionnaireDonnee extends HTMLElement {
 				this.fermer();
 
 				this._mesInformations.forEach((info) => {
-					contenuTexte += `${info._nom};${info._type};${
+					contenuTexte += `${info._nom};${
+						this._matchType[info._nom]
+							? this._matchType[info._nom]
+							: "Non défini"
+					};${
 						this._matchSignification[info._nom]
 							? this._matchSignification[info._nom]
-							: ""
+							: "Non défini"
 					}\n`;
 				});
 

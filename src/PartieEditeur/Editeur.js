@@ -516,13 +516,6 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(sousTitreDictionnaire);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(".xls", () => {
-				if (verbose) console.log("Exporter en .xls");
-				this._dictionnaireDesDonnees.exporter("xls");
-			}),
-		);
-
-		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
 				if (verbose) console.log("Exporter en .csv");
 				this._dictionnaireDesDonnees.exporter("csv");
