@@ -1779,6 +1779,7 @@ procedure-element > div.containerDPR > div.nom::before {
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: none;
 	background-color: var(--bgColor);
+	z-index: -1;
 }
 
 procedure-element > div.containerDPR > div.nom::after {
@@ -1790,6 +1791,7 @@ procedure-element > div.containerDPR > div.nom::after {
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: none;
 	background-color: var(--bgColor);
+	z-index: -1;
 }
 
 procedure-element > div.containerDPR > div.resultat {
