@@ -1116,43 +1116,59 @@ class Editeur extends HTMLElement {
 								"pointePourLien",
 							);
 							this._pointePrecedementLien = null;
-						} else {
-							// Les éléments sont différents, la connexion peut être faite
-							// Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
-							if (verbose)
-								console.log(
-									`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`,
-								);
-							let parentRelation, enfantRelation;
+							return;
+						}
+
+						if (
+							this._pointePrecedementLien instanceof Condition &&
+							maTarget instanceof Condition
+						) {
+							// On vérifie si les conditions ne sont pas dans la même structure
 							if (
-								parseFloat(
-									this._pointePrecedementLien._ordonnee,
-								) < parseFloat(maTarget._ordonnee)
+								this._pointePrecedementLien._structure ==
+								maTarget._structure
 							) {
-								parentRelation = this._pointePrecedementLien;
-								enfantRelation = maTarget;
-							} else {
-								parentRelation = maTarget;
-								enfantRelation = this._pointePrecedementLien;
-							}
-
-							// On crée la relation
-							// Si le fils est une condition, le lien doit se faire avec sa structure
-							if (enfantRelation instanceof Condition) {
-								enfantRelation = enfantRelation._structure;
-							}
-
-							// On crée le lien
-							parentRelation._elemParent.lierEnfant(
-								enfantRelation,
-							);
-
-							if (!e.shiftKey) {
 								this._pointePrecedementLien.classList.remove(
 									"pointePourLien",
 								);
-								this._pointePrecedementLien = null;
+								this._pointePrecedementLien = maTarget;
+								maTarget.classList.add("pointePourLien");
+								return;
 							}
+						}
+
+						// Les éléments sont différents, la connexion peut être faite
+						// Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
+						if (verbose)
+							console.log(
+								`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`,
+							);
+						let parentRelation, enfantRelation;
+						if (
+							parseFloat(this._pointePrecedementLien._ordonnee) <
+							parseFloat(maTarget._ordonnee)
+						) {
+							parentRelation = this._pointePrecedementLien;
+							enfantRelation = maTarget;
+						} else {
+							parentRelation = maTarget;
+							enfantRelation = this._pointePrecedementLien;
+						}
+
+						// On crée la relation
+						// Si le fils est une condition, le lien doit se faire avec sa structure
+						if (enfantRelation instanceof Condition) {
+							enfantRelation = enfantRelation._structure;
+						}
+
+						// On crée le lien
+						parentRelation._elemParent.lierEnfant(enfantRelation);
+
+						if (!e.shiftKey) {
+							this._pointePrecedementLien.classList.remove(
+								"pointePourLien",
+							);
+							this._pointePrecedementLien = null;
 						}
 					}
 				}
