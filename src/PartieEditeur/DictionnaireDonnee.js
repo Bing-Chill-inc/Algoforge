@@ -513,7 +513,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * Permet d'ajouter une nouvelle information, en
 	 * s'assurant que son nom et son type sont correct.
 	 * @param {Information} uneInformation
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	AjouterUneVariable(uneInformation) {
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
@@ -563,7 +563,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * Permet avec le nom d'une information de la retirer
 	 * du tableau this._mesInformations.
 	 * @param {String} nameVariable
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	retirerUneInformation(nameVariable) {
 		this._mesInformations = this._mesInformations.filter(
@@ -577,7 +577,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * sont compatibles avec les types acceptés par l'application.
 	 * @param {String} type1
 	 * @param {String} type2
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	TypeCompatible(type1, type2) {
 		if (type1 == undefined || type2 == undefined) {
@@ -612,7 +612,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {Information} informationUne
 	 * @param {Information} InformationDeux
-	 * @returns
+	 * @returns {String}
 	 */
 	convertionVariable(informationUne, InformationDeux) {
 		// undefined
@@ -645,7 +645,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {String} type1
 	 * @param {String} type2
-	 * @returns
+	 * @returns {String}
 	 */
 	getTypeLePlusBasEnCommun(type1, type2) {
 		let courant = type1;
@@ -674,7 +674,7 @@ class DictionnaireDonnee extends HTMLElement {
 	/**
 	 *
 	 * @param {String} nameInformation
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	containInformation(nameInformation) {
 		let trouver = false;
@@ -689,7 +689,7 @@ class DictionnaireDonnee extends HTMLElement {
 	/**
 	 *
 	 * @param {String} nameInformation
-	 * @returns Information
+	 * @returns {Information}
 	 */
 	getInformation(nameInformation) {
 		const foundElement = this._mesInformations.find(
@@ -702,7 +702,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {String} nameVariable
 	 * @param {String} newName
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	renameInformation(nameVariable, newName) {
 		let resultat = false;
@@ -725,7 +725,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {String} nameVariable
 	 * @param {String} nouvelleSignification
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	changeSignification(nameVariable, nouvelleSignification) {
 		let resultat = false;
@@ -742,7 +742,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {String} nameVariable
 	 * @param {String} newType
-	 * @returns
+	 * @returns {Boolean}
 	 */
 	changeType(nameVariable, newType) {
 		let resultat = false;
@@ -758,7 +758,7 @@ class DictionnaireDonnee extends HTMLElement {
 	/**
 	 *
 	 * @param {String} nameVariable
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	nomCorrecte(nameVariable) {
 		let regex = /^[a-zA-Z0-9\-\_]{1,60}$/g;
@@ -787,7 +787,7 @@ class DictionnaireDonnee extends HTMLElement {
 
 	/**
 	 *
-	 * @returns
+	 * @returns {{typeElement: "DictionnaireDonnee", types: Object, signification: Object}}
 	 */
 	toJSON() {
 		return {
@@ -907,7 +907,7 @@ class DictionnaireDonnee extends HTMLElement {
 	/**
 	 *
 	 * @param {String} csvString
-	 * @returns
+	 * @returns {String}
 	 */
 	csvToMarkdown(csvString) {
 		const rows = csvString.split("\n").filter((row) => row); // On sépare les lignes et ne gardons pas les lignes vides
