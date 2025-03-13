@@ -26,7 +26,7 @@ class Probleme extends ElementGraphique {
 	constructor(
 		abscisse = 0,
 		ordonnee = 0,
-		libelle = "",
+		libelle = " ", // Espacement insécable, pour que le navigateur sache où placer le curseur
 		listeDonnes = [],
 		listeResultats = [],
 		elemParent = new ElementParent(),
@@ -321,7 +321,7 @@ class Probleme extends ElementGraphique {
 		this.divNom = document.createElement("div");
 		this.divNom.className = "nom";
 		this.divNom.contentEditable = "true";
-		this.divNom.innerHTML = this._libelle;
+		this.divNom.innerText = this._libelle;
 		divContainerDPR.appendChild(this.divNom);
 
 		this.divNom.addEventListener("focusout", (e) => {
