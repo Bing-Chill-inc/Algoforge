@@ -1,9 +1,4 @@
 :root {
-	--border: 2;
-	--size: 400;
-	--bg-spot-opacity: 0.022;
-	--spread: 20;
-	--outer: 1;
 	--font-size1: 1.4rem;
 	--font-size2: 1.2rem;
 	--font-size3: 1rem;
@@ -411,8 +406,10 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition:
+		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out,
+		scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -871,7 +868,10 @@ bibliotheque-algorithmique
 	cursor: grab;
 	padding-left: 20px;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -902,9 +902,12 @@ bibliotheque-algorithmique
 	font-size: 20px;
 	line-height: 20px;
 	color: var(--color-icon-drag);
-	text-shadow: 0px -5px var(--color-icon-drag),
-		0px -10px var(--color-icon-drag), -5px -10px var(--color-icon-drag),
-		-5px -5px var(--color-icon-drag), -5px 0px var(--color-icon-drag);
+	text-shadow:
+		0px -5px var(--color-icon-drag),
+		0px -10px var(--color-icon-drag),
+		-5px -10px var(--color-icon-drag),
+		-5px -5px var(--color-icon-drag),
+		-5px 0px var(--color-icon-drag);
 }
 
 .algorithmeBibliotheque:hover::after {
@@ -1144,7 +1147,10 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -1156,7 +1162,10 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -2739,21 +2748,14 @@ button,
 	transition: all 0.5s ease;
 }
 
-/* Glow specific styles */
+/* === GLOW EFFECT === */
 
 [data-glow].active {
-	--border-size: calc(var(--border, 2) * 1px);
-	--spotlight-size: calc(var(--size, 150) * 1px);
+	--spread: 20;
+	--bg-spot-opacity: 0;
+	--border-size: 2px;
+	--spotlight-size: 30dvw;
 	--hue: calc(var(--baseGlowColor) + (var(--xp, 0) * var(--spread, 0)));
-	background-image: radial-gradient(
-		var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px)
-			calc(var(--y, 0) * 1px),
-		hsl(
-			var(--hue, 210) calc(var(--saturation, 100) * 1%)
-				calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)
-		),
-		transparent
-	);
 }
 
 [data-glow].active::before,
@@ -2764,18 +2766,19 @@ button,
 	inset: calc(var(--border-size) * -1);
 	border: var(--border-size) solid transparent;
 	border-radius: 0.8em;
+
 	background-attachment: fixed;
 	background-size: calc(100% + (2 * var(--border-size)))
 		calc(100% + (2 * var(--border-size)));
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
+
 	mask: linear-gradient(transparent, transparent),
 		linear-gradient(white, white);
 	mask-clip: padding-box, border-box;
 	mask-composite: intersect;
 }
 
-/* This is the emphasis light */
 [data-glow].active::before {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
@@ -2788,7 +2791,7 @@ button,
 	);
 	filter: brightness(1.5);
 }
-/* This is the spotlight */
+
 [data-glow].active::after {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
@@ -2797,6 +2800,7 @@ button,
 		transparent 100%
 	);
 }
+
 menu-deroulant {
 	background-color: rgba(28, 39, 51, 0.35);
 	border: 1px solid var(--borderColor);
@@ -2806,7 +2810,9 @@ menu-deroulant {
 /* Dock animation style */
 .dock-item {
 	cursor: pointer;
-	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transition:
+		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+		margin 0.8s;
 	transform-origin: bottom;
 }
 
