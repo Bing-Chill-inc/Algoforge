@@ -429,25 +429,17 @@
 					</div>
 				</div>
 			</div>
-			<div data-glow id="espacePrincipal_wrapper">
-				<svg width="0" height="0">
-					<defs>
-					  <mask id="mask" x="0" y="0" width="100%" height="100%">
-						<!-- Première partie (transparent) -->
-						<rect x="0" y="0" width="100%" height="100%" fill="white" />
-						<!-- Deuxième partie (blanc) -->
-						<rect x="0" y="0" width="100%" height="100%" fill="black" />
-					  </mask>
-					</defs>
-				  </svg>
-				<h1 id="titreAlgo_wrapper">
-					<span contenteditable="true" id="titreAlgo"
-						>Titre de l'algorithme</span
-					><span class="crayon">✎</span>
-				</h1>
-				<plan-travail data-glow id="espacePrincipal"></plan-travail>
-				<div data-glow id="dico_wrapper" style="z-index: -200"></div>
-				<div id="biblio_wrapper" style="z-index: -300"></div>
+			<div data-glow class="glow-wrapper">
+				<div id="espacePrincipal_wrapper">
+					<h1 id="titreAlgo_wrapper">
+						<span contenteditable="true" id="titreAlgo"
+							>Titre de l'algorithme</span
+						><span class="crayon">✎</span>
+					</h1>
+					<plan-travail id="espacePrincipal"></plan-travail>
+					<div id="dico_wrapper" style="z-index: -200"></div>
+					<div id="biblio_wrapper" style="z-index: -300"></div>
+				</div>
 			</div>
 		</editeur-interface>
 		<form id="transferForm" method="post" target="_blank">
@@ -495,10 +487,7 @@
 							: defaultValue;
 				};
 
-				preferences.glow = getCookieBool(
-					"glow",
-					navigator.userAgent.includes("Chrome"),
-				);
+				preferences.glow = getCookieBool("glow", true);
 				preferences.dockEffect = getCookieBool("dockEffect", true);
 
 				if (isExam) {
@@ -509,7 +498,6 @@
 				updateGlowState();
 			};
 
-			// Gestion de l'état actif/inactif au survol
 			const toggleGlowOnHover = (element) => {
 				element.addEventListener(
 					"mouseenter",
@@ -532,7 +520,6 @@
 				};
 			};
 
-			// Synchronisation de la position du pointeur avec les variables CSS (throttlée)
 			const syncPointer = throttle(({ x, y }) => {
 				const root = document.documentElement;
 				root.style.setProperty("--x", x.toFixed(2));
@@ -545,7 +532,7 @@
 					"--yp",
 					(y / window.innerHeight).toFixed(2),
 				);
-			}, 20); // ⚙️ Limite à une mise à jour toutes les 20ms (50fps, ajustable)
+			}, 17); // 17ms / 60fps
 
 			document.addEventListener("DOMContentLoaded", () => {
 				toggleGlowOnHover(box);
