@@ -640,14 +640,14 @@ class Editeur extends HTMLElement {
 
 		// Aide
 		this._menuDeroulantAide.ajouterElementMenu(
-			new ElementMenu(
-				"Tutoriels",
-				() => {
-					if (verbose) console.log("Tutoriels");
-					this._modaleNonImp.ouvrir();
-				},
-				false,
-			),
+			new ElementMenu("Tutoriels", () => {
+				if (verbose) console.log("Tutoriels");
+				// Open a new tab with the tutorials (wiki.<current_domain>)
+				window.open(
+					`https://wiki.${window.location.hostname}`,
+					"_blank",
+				);
+			}),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
