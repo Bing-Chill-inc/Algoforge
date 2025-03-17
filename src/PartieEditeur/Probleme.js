@@ -11,6 +11,9 @@ class Probleme extends ElementGraphique {
 	_listeResultats; // Liste d'Information
 	_elemParent; // ElementParent (liste des enfants)
 	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_espacePrincipalWrapper = document.querySelector(
+		"#espacePrincipal_wrapper",
+	); // Espace principal
 	_sousPlan = null; // SousPlanTravail
 
 	// CONSTRUCTEUR
@@ -773,7 +776,7 @@ class Probleme extends ElementGraphique {
 			});
 			this.appendChild(buttonOuvrir);
 			this._sousPlan = new SousPlanTravail(this);
-			editeur.appendChild(this._sousPlan);
+			this._espacePrincipalWrapper.appendChild(this._sousPlan);
 
 			let json = [this.toJSON()];
 

@@ -437,8 +437,8 @@
 						><span class="crayon">✎</span>
 					</h1>
 					<plan-travail id="espacePrincipal"></plan-travail>
-					<div id="dico_wrapper" style="z-index: -200"></div>
-					<div id="biblio_wrapper" style="z-index: -300"></div>
+					<div id="dico_wrapper" style="display: none"></div>
+					<div id="biblio_wrapper" style="display: none"></div>
 				</div>
 			</div>
 		</editeur-interface>
@@ -460,10 +460,10 @@
 			}
 
 			const editeur = document.querySelector("editeur-interface");
-			const verbose = true;
+			const verbose = false;
 			let titreAlgo = document.getElementById("titreAlgo");
 
-			const box = document.querySelector("[data-glow]");
+			const dataGlowElement = document.querySelector("[data-glow]");
 
 			const preferences = {
 				glow: false,
@@ -472,7 +472,7 @@
 			};
 
 			const updateGlowState = () => {
-				if (!preferences.glow) box.classList.remove("active");
+				if (!preferences.glow) dataGlowElement.classList.remove("active");
 			};
 
 			const loadPreferences = async () => {
@@ -496,16 +496,6 @@
 				}
 
 				updateGlowState();
-			};
-
-			const toggleGlowOnHover = (element) => {
-				element.addEventListener(
-					"mouseenter",
-					() => preferences.glow && box.classList.add("active"),
-				);
-				element.addEventListener("mouseleave", () =>
-					box.classList.remove("active"),
-				);
 			};
 
 			// Throttle: limite la fréquence d'exécution de la fonction
@@ -532,16 +522,21 @@
 					"--yp",
 					(y / window.innerHeight).toFixed(2),
 				);
+
+				const rect = dataGlowElement.getBoundingClientRect();
+				if (
+					(x >= rect.left &&
+					x <= rect.right &&
+					y >= rect.top &&
+					y <= rect.bottom) && preferences.glow
+				) {
+					dataGlowElement.classList.add("active");
+				} else {
+					dataGlowElement.classList.remove("active");
+				}
 			}, 17); // 17ms / 60fps
 
 			document.addEventListener("DOMContentLoaded", () => {
-				toggleGlowOnHover(box);
-
-				const childDiv = document.querySelector(
-					".barreOutilsHorizontale",
-				);
-				if (childDiv) toggleGlowOnHover(childDiv);
-
 				document.body.addEventListener("pointermove", syncPointer);
 
 				loadPreferences();

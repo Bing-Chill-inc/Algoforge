@@ -517,7 +517,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 #biblio_wrapper {
 	position: absolute;
 	top: 45px;
-	left: 20px;
+	left: 30px;
 	border: none;
 	border-radius: 0.8em;
 }
@@ -1480,21 +1480,22 @@ plan-travail {
 }
 
 #espacePrincipal_wrapper {
-	width: calc(100% - 1px);
-	height: calc(100% - 1px);
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
 	align-content: center;
 	align-self: center;
 	background-color: var(--bgColorSecondary);
-	border-radius: 0.8em;
+	border-radius: 0.6em;
+	overflow: hidden;
 	z-index: 1;
 }
 
 sous-plan-travail {
-	width: calc(100% - 40px);
-	height: calc(100% - 120px);
+	width: calc(100% - 4px);
+	height: calc(100% - 36px);
 	position: absolute;
-	top: 100px;
-	left: 19px;
+	top: 34px;
+	left: 2px;
 	overflow: scroll;
 	scale: 0;
 	background-color: var(--bgColorSecondary);
@@ -2760,14 +2761,16 @@ button,
 	position: relative;
 	background-color: var(--borderColor);
 	border-radius: 0.8em;
-	z-index: 0;
+	overflow: hidden;
 }
 
 [data-glow].active {
 	--spread: 20;
-	--bg-spot-opacity: 0;
 	--border-size: 2px;
 	--spotlight-size: 30dvw;
+	--border-light-opacity: 1;
+	--border-spot-opacity: 1;
+	--lightness: 50;
 	--hue: calc(var(--baseGlowColor) + (var(--xp, 0) * var(--spread, 0)));
 }
 
@@ -2986,15 +2989,35 @@ sous-plan-travail > selection-editeur {
 
 	#espacePrincipal_wrapper {
 		border: none;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper {
+		border: none;
+		position: relative !important;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper.active::after,
+	.glow-wrapper.active::before {
+		opacity: 0 !important;
 	}
 
 	header,
+	#dico_wrapper,
+	#biblio_wrapper,
 	div.barreOutilsHorizontale,
 	indicateur-zoom,
 	selection-simple,
 	selection-editeur,
 	div.img,
-	span.fermeture {
+	span.fermeture,
+	#titreAlgo_wrapper,
+	.ouvrir {
 		display: none !important;
 	}
 
@@ -3007,17 +3030,23 @@ sous-plan-travail > selection-editeur {
 	}
 
 	sous-plan-travail {
+		display: block !important;
+		border-radius: 0 !important;
 		position: relative !important;
 		scale: 1 !important;
 		page-break-inside: avoid !important;
-		border-top: 1px solid #000000 !important;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100% !important;
 	}
 
 	plan-travail {
+		display: block !important;
 		position: relative !important;
 		border: none !important;
 		page-break-inside: avoid !important;
-		width: 100%;
-		padding-bottom: 150px;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100% !important;
 	}
 }
