@@ -90,6 +90,7 @@ class Bibliotheque extends HTMLElement {
 	ouvrir() {
 		document.querySelector("dictionnaire-donnee").fermer();
 		document.getElementById("biblio_wrapper").style.zIndex = 40;
+		document.getElementById("biblio_wrapper").style.display = "initial";
 		document.getElementById("boutonBiblio").classList.add("elementIsOpen");
 
 		if (this._estOuvert) {

@@ -299,9 +299,8 @@ class DictionnaireDonnee extends HTMLElement {
 		this.querySelector("datalist").innerHTML = "";
 
 		Type.allTypes.forEach((type) => {
-			this.querySelector(
-				"datalist",
-			).innerHTML += `<option value="${type}"></option>`;
+			this.querySelector("datalist").innerHTML +=
+				`<option value="${type}"></option>`;
 		});
 	}
 
@@ -447,9 +446,12 @@ class DictionnaireDonnee extends HTMLElement {
 		if (this._estOuvert) {
 			this.fermer();
 		} else {
-			this.style.transform = "scale(1)";
 			document.querySelector("bibliotheque-algorithmique").fermer();
 			document.getElementById("dico_wrapper").style.zIndex = 200;
+			document.getElementById("dico_wrapper").style.display = "initial";
+			document
+				.getElementById("boutonDico")
+				.classList.add("elementIsOpen");
 			document
 				.querySelector("editeur-interface")
 				._planActif.effectuerDictionnaireDesDonnee();
@@ -465,9 +467,10 @@ class DictionnaireDonnee extends HTMLElement {
 	 * Permet de fermer le dictionnaire.
 	 */
 	fermer() {
-		this.style.transform = "scale(0)";
 		document.getElementById("dico_wrapper").style.zIndex = -200;
+		document.getElementById("dico_wrapper").style.display = "none";
 		document.getElementById("biblio_btn").removeAttribute("disabled");
+		document.getElementById("boutonDico").classList.remove("elementIsOpen");
 		this.classList.remove("ouvert");
 		this._estOuvert = false;
 	}

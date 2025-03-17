@@ -1,9 +1,4 @@
 :root {
-	--border: 2;
-	--size: 400;
-	--bg-spot-opacity: 0.022;
-	--spread: 20;
-	--outer: 1;
 	--font-size1: 1.4rem;
 	--font-size2: 1.2rem;
 	--font-size3: 1rem;
@@ -411,8 +406,10 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition:
+		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out,
+		scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -520,7 +517,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 #biblio_wrapper {
 	position: absolute;
 	top: 45px;
-	left: 20px;
+	left: 30px;
 	border: none;
 	border-radius: 0.8em;
 }
@@ -871,7 +868,10 @@ bibliotheque-algorithmique
 	cursor: grab;
 	padding-left: 20px;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -902,9 +902,12 @@ bibliotheque-algorithmique
 	font-size: 20px;
 	line-height: 20px;
 	color: var(--color-icon-drag);
-	text-shadow: 0px -5px var(--color-icon-drag),
-		0px -10px var(--color-icon-drag), -5px -10px var(--color-icon-drag),
-		-5px -5px var(--color-icon-drag), -5px 0px var(--color-icon-drag);
+	text-shadow:
+		0px -5px var(--color-icon-drag),
+		0px -10px var(--color-icon-drag),
+		-5px -10px var(--color-icon-drag),
+		-5px -5px var(--color-icon-drag),
+		-5px 0px var(--color-icon-drag);
 }
 
 .algorithmeBibliotheque:hover::after {
@@ -1144,7 +1147,10 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -1156,7 +1162,10 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
+	transition:
+		border 0.6s ease,
+		box-shadow 0.6s ease,
+		color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -1467,24 +1476,26 @@ plan-travail {
 	overflow: scroll;
 	scrollbar-width: 10;
 	scrollbar-color: var(--fgColor) transparent;
+	margin: 34px 0 0 0;
 }
 
 #espacePrincipal_wrapper {
-	width: 100%;
-	height: 100%;
-	border: 0.1vw solid var(--borderColor);
-	position: relative;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	align-content: center;
+	align-self: center;
 	background-color: var(--bgColorSecondary);
-	border-radius: 0.8em;
-	padding: 34px 0 0 0;
+	border-radius: 0.6em;
+	overflow: hidden;
+	z-index: 1;
 }
 
 sous-plan-travail {
-	width: calc(100% - 40px);
-	height: calc(100% - 120px);
+	width: calc(100% - 4px);
+	height: calc(100% - 36px);
 	position: absolute;
-	top: 100px;
-	left: 19px;
+	top: 34px;
+	left: 2px;
 	overflow: scroll;
 	scale: 0;
 	background-color: var(--bgColorSecondary);
@@ -2739,21 +2750,28 @@ button,
 	transition: all 0.5s ease;
 }
 
-/* Glow specific styles */
+/* === GLOW EFFECT === */
+
+.glow-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-color: var(--borderColor);
+	border-radius: 0.8em;
+	overflow: hidden;
+}
 
 [data-glow].active {
-	--border-size: calc(var(--border, 2) * 1px);
-	--spotlight-size: calc(var(--size, 150) * 1px);
+	--spread: 20;
+	--border-size: 2px;
+	--spotlight-size: 30dvw;
+	--border-light-opacity: 1;
+	--border-spot-opacity: 1;
+	--lightness: 50;
 	--hue: calc(var(--baseGlowColor) + (var(--xp, 0) * var(--spread, 0)));
-	background-image: radial-gradient(
-		var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px)
-			calc(var(--y, 0) * 1px),
-		hsl(
-			var(--hue, 210) calc(var(--saturation, 100) * 1%)
-				calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)
-		),
-		transparent
-	);
 }
 
 [data-glow].active::before,
@@ -2764,18 +2782,26 @@ button,
 	inset: calc(var(--border-size) * -1);
 	border: var(--border-size) solid transparent;
 	border-radius: 0.8em;
+
 	background-attachment: fixed;
 	background-size: calc(100% + (2 * var(--border-size)))
 		calc(100% + (2 * var(--border-size)));
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-	mask: linear-gradient(transparent, transparent),
-		linear-gradient(white, white);
-	mask-clip: padding-box, border-box;
-	mask-composite: intersect;
+	z-index: 0;
+	opacity: 0;
+	animation: fadeIn 1.5s forwards;
 }
 
-/* This is the emphasis light */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 [data-glow].active::before {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
@@ -2788,7 +2814,7 @@ button,
 	);
 	filter: brightness(1.5);
 }
-/* This is the spotlight */
+
 [data-glow].active::after {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
@@ -2797,16 +2823,20 @@ button,
 		transparent 100%
 	);
 }
+
 menu-deroulant {
 	background-color: rgba(28, 39, 51, 0.35);
 	border: 1px solid var(--borderColor);
 	font-size: var(--font-size1);
 }
 
-/* Dock animation style */
+/* === DOCK EFFECT === */
+
 .dock-item {
 	cursor: pointer;
-	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
+	transition:
+		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+		margin 0.8s;
 	transform-origin: bottom;
 }
 
@@ -2959,15 +2989,35 @@ sous-plan-travail > selection-editeur {
 
 	#espacePrincipal_wrapper {
 		border: none;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper {
+		border: none;
+		position: relative !important;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper.active::after,
+	.glow-wrapper.active::before {
+		opacity: 0 !important;
 	}
 
 	header,
+	#dico_wrapper,
+	#biblio_wrapper,
 	div.barreOutilsHorizontale,
 	indicateur-zoom,
 	selection-simple,
 	selection-editeur,
 	div.img,
-	span.fermeture {
+	span.fermeture,
+	#titreAlgo_wrapper,
+	.ouvrir {
 		display: none !important;
 	}
 
@@ -2980,17 +3030,23 @@ sous-plan-travail > selection-editeur {
 	}
 
 	sous-plan-travail {
+		display: block !important;
+		border-radius: 0 !important;
 		position: relative !important;
 		scale: 1 !important;
 		page-break-inside: avoid !important;
-		border-top: 1px solid #000000 !important;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100% !important;
 	}
 
 	plan-travail {
+		display: block !important;
 		position: relative !important;
 		border: none !important;
 		page-break-inside: avoid !important;
-		width: 100%;
-		padding-bottom: 150px;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100% !important;
 	}
 }
