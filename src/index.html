@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>AlgoForge</title>
 		<link rel="stylesheet" href="style.css" />
-		<script defer data-domain="algoforge.fr" src="https://plausible.feror.fr/js/script.js"></script>
+		<script
+			defer
+			data-domain="algoforge.fr"
+			src="https://plausible.feror.fr/js/script.js"
+		></script>
 	</head>
 
 	<body spellcheck="false">
@@ -425,15 +429,17 @@
 					</div>
 				</div>
 			</div>
-			<div data-glow id="espacePrincipal_wrapper">
-				<h1 id="titreAlgo_wrapper">
-					<span contenteditable="true" id="titreAlgo"
-						>Titre de l'algorithme</span
-					><span class="crayon">✎</span>
-				</h1>
-				<plan-travail data-glow id="espacePrincipal"></plan-travail>
-				<div data-glow id="dico_wrapper" style="z-index: -200"></div>
-				<div id="biblio_wrapper" style="z-index: -300"></div>
+			<div data-glow class="glow-wrapper">
+				<div id="espacePrincipal_wrapper">
+					<h1 id="titreAlgo_wrapper">
+						<span contenteditable="true" id="titreAlgo"
+							>Titre de l'algorithme</span
+						><span class="crayon">✎</span>
+					</h1>
+					<plan-travail id="espacePrincipal"></plan-travail>
+					<div id="dico_wrapper" style="display: none"></div>
+					<div id="biblio_wrapper" style="display: none"></div>
+				</div>
 			</div>
 		</editeur-interface>
 		<form id="transferForm" method="post" target="_blank">
@@ -454,10 +460,10 @@
 			}
 
 			const editeur = document.querySelector("editeur-interface");
-			const verbose = true;
+			const verbose = false;
 			let titreAlgo = document.getElementById("titreAlgo");
 
-			const box = document.querySelector("[data-glow]");
+			const dataGlowElement = document.querySelector("[data-glow]");
 
 			const preferences = {
 				glow: false,
@@ -465,64 +471,75 @@
 				renderScale: 4,
 			};
 
-			setTimeout(async () => {
+			const updateGlowState = () => {
+				if (!preferences.glow) dataGlowElement.classList.remove("active");
+			};
+
+			const loadPreferences = async () => {
 				await customElements.whenDefined("editeur-interface");
-				preferences.glow =
-					editeur.getCookie("glow") === "true"
+
+				const getCookieBool = (name, defaultValue = true) => {
+					const value = editeur.getCookie(name);
+					return value === "true"
 						? true
-						: editeur.getCookie("glow") === "false"
-						? false
-						: navigator.userAgent.includes("Chrome");
-				preferences.dockEffect =
-					editeur.getCookie("dockEffect") === "false" ? false : true;
-				if (!preferences.glow) {
-					box.classList.remove("active");
-				}
+						: value === "false"
+							? false
+							: defaultValue;
+				};
+
+				preferences.glow = getCookieBool("glow", true);
+				preferences.dockEffect = getCookieBool("dockEffect", true);
+
 				if (isExam) {
 					preferences.glow = false;
 					preferences.dockEffect = false;
 				}
-			});
 
-			box.addEventListener("mouseenter", () => {
-				if (preferences.glow) {
-					box.classList.add("active");
-				}
-			});
+				updateGlowState();
+			};
 
-			box.addEventListener("mouseleave", () => {
-				box.classList.remove("active");
-			});
+			// Throttle: limite la fréquence d'exécution de la fonction
+			const throttle = (func, limit) => {
+				let inThrottle;
+				return function (...args) {
+					if (!inThrottle) {
+						func.apply(this, args);
+						inThrottle = true;
+						setTimeout(() => (inThrottle = false), limit);
+					}
+				};
+			};
 
-			const syncPointer = ({ x, y }) => {
-				document.documentElement.style.setProperty("--x", x.toFixed(2));
-				document.documentElement.style.setProperty(
+			const syncPointer = throttle(({ x, y }) => {
+				const root = document.documentElement;
+				root.style.setProperty("--x", x.toFixed(2));
+				root.style.setProperty(
 					"--xp",
 					(x / window.innerWidth).toFixed(2),
 				);
-				document.documentElement.style.setProperty("--y", y.toFixed(2));
-				document.documentElement.style.setProperty(
+				root.style.setProperty("--y", y.toFixed(2));
+				root.style.setProperty(
 					"--yp",
 					(y / window.innerHeight).toFixed(2),
 				);
-			};
-			document.body.addEventListener("pointermove", syncPointer);
+
+				const rect = dataGlowElement.getBoundingClientRect();
+				if (
+					(x >= rect.left &&
+					x <= rect.right &&
+					y >= rect.top &&
+					y <= rect.bottom) && preferences.glow
+				) {
+					dataGlowElement.classList.add("active");
+				} else {
+					dataGlowElement.classList.remove("active");
+				}
+			}, 17); // 17ms / 60fps
 
 			document.addEventListener("DOMContentLoaded", () => {
-				const parentDiv = document.querySelector("[data-glow]");
-				const childDiv = document.querySelector(
-					".barreOutilsHorizontale",
-				);
+				document.body.addEventListener("pointermove", syncPointer);
 
-				childDiv.addEventListener("mouseenter", () => {
-					if (preferences.glow) {
-						parentDiv.classList.add("active");
-					}
-				});
-
-				childDiv.addEventListener("mouseleave", () => {
-					parentDiv.classList.remove("active");
-				});
+				loadPreferences();
 			});
 
 			/* Dock animation */
