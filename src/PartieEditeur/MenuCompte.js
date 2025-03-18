@@ -51,6 +51,13 @@ class MenuCompte extends HTMLElement {
 		this._menuDiv.innerHTML = `
             <div class="elementMenuCompte" id="boutonDeconnexion">Deconnexion</div>
             <div class="elementMenuCompte" id="boutonTheme"></div>
+			<div class="elementMenuCompte">
+				<select id="indicateursPage">
+					<option value="disabled">Aucun indicateur</option>
+					<option value="a4-portrait">Indicateur A4 Portrait</option>
+					<option value="a4-landscape">Indicateur A4 Paysage</option>
+				</select>
+			</div>
 			<div class="elementMenuCompte element-compte-switch" id="switchGlow">
 				Effet Glow 
 				<div id="switchGlowContainer" class="element-compte-switch-container">
@@ -65,6 +72,9 @@ class MenuCompte extends HTMLElement {
 			</div>
         `;
 		const boutonTheme = this._menuDiv.querySelector("#boutonTheme");
+
+		const selectIndicateurs =
+			this._menuDiv.querySelector("#indicateursPage");
 
 		const switchGlow = this._menuDiv.querySelector("#switchGlow");
 		const switchGlowContainer = this._menuDiv.querySelector(
@@ -92,6 +102,19 @@ class MenuCompte extends HTMLElement {
 		this._boutonDeconnexion.addEventListener("click", () => {
 			this.deconnexion();
 		});
+
+		selectIndicateurs.addEventListener("change", () => {
+			document.documentElement.setAttribute(
+				"data-page-size",
+				selectIndicateurs.value,
+			);
+		});
+
+		selectIndicateurs.value =
+			document.documentElement.getAttribute("data-page-size") ||
+			"disabled";
+
+		selectIndicateurs.style.display = "block";
 
 		if (preferences.glow) {
 			switchGlowContainer.style.backgroundColor = "var(--titleColor)";

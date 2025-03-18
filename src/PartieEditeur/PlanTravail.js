@@ -6,7 +6,8 @@
 class PlanTravail extends HTMLElement {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
-	_refScroll;
+	_refScroll; // HTMLDivElement
+	_pageSizeIndicator; // HTMLDivElement
 
 	// CONSTRUCTEUR
 	/**
@@ -21,6 +22,10 @@ class PlanTravail extends HTMLElement {
 		this._refScroll.style.display = "list-item";
 		this._refScroll.style.opacity = "0";
 		this.appendChild(this._refScroll);
+
+		this._pageSizeIndicator = document.createElement("div");
+		this._pageSizeIndicator.classList.add("page-size-indicator");
+		this.appendChild(this._pageSizeIndicator);
 
 		// 30 fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
 		setInterval(() => {

@@ -2,6 +2,7 @@
 	--font-size1: 1.4rem;
 	--font-size2: 1.2rem;
 	--font-size3: 1rem;
+	--page-size: disabled;
 }
 
 /* Track */
@@ -307,7 +308,8 @@ editeur-interface > header > div.zonePartage > button {
 	cursor: default;
 }
 
-select#theme {
+select#theme,
+select#indicateursPage {
 	width: 95%;
 	height: 100%;
 	background: none;
@@ -406,10 +408,8 @@ select#theme {
 
 	opacity: var(--label-opacity, 0);
 	transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
-	transition:
-		transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
-		opacity 300ms ease-in-out,
-		scale 500ms ease-in-out;
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
 	transition-delay: var(--label-delay, 0ms);
 }
 
@@ -868,10 +868,7 @@ bibliotheque-algorithmique
 	cursor: grab;
 	padding-left: 20px;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -902,12 +899,9 @@ bibliotheque-algorithmique
 	font-size: 20px;
 	line-height: 20px;
 	color: var(--color-icon-drag);
-	text-shadow:
-		0px -5px var(--color-icon-drag),
-		0px -10px var(--color-icon-drag),
-		-5px -10px var(--color-icon-drag),
-		-5px -5px var(--color-icon-drag),
-		-5px 0px var(--color-icon-drag);
+	text-shadow: 0px -5px var(--color-icon-drag),
+		0px -10px var(--color-icon-drag), -5px -10px var(--color-icon-drag),
+		-5px -5px var(--color-icon-drag), -5px 0px var(--color-icon-drag);
 }
 
 .algorithmeBibliotheque:hover::after {
@@ -1147,10 +1141,7 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -1162,10 +1153,7 @@ invite-nouvelle-bibliotheque > .actionButtons > button {
 	border: 1px solid var(--fgColor);
 	cursor: pointer;
 	position: relative;
-	transition:
-		border 0.6s ease,
-		box-shadow 0.6s ease,
-		color 0.3s ease,
+	transition: border 0.6s ease, box-shadow 0.6s ease, color 0.3s ease,
 		background-color 0.3s ease;
 }
 
@@ -2834,9 +2822,7 @@ menu-deroulant {
 
 .dock-item {
 	cursor: pointer;
-	transition:
-		transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
-		margin 0.8s;
+	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
 	transform-origin: bottom;
 }
 
@@ -2965,6 +2951,50 @@ menu-compte-element > div.menu-compte {
 	display: none;
 }
 
+/* Une bordure en pointillés pour afficher la taille d'une feuille A4/A3 */
+div.page-size-indicator {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	border: 5px dashed var(--fgColor);
+	border-radius: 15px;
+	display: none;
+	pointer-events: none;
+	opacity: 0.3;
+}
+
+:root[data-page-size="a4-portrait"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 96vw);
+	height: calc(var(--sizeModifier) * 135.7vw);
+	display: block;
+}
+
+:root[data-page-size="a4-portrait"] div.page-size-indicator::after {
+	content: "A4 (Portrait)";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	font-size: 2vw;
+	color: var(--fgColor);
+	opacity: 0.3;
+}
+
+:root[data-page-size="a4-landscape"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 96vw);
+	height: calc(var(--sizeModifier) * 67.8vw);
+	display: block;
+}
+
+:root[data-page-size="a4-landscape"] div.page-size-indicator::after {
+	content: "A4 (Paysage)";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	font-size: 2vw;
+	color: var(--fgColor);
+	opacity: 0.3;
+}
+
 /* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */
 sous-plan-travail > selection-editeur {
 	translate: 3.5px -6.5px;
@@ -2985,6 +3015,10 @@ sous-plan-travail > selection-editeur {
 		--titleColor: #000000 !important;
 		--glowColor: #00000000 !important;
 		--bgColorSecondary: #ffffff !important;
+	}
+
+	div.page-size-indicator {
+		display: none !important;
 	}
 
 	#espacePrincipal_wrapper {
@@ -3037,7 +3071,7 @@ sous-plan-travail > selection-editeur {
 		page-break-inside: avoid !important;
 		overflow: visible !important;
 		height: 90dvh !important;
-		width: 100% !important;
+		width: 100dvw !important;
 	}
 
 	plan-travail {
@@ -3047,6 +3081,6 @@ sous-plan-travail > selection-editeur {
 		page-break-inside: avoid !important;
 		overflow: visible !important;
 		height: 90dvh !important;
-		width: 100% !important;
+		width: 100dvw !important;
 	}
 }
