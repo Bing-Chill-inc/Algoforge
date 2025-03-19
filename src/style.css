@@ -2956,11 +2956,19 @@ div.page-size-indicator {
 	position: absolute;
 	top: 2px;
 	left: 2px;
-	border: 5px dashed var(--fgColor);
+	border: 2px dashed var(--fgColor);
 	border-radius: 15px;
 	display: none;
 	pointer-events: none;
-	opacity: 0.3;
+	opacity: 0.2;
+}
+
+div.page-size-indicator::after {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	font-size: 2vw;
+	color: var(--fgColor);
 }
 
 :root[data-page-size="a4-portrait"] div.page-size-indicator {
@@ -2971,28 +2979,36 @@ div.page-size-indicator {
 
 :root[data-page-size="a4-portrait"] div.page-size-indicator::after {
 	content: "A4 (Portrait)";
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	font-size: 2vw;
-	color: var(--fgColor);
-	opacity: 0.3;
 }
 
 :root[data-page-size="a4-landscape"] div.page-size-indicator {
 	width: calc(var(--sizeModifier) * 96vw);
-	height: calc(var(--sizeModifier) * 67.8vw);
+	height: calc(var(--sizeModifier) * 65.8vw);
 	display: block;
 }
 
 :root[data-page-size="a4-landscape"] div.page-size-indicator::after {
 	content: "A4 (Paysage)";
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	font-size: 2vw;
-	color: var(--fgColor);
-	opacity: 0.3;
+}
+
+:root[data-page-size="a3-portrait"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 135.7vw);
+	height: calc(var(--sizeModifier) * 191.8vw);
+	display: block;
+}
+
+:root[data-page-size="a3-portrait"] div.page-size-indicator::after {
+	content: "A3 (Portrait)";
+}
+
+:root[data-page-size="a3-landscape"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 135.7vw);
+	height: calc(var(--sizeModifier) * 94vw);
+	display: block;
+}
+
+:root[data-page-size="a3-landscape"] div.page-size-indicator::after {
+	content: "A3 (Paysage)";
 }
 
 /* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */

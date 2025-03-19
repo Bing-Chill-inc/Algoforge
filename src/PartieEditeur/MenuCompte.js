@@ -56,6 +56,8 @@ class MenuCompte extends HTMLElement {
 					<option value="disabled">Aucun indicateur</option>
 					<option value="a4-portrait">Indicateur A4 Portrait</option>
 					<option value="a4-landscape">Indicateur A4 Paysage</option>
+					<option value="a3-portrait">Indicateur A3 Portrait</option>
+					<option value="a3-landscape">Indicateur A3 Paysage</option>
 				</select>
 			</div>
 			<div class="elementMenuCompte element-compte-switch" id="switchGlow">
