@@ -54,26 +54,48 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#createHtmlTable() {
 		this.innerHTML = `
-		<div id="dico-ctrl">
-			<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
-			<button id="dico-close"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+		<div id="dico-main">
+			<div id="dico-ctrl">
+				<button id="dico-refresh"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg></button>
+				<button id="dico-close"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+			</div>
+			<table id="dico-table">
+				<thead>
+					<tr><td>Nom</td><td>Type</td><td>Signification</td></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
 		</div>
-		<table id="dico-table">
-			<thead>
-				<tr><td>Nom</td><td>Type</td><td>Signification</td></tr>
-			</thead>
-			<tbody></tbody>
-		</table>
 		<div id="dico-inputs">
-			<input id="inputs-name" type="text" name="" minlength="1" placeholder="Nom">
-            <input id="inputs-type" type="search" list="primitives" name="" minlength="1" placeholder="Type">
-            <input id="inputs-signification" type="text" name="" minlength="1" placeholder="Signification">
-			<datalist id="primitives"></datalist>
-            <button id="valid-inputs" title="Valider vos modifications"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
-			<button id="remove-inputs" title="Supprimer la variable"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
-        </div>
-		<p id="inputs-error"></p>`;
+			<div id="dico-wrapper">
+				<div id="dico-first-inputs">
+					<label>
+						Nom
+						<input id="inputs-name" type="text" name="" minlength="1" placeholder="Nom">
+					</label>
+					<label>
+						Type
+						<input id="inputs-type" type="search" list="primitives" name="" minlength="1" placeholder="Type">
+					</label>
+				</div>
+				<label>
+					Signification
+					<input id="inputs-signification" type="text" name="" minlength="1" placeholder="Signification">
+				</label>
+				<datalist id="primitives"></datalist>
+			</div>
+			<p id="inputs-error"></p>
+            <div id="dico-buttons">
+				<button id="valid-inputs" title="Valider vos modifications">Modifier</button>
+				<button id="remove-inputs" title="Supprimer la variable">Supprimer</button>
+				<button id="cancel-remove" style="display: none" title="Annuler la suppression">Annuler</button>
+				<button id="valid-remove" style="display: none" title="Valider la suppression">Ok</button>
+			</div>
+        </div>`;
 	}
+
+	// <button id="valid-inputs" title="Valider vos modifications"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
+	// 			<button id="remove-inputs" title="Supprimer la variable"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
 
 	/**
 	 * Permet de récupérer l'id de l'élément
@@ -124,7 +146,6 @@ class DictionnaireDonnee extends HTMLElement {
 	#updateTypeList(type) {
 		if (!Type.allTypes.includes(type)) {
 			console.log(Type.allTypes);
-
 			Type.allTypes.push(type);
 		}
 	}
@@ -138,7 +159,6 @@ class DictionnaireDonnee extends HTMLElement {
 		if (type !== "Non Défini") {
 			information._type = type;
 			this.#updateTypeList(information._type);
-			// TODO: A voir avec Jokin
 			delete this._matchType[this._currentVariableName];
 			this._matchType[information._nom] = type;
 		}
@@ -224,8 +244,6 @@ class DictionnaireDonnee extends HTMLElement {
 			.renameInformation(this._currentVariableName, this.VARIABLE_SUPPR);
 
 		this.#cleanDictionaryData();
-		console.log(this._currentVariableName);
-
 		this._mesInformations.splice(
 			this._mesInformations.findIndex(
 				(info) => info._nom === this._currentVariableName,
@@ -394,6 +412,8 @@ class DictionnaireDonnee extends HTMLElement {
 			this._tableBody = document.querySelector("#dico-table>tbody");
 			this._validInputs = document.getElementById("valid-inputs");
 			this._removeInputs = document.getElementById("remove-inputs");
+			this._validRemove = document.getElementById("valid-remove");
+			this._cancelRemove = document.getElementById("cancel-remove");
 			this._inputName = document.getElementById("inputs-name");
 			this._inputType = document.getElementById("inputs-type");
 			this._inputSignification = document.getElementById(
@@ -421,13 +441,36 @@ class DictionnaireDonnee extends HTMLElement {
 			this.#launchValidBtnListener();
 			// TODO: Voir avec jokin pour virer css min-width ligne 1578 (bug d'affichage)
 			this._removeInputs.addEventListener("click", () => {
-				if (
-					window.confirm(
-						"Voulez-vous vraiment supprimer cette variable?",
-					)
-				) {
-					this.#removeVariable();
-				}
+				document.getElementById("inputs-error").textContent =
+					"Voulez-vous vraiment supprimer cette variable ?";
+				// if (
+				// 	window.confirm(
+				// 		"Voulez-vous vraiment supprimer cette variable?",
+				// 	)
+				// ) {
+				// 	this.#removeVariable();
+				// }
+				this._validInputs.style.display = "none";
+				this._removeInputs.style.display = "none";
+				this._validRemove.style.display = "flex";
+				this._cancelRemove.style.display = "flex";
+			});
+
+			this._validRemove.addEventListener("click", () => {
+				this.#removeVariable();
+				this._validInputs.style.display = "flex";
+				this._removeInputs.style.display = "flex";
+				this._validRemove.style.display = "none";
+				this._cancelRemove.style.display = "none";
+				document.getElementById("inputs-error").textContent = "";
+			});
+
+			this._cancelRemove.addEventListener("click", () => {
+				this._validInputs.style.display = "flex";
+				this._removeInputs.style.display = "flex";
+				this._validRemove.style.display = "none";
+				this._cancelRemove.style.display = "none";
+				document.getElementById("inputs-error").textContent = "";
 			});
 
 			this.#launchInputNameListener();
