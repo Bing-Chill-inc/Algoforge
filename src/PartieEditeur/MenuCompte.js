@@ -39,6 +39,17 @@ class MenuCompte extends HTMLElement {
 			},
 			true,
 		);
+
+		// Écouter les changements de localStorage entre les onglets
+		window.addEventListener("storage", (event) => {
+			if (
+				event.key === "auth_status" &&
+				event.newValue === "logged_out"
+			) {
+				// Un autre onglet s'est déconnecté, déconnecter cet onglet aussi
+				window.location.href = "http://localhost:5205/cloud/#/?logout";
+			}
+		});
 	}
 
 	/**
@@ -281,10 +292,25 @@ class MenuCompte extends HTMLElement {
 	}
 
 	/**
+	 * @description Nettoie les cookies et le sessionStorage.
+	 */
+	clearLocalAuth() {
+		document.cookie = "authToken=; path=/; max-age=0";
+		document.cookie = "userId=; path=/; max-age=0";
+		sessionStorage.removeItem("authToken");
+		sessionStorage.removeItem("userId");
+	}
+
+	/**
 	 * @description Déconnecte l'utilisateur.
 	 */
 	deconnexion() {
-		if (verbose) console.log("Déconnexion");
+		// Signaler aux autres onglets que l'utilisateur s'est déconnecté
+		localStorage.setItem("auth_status", "logged_out");
+
+		this.clearLocalAuth();
+
+		window.location.reload();
 	}
 }
 
