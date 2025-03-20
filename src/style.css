@@ -2331,6 +2331,7 @@ ligne-element {
 
 #dico-table {
 	width: 100%;
+	height: 40vh;
 	height: fit-content;
 	margin: 0 0 10px 0;
 	overflow-y: scroll;
@@ -2346,7 +2347,9 @@ ligne-element {
 	overflow-y: scroll;
 	width: 100%;
 	/* height: calc(60vh - 80px); */
-	height: calc(-80px + 46vh);
+	/* height: calc(-80px + 46vh); */
+	min-height: 16px;
+	height: 100%;
 }
 
 #dico-close,
@@ -2424,6 +2427,8 @@ ligne-element {
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
 	outline: 1px solid var(--borderColor2);
+	overflow: hidden;
+	min-height: 24px;
 }
 
 #dico-inputs {
@@ -2486,7 +2491,8 @@ ligne-element {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	font-size: 12px;
+	/* font-size: 12px; */
+	font-size: var(--font-size2);
 }
 
 #dico-first-inputs label {
@@ -2495,11 +2501,15 @@ ligne-element {
 }
 
 #valid-inputs:hover {
-	color: green;
+	color: var(--warningColor);
 }
 
 #remove-inputs:hover {
-	color: red;
+	color: var(--errorColor);
+}
+
+.error-msg {
+	color: var(--errorColor);
 }
 
 #dico-inputs input:focus {
@@ -2509,7 +2519,8 @@ ligne-element {
 }
 
 #dico-inputs input::placeholder {
-	font-size: 12px;
+	/* font-size: 12px; */
+	font-size: var(--font-size2);
 	font-style: italic;
 }
 
@@ -2576,7 +2587,8 @@ ligne-element {
 	justify-content: start;
 	/* border-right: 1px solid var(--borderColor); */
 	cursor: text;
-	font-size: 12px;
+	/* font-size: 12px; */
+	font-size: var(--font-size2);
 }
 
 #dico-table thead tr td:nth-child(1),
@@ -2665,7 +2677,8 @@ ligne-element {
 	border: none;
 	background-color: var(--bgColor);
 	color: var(--fgColor);
-	font-size: 1vw;
+	/* font-size: 1vw; */
+	font-size: var(--font-size2);
 	cursor: pointer;
 }
 

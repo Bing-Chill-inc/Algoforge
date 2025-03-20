@@ -37,7 +37,10 @@ class DictionnaireDonnee extends HTMLElement {
 		this._inputType;
 		this._inputSignification;
 
-		this._errorMsg = "";
+		this._errorNameMsg = "";
+		this._lastErrorMsg = "";
+		this._errorTypeMsg = "";
+		this._errorSignificationMsg = "";
 		this._currentRow = "";
 		this._inputsValid = [true, true, true];
 		this._currentVariableName = "";
@@ -84,10 +87,10 @@ class DictionnaireDonnee extends HTMLElement {
 				</label>
 				<datalist id="primitives"></datalist>
 			</div>
-			<p id="inputs-error"></p>
+			<p id="inputs-error" class="error-msg"></p>
             <div id="dico-buttons">
-				<button id="valid-inputs" title="Valider vos modifications">Modifier</button>
-				<button id="remove-inputs" title="Supprimer la variable">Supprimer</button>
+				<button id="valid-inputs" class="secondaryButton" title="Valider vos modifications">Modifier</button>
+				<button id="remove-inputs" class="secondaryButton" title="Supprimer la variable">Supprimer</button>
 				<button id="cancel-remove" style="display: none" title="Annuler la suppression">Annuler</button>
 				<button id="valid-remove" style="display: none" title="Valider la suppression">Ok</button>
 			</div>
@@ -123,6 +126,9 @@ class DictionnaireDonnee extends HTMLElement {
 			.setAttribute("class", "row-selected");
 
 		this._lastRow = this._currentRow;
+		this._lastErrorMsg = "";
+		document.getElementById("inputs-error").textContent =
+			this._lastErrorMsg;
 	}
 
 	/**
@@ -131,9 +137,10 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#insertSelectedRowTextOnInputs(rowId) {
 		let allTds = document.getElementById(rowId).children;
+		let allInputs = document.querySelectorAll("div#dico-wrapper input");
+
 		for (let i = 0; i < allTds.length; i++) {
-			document.getElementById("dico-inputs").children[i].value =
-				allTds[i].textContent;
+			allInputs[i].value = allTds[i].textContent;
 		}
 	}
 
@@ -145,7 +152,6 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateTypeList(type) {
 		if (!Type.allTypes.includes(type)) {
-			console.log(Type.allTypes);
 			Type.allTypes.push(type);
 		}
 	}
@@ -172,7 +178,6 @@ class DictionnaireDonnee extends HTMLElement {
 	#updateSignificationInformation(signification, information) {
 		if (signification !== "Non Défini") {
 			information._signification = signification;
-			// TODO: A voir avec Jokin
 			delete this._matchSignification[this._currentVariableName];
 			this._matchSignification[information._nom] = signification;
 		}
@@ -228,9 +233,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateSelectedRowValues() {
 		let allTds = document.getElementById(this._currentRow).children;
+		let allInputs = document.querySelectorAll("div#dico-wrapper input");
 		for (let i = 0; i < allTds.length; i++) {
-			allTds[i].textContent =
-				document.getElementById("dico-inputs").children[i].value;
+			allTds[i].textContent = allInputs[i].value;
 		}
 	}
 
@@ -261,12 +266,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 * en effaçant les données de chaque inputs.
 	 */
 	#resetInputsText() {
-		for (
-			let i = 0;
-			i < document.getElementById("dico-inputs").children.length;
-			i++
-		) {
-			document.getElementById("dico-inputs").children[i].value = "";
+		let allInputs = document.querySelectorAll("div#dico-wrapper input");
+		for (let i = 0; i < allInputs.length; i++) {
+			allInputs[i].value = "";
 		}
 	}
 
@@ -275,8 +277,6 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#enableValidBtn() {
 		if (this._validInputs != undefined) {
-			console.log("enable");
-
 			this._validInputs.removeAttribute("disabled");
 		}
 	}
@@ -329,15 +329,36 @@ class DictionnaireDonnee extends HTMLElement {
 			let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
 			if (regex.test(e.target.value)) {
 				this._inputsValid[1] = true;
-				document.getElementById("inputs-error").textContent = "";
+				this._errorTypeMsg = "";
 			} else {
 				this._inputsValid[1] = false;
-				this._errorMsg =
+				this._errorTypeMsg =
 					"Le type ne peut pas contenir de nombre et de caractères spéciaux";
-				document.getElementById("inputs-error").textContent =
-					this._errorMsg;
 			}
 
+			document.getElementById("inputs-error").textContent =
+				this._errorTypeMsg;
+			this._lastErrorMsg = this._errorTypeMsg;
+			this.#checkInputsAreValid();
+		});
+
+		this._inputType.addEventListener("focus", (e) => {
+			// document.getElementById("inputs-error").textContent =
+			// 	this._errorTypeMsg;
+			// this._lastErrorMsg = this._errorTypeMsg;
+			let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
+			if (regex.test(e.target.value)) {
+				this._inputsValid[1] = true;
+				this._errorTypeMsg = "";
+			} else {
+				this._inputsValid[1] = false;
+				this._errorTypeMsg =
+					"Le type ne peut pas contenir de nombre et de caractères spéciaux";
+			}
+
+			document.getElementById("inputs-error").textContent =
+				this._errorTypeMsg;
+			this._lastErrorMsg = this._errorTypeMsg;
 			this.#checkInputsAreValid();
 		});
 	}
@@ -350,14 +371,35 @@ class DictionnaireDonnee extends HTMLElement {
 		this._inputSignification.addEventListener("input", (e) => {
 			if (e.target.value.trim() != "") {
 				this._inputsValid[2] = true;
-				document.getElementById("inputs-error").textContent = "";
+				this._errorSignificationMsg = "";
 			} else {
 				this._inputsValid[2] = false;
-				this._errorMsg = "La signification ne peut pas être vide";
-				document.getElementById("inputs-error").textContent =
-					this._errorMsg;
+				this._errorSignificationMsg =
+					"La signification ne peut pas être vide";
 			}
 
+			document.getElementById("inputs-error").textContent =
+				this._errorSignificationMsg;
+			this._lastErrorMsg = this._errorSignificationMsg;
+			this.#checkInputsAreValid();
+		});
+
+		this._inputSignification.addEventListener("focus", (e) => {
+			// document.getElementById("inputs-error").textContent =
+			// 	this._errorSignificationMsg;
+			// this._lastErrorMsg = this._errorSignificationMsg;
+			if (e.target.value.trim() != "") {
+				this._inputsValid[2] = true;
+				this._errorSignificationMsg = "";
+			} else {
+				this._inputsValid[2] = false;
+				this._errorSignificationMsg =
+					"La signification ne peut pas être vide";
+			}
+
+			document.getElementById("inputs-error").textContent =
+				this._errorSignificationMsg;
+			this._lastErrorMsg = this._errorSignificationMsg;
 			this.#checkInputsAreValid();
 		});
 	}
@@ -368,18 +410,39 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#launchInputNameListener() {
 		this._inputName.addEventListener("input", (e) => {
-			let regex = /^[a-zA-Z0-9\-\_]{2,60}$/g;
+			let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
 			if (regex.test(e.target.value)) {
 				this._inputsValid[0] = true;
-				document.getElementById("inputs-error").textContent = "";
+				this._errorNameMsg = "";
 			} else {
 				this._inputsValid[0] = false;
-				this._errorMsg =
-					"Le nom ne peut pas contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf - et _ ";
-				document.getElementById("inputs-error").textContent =
-					this._errorMsg;
+				this._errorNameMsg =
+					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
 			}
 
+			document.getElementById("inputs-error").textContent =
+				this._errorNameMsg;
+			this._lastErrorMsg = this._errorNameMsg;
+			this.#checkInputsAreValid();
+		});
+
+		this._inputName.addEventListener("focus", (e) => {
+			// document.getElementById("inputs-error").textContent =
+			// 	this._errorNameMsg;
+			// this._lastErrorMsg = this._errorNameMsg;
+			let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
+			if (regex.test(e.target.value)) {
+				this._inputsValid[0] = true;
+				this._errorNameMsg = "";
+			} else {
+				this._inputsValid[0] = false;
+				this._errorNameMsg =
+					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
+			}
+
+			document.getElementById("inputs-error").textContent =
+				this._errorNameMsg;
+			this._lastErrorMsg = this._errorNameMsg;
 			this.#checkInputsAreValid();
 		});
 	}
@@ -439,17 +502,12 @@ class DictionnaireDonnee extends HTMLElement {
 			});
 
 			this.#launchValidBtnListener();
-			// TODO: Voir avec jokin pour virer css min-width ligne 1578 (bug d'affichage)
 			this._removeInputs.addEventListener("click", () => {
+				document
+					.getElementById("inputs-error")
+					.removeAttribute("class");
 				document.getElementById("inputs-error").textContent =
 					"Voulez-vous vraiment supprimer cette variable ?";
-				// if (
-				// 	window.confirm(
-				// 		"Voulez-vous vraiment supprimer cette variable?",
-				// 	)
-				// ) {
-				// 	this.#removeVariable();
-				// }
 				this._validInputs.style.display = "none";
 				this._removeInputs.style.display = "none";
 				this._validRemove.style.display = "flex";
@@ -462,7 +520,11 @@ class DictionnaireDonnee extends HTMLElement {
 				this._removeInputs.style.display = "flex";
 				this._validRemove.style.display = "none";
 				this._cancelRemove.style.display = "none";
-				document.getElementById("inputs-error").textContent = "";
+				document.getElementById("inputs-error").textContent =
+					this._lastErrorMsg;
+				document
+					.getElementById("inputs-error")
+					.setAttribute("class", "error-msg");
 			});
 
 			this._cancelRemove.addEventListener("click", () => {
@@ -470,7 +532,11 @@ class DictionnaireDonnee extends HTMLElement {
 				this._removeInputs.style.display = "flex";
 				this._validRemove.style.display = "none";
 				this._cancelRemove.style.display = "none";
-				document.getElementById("inputs-error").textContent = "";
+				document.getElementById("inputs-error").textContent =
+					this._lastErrorMsg;
+				document
+					.getElementById("inputs-error")
+					.setAttribute("class", "error-msg");
 			});
 
 			this.#launchInputNameListener();
@@ -498,6 +564,8 @@ class DictionnaireDonnee extends HTMLElement {
 			this._tableBody.innerHTML = "";
 			this.genererDictionnaire();
 			this._estOuvert = true;
+
+			console.log(this._matchType, this._matchSignification);
 		}
 	}
 
@@ -510,6 +578,10 @@ class DictionnaireDonnee extends HTMLElement {
 		document.getElementById("biblio_btn").removeAttribute("disabled");
 		this.classList.remove("ouvert");
 		this._estOuvert = false;
+		this.#resetInputsText();
+		this._lastErrorMsg = "";
+		document.getElementById("inputs-error").textContent =
+			this._lastErrorMsg;
 	}
 
 	/**
@@ -519,6 +591,8 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	genererDictionnaire() {
 		let index = 0;
+		this._mesInformations.sort((a, b) => a._nom.localeCompare(b._nom));
+
 		for (let info of this._mesInformations) {
 			const clone = this._template.content.cloneNode(true);
 
@@ -541,6 +615,16 @@ class DictionnaireDonnee extends HTMLElement {
 
 			this._tableBody.appendChild(clone);
 			index++;
+		}
+
+		for (const [key, value] of Object.entries(this._matchType)) {
+			if (
+				this._mesInformations.find((elm) => elm._nom == key) ==
+				undefined
+			) {
+				delete this._matchType[key];
+				delete this._matchSignification[key];
+			}
 		}
 
 		this.#populateTypeChoice();
@@ -798,8 +882,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @returns Boolean
 	 */
 	nomCorrecte(nameVariable) {
-		let regex = /^[a-zA-Z0-9\-\_]{1,60}$/g;
-		return regex.test(nameVariable.trim());
+		// let regex = /^[a-zA-Z0-9\-\_]{2,60}$/g;
+		// return regex.test(nameVariable.trim());
+		return nameVariable.trim();
 	}
 
 	/**
