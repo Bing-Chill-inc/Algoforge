@@ -308,29 +308,42 @@ editeur-interface > header > div.zonePartage > button {
 	cursor: default;
 }
 
-select#theme {
-	width: 95%;
-	height: 100%;
-	background: none;
-	border: var(--fgColor) solid 0.1vw;
-	border-radius: 1vw;
-	font-size: var(--font-size2);
+select#theme,
+select#indicateursPage {
+	width: 100%;
+	background-color: transparent;
+	border: 1px solid var(--borderColor);
+	border-radius: 30px;
 	color: var(--fgColor);
 	cursor: pointer;
+	padding: 10px;
+	text-align: center;
+	font-weight: 500;
+	transition: background-color 0.2s;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-align-last: center;
+	padding-right: 30px;
+	box-sizing: border-box;
+}
+
+select#theme {
 	display: none;
-	padding: 4px 10px;
 }
 
 select#indicateursPage {
-	width: 95%;
-	height: 100%;
-	background: none;
-	border: var(--fgColor) solid 0.1vw;
-	border-radius: 1vw;
-	font-size: var(--font-size2);
-	color: var(--fgColor);
-	cursor: pointer;
-	padding: 4px 10px;
+	display: block;
+}
+
+select#indicateursPage:hover,
+select#theme:hover {
+	background-color: var(--fgColorTransparent);
+}
+
+select#indicateursPage:focus,
+select#theme:focus {
+	outline: none;
 }
 
 #boutonPointeur,
@@ -3029,6 +3042,13 @@ menu-compte-element > #MenuCompte {
 .theme-section {
 	padding: 15px;
 	border-bottom: 1px solid var(--borderColor2);
+	position: relative;
+	box-sizing: border-box;
+}
+
+.theme-section,
+.indicators-option {
+	position: relative;
 }
 
 .theme-section select {
@@ -3090,6 +3110,10 @@ menu-compte-element > #MenuCompte {
 
 .indicators-option {
 	padding: 12px 20px;
+	margin-bottom: 10px;
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .indicators-option select {
@@ -3100,6 +3124,26 @@ menu-compte-element > #MenuCompte {
 	background-color: transparent;
 	color: var(--fgColor);
 	font-size: 14px;
+}
+
+.indicators-option::after,
+.theme-section::after {
+	display: none;
+}
+
+.select-arrow {
+	position: absolute;
+	top: 50%;
+	right: 30px;
+	transform: translateY(-50%);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.select-arrow svg {
+	width: 20px;
+	height: 20px;
+	fill: var(--fgColor);
 }
 
 #indicateursPage {

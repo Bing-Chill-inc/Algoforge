@@ -70,6 +70,11 @@ class MenuCompte extends HTMLElement {
 			
 			<div class="theme-section" id="boutonTheme">
 				<!-- Le sélecteur de thème sera ajouté ici -->
+				<div class="select-arrow">
+					<svg viewBox="0 0 24 24">
+						<path d="M7 10l5 5 5-5z" />
+					</svg>
+				</div>
 			</div>
 			
 			<div class="menu-actions">
@@ -99,6 +104,11 @@ class MenuCompte extends HTMLElement {
 						<option value="a3-portrait">Indicateur A3 Portrait</option>
 						<option value="a3-landscape">Indicateur A3 Paysage</option>
 					</select>
+					<div class="select-arrow">
+					<svg viewBox="0 0 24 24">
+						<path d="M7 10l5 5 5-5z" />
+					</svg>
+				</div>
 				</div>
 				
 				<div class="effect-option">
