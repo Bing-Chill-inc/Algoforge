@@ -193,7 +193,15 @@ class MenuCompte extends HTMLElement {
 		}
 
 		if (boutonModifierCompte) {
-			boutonModifierCompte.addEventListener("click", () => {});
+			boutonModifierCompte.addEventListener("click", () => {
+				// Ouvrir le cloud avec le paramètre pour afficher le modal de profil
+				const cloudUrl = new URL(window.location.origin);
+				cloudUrl.pathname = "/cloud/";
+				cloudUrl.hash = "#/?openProfileModal=true";
+				console.log(cloudUrl.toString());
+				window.open(cloudUrl.toString(), "_blank");
+				this.fermerMenu();
+			});
 		}
 
 		// Bouton de déconnexion
