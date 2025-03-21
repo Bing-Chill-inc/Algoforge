@@ -2992,6 +2992,16 @@ menu-compte-element > #MenuCompte {
 	border-radius: 50%;
 }
 
+.menu-header-simple {
+	display: flex;
+	justify-content: flex-end;
+	position: relative;
+}
+
+#closeMenuBtn2 {
+	position: relative;
+}
+
 .close-button:hover {
 	background-color: var(--fgColorTransparent);
 }
