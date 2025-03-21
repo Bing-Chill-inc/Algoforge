@@ -12,10 +12,16 @@ class MenuCompte extends HTMLElement {
 	_menuIcone;
 	_selectionTheme;
 	_estOuvert = false;
+	_user;
 
 	// CONSTRUCTEUR
 	constructor() {
 		super();
+
+		// Récupérer le user
+		this.loadUserInfo();
+
+		console.log(this._user);
 
 		this.MenuIcone = document.createElement("div");
 		this.MenuIcone.classList.add("img");
@@ -46,8 +52,8 @@ class MenuCompte extends HTMLElement {
 				event.key === "auth_status" &&
 				event.newValue === "logged_out"
 			) {
-				// Un autre onglet s'est déconnecté, déconnecter cet onglet aussi
-				window.location.href = "http://localhost:5205/cloud/#/?logout";
+				this.clearLocalAuth();
+				window.location.reload();
 			}
 		});
 	}
@@ -69,8 +75,8 @@ class MenuCompte extends HTMLElement {
 					</svg>
 				</div>
 				<div class="user-info">
-					<p class="greeting">Test1</p>
-					<p class="email">test@gmail.com</p>
+					<p class="greeting">Utilisateur</p>
+					<p class="email">utilisateur@exemple.com</p>
 				</div>
 				<button class="close-button" id="closeMenuBtn">
 					<svg viewBox="0 0 24 24">
@@ -140,6 +146,9 @@ class MenuCompte extends HTMLElement {
 
 		this.appendChild(this._menuDiv);
 
+		// Mettre à jour les informations de l'utilisateur
+		this.updateUserInfo();
+
 		// Récupération des éléments après avoir ajouté le menu au DOM
 		const boutonTheme = this._menuDiv.querySelector("#boutonTheme");
 		const closeButton = this._menuDiv.querySelector("#closeMenuBtn");
@@ -184,9 +193,7 @@ class MenuCompte extends HTMLElement {
 		}
 
 		if (boutonModifierCompte) {
-			boutonModifierCompte.addEventListener("click", () => {
-				console.log("Modifier compte (non implémenté)");
-			});
+			boutonModifierCompte.addEventListener("click", () => {});
 		}
 
 		// Bouton de déconnexion
@@ -311,6 +318,87 @@ class MenuCompte extends HTMLElement {
 		this.clearLocalAuth();
 
 		window.location.reload();
+	}
+
+	/**
+	 * @description Charge les informations de l'utilisateur depuis les cookies ou sessionStorage
+	 */
+	loadUserInfo() {
+		// Vérifier sessionStorage
+		const sessionToken = sessionStorage.getItem("authToken");
+		const sessionUserId = sessionStorage.getItem("userId");
+
+		let token = null;
+		let userId = null;
+
+		if (sessionToken && sessionUserId) {
+			token = sessionToken;
+			userId = sessionUserId;
+		} else {
+			// Vérifier les cookies
+			const cookies = document.cookie ? document.cookie.split("; ") : [];
+			const tokenCookie = cookies.find((row) =>
+				row.startsWith("authToken="),
+			);
+			const userIdCookie = cookies.find((row) =>
+				row.startsWith("userId="),
+			);
+
+			token = tokenCookie ? tokenCookie.split("=")[1] : null;
+			userId = userIdCookie ? userIdCookie.split("=")[1] : null;
+		}
+
+		if (token && userId) {
+			try {
+				fetch(`/api/users/${userId}`, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				})
+					.then((response) => {
+						if (!response.ok)
+							throw new Error("Utilisateur non trouvé");
+						return response.json();
+					})
+					.then((responseData) => {
+						// Stocker l'utilisateur
+						this._user = responseData.data || responseData;
+
+						this.updateUserInfo();
+					})
+					.catch((error) => {
+						console.log("Erreur d'authentification:");
+						this.deconnexion();
+					});
+			} catch (error) {
+				console.log(
+					"Erreur lors du chargement des informations de l'utilisateur:",
+				);
+			}
+		} else {
+			this._user = null;
+		}
+	}
+
+	/**
+	 * @description Met à jour les informations de l'utilisateur dans le menu
+	 */
+	updateUserInfo() {
+		if (!this._user || !this._menuDiv) return;
+
+		const greetingElement = this._menuDiv.querySelector(
+			".user-info .greeting",
+		);
+		const emailElement = this._menuDiv.querySelector(".user-info .email");
+
+		if (greetingElement && this._user.pseudo) {
+			greetingElement.textContent = this._user.pseudo;
+		}
+
+		if (emailElement && this._user.adresseMail) {
+			emailElement.textContent = this._user.adresseMail;
+		}
 	}
 }
 
