@@ -159,10 +159,11 @@ class Probleme extends ElementGraphique {
 	 * @param {string} chaineARemplacer - La chaîne de remplacement.
 	 */
 	replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
+		let chaine = chaineAChercher.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
 		this.querySelector(".donneesEditable").textContent = this.querySelector(
 			".donneesEditable",
 		).textContent.replace(
-			new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+			new RegExp("\\b" + chaine + "\\b", "g"),
 			chaineARemplacer,
 		);
 	}

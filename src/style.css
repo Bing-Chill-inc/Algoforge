@@ -384,6 +384,7 @@ select#theme {
 
 #dicobiblioControl > button:hover,
 #dicobiblioControl > button:focus-visible,
+#dico-table tbody tr:hover,
 #itemsControl > .svg-wrapper:hover,
 #itemsControl > .svg-wrapper:focus-visible {
 	--label-opacity: 1;
@@ -2346,10 +2347,11 @@ ligne-element {
 #dico-table tbody {
 	overflow-y: scroll;
 	width: 100%;
-	/* height: calc(60vh - 80px); */
-	/* height: calc(-80px + 46vh); */
-	min-height: 16px;
-	height: 100%;
+	min-height: 50vh;
+}
+
+.wrong-name {
+	background-color: var(--errorColor);
 }
 
 #dico-close,
@@ -2383,16 +2385,29 @@ ligne-element {
 	right: 10px;
 }
 
-/* #dico-table th {
-  width: 95%;
-  height: 5vw;
-  min-height: 5vw;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 0.1vw solid var(--borderColor2);
-} */
+.input-tooltip:before {
+	content: attr(data-title);
+	position: absolute;
+	top: 150%;
+	left: 50%;
+	background: var(--bgColor);
+	color: var(--fgColor);
+	border: 1px solid var(--borderColor2);
+	border-radius: 0.6em;
+	z-index: 3;
+	translate: -50% -2.5rem;
+	white-space: pre-line;
+	word-wrap: break-word;
+	text-align: left;
+	font-size: var(--font-size2);
+	padding: 0.3rem 1rem;
+	pointer-events: none;
+	opacity: var(--label-opacity, 0);
+	transform: scale(var(--label-scale, 0));
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition-delay: var(--label-delay, 0ms);
+}
 
 #dico-table thead {
 	width: 100%;
@@ -2562,14 +2577,18 @@ ligne-element {
 	border: 1px solid var(--borderColor);
 }
 
+.good-name {
+	background-color: var(--bgColorSecondary);
+}
+
 #dico-table tbody tr {
 	padding: 5px;
 	height: fit-content;
-	background-color: var(--bgColorSecondary);
 	margin: 5px 0 0 0;
 	width: calc(100% - 17px);
 	border-radius: 0.6em;
 	cursor: pointer;
+	position: relative;
 }
 
 #dico-table tbody tr td {

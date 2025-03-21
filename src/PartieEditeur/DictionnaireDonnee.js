@@ -89,16 +89,13 @@ class DictionnaireDonnee extends HTMLElement {
 			</div>
 			<p id="inputs-error" class="error-msg"></p>
             <div id="dico-buttons">
-				<button id="valid-inputs" class="secondaryButton" title="Valider vos modifications">Modifier</button>
+				<button id="valid-inputs" disabled class="secondaryButton" title="Valider vos modifications">Modifier</button>
 				<button id="remove-inputs" class="secondaryButton" title="Supprimer la variable">Supprimer</button>
 				<button id="cancel-remove" style="display: none" title="Annuler la suppression">Annuler</button>
 				<button id="valid-remove" style="display: none" title="Valider la suppression">Ok</button>
 			</div>
         </div>`;
 	}
-
-	// <button id="valid-inputs" title="Valider vos modifications"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg></button>
-	// 			<button id="remove-inputs" title="Supprimer la variable"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
 
 	/**
 	 * Permet de récupérer l'id de l'élément
@@ -108,7 +105,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#handleSelectedRow(htmlTarget) {
 		if (this._lastRow != "") {
-			document.getElementById(this._lastRow).removeAttribute("class");
+			document
+				.getElementById(this._lastRow)
+				.classList.remove("row-selected");
 		}
 
 		if (htmlTarget.localName == "td") {
@@ -121,9 +120,7 @@ class DictionnaireDonnee extends HTMLElement {
 			this._currentRow,
 		).children[0].textContent;
 
-		document
-			.getElementById(this._currentRow)
-			.setAttribute("class", "row-selected");
+		document.getElementById(this._currentRow).classList.add("row-selected");
 
 		this._lastRow = this._currentRow;
 		this._lastErrorMsg = "";
@@ -189,14 +186,18 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateVariableInAlgo() {
 		let allTds = document.getElementById(this._currentRow).children;
-		document
-			.querySelector("editeur-interface")
-			._planActif.renameInformation(
-				this._currentRow,
-				allTds[0].textContent,
-			);
+		// document
+		// 	.querySelector("editeur-interface")
+		// 	._planActif.renameInformation(
+		// 		this._currentRow,
+		// 		allTds[0].textContent,
+		// 	);
+
+		// console.log(allTds[0].textContent);
 
 		this._mesInformations.forEach((element) => {
+			console.log(element._nom == this._currentVariableName);
+
 			if (element._nom == this._currentVariableName) {
 				document
 					.querySelector("editeur-interface")
@@ -306,6 +307,53 @@ class DictionnaireDonnee extends HTMLElement {
 	}
 
 	/**
+	 *
+	 * @param {String} value
+	 */
+	#checkNameInput(value) {
+		let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
+		if (regex.test(value)) {
+			this._inputsValid[0] = true;
+			this._errorNameMsg = "";
+		} else {
+			this._inputsValid[0] = false;
+			this._errorNameMsg =
+				"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
+		}
+	}
+
+	/**
+	 *
+	 * @param {String} value
+	 */
+	#checkTypeInput(value) {
+		let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
+		if (regex.test(value)) {
+			this._inputsValid[1] = true;
+			this._errorTypeMsg = "";
+		} else {
+			this._inputsValid[1] = false;
+			this._errorTypeMsg =
+				"Le type ne peut pas contenir de nombre et de caractères spéciaux";
+		}
+	}
+
+	/**
+	 *
+	 * @param {String} value
+	 */
+	#checkSignificationInput(value) {
+		if (value.trim() != "") {
+			this._inputsValid[2] = true;
+			this._errorSignificationMsg = "";
+		} else {
+			this._inputsValid[2] = false;
+			this._errorSignificationMsg =
+				"La signification ne peut pas être vide";
+		}
+	}
+
+	/**
 	 * Permet de mettre à jour la liste des types
 	 * proposée à l'utilisateur dans le champ réservé
 	 * à la définition du type de la variable.
@@ -326,16 +374,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#launchInputTypeListener() {
 		this._inputType.addEventListener("input", (e) => {
-			let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
-			if (regex.test(e.target.value)) {
-				this._inputsValid[1] = true;
-				this._errorTypeMsg = "";
-			} else {
-				this._inputsValid[1] = false;
-				this._errorTypeMsg =
-					"Le type ne peut pas contenir de nombre et de caractères spéciaux";
-			}
-
+			this.#checkTypeInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorTypeMsg;
 			this._lastErrorMsg = this._errorTypeMsg;
@@ -343,19 +382,7 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 
 		this._inputType.addEventListener("focus", (e) => {
-			// document.getElementById("inputs-error").textContent =
-			// 	this._errorTypeMsg;
-			// this._lastErrorMsg = this._errorTypeMsg;
-			let regex = /^[a-zA-Zéùàèïêç ]{2,70}$/g;
-			if (regex.test(e.target.value)) {
-				this._inputsValid[1] = true;
-				this._errorTypeMsg = "";
-			} else {
-				this._inputsValid[1] = false;
-				this._errorTypeMsg =
-					"Le type ne peut pas contenir de nombre et de caractères spéciaux";
-			}
-
+			this.#checkTypeInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorTypeMsg;
 			this._lastErrorMsg = this._errorTypeMsg;
@@ -369,15 +396,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#launchInputSignificationListener() {
 		this._inputSignification.addEventListener("input", (e) => {
-			if (e.target.value.trim() != "") {
-				this._inputsValid[2] = true;
-				this._errorSignificationMsg = "";
-			} else {
-				this._inputsValid[2] = false;
-				this._errorSignificationMsg =
-					"La signification ne peut pas être vide";
-			}
-
+			this.#checkSignificationInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorSignificationMsg;
 			this._lastErrorMsg = this._errorSignificationMsg;
@@ -385,18 +404,7 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 
 		this._inputSignification.addEventListener("focus", (e) => {
-			// document.getElementById("inputs-error").textContent =
-			// 	this._errorSignificationMsg;
-			// this._lastErrorMsg = this._errorSignificationMsg;
-			if (e.target.value.trim() != "") {
-				this._inputsValid[2] = true;
-				this._errorSignificationMsg = "";
-			} else {
-				this._inputsValid[2] = false;
-				this._errorSignificationMsg =
-					"La signification ne peut pas être vide";
-			}
-
+			this.#checkSignificationInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorSignificationMsg;
 			this._lastErrorMsg = this._errorSignificationMsg;
@@ -410,16 +418,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#launchInputNameListener() {
 		this._inputName.addEventListener("input", (e) => {
-			let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
-			if (regex.test(e.target.value)) {
-				this._inputsValid[0] = true;
-				this._errorNameMsg = "";
-			} else {
-				this._inputsValid[0] = false;
-				this._errorNameMsg =
-					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
-			}
-
+			this.#checkNameInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorNameMsg;
 			this._lastErrorMsg = this._errorNameMsg;
@@ -427,19 +426,7 @@ class DictionnaireDonnee extends HTMLElement {
 		});
 
 		this._inputName.addEventListener("focus", (e) => {
-			// document.getElementById("inputs-error").textContent =
-			// 	this._errorNameMsg;
-			// this._lastErrorMsg = this._errorNameMsg;
-			let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
-			if (regex.test(e.target.value)) {
-				this._inputsValid[0] = true;
-				this._errorNameMsg = "";
-			} else {
-				this._inputsValid[0] = false;
-				this._errorNameMsg =
-					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
-			}
-
+			this.#checkNameInput(e.target.value);
 			document.getElementById("inputs-error").textContent =
 				this._errorNameMsg;
 			this._lastErrorMsg = this._errorNameMsg;
@@ -459,7 +446,9 @@ class DictionnaireDonnee extends HTMLElement {
 			this.#resetInputsText();
 
 			// Suppression des bordures sur la ligne sélectionnée
-			document.getElementById(this._currentRow).removeAttribute("class");
+			document
+				.getElementById(this._currentRow)
+				.classList.remove("row-selected");
 		});
 	}
 
@@ -499,6 +488,8 @@ class DictionnaireDonnee extends HTMLElement {
 			this._tableBody.addEventListener("click", (e) => {
 				this.#handleSelectedRow(e.target);
 				this.#insertSelectedRowTextOnInputs(this._currentRow);
+				this.#checkNameInput(this._inputName.value);
+				this.#checkInputsAreValid();
 			});
 
 			this.#launchValidBtnListener();
@@ -564,8 +555,6 @@ class DictionnaireDonnee extends HTMLElement {
 			this._tableBody.innerHTML = "";
 			this.genererDictionnaire();
 			this._estOuvert = true;
-
-			console.log(this._matchType, this._matchSignification);
 		}
 	}
 
@@ -593,11 +582,14 @@ class DictionnaireDonnee extends HTMLElement {
 		let index = 0;
 		this._mesInformations.sort((a, b) => a._nom.localeCompare(b._nom));
 
+		console.log(this._matchType);
+
 		for (let info of this._mesInformations) {
 			const clone = this._template.content.cloneNode(true);
 
 			let tr = clone.querySelector("tr");
 			tr.setAttribute("id", `var_${index}`);
+			tr.setAttribute("class", "good-name");
 			let td = clone.querySelectorAll("td");
 
 			td[0].textContent = `${info._nom}`;
@@ -611,6 +603,16 @@ class DictionnaireDonnee extends HTMLElement {
 				td[2].textContent = this._matchSignification[info._nom];
 			} else {
 				td[2].textContent = "Non défini";
+			}
+
+			if (!this.nomCorrecte(info._nom)) {
+				tr.classList.remove("good-name");
+				tr.classList.add("wrong-name");
+				tr.classList.add("input-tooltip");
+				tr.setAttribute(
+					"data-title",
+					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ",
+				);
 			}
 
 			this._tableBody.appendChild(clone);
@@ -643,24 +645,19 @@ class DictionnaireDonnee extends HTMLElement {
 		let reussis = false;
 		const nameInformation = uneInformation._nom.trim();
 		if (uneInformation instanceof Information) {
-			if (this.nomCorrecte(nameInformation)) {
-				if (this.containInformation(nameInformation)) {
-					const ancienType =
-						this.getInformation(nameInformation)._type;
-					const nouveauType = uneInformation._type;
-					const resultType = this.convertionVariable(
-						nouveauType,
-						ancienType,
-					);
-					if (
-						this.getInformation(nameInformation)._type != resultType
-					) {
-						this.changeType(uneInformation._nom, resultType);
-					}
-				} else {
-					this._mesInformations.push(uneInformation);
-					reussis = true;
+			if (this.containInformation(nameInformation)) {
+				const ancienType = this.getInformation(nameInformation)._type;
+				const nouveauType = uneInformation._type;
+				const resultType = this.convertionVariable(
+					nouveauType,
+					ancienType,
+				);
+				if (this.getInformation(nameInformation)._type != resultType) {
+					this.changeType(uneInformation._nom, resultType);
 				}
+			} else {
+				this._mesInformations.push(uneInformation);
+				reussis = true;
 			}
 		}
 		return reussis;
@@ -882,9 +879,8 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @returns Boolean
 	 */
 	nomCorrecte(nameVariable) {
-		// let regex = /^[a-zA-Z0-9\-\_]{2,60}$/g;
-		// return regex.test(nameVariable.trim());
-		return nameVariable.trim();
+		let regex = /^[a-zA-Z][a-zA-Z0-9\-\_]{2,60}$/g;
+		return regex.test(nameVariable.trim());
 	}
 
 	/**
