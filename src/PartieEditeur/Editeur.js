@@ -365,6 +365,9 @@ class Editeur extends HTMLElement {
 				const sourceCode = JSON.stringify(responseData.data.sourceCode);
 
 				this._espacePrincipal.chargerFichier(sourceCode);
+
+				this.querySelector("#titreAlgo").innerText =
+					responseData.data.nom;
 			}
 		};
 
@@ -424,7 +427,6 @@ class Editeur extends HTMLElement {
 								reader.result,
 							);
 							this._transferNomFichier.value = nomFichier;
-							this._transferForm.submit();
 						} catch (error) {
 							alert(
 								"Le fichier n'a pas été chargé correctement.",
