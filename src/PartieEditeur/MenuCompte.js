@@ -21,11 +21,10 @@ class MenuCompte extends HTMLElement {
 		// Récupérer le user
 		this.loadUserInfo();
 
-		console.log(this._user);
-
 		this.MenuIcone = document.createElement("div");
 		this.MenuIcone.classList.add("img");
-		this.MenuIcone.innerHTML = `<svg id="boutonCompte" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+		// Utiliser une div pour l'avatar qui contiendra soit l'image soit l'icône SVG
+		this.MenuIcone.innerHTML = `<div class="avatar-circle"><svg id="boutonCompte" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>`;
 		this.MenuIcone.alt = "Menu compte";
 		this.MenuIcone.id = "MenuCompte";
 		this.MenuIcone.addEventListener("click", () => {
@@ -453,12 +452,29 @@ class MenuCompte extends HTMLElement {
 	 * @description Met à jour les informations de l'utilisateur dans le menu
 	 */
 	updateUserInfo() {
-		if (!this._user || !this._menuDiv) return;
+		if (!this._user) return;
+
+		// Mettre à jour l'avatar du bouton si l'utilisateur a une image de profil
+		if (this._user.urlPfp) {
+			const avatarCircle = this.querySelector(".avatar-circle");
+			if (avatarCircle) {
+				avatarCircle.innerHTML = `<img src="${this._user.urlPfp}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+			}
+		}
+
+		// Si le menu n'est pas ouvert, pas besoin de mettre à jour le reste
+		if (!this._menuDiv) return;
 
 		const greetingElement = this._menuDiv.querySelector(
 			".user-info .greeting",
 		);
 		const emailElement = this._menuDiv.querySelector(".user-info .email");
+
+		// Mettre à jour l'avatar dans le menu si l'utilisateur a une image de profil
+		const userAvatar = this._menuDiv.querySelector(".user-avatar");
+		if (userAvatar && this._user.urlPfp) {
+			userAvatar.innerHTML = `<img src="${this._user.urlPfp}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+		}
 
 		if (greetingElement && this._user.pseudo) {
 			greetingElement.textContent = this._user.pseudo;
