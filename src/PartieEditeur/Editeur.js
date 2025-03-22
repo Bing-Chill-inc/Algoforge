@@ -34,6 +34,7 @@ class Editeur extends HTMLElement {
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
 	_barreOutilHorizontale = null;
+	_bouttonSauvegardeCloud = document.querySelector("#sauvegardeCloud");
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -370,6 +371,56 @@ class Editeur extends HTMLElement {
 					responseData.data.nom;
 			}
 		};
+
+		const saveAlgoToCloud = async () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			const id = hash.substring(2);
+
+			const newAlgo = {
+				id: id,
+				nom: this.querySelector("#titreAlgo").innerText,
+				permsAlgorithme: [],
+				sourceCode: this._espacePrincipal.exporterEnJSON(),
+			};
+
+			const API_BASE_URL = "/api/algos/";
+			const authToken = this.getCookie("authToken");
+			if (!authToken) {
+				console.error(
+					"Vous devez être connecté pour accéder à cette page.",
+				);
+				return;
+			}
+			const response = await fetch(`${API_BASE_URL}/${id}`, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newAlgo),
+			});
+
+			const isresponseOk = response.ok;
+
+			if (!isresponseOk)
+				throw new Error(
+					`Impossible de modifier l'algorithme: ${responseData.message}`,
+				);
+		};
+
+		this._bouttonSauvegardeCloud.addEventListener("click", async () => {
+			try {
+				await saveAlgoToCloud();
+				alert("Algorithme sauvegardé avec succès !");
+			} catch (error) {
+				console.error(
+					"Erreur lors de la sauvegarde de l'algorithme :",
+					error,
+				);
+				alert("Erreur lors de la sauvegarde de l'algorithme.");
+			}
+		});
 
 		// Détection du chargement de la page
 		window.addEventListener("load", async () => {
