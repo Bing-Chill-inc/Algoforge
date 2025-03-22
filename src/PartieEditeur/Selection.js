@@ -250,7 +250,7 @@ class Selection extends HTMLElement {
 			x: (deplacementAbscisse / 100) * window.innerWidth,
 			y: (deplacementOrdonnee / 100) * window.innerWidth,
 		};
-		console.log(deplacementEnPx, coinTopLeft);
+		if (verbose) console.log(deplacementEnPx, coinTopLeft);
 		if (coinTopLeft.x + deplacementEnPx.x < 0 && deplacementEnPx.x < 0) {
 			deplacementAbscisse = 0;
 		}
