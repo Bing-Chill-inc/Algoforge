@@ -327,6 +327,57 @@ class Editeur extends HTMLElement {
 			this._themeSelect.options[0].appliquer();
 		}
 
+		/**
+		 * Charge l'algorithme à partir de l'URL.
+		 * Fonctionne avec le cloud, il faut donc que l'utilisateur soit connecté.
+		 * @returns {Promise<void>}
+		 */
+		const loadAlgoFromURL = async () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			if (hash.startsWith("#/")) {
+				const id = hash.substring(2);
+
+				const API_BASE_URL = "/api/algos/";
+				const authToken = this.getCookie("authToken");
+				if (!authToken) {
+					console.error(
+						"Vous devez être connecté pour accéder à cette page.",
+					);
+					return;
+				}
+				const response = await fetch(`${API_BASE_URL}/${id}`, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${authToken}`,
+						"Content-Type": "application/json",
+					},
+				});
+
+				const isresponseOk = response.ok;
+				const responseData = await response.json();
+
+				if (!isresponseOk)
+					throw new Error(
+						`Impossible de créer l'algorithme: ${responseData.message}`,
+					);
+
+				const sourceCode = JSON.stringify(responseData.data.sourceCode);
+
+				this._espacePrincipal.chargerFichier(sourceCode);
+			}
+		};
+
+		// Détection du chargement de la page
+		window.addEventListener("load", async () => {
+			await loadAlgoFromURL();
+		});
+
+		// Détection de la modification de l'URL
+		window.addEventListener("popstate", async () => {
+			location.reload();
+		});
+
 		// Ajout des éléments de menu
 		// Fichier
 		this._menuDeroulantFichier.ajouterElementMenu(
