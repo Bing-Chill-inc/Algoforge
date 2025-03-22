@@ -48,12 +48,16 @@ class MenuCompte extends HTMLElement {
 
 		// Écouter les changements de localStorage entre les onglets
 		window.addEventListener("storage", (event) => {
-			if (
-				event.key === "auth_status" &&
-				event.newValue === "logged_out"
-			) {
-				this.clearLocalAuth();
-				window.location.reload();
+			if (event.key === "auth_status") {
+				if (event.newValue === "logged_out") {
+					this.clearLocalAuth();
+					window.location.reload();
+				} else if (
+					event.newValue === "logged_in" &&
+					!this.estSauvegardeDansSessionStorage()
+				) {
+					window.location.reload();
+				}
 			}
 		});
 	}
@@ -463,6 +467,14 @@ class MenuCompte extends HTMLElement {
 		if (emailElement && this._user.adresseMail) {
 			emailElement.textContent = this._user.adresseMail;
 		}
+	}
+
+	/**
+	 * @description Les données sont-elles sauvegardées dans le sessionStorage ou dans les cookies
+	 */
+
+	estSauvegardeDansSessionStorage() {
+		return sessionStorage.getItem("authToken") !== null;
 	}
 }
 
