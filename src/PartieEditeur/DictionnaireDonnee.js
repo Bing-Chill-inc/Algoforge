@@ -83,7 +83,7 @@ class DictionnaireDonnee extends HTMLElement {
 				</div>
 				<label>
 					Signification
-					<input id="inputs-signification" disabled class="correct-input" type="text" name="" minlength="1" placeholder="Signification">
+					<textarea id="inputs-signification" disabled class="correct-input" type="text" name="" minlength="1" placeholder="Signification"></textarea>
 				</label>
 				<datalist id="primitives"></datalist>
 			</div>
@@ -137,7 +137,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#insertSelectedRowTextOnInputs(rowId) {
 		let allTds = document.getElementById(rowId).children;
-		let allInputs = document.querySelectorAll("div#dico-wrapper input");
+		let allInputs = document.querySelectorAll(
+			"div#dico-wrapper input, div#dico-wrapper textarea",
+		);
 
 		for (let i = 0; i < allTds.length; i++) {
 			allInputs[i].value = allTds[i].textContent.trim();
@@ -227,7 +229,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateSelectedRowValues() {
 		let allTds = document.getElementById(this._currentRow).children;
-		let allInputs = document.querySelectorAll("div#dico-wrapper input");
+		let allInputs = document.querySelectorAll(
+			"div#dico-wrapper input, div#dico-wrapper textarea",
+		);
 		for (let i = 0; i < allTds.length; i++) {
 			allTds[i].textContent = allInputs[i].value;
 		}
@@ -263,7 +267,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 * en effaçant les données de chaque inputs.
 	 */
 	#resetInputsText() {
-		let allInputs = document.querySelectorAll("div#dico-wrapper input");
+		let allInputs = document.querySelectorAll(
+			"div#dico-wrapper input, div#dico-wrapper textarea",
+		);
 		for (let i = 0; i < allInputs.length; i++) {
 			allInputs[i].value = "";
 			allInputs[i].setAttribute("disabled", true);
