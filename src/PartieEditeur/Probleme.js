@@ -156,7 +156,6 @@ class Probleme extends ElementGraphique {
 	 * @param {string} chaineARemplacer - La chaîne de remplacement.
 	 */
 	replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
-		// let chaine = this.escapeRegExp(chaineAChercher);
 		this.querySelector(".donneesEditable").textContent = this.querySelector(
 			".donneesEditable",
 		).textContent.replace(chaineAChercher, chaineARemplacer);
@@ -193,12 +192,6 @@ class Probleme extends ElementGraphique {
 	 * @param {string} chaineARemplacer - La chaîne de remplacement.
 	 */
 	replaceTexteResultat(chaineAChercher, chaineARemplacer) {
-		// let chaine = chaineAChercher.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
-		// this.querySelector(".resultatEditable").textContent =
-		// 	this.querySelector(".resultatEditable").textContent.replace(
-		// 		new RegExp("\\b" + chaine + "\\b", "g"),
-		// 		chaineARemplacer,
-		// 	);
 		this.querySelector(".resultatEditable").textContent =
 			this.querySelector(".resultatEditable").textContent.replace(
 				chaineAChercher,

@@ -190,13 +190,6 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateVariableInAlgo() {
 		let allTds = document.getElementById(this._currentRow).children;
-		// document
-		// 	.querySelector("editeur-interface")
-		// 	._planActif.renameInformation(
-		// 		this._currentRow,
-		// 		allTds[0].textContent,
-		// 	);
-
 		this._mesInformations.forEach((element) => {
 			if (element._nom == this._currentVariableName) {
 				document
@@ -327,7 +320,7 @@ class DictionnaireDonnee extends HTMLElement {
 			this._inputName.classList.remove("correct-input");
 			this._inputName.classList.add("wrong-input");
 			this._errorNameMsg =
-				"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ";
+				"Le nom doit comporter entre 2 et 60 caractères, commencer par une lettre, et ne peut contenir ni lettres accentuées, ni espaces, ni caractères spéciaux autres que _";
 		}
 	}
 
@@ -347,7 +340,7 @@ class DictionnaireDonnee extends HTMLElement {
 			this._inputType.classList.add("wrong-input");
 			this._inputType.classList.remove("correct-input");
 			this._errorTypeMsg =
-				"Le type ne peut pas contenir de nombre et de caractères spéciaux";
+				"Le type ne peut contenir ni nombre, ni caractères spéciaux";
 		}
 	}
 
@@ -365,8 +358,7 @@ class DictionnaireDonnee extends HTMLElement {
 			this._inputsValid[2] = false;
 			this._inputSignification.classList.add("wrong-input");
 			this._inputSignification.classList.remove("correct-input");
-			this._errorSignificationMsg =
-				"La signification ne peut pas être vide";
+			this._errorSignificationMsg = "La signification ne peut être vide";
 		}
 	}
 
@@ -461,8 +453,6 @@ class DictionnaireDonnee extends HTMLElement {
 			this.#updateSelectedRowValues();
 			this.#updateVariableInAlgo();
 			this.#resetInputsText();
-
-			// Suppression des bordures sur la ligne sélectionnée
 			document
 				.getElementById(this._currentRow)
 				.classList.remove("row-selected");
@@ -628,7 +618,7 @@ class DictionnaireDonnee extends HTMLElement {
 				tr.classList.add("input-tooltip");
 				tr.setAttribute(
 					"data-title",
-					"Le nom doit comporté entre 2 et 60 caractères, ne peut contenir de lettres accentuées, d'espaces, et caractères spéciaux sauf _ ",
+					"Le nom doit comporter entre 2 et 60 caractères, commencer par une lettre, et ne peut contenir ni lettres accentuées, ni espaces, ni caractères spéciaux autres que _",
 				);
 			}
 
