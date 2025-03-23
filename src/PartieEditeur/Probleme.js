@@ -131,10 +131,7 @@ class Probleme extends ElementGraphique {
 	replaceTexte(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".nom").textContent = this.querySelector(
 			".nom",
-		).textContent.replace(
-			new RegExp("\\b" + chaineAChercher + "\\b", "g"),
-			chaineARemplacer,
-		);
+		).textContent.replace(chaineAChercher, chaineARemplacer);
 	}
 
 	/**
@@ -159,13 +156,19 @@ class Probleme extends ElementGraphique {
 	 * @param {string} chaineARemplacer - La chaîne de remplacement.
 	 */
 	replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
-		let chaine = chaineAChercher.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
+		// let chaine = this.escapeRegExp(chaineAChercher);
 		this.querySelector(".donneesEditable").textContent = this.querySelector(
 			".donneesEditable",
-		).textContent.replace(
-			new RegExp("\\b" + chaine + "\\b", "g"),
-			chaineARemplacer,
-		);
+		).textContent.replace(chaineAChercher, chaineARemplacer);
+	}
+
+	/**
+	 * @description Echappe les caractères spéciaux dans une chaîne pour une utilisation dans une regex
+	 * @param {String} string
+	 * @returns String
+	 */
+	escapeRegExp(string) {
+		return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
 	}
 
 	/**
@@ -190,9 +193,15 @@ class Probleme extends ElementGraphique {
 	 * @param {string} chaineARemplacer - La chaîne de remplacement.
 	 */
 	replaceTexteResultat(chaineAChercher, chaineARemplacer) {
+		// let chaine = chaineAChercher.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
+		// this.querySelector(".resultatEditable").textContent =
+		// 	this.querySelector(".resultatEditable").textContent.replace(
+		// 		new RegExp("\\b" + chaine + "\\b", "g"),
+		// 		chaineARemplacer,
+		// 	);
 		this.querySelector(".resultatEditable").textContent =
 			this.querySelector(".resultatEditable").textContent.replace(
-				new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+				chaineAChercher,
 				chaineARemplacer,
 			);
 	}

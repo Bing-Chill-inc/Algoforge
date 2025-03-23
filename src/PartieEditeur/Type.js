@@ -8,7 +8,10 @@ class Type {
 	static Char = "Caractère";
 	static String = "Chaine de caractères";
 	static double = "Nombre décimal";
-	static unsigned_int = "Entier non signé";
+	static positive_int = "Entier positif";
+	static negative_int = "Entier négatif";
+	static positive_int_or_null = "Entier positif ou nul";
+	static negative_int_or_null = "Entier négatif ou nul";
 	static int = "Entier";
 	static undefined = undefined;
 
@@ -17,7 +20,10 @@ class Type {
 		Type.Char,
 		Type.String,
 		Type.int,
-		Type.unsigned_int,
+		Type.positive_int,
+		Type.positive_int_or_null,
+		Type.negative_int,
+		Type.negative_int_or_null,
 		Type.double,
 	];
 
