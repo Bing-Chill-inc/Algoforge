@@ -344,10 +344,12 @@ class MenuCompte extends HTMLElement {
 			}
 		});
 
-		this.appendChild(this._menuDiv);
 		this._estOuvert = true;
 		this._init = true;
-		document.getElementById("boutonCompte").classList.add("elementIsOpen");
+		const boutonCompte = document.getElementById("boutonCompte");
+		if (boutonCompte) {
+			boutonCompte.classList.add("elementIsOpen");
+		}
 	}
 
 	/**
@@ -355,14 +357,19 @@ class MenuCompte extends HTMLElement {
 	 */
 	fermerMenu() {
 		this._selectionTheme = document.querySelector("select#theme");
-		this.appendChild(this._selectionTheme);
-		this._selectionTheme.style.display = "none";
+		if (this._selectionTheme) {
+			this.appendChild(this._selectionTheme);
+			this._selectionTheme.style.display = "none";
+		}
 
-		this.removeChild(this._menuDiv);
+		if (this._menuDiv) {
+			this.removeChild(this._menuDiv);
+		}
 		this._estOuvert = false;
-		document
-			.getElementById("boutonCompte")
-			.classList.remove("elementIsOpen");
+		const boutonCompte = document.getElementById("boutonCompte");
+		if (boutonCompte) {
+			boutonCompte.classList.remove("elementIsOpen");
+		}
 	}
 
 	/**
