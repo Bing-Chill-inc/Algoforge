@@ -193,20 +193,8 @@ class Editeur extends HTMLElement {
 					// On enlève le focus de l'élément pour que le titre soit bien enregistré
 					event.target.blur();
 
-					try {
-						await saveAlgoToCloud();
-						this._derniereVersionSauvegardee =
-							this._espacePrincipal.exporterEnJSON();
-						this._dernierTitreSauvegarde =
-							this.querySelector("#titreAlgo").innerText;
-						this._pingSauvegardeCloud.style.display = "none";
-					} catch (error) {
-						console.error(
-							"Erreur lors de la sauvegarde de l'algorithme :",
-							error,
-						);
-						alert("Erreur lors de la sauvegarde de l'algorithme.");
-					}
+					// On sauvegarde l'algorithme
+					await handdleSave();
 
 					// Petite animation sur le crayon
 					event.target.nextElementSibling.classList.add("rotate");
@@ -346,6 +334,24 @@ class Editeur extends HTMLElement {
 			this._themeSelect.options[0].appliquer();
 		}
 
+		const handdleSave = async () => {
+			try {
+				await saveAlgoToCloud();
+				if (verbose) console.log("Algorithme sauvegardé avec succès !");
+				this._derniereVersionSauvegardee =
+					this._espacePrincipal.exporterEnJSON();
+				this._dernierTitreSauvegarde =
+					this.querySelector("#titreAlgo").innerText;
+				this._pingSauvegardeCloud.style.display = "none";
+			} catch (error) {
+				console.error(
+					"Erreur lors de la sauvegarde de l'algorithme :",
+					error,
+				);
+				alert("Erreur lors de la sauvegarde de l'algorithme.");
+			}
+		};
+
 		/**
 		 * Charge l'algorithme à partir de l'URL.
 		 * Fonctionne avec le cloud, il faut donc que l'utilisateur soit connecté.
@@ -465,21 +471,7 @@ class Editeur extends HTMLElement {
 
 		// Bouton de sauvegarde
 		this._boutonSauvegardeCloud.addEventListener("click", async () => {
-			try {
-				await saveAlgoToCloud();
-				if (verbose) console.log("Algorithme sauvegardé avec succès !");
-				this._derniereVersionSauvegardee =
-					this._espacePrincipal.exporterEnJSON();
-				this._dernierTitreSauvegarde =
-					this.querySelector("#titreAlgo").innerText;
-				this._pingSauvegardeCloud.style.display = "none";
-			} catch (error) {
-				console.error(
-					"Erreur lors de la sauvegarde de l'algorithme :",
-					error,
-				);
-				alert("Erreur lors de la sauvegarde de l'algorithme.");
-			}
+			await handdleSave();
 		});
 
 		// Détection du chargement de la page
@@ -854,7 +846,7 @@ class Editeur extends HTMLElement {
 		});
 
 		// Gestion des raccourcis clavier
-		document.body.addEventListener("keydown", (e) => {
+		document.body.addEventListener("keydown", async (e) => {
 			if (verbose) console.log(e);
 			if (e.key === "Delete") {
 				// Suppr
@@ -955,6 +947,10 @@ class Editeur extends HTMLElement {
 					// Ctrl + X
 					e.preventDefault();
 					this.cut();
+				}
+				if (e.key.toLowerCase() === "s") {
+					e.preventDefault();
+					await handdleSave();
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
