@@ -334,6 +334,14 @@ class Editeur extends HTMLElement {
 			this._themeSelect.options[0].appliquer();
 		}
 
+		// Logo AlgoForge
+		this._logoAlgoForge.addEventListener("click", () => {
+			// Rediriger vers la page de connexion
+			const cloudUrl = new URL(window.location.origin);
+			cloudUrl.pathname = "/cloud/";
+			window.open(cloudUrl.toString(), "_self");
+		});
+
 		const handdleSave = async () => {
 			try {
 				await saveAlgoToCloud();
