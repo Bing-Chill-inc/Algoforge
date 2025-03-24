@@ -310,6 +310,7 @@ editeur-interface > header > div.zoneActionsCloud > button {
 	font-size: var(--font-size3);
 	gap: 5px;
 	color: var(--fgColor);
+	margin-top: 4px;
 }
 
 editeur-interface > header > div.zoneActionsCloud > button:hover {
