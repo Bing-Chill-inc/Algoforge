@@ -344,10 +344,12 @@ class MenuCompte extends HTMLElement {
 			}
 		});
 
-		this.appendChild(this._menuDiv);
 		this._estOuvert = true;
 		this._init = true;
-		document.getElementById("boutonCompte").classList.add("elementIsOpen");
+		const boutonCompte = document.getElementById("boutonCompte");
+		if (boutonCompte) {
+			boutonCompte.classList.add("elementIsOpen");
+		}
 	}
 
 	/**
@@ -355,14 +357,19 @@ class MenuCompte extends HTMLElement {
 	 */
 	fermerMenu() {
 		this._selectionTheme = document.querySelector("select#theme");
-		this.appendChild(this._selectionTheme);
-		this._selectionTheme.style.display = "none";
+		if (this._selectionTheme) {
+			this.appendChild(this._selectionTheme);
+			this._selectionTheme.style.display = "none";
+		}
 
-		this.removeChild(this._menuDiv);
+		if (this._menuDiv) {
+			this.removeChild(this._menuDiv);
+		}
 		this._estOuvert = false;
-		document
-			.getElementById("boutonCompte")
-			.classList.remove("elementIsOpen");
+		const boutonCompte = document.getElementById("boutonCompte");
+		if (boutonCompte) {
+			boutonCompte.classList.remove("elementIsOpen");
+		}
 	}
 
 	/**
@@ -433,6 +440,9 @@ class MenuCompte extends HTMLElement {
 						this._user = responseData.data || responseData;
 
 						this.updateUserInfo();
+
+						// Prolonger la durée des cookies
+						this.extendCookieExpiration();
 					})
 					.catch((error) => {
 						console.log("Erreur d'authentification:");
@@ -491,6 +501,66 @@ class MenuCompte extends HTMLElement {
 
 	estSauvegardeDansSessionStorage() {
 		return sessionStorage.getItem("authToken") !== null;
+	}
+
+	/**
+	 * @description Vérifie si l'option "Se souvenir de moi" est active (cookies utilisés plutôt que sessionStorage)
+	 * @returns {boolean} true si les données d'authentification sont stockées dans les cookies
+	 */
+	isRememberMeChecked() {
+		const cookies = document.cookie ? document.cookie.split("; ") : [];
+		const tokenCookie = cookies.find((row) => row.startsWith("authToken="));
+
+		return tokenCookie !== undefined;
+	}
+
+	/**
+	 * @description Prolonge la durée des cookies de 48 heures
+	 * @returns {boolean} true si les cookies ont été prolongés, false sinon
+	 */
+	extendCookieExpiration() {
+		const sessionData = this.getSessionData();
+
+		if (sessionData && this.isRememberMeChecked()) {
+			const extensionTime = 48 * 60 * 60;
+
+			const { token, userId } = sessionData;
+
+			document.cookie = `authToken=${token}; path=/; max-age=${extensionTime}; Secure; SameSite=Strict`;
+			document.cookie = `userId=${userId}; path=/; max-age=${extensionTime}; Secure; SameSite=Strict`;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @description Récupère les données de session (token et userId)
+	 * @returns {Object|null} Les données de session ou null si aucune donnée trouvée
+	 */
+	getSessionData() {
+		// Vérifier sessionStorage
+		const sessionToken = sessionStorage.getItem("authToken");
+		const sessionUserId = sessionStorage.getItem("userId");
+
+		if (sessionToken && sessionUserId) {
+			return { token: sessionToken, userId: sessionUserId };
+		}
+
+		// Vérifier les cookies
+		const cookies = document.cookie ? document.cookie.split("; ") : [];
+		const tokenCookie = cookies.find((row) => row.startsWith("authToken="));
+		const userIdCookie = cookies.find((row) => row.startsWith("userId="));
+
+		const token = tokenCookie ? tokenCookie.split("=")[1] : null;
+		const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
+
+		if (token && userId) {
+			return { token, userId };
+		}
+
+		return null;
 	}
 }
 
