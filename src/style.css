@@ -2913,8 +2913,6 @@ menu-compte-element > div.img {
 
 menu-compte-element > #MenuCompte {
 	display: block;
-	width: 40px;
-	height: 40px;
 }
 
 .menu-compte {
@@ -2923,7 +2921,7 @@ menu-compte-element > #MenuCompte {
 	right: 0;
 	background-color: var(--bgColor);
 	border-radius: 8px;
-	width: 300px;
+	width: 360px;
 	font-size: 14px;
 	display: flex;
 	flex-direction: column;
@@ -2981,6 +2979,7 @@ menu-compte-element > #MenuCompte {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	max-width: 235px;
 }
 
 .greeting {
@@ -2988,6 +2987,9 @@ menu-compte-element > #MenuCompte {
 	font-weight: 500;
 	margin: 0 0 5px 0;
 	color: var(--fgColor);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .email {
