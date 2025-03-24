@@ -295,6 +295,37 @@ editeur-interface > header > div.zoneActionsCloud {
 	height: 100%;
 }
 
+@keyframes ping {
+	0% {
+		transform: scale(1);
+		opacity: 0.5;
+	}
+	100% {
+		transform: scale(2);
+		opacity: 0;
+	}
+}
+
+#pingSauvegardeCloud {
+	position: fixed;
+}
+
+#pingSauvegardeCloud::before,
+#pingSauvegardeCloud::after {
+	content: "";
+	position: absolute;
+	background-color: var(--errorColor);
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	top: -23px;
+	right: 37px;
+}
+
+#pingSauvegardeCloud::before {
+	animation: ping 1.7s ease infinite;
+}
+
 editeur-interface > header > div.zoneActionsCloud > button {
 	display: flex;
 	border: none;

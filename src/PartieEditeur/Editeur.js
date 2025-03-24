@@ -34,7 +34,10 @@ class Editeur extends HTMLElement {
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
 	_barreOutilHorizontale = null;
-	_bouttonSauvegardeCloud = document.querySelector("#sauvegardeCloud");
+	_boutonSauvegardeCloud = document.querySelector("#sauvegardeCloud");
+	_pingSauvegardeCloud = document.querySelector("#pingSauvegardeCloud");
+	_derniereVersionSauvegardee = null;
+	_dernierTitreSauvegarde = "";
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -181,7 +184,7 @@ class Editeur extends HTMLElement {
 
 		this.querySelector("#titreAlgo").addEventListener(
 			"keydown",
-			(event) => {
+			async (event) => {
 				// On vérifie si la touche appuyée est "Entrée"
 				if (event.key === "Enter") {
 					// On l'empêche pour éviter le saut de ligne, qui casse le design
@@ -189,6 +192,21 @@ class Editeur extends HTMLElement {
 
 					// On enlève le focus de l'élément pour que le titre soit bien enregistré
 					event.target.blur();
+
+					try {
+						await saveAlgoToCloud();
+						this._derniereVersionSauvegardee =
+							this._espacePrincipal.exporterEnJSON();
+						this._dernierTitreSauvegarde =
+							this.querySelector("#titreAlgo").innerText;
+						this._pingSauvegardeCloud.style.display = "none";
+					} catch (error) {
+						console.error(
+							"Erreur lors de la sauvegarde de l'algorithme :",
+							error,
+						);
+						alert("Erreur lors de la sauvegarde de l'algorithme.");
+					}
 
 					// Petite animation sur le crayon
 					event.target.nextElementSibling.classList.add("rotate");
@@ -369,12 +387,26 @@ class Editeur extends HTMLElement {
 
 				this.querySelector("#titreAlgo").innerText =
 					responseData.data.nom;
+
+				this._derniereVersionSauvegardee =
+					this._espacePrincipal.exporterEnJSON();
+
+				this._dernierTitreSauvegarde =
+					this.querySelector("#titreAlgo").innerText;
 			}
 		};
 
+		/**
+		 * Sauvegarde l'algorithme dans le cloud.
+		 * Fonctionne avec le cloud, il faut donc que l'utilisateur soit connecté.
+		 * L'utilisateur doit aussi être sur un algorithme du cloud donc avec un hash.
+		 * @returns {Promise<void>}
+		 */
 		const saveAlgoToCloud = async () => {
 			const url = new URL(window.location.href);
 			const hash = url.hash;
+			if (!hash.startsWith("#/")) return;
+
 			const id = hash.substring(2);
 
 			const newAlgo = {
@@ -409,10 +441,38 @@ class Editeur extends HTMLElement {
 				);
 		};
 
-		this._bouttonSauvegardeCloud.addEventListener("click", async () => {
+		// Observer les modifications de l'algorithme
+		const observer = new MutationObserver(() => {
+			const versionActuelle = this._espacePrincipal.exporterEnJSON();
+			const titreActuel = this.querySelector("#titreAlgo").innerText;
+			if (
+				JSON.stringify(versionActuelle) !==
+					JSON.stringify(this._derniereVersionSauvegardee) ||
+				titreActuel !== this._dernierTitreSauvegarde
+			) {
+				this._pingSauvegardeCloud.style.display = "block";
+			} else {
+				this._pingSauvegardeCloud.style.display = "none";
+			}
+		});
+
+		observer.observe(this._espacePrincipal, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			characterData: true,
+		});
+
+		// Bouton de sauvegarde
+		this._boutonSauvegardeCloud.addEventListener("click", async () => {
 			try {
 				await saveAlgoToCloud();
-				alert("Algorithme sauvegardé avec succès !");
+				if (verbose) console.log("Algorithme sauvegardé avec succès !");
+				this._derniereVersionSauvegardee =
+					this._espacePrincipal.exporterEnJSON();
+				this._dernierTitreSauvegarde =
+					this.querySelector("#titreAlgo").innerText;
+				this._pingSauvegardeCloud.style.display = "none";
 			} catch (error) {
 				console.error(
 					"Erreur lors de la sauvegarde de l'algorithme :",
@@ -754,7 +814,7 @@ class Editeur extends HTMLElement {
 				if (verbose) console.log("Tutoriels");
 				// Open a new tab with the tutorials (wiki.<current_domain>)
 				window.open(
-					`https://wiki.${window.location.hostname}`,
+					`https://bing-chill-inc.github.io/wikiforge`,
 					"_blank",
 				);
 			}),
