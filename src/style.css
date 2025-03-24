@@ -534,7 +534,6 @@ dictionnaire-donnee {
 	align-items: center;
 	justify-content: start;
 	font-size: var(--font-size1);
-	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
 }
@@ -2328,8 +2327,7 @@ ligne-element {
 
 #dico-table {
 	width: 100%;
-	height: 40vh;
-	height: fit-content;
+	height: 100%;
 	margin: 0 0 10px 0;
 	overflow-y: scroll;
 	display: flex;
@@ -2343,7 +2341,6 @@ ligne-element {
 #dico-table tbody {
 	overflow-y: scroll;
 	width: 100%;
-	min-height: 50vh;
 }
 
 .wrong-name {
@@ -2425,7 +2422,7 @@ ligne-element {
 
 #dico-main {
 	width: calc(100% - 16px);
-	height: calc(100% - 236px);
+	height: calc(100% - 266px);
 	padding: 8px;
 }
 
@@ -2443,7 +2440,7 @@ ligne-element {
 
 #dico-inputs {
 	width: calc(100% - 16px);
-	height: 200px;
+	height: 230px;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -2577,7 +2574,7 @@ ligne-element {
 }
 
 .wrong-input {
-	animation: shake 0.4s ease-in-out;
+	animation: shake 0.2s ease-in-out;
 	border: 1px solid var(--errorColor);
 }
 
@@ -2602,6 +2599,7 @@ ligne-element {
 #dico-table tbody tr td {
 	word-break: break-all;
 	cursor: pointer;
+	color: var(--fgColor);
 }
 
 #dico-table tr td {
@@ -2661,6 +2659,7 @@ ligne-element {
 	justify-content: flex-start;
 	width: 100%;
 	height: fit-content;
+	font-size: var(--font-size2);
 }
 
 #dico-inputs button svg {

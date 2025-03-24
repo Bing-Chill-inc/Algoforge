@@ -192,14 +192,15 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	#updateVariableInAlgo() {
 		let allTds = document.getElementById(this._currentRow).children;
+		let allPlans = document.querySelectorAll(
+			"plan-travail, sous-plan-travail",
+		);
+
 		this._mesInformations.forEach((element) => {
 			if (element._nom == this._currentVariableName) {
-				document
-					.querySelector("editeur-interface")
-					._planActif.renameInformation(
-						element._nom,
-						allTds[0].textContent,
-					);
+				allPlans.forEach((plan) =>
+					plan.renameInformation(element._nom, allTds[0].textContent),
+				);
 
 				element._nom = allTds[0].textContent;
 				this.#updateTypeInformation(allTds[1].textContent, element);
@@ -242,9 +243,15 @@ class DictionnaireDonnee extends HTMLElement {
 	 * mais aussi au niveau de l'algorithme.
 	 */
 	#removeVariable() {
-		document
-			.querySelector("plan-travail")
-			.renameInformation(this._currentVariableName, this.VARIABLE_SUPPR);
+		let allPlans = document.querySelectorAll(
+			"plan-travail, sous-plan-travail",
+		);
+		allPlans.forEach((plan) =>
+			plan.renameInformation(
+				this._currentVariableName,
+				this.VARIABLE_SUPPR,
+			),
+		);
 
 		this.#cleanDictionaryData();
 		this._mesInformations.splice(
@@ -256,6 +263,13 @@ class DictionnaireDonnee extends HTMLElement {
 
 		this._currentRow = "";
 		this._lastRow = "";
+
+		this._inputName.classList.remove("wrong-input");
+		this._inputName.classList.add("correct-input");
+		this._inputType.classList.remove("wrong-input");
+		this._inputType.classList.add("correct-input");
+		this._inputSignification.classList.remove("wrong-input");
+		this._inputSignification.classList.add("correct-input");
 
 		this.#resetInputsText();
 		this.fermer();
@@ -632,15 +646,16 @@ class DictionnaireDonnee extends HTMLElement {
 			index++;
 		}
 
-		for (const [key, value] of Object.entries(this._matchType)) {
-			if (
-				this._mesInformations.find((elm) => elm._nom == key) ==
-				undefined
-			) {
-				delete this._matchType[key];
-				delete this._matchSignification[key];
-			}
-		}
+		// for (const [key, value] of Object.entries(this._matchType)) {
+		// 	console.log(key, info._nom);
+		// 	if (
+		// 		this._mesInformations.find((elm) => elm._nom.trim() == key) ==
+		// 		undefined
+		// 	) {
+		// 		delete this._matchType[key];
+		// 		delete this._matchSignification[key];
+		// 	}
+		// }
 
 		this.#populateTypeChoice();
 	}
@@ -812,7 +827,7 @@ class DictionnaireDonnee extends HTMLElement {
 	containInformation(nameInformation) {
 		let trouver = false;
 		this._mesInformations.forEach((element) => {
-			if (element._nom == nameInformation) {
+			if (element._nom.trim() == nameInformation.trim()) {
 				trouver = true;
 			}
 		});
@@ -827,7 +842,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	getInformation(nameInformation) {
 		const foundElement = this._mesInformations.find(
-			(element) => element._nom === nameInformation,
+			(element) => element._nom.trim() === nameInformation.trim(),
 		);
 		return foundElement;
 	}

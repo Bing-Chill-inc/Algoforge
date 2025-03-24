@@ -717,7 +717,7 @@ class Editeur extends HTMLElement {
 						break;
 					case "ArrowLeft":
 						this._selection.moveAllSelectedElements(-1, 0);
-						e.stopPropagation();
+						e.preventDefault();
 						break;
 					case "ArrowRight":
 						this._selection.moveAllSelectedElements(1, 0);
