@@ -437,7 +437,13 @@ class Editeur extends HTMLElement {
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
 				if (verbose) console.log("Nouveau");
+				const url = new URL(window.location.href);
+				const hash = url.hash;
 				// On ouvre un nouvel onglet avec un éditeur vide
+				if (hash.startsWith("#/")) {
+					window.open(window.location.href.split("#")[0], "_blank");
+					return;
+				}
 				window.open(window.location.href, "_blank");
 			}),
 		);
