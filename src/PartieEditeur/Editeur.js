@@ -701,7 +701,11 @@ class Editeur extends HTMLElement {
 
 			// Contrôle de la sélection avec les flèches
 			// vérifier si le curseur de l'utilisateur est dans un champ de texte
-			if (!document.activeElement.isContentEditable) {
+			if (
+				!document.activeElement.isContentEditable &&
+				e.target.nodeName !== "INPUT" &&
+				e.target.nodeName !== "TEXTAREA"
+			) {
 				switch (e.key) {
 					case "ArrowUp":
 						this._selection.moveAllSelectedElements(0, -1);
@@ -713,7 +717,7 @@ class Editeur extends HTMLElement {
 						break;
 					case "ArrowLeft":
 						this._selection.moveAllSelectedElements(-1, 0);
-						e.preventDefault();
+						e.stopPropagation();
 						break;
 					case "ArrowRight":
 						this._selection.moveAllSelectedElements(1, 0);
