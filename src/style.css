@@ -308,6 +308,7 @@ editeur-interface > header > div.zoneActionsCloud {
 
 #pingSauvegardeCloud {
 	position: fixed;
+	display: none;
 }
 
 #pingSauvegardeCloud::before,
@@ -342,6 +343,7 @@ editeur-interface > header > div.zoneActionsCloud > button {
 	gap: 5px;
 	color: var(--fgColor);
 	margin-top: 4px;
+	display: none;
 }
 
 editeur-interface > header > div.zoneActionsCloud > button:hover {

@@ -194,7 +194,7 @@ class Editeur extends HTMLElement {
 					event.target.blur();
 
 					// On sauvegarde l'algorithme
-					await handdleSave();
+					if (isCloud()) await handdleSave();
 
 					// Petite animation sur le crayon
 					event.target.nextElementSibling.classList.add("rotate");
@@ -334,6 +334,12 @@ class Editeur extends HTMLElement {
 			this._themeSelect.options[0].appliquer();
 		}
 
+		const isCloud = () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			return hash.startsWith("#/");
+		};
+
 		// Logo AlgoForge
 		this._logoAlgoForge.addEventListener("click", () => {
 			// Rediriger vers la page de connexion
@@ -374,9 +380,7 @@ class Editeur extends HTMLElement {
 				const API_BASE_URL = "/api/algos/";
 				const authToken = this.getCookie("authToken");
 				if (!authToken) {
-					console.error(
-						"Vous devez être connecté pour accéder à cette page.",
-					);
+					window.location.href = "/cloud/";
 					return;
 				}
 				const response = await fetch(`${API_BASE_URL}/${id}`, {
@@ -457,6 +461,7 @@ class Editeur extends HTMLElement {
 
 		// Observer les modifications de l'algorithme
 		const observer = new MutationObserver(() => {
+			if (!isCloud()) return;
 			const versionActuelle = this._espacePrincipal.exporterEnJSON();
 			const titreActuel = this.querySelector("#titreAlgo").innerText;
 			if (
@@ -477,13 +482,20 @@ class Editeur extends HTMLElement {
 			characterData: true,
 		});
 
-		// Bouton de sauvegarde
-		this._boutonSauvegardeCloud.addEventListener("click", async () => {
-			await handdleSave();
-		});
-
 		// Détection du chargement de la page
 		window.addEventListener("load", async () => {
+			if (isCloud()) {
+				this._boutonSauvegardeCloud.style.display = "flex";
+				this._pingSauvegardeCloud.style.display = "block";
+
+				// Bouton de sauvegarde
+				this._boutonSauvegardeCloud.addEventListener(
+					"click",
+					async () => {
+						await handdleSave();
+					},
+				);
+			}
 			await loadAlgoFromURL();
 		});
 
@@ -958,7 +970,7 @@ class Editeur extends HTMLElement {
 				}
 				if (e.key.toLowerCase() === "s") {
 					e.preventDefault();
-					await handdleSave();
+					if (isCloud()) await handdleSave();
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
