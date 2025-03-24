@@ -34,6 +34,8 @@ class Editeur extends HTMLElement {
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
 	_barreOutilHorizontale = null;
+	_clickSound = new Audio("Audio/Anvil_use.ogg");
+	_clickSoundActivated = false;
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -1003,6 +1005,13 @@ class Editeur extends HTMLElement {
 		// Gestion des clics sur l'éditeur
 		this.addEventListener("click", (e) => {
 			e.stopPropagation();
+
+			if (this._clickSoundActivated) {
+				const clickSound = this._clickSound.cloneNode();
+				clickSound.playbackRate = Math.random() * 0.2 + 0.9;
+				clickSound.keep;
+				clickSound.play();
+			}
 
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");

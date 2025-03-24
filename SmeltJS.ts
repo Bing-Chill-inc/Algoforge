@@ -76,6 +76,19 @@ modalesFiles.forEach((modalesFile) => {
 	);
 });
 
+// Copy the "Audio" directory to the 'out' directory
+const audioDir = join(outDir, "Audio");
+if (!existsSync(audioDir)) {
+	mkdirSync(audioDir);
+}
+const audioFiles = readdirSync(join(__dirname, "src", "Audio"));
+audioFiles.forEach((audioFile) => {
+	copyFileSync(
+		join(__dirname, "src", "Audio", audioFile),
+		join(audioDir, audioFile),
+	);
+});
+
 // Copy 'index.html' to the 'out' directory and update it
 const indexPath = join(__dirname, "src/index.html");
 let indexContent = readFileSync(indexPath, "utf-8");
