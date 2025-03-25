@@ -194,7 +194,9 @@ class MenuCompte extends HTMLElement {
 
 		// Récupération des éléments après avoir ajouté le menu au DOM
 		const boutonTheme = this._menuDiv.querySelector("#boutonTheme");
-		const closeButton = this._menuDiv.querySelector("#closeMenuBtn");
+		const closeButton = isLoggedIn
+			? this._menuDiv.querySelector("#closeMenuBtn")
+			: this._menuDiv.querySelector("#closeMenuBtn2");
 		const selectIndicateurs =
 			this._menuDiv.querySelector("#indicateursPage");
 
