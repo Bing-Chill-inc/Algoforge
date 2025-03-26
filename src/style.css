@@ -411,6 +411,7 @@ select#theme:focus {
 
 #dicobiblioControl > button:hover,
 #dicobiblioControl > button:focus-visible,
+#dico-table tbody tr:hover,
 #itemsControl > .svg-wrapper:hover,
 #itemsControl > .svg-wrapper:focus-visible {
 	--label-opacity: 1;
@@ -555,13 +556,11 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 dictionnaire-donnee {
 	width: 2vw;
 	height: 2vw;
-	padding: 0.5vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
 	font-size: var(--font-size1);
-	cursor: pointer;
 	transform-origin: left;
 	transition: 0.2s all ease;
 }
@@ -573,17 +572,14 @@ dictionnaire-donnee:hover {
 
 dictionnaire-donnee.ouvert {
 	width: 50vw;
-	height: fit-content;
-	max-height: calc(80vh - 10vw);
+	height: 70vh;
 	min-height: 15vw;
 	min-width: 400px;
-	/* Version en haut */
-	background-color: var(--bgColor);
-	border-radius: 0.8em;
-	background: var(--bgColorTertiary);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
-	outline: 1px solid var(--borderColor2);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 dictionnaire-donnee.ouvert:hover {
@@ -761,8 +757,6 @@ bibliotheque-algorithmique.ouvert {
 	max-height: calc(100vh - 230px);
 	min-height: 100px;
 	min-width: 300px;
-
-	/* Version en haut */
 	border-radius: 0.8em;
 	background: var(--bgColorTertiary);
 	outline: 1px solid var(--borderColor2);
@@ -2360,7 +2354,7 @@ ligne-element {
 
 #dico-table {
 	width: 100%;
-	height: fit-content;
+	height: 100%;
 	margin: 0 0 10px 0;
 	overflow-y: scroll;
 	display: flex;
@@ -2374,7 +2368,10 @@ ligne-element {
 #dico-table tbody {
 	overflow-y: scroll;
 	width: 100%;
-	height: calc(60vh - 80px);
+}
+
+.wrong-name {
+	background-color: var(--errorColor);
 }
 
 #dico-close,
@@ -2408,16 +2405,29 @@ ligne-element {
 	right: 10px;
 }
 
-/* #dico-table th {
-  width: 95%;
-  height: 5vw;
-  min-height: 5vw;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 0.1vw solid var(--borderColor2);
-} */
+.input-tooltip:before {
+	content: attr(data-title);
+	position: absolute;
+	top: 150%;
+	left: 50%;
+	background: var(--bgColor);
+	color: var(--fgColor);
+	border: 1px solid var(--borderColor2);
+	border-radius: 0.6em;
+	z-index: 3;
+	translate: -50% -2.5rem;
+	white-space: pre-line;
+	word-wrap: break-word;
+	text-align: left;
+	font-size: var(--font-size2);
+	padding: 0.3rem 1rem;
+	pointer-events: none;
+	opacity: var(--label-opacity, 0);
+	transform: scale(var(--label-scale, 0));
+	transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+		opacity 300ms ease-in-out, scale 500ms ease-in-out;
+	transition-delay: var(--label-delay, 0ms);
+}
 
 #dico-table thead {
 	width: 100%;
@@ -2425,7 +2435,7 @@ ligne-element {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	/* border-bottom: 1px solid var(--borderColor); */
+	border-bottom: 1px solid var(--borderColor2);
 }
 
 #dico-table tfoot {
@@ -2434,32 +2444,121 @@ ligne-element {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	/* border-top: 1px solid var(--borderColor); */
 	padding: 10px 0 0 0;
 }
 
+#dico-main {
+	width: calc(100% - 16px);
+	height: calc(100% - 266px);
+	padding: 8px;
+}
+
+#dico-main,
 #dico-inputs {
-	width: 100%;
-	height: 40px;
-	margin: 0 0 10px 0;
+	background-color: var(--bgColor);
+	border-radius: 0.8em;
+	background: var(--bgColorTertiary);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	outline: 1px solid var(--borderColor2);
+	overflow: hidden;
+	min-height: 24px;
+}
+
+#dico-inputs {
+	width: calc(100% - 16px);
+	height: 230px;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	flex-direction: column;
 	gap: 8px;
+	padding: 8px;
 }
 
-#dico-inputs input {
-	width: calc(100% - 10px);
+#dico-wrapper {
+	width: 100%;
+	height: 170px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+#dico-first-inputs {
+	display: flex;
+	gap: 20px;
+	width: 100%;
+	height: 80px;
+}
+#dico-buttons {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+}
+
+#dico-buttons button {
+	color: var(--fgColor);
+}
+
+#dico-inputs input,
+#dico-inputs textarea {
 	height: 100%;
 	background-color: transparent;
-	border: 1px solid var(--borderColor);
-	border-radius: 1.2em;
 	color: var(--fgColor);
 	padding: 0 0 0 10px;
+	border-radius: 0.6em;
+	box-shadow: 2px 2px 10px var(--fgColorSemiTransparent);
+	background-color: var(--bgColor);
+	margin: 2px 0 0 0;
+	transform: translateX(0);
 }
 
-#dico-inputs input::placeholder {
-	font-size: 12px;
+#dico-inputs textarea {
+	font-family: Roboto, sans-serif;
+	font-size: var(--font-size1);
+	padding: 5px 0 0 5px;
+}
+
+#inputs-name {
+	width: 100%;
+}
+
+#dico-inputs label {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	font-size: var(--font-size2);
+}
+
+#dico-first-inputs label {
+	height: 100%;
+	width: 100%;
+}
+
+#valid-inputs:hover {
+	color: var(--warningColor);
+}
+
+#remove-inputs:hover {
+	color: var(--errorColor);
+}
+
+.error-msg {
+	color: var(--errorColor);
+}
+
+#dico-inputs input:focus,
+#dico-inputs textarea:focus {
+	outline: none;
+	box-shadow: -2px -2px 10px var(--fgColorSemiTransparent);
+}
+
+#dico-inputs input::placeholder,
+#dico-inputs textarea::placeholder {
+	font-size: var(--font-size2);
 	font-style: italic;
 }
 
@@ -2501,32 +2600,43 @@ ligne-element {
 	border: 1px solid var(--borderColor);
 }
 
+.wrong-input {
+	animation: shake 0.2s ease-in-out;
+	border: 1px solid var(--errorColor);
+}
+
+.correct-input {
+	border: 1px solid transparent;
+}
+
+.good-name {
+	background-color: var(--bgColorSecondary);
+}
+
 #dico-table tbody tr {
 	padding: 5px;
 	height: fit-content;
-	background-color: var(--bgColorSecondary);
 	margin: 5px 0 0 0;
 	width: calc(100% - 17px);
 	border-radius: 0.6em;
 	cursor: pointer;
+	position: relative;
 }
 
 #dico-table tbody tr td {
 	word-break: break-all;
 	cursor: pointer;
+	color: var(--fgColor);
 }
 
 #dico-table tr td {
-	/* width: 100%; */
 	height: 100%;
-	/* margin-left: 1%; */
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: start;
-	/* border-right: 1px solid var(--borderColor); */
 	cursor: text;
-	font-size: 12px;
+	font-size: var(--font-size2);
 }
 
 #dico-table thead tr td:nth-child(1),
@@ -2546,29 +2656,28 @@ ligne-element {
 	border-right: none;
 }
 
-#dico-inputs input:nth-child(1),
-#dico-inputs input:nth-child(2) {
-	width: calc(25% - 20px);
-}
-
-#dico-inputs input:nth-child(4) {
-	width: 20px;
-}
-
 #dico-inputs button {
-	width: 40px;
-	height: 40px;
-	border: 1px solid var(--borderColor);
-	border-radius: 50%;
+	border: none;
+	border-radius: 0.6em;
 	background-color: transparent;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 6px 10px 6px 10px;
+}
+
+#dico-inputs button:not(:disabled) {
+	cursor: pointer;
+}
+
+#dico-inputs button:hover {
+	box-shadow: 0px 4px 10px var(--fgColorSemiTransparent);
 }
 
 #valid-inputs:disabled {
-	opacity: 0.6;
-	filter: blur(0.5px);
+	opacity: 0.4;
+	pointer-events: none;
+	cursor: none;
 }
 
 #inputs-error {
@@ -2576,7 +2685,8 @@ ligne-element {
 	display: flex;
 	justify-content: flex-start;
 	width: 100%;
-	padding: 2px 0 7px 15px;
+	height: fit-content;
+	font-size: var(--font-size2);
 }
 
 #dico-inputs button svg {
@@ -2600,7 +2710,7 @@ ligne-element {
 	border: none;
 	background-color: var(--bgColor);
 	color: var(--fgColor);
-	font-size: 1vw;
+	font-size: var(--font-size2);
 	cursor: pointer;
 }
 
@@ -3246,6 +3356,24 @@ div.page-size-indicator::after {
 /* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */
 sous-plan-travail > selection-editeur {
 	translate: 3.5px -6.5px;
+}
+
+@keyframes shake {
+	0% {
+		transform: translateX(-3px);
+	}
+	20% {
+		transform: translateX(3px);
+	}
+	40% {
+		transform: translateX(-3px);
+	}
+	60% {
+		transform: translateX(3px);
+	}
+	100% {
+		transform: translateX(0);
+	}
 }
 
 @media print {
