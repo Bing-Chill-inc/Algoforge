@@ -293,6 +293,8 @@ class Probleme extends ElementGraphique {
 					if (verbose) console.log("afficher les accolades");
 				}
 			}
+
+			editeur.adjustFontSize(this.divDonneesEditable);
 		});
 		this.divDonneesEditable.addEventListener("focusout", (e) => {
 			if (this._listeDonnes == this.listeDonnes) return;
@@ -326,6 +328,10 @@ class Probleme extends ElementGraphique {
 		this.divNom.contentEditable = "true";
 		this.divNom.innerText = this._libelle;
 		divContainerDPR.appendChild(this.divNom);
+
+		this.divNom.addEventListener("input", (e) => {
+			editeur.adjustFontSize(this.divNom);
+		});
 
 		this.divNom.addEventListener("focusout", (e) => {
 			if (this._libelle == this.libelle) return;
@@ -443,6 +449,8 @@ class Probleme extends ElementGraphique {
 					if (verbose) console.log("afficher les accolades");
 				}
 			}
+
+			editeur.adjustFontSize(this.divResultatsEditable);
 		});
 		this.divResultatsEditable.addEventListener("focusout", (e) => {
 			if (this._listeResultats == this.listeResultats) return;

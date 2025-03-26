@@ -2781,5 +2781,22 @@ class Editeur extends HTMLElement {
 	exporterPNG(nodeToCopy, download = true, isJSON = false) {
 		this.createBitmapImageFromSvg("png", nodeToCopy, download, isJSON);
 	}
+
+	adjustFontSize(el, minFontSize = 0.45, maxFontSize = 1) {
+		// Set the font size to the maximum
+		let fontSize = maxFontSize;
+		el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+
+		// Check for overflow
+		const isOverflowing = () =>
+			el.scrollWidth > el.clientWidth ||
+			el.scrollHeight > el.clientHeight;
+
+		// Reduce font size gradually until there's no overflow or until the minimum font size is reached
+		while (isOverflowing() && fontSize > minFontSize) {
+			fontSize -= 0.05; // decrement step
+			el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+		}
+	}
 }
 window.customElements.define("editeur-interface", Editeur);

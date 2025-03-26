@@ -1935,14 +1935,14 @@ structure-si-element > div.triangleGauche > span {
 structure-si-element > div.conditionContainer {
 	display: flex;
 	width: fit-content;
-	height: 100%;
+	height: inherit;
 	grid-column: 2;
 	flex-direction: row;
 }
 
 structure-si-element > div.conditionContainer > condition-element {
 	width: calc(var(--sizeModifier) * 10vw);
-	height: 100%;
+	height: inherit;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
