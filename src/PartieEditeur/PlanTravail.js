@@ -6,7 +6,8 @@
 class PlanTravail extends HTMLElement {
 	// ATTRIBUTS
 	_editeur = document.querySelector("editeur-interface"); // Editeur d'algorithme
-	_refScroll;
+	_refScroll; // HTMLDivElement
+	_pageSizeIndicator; // HTMLDivElement
 
 	// CONSTRUCTEUR
 	/**
@@ -22,22 +23,26 @@ class PlanTravail extends HTMLElement {
 		this._refScroll.style.opacity = "0";
 		this.appendChild(this._refScroll);
 
+		this._pageSizeIndicator = document.createElement("div");
+		this._pageSizeIndicator.classList.add("page-size-indicator");
+		this.appendChild(this._pageSizeIndicator);
+
 		// 30 fois par seconde, on vérifie si des éléments sont en dehors du plan de travail (trop haut ou trop à gauche)
 		setInterval(() => {
-			for (let element of this.children) {
-				if (element instanceof ElementGraphique) {
-					if (
-						element.getCentre().x < 0 ||
-						parseFloat(element._ordonnee) < 0
-					) {
-						element._abscisse =
-							Math.max(0, parseFloat(element._abscisse)) + "vw";
-						element._ordonnee =
-							Math.max(0, parseFloat(element._ordonnee)) + "vw";
-						element.setPosition();
-					}
-				}
-			}
+			// for (let element of this.children) {
+			// 	if (element instanceof ElementGraphique) {
+			// 		if (
+			// 			element.getCentre().x < 0 ||
+			// 			parseFloat(element._ordonnee) < 0
+			// 		) {
+			// 			element._abscisse =
+			// 				Math.max(0, parseFloat(element._abscisse)) + "vw";
+			// 			element._ordonnee =
+			// 				Math.max(0, parseFloat(element._ordonnee)) + "vw";
+			// 			element.setPosition();
+			// 		}
+			// 	}
+			// }
 
 			// On va aussi trouver l'élément le plus en bas et déplacer refScroll 200px plus bas
 			let coordMinEtMax = this.getCoordMinEtMax();

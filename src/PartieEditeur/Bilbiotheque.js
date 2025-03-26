@@ -90,6 +90,7 @@ class Bibliotheque extends HTMLElement {
 	ouvrir() {
 		document.querySelector("dictionnaire-donnee").fermer();
 		document.getElementById("biblio_wrapper").style.zIndex = 40;
+		document.getElementById("biblio_wrapper").style.display = "initial";
 		document.getElementById("boutonBiblio").classList.add("elementIsOpen");
 
 		if (this._estOuvert) {
@@ -350,9 +351,15 @@ class Bibliotheque extends HTMLElement {
 
 		try {
 			const planTravail = new PlanTravail();
+			planTravail.classList.add("previewPlanTravail");
 			planTravail.chargerDepuisJSON(JSON.parse(algorithme.algo), false);
 			const tailles = planTravail.getCoordMinEtMax();
 			if (verbose) console.log(tailles);
+
+			tailles.coordMax.x += 2;
+			tailles.coordMax.y += 2;
+			tailles.coordMin.x -= 2;
+			tailles.coordMin.y -= 2;
 
 			const largeur = tailles.coordMax.x - tailles.coordMin.x;
 			const hauteur = tailles.coordMax.y - tailles.coordMin.y;

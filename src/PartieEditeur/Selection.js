@@ -245,6 +245,18 @@ class Selection extends HTMLElement {
 	 * @param {number} deplacementOrdonnee - Déplacement en ordonnée.
 	 */
 	moveAllSelectedElements(deplacementAbscisse, deplacementOrdonnee) {
+		const coinTopLeft = this.coin("top", "left");
+		const deplacementEnPx = {
+			x: (deplacementAbscisse / 100) * window.innerWidth,
+			y: (deplacementOrdonnee / 100) * window.innerWidth,
+		};
+		console.log(deplacementEnPx, coinTopLeft);
+		if (coinTopLeft.x + deplacementEnPx.x < 0 && deplacementEnPx.x < 0) {
+			deplacementAbscisse = 0;
+		}
+		if (coinTopLeft.y + deplacementEnPx.y < 100 && deplacementEnPx.y < 0) {
+			deplacementOrdonnee = 0;
+		}
 		for (var selection of this._listeElementsSelectionnes) {
 			selection._element._abscisse =
 				parseFloat(selection._element._abscisse) +

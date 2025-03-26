@@ -34,6 +34,8 @@ class Editeur extends HTMLElement {
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
 	_barreOutilHorizontale = null;
+	_clickSound = new Audio("Audio/Anvil_use.ogg");
+	_clickSoundActivated = false;
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -516,13 +518,6 @@ class Editeur extends HTMLElement {
 		exporter.ajouterElementMenu(sousTitreDictionnaire);
 
 		exporter.ajouterElementMenu(
-			new ElementMenu(".xls", () => {
-				if (verbose) console.log("Exporter en .xls");
-				this._dictionnaireDesDonnees.exporter("xls");
-			}),
-		);
-
-		exporter.ajouterElementMenu(
 			new ElementMenu(".csv", () => {
 				if (verbose) console.log("Exporter en .csv");
 				this._dictionnaireDesDonnees.exporter("csv");
@@ -647,14 +642,14 @@ class Editeur extends HTMLElement {
 
 		// Aide
 		this._menuDeroulantAide.ajouterElementMenu(
-			new ElementMenu(
-				"Tutoriels",
-				() => {
-					if (verbose) console.log("Tutoriels");
-					this._modaleNonImp.ouvrir();
-				},
-				false,
-			),
+			new ElementMenu("Tutoriels", () => {
+				if (verbose) console.log("Tutoriels");
+				// Open a new tab with the tutorials (wiki.<current_domain>)
+				window.open(
+					`https://wiki.${window.location.hostname}`,
+					"_blank",
+				);
+			}),
 		);
 
 		this._menuDeroulantAide.ajouterElementMenu(
@@ -1015,6 +1010,13 @@ class Editeur extends HTMLElement {
 		this.addEventListener("click", (e) => {
 			e.stopPropagation();
 
+			if (this._clickSoundActivated) {
+				const clickSound = this._clickSound.cloneNode();
+				clickSound.playbackRate = Math.random() * 0.2 + 0.9;
+				clickSound.keep;
+				clickSound.play();
+			}
+
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");
 			for (let i = 0; i < menuContextuel.length; i++) {
@@ -1127,43 +1129,59 @@ class Editeur extends HTMLElement {
 								"pointePourLien",
 							);
 							this._pointePrecedementLien = null;
-						} else {
-							// Les éléments sont différents, la connexion peut être faite
-							// Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
-							if (verbose)
-								console.log(
-									`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`,
-								);
-							let parentRelation, enfantRelation;
+							return;
+						}
+
+						if (
+							this._pointePrecedementLien instanceof Condition &&
+							maTarget instanceof Condition
+						) {
+							// On vérifie si les conditions ne sont pas dans la même structure
 							if (
-								parseFloat(
-									this._pointePrecedementLien._ordonnee,
-								) < parseFloat(maTarget._ordonnee)
+								this._pointePrecedementLien._structure ==
+								maTarget._structure
 							) {
-								parentRelation = this._pointePrecedementLien;
-								enfantRelation = maTarget;
-							} else {
-								parentRelation = maTarget;
-								enfantRelation = this._pointePrecedementLien;
-							}
-
-							// On crée la relation
-							// Si le fils est une condition, le lien doit se faire avec sa structure
-							if (enfantRelation instanceof Condition) {
-								enfantRelation = enfantRelation._structure;
-							}
-
-							// On crée le lien
-							parentRelation._elemParent.lierEnfant(
-								enfantRelation,
-							);
-
-							if (!e.shiftKey) {
 								this._pointePrecedementLien.classList.remove(
 									"pointePourLien",
 								);
-								this._pointePrecedementLien = null;
+								this._pointePrecedementLien = maTarget;
+								maTarget.classList.add("pointePourLien");
+								return;
 							}
+						}
+
+						// Les éléments sont différents, la connexion peut être faite
+						// Si l'élément pointé précédemment est au dessus de l'élément pointé actuellement, il sera père de la relation
+						if (verbose)
+							console.log(
+								`this._pointePrecedementLien._ordonnee=${this._pointePrecedementLien._ordonnee} et maTarget._ordonnee=${maTarget._ordonnee}`,
+							);
+						let parentRelation, enfantRelation;
+						if (
+							parseFloat(this._pointePrecedementLien._ordonnee) <
+							parseFloat(maTarget._ordonnee)
+						) {
+							parentRelation = this._pointePrecedementLien;
+							enfantRelation = maTarget;
+						} else {
+							parentRelation = maTarget;
+							enfantRelation = this._pointePrecedementLien;
+						}
+
+						// On crée la relation
+						// Si le fils est une condition, le lien doit se faire avec sa structure
+						if (enfantRelation instanceof Condition) {
+							enfantRelation = enfantRelation._structure;
+						}
+
+						// On crée le lien
+						parentRelation._elemParent.lierEnfant(enfantRelation);
+
+						if (!e.shiftKey) {
+							this._pointePrecedementLien.classList.remove(
+								"pointePourLien",
+							);
+							this._pointePrecedementLien = null;
 						}
 					}
 				}
@@ -2766,6 +2784,23 @@ class Editeur extends HTMLElement {
 	 */
 	exporterPNG(nodeToCopy, download = true, isJSON = false) {
 		this.createBitmapImageFromSvg("png", nodeToCopy, download, isJSON);
+	}
+
+	adjustFontSize(el, minFontSize = 0.45, maxFontSize = 1) {
+		// Set the font size to the maximum
+		let fontSize = maxFontSize;
+		el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+
+		// Check for overflow
+		const isOverflowing = () =>
+			el.scrollWidth > el.clientWidth ||
+			el.scrollHeight > el.clientHeight;
+
+		// Reduce font size gradually until there's no overflow or until the minimum font size is reached
+		while (isOverflowing() && fontSize > minFontSize) {
+			fontSize -= 0.05; // decrement step
+			el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+		}
 	}
 }
 window.customElements.define("editeur-interface", Editeur);

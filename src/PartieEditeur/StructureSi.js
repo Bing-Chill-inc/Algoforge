@@ -29,8 +29,13 @@ class StructureSi extends StructureAlternative {
 		divTriangleGauche.className = "triangleGauche";
 		divTriangleGauche.classList.add("triangle");
 		divTriangleGauche.innerHTML = "<span>-<span>";
-		divTriangleGauche.addEventListener("click", (e) => {
-			this.supprimerCondition();
+		divTriangleGauche.addEventListener("mousedown", (e) => {
+			this._mouseDownTime = new Date().getTime();
+		});
+		divTriangleGauche.addEventListener("mouseup", (e) => {
+			if (new Date().getTime() - this._mouseDownTime < 200) {
+				this.supprimerCondition();
+			}
 		});
 		this.appendChild(divTriangleGauche);
 
@@ -49,8 +54,13 @@ class StructureSi extends StructureAlternative {
 		divTriangleDroit.className = "triangleDroit";
 		divTriangleDroit.classList.add("triangle");
 		divTriangleDroit.innerHTML = "<span>+<span>";
-		divTriangleDroit.addEventListener("click", (e) => {
-			this.ajouterCondition();
+		divTriangleDroit.addEventListener("mousedown", (e) => {
+			this._mouseDownTime = new Date().getTime();
+		});
+		divTriangleDroit.addEventListener("mouseup", (e) => {
+			if (new Date().getTime() - this._mouseDownTime < 200) {
+				this.ajouterCondition();
+			}
 		});
 		this.appendChild(divTriangleDroit);
 	}

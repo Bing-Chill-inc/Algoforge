@@ -19,7 +19,7 @@ class Procedure extends Probleme {
 	constructor(
 		abscisse,
 		ordonnee,
-		libelle,
+		libelle = " ", // Espacement insécable, pour que le navigateur sache où placer le curseur
 		listeDonnes = [],
 		listeResultats = [],
 	) {

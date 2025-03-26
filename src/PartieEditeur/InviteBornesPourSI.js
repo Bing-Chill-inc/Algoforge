@@ -187,6 +187,7 @@ class InviteBornesPourSI extends HTMLElement {
 	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
 	 */
 	valider(estAnnulation = false) {
+		this._editeur._selection.deselectionnerTout();
 		// Vérifions que la structure active est bien celle qui est placée sur un plan de travail
 		if (this._structureIterative.parentNode == null) {
 			if (this._structureIterativeBornee.parentNode != null) {
@@ -311,6 +312,7 @@ class InviteBornesPourSI extends HTMLElement {
 	 * @param {boolean} [estAnnulation=false] - Indique si l'action est une annulation.
 	 */
 	nonBorne(estAnnulation = false) {
+		this._editeur._selection.deselectionnerTout();
 		if (this._structureIterative == this._structureIterativeNonBornee) {
 			this.parentNode.removeChild(this);
 			return;

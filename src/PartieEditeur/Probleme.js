@@ -11,6 +11,9 @@ class Probleme extends ElementGraphique {
 	_listeResultats; // Liste d'Information
 	_elemParent; // ElementParent (liste des enfants)
 	_editeur = document.querySelector("editeur-interface"); // Editeur
+	_espacePrincipalWrapper = document.querySelector(
+		"#espacePrincipal_wrapper",
+	); // Espace principal
 	_sousPlan = null; // SousPlanTravail
 
 	// CONSTRUCTEUR
@@ -26,7 +29,7 @@ class Probleme extends ElementGraphique {
 	constructor(
 		abscisse = 0,
 		ordonnee = 0,
-		libelle = "",
+		libelle = " ", // Espacement insécable, pour que le navigateur sache où placer le curseur
 		listeDonnes = [],
 		listeResultats = [],
 		elemParent = new ElementParent(),
@@ -293,6 +296,8 @@ class Probleme extends ElementGraphique {
 					if (verbose) console.log("afficher les accolades");
 				}
 			}
+
+			editeur.adjustFontSize(this.divDonneesEditable);
 		});
 		this.divDonneesEditable.addEventListener("focusout", (e) => {
 			if (this._listeDonnes == this.listeDonnes) return;
@@ -324,8 +329,12 @@ class Probleme extends ElementGraphique {
 		this.divNom = document.createElement("div");
 		this.divNom.className = "nom";
 		this.divNom.contentEditable = "true";
-		this.divNom.innerHTML = this._libelle;
+		this.divNom.innerText = this._libelle;
 		divContainerDPR.appendChild(this.divNom);
+
+		this.divNom.addEventListener("input", (e) => {
+			editeur.adjustFontSize(this.divNom);
+		});
 
 		this.divNom.addEventListener("focusout", (e) => {
 			if (this._libelle == this.libelle) return;
@@ -443,6 +452,8 @@ class Probleme extends ElementGraphique {
 					if (verbose) console.log("afficher les accolades");
 				}
 			}
+
+			editeur.adjustFontSize(this.divResultatsEditable);
 		});
 		this.divResultatsEditable.addEventListener("focusout", (e) => {
 			if (this._listeResultats == this.listeResultats) return;
@@ -774,7 +785,7 @@ class Probleme extends ElementGraphique {
 			});
 			this.appendChild(buttonOuvrir);
 			this._sousPlan = new SousPlanTravail(this);
-			editeur.appendChild(this._sousPlan);
+			this._espacePrincipalWrapper.appendChild(this._sousPlan);
 
 			let json = [this.toJSON()];
 

@@ -1,12 +1,8 @@
 :root {
-	--border: 2;
-	--size: 400;
-	--bg-spot-opacity: 0.022;
-	--spread: 20;
-	--outer: 1;
 	--font-size1: 1.4rem;
 	--font-size2: 1.2rem;
 	--font-size3: 1rem;
+	--page-size: disabled;
 }
 
 /* Track */
@@ -312,17 +308,48 @@ editeur-interface > header > div.zonePartage > button {
 	cursor: default;
 }
 
-select#theme {
-	width: 95%;
-	height: 100%;
-	background: none;
-	border: var(--fgColor) solid 0.1vw;
-	border-radius: 1vw;
-	font-size: var(--font-size2);
+select#theme,
+select#indicateursPage {
+	width: 100%;
+	background-color: transparent;
+	border: 1px solid var(--borderColor);
+	border-radius: 30px;
 	color: var(--fgColor);
 	cursor: pointer;
+	padding: 10px;
+	text-align: center;
+	font-weight: 500;
+	transition: background-color 0.2s;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-align-last: center;
+	padding-right: 30px;
+	box-sizing: border-box;
+}
+
+select#theme > option,
+select#indicateursPage > option {
+	background-color: var(--bgColor);
+	color: var(--fgColor);
+}
+
+select#theme {
 	display: none;
-	padding: 4px 10px;
+}
+
+select#indicateursPage {
+	display: block;
+}
+
+select#indicateursPage:hover,
+select#theme:hover {
+	background-color: var(--fgColorTransparent);
+}
+
+select#indicateursPage:focus,
+select#theme:focus {
+	outline: none;
 }
 
 #boutonPointeur,
@@ -521,7 +548,7 @@ editeur-interface > div.barreOutilsHorizontale > div.undoRedo > img {
 #biblio_wrapper {
 	position: absolute;
 	top: 45px;
-	left: 20px;
+	left: 30px;
 	border: none;
 	border-radius: 0.8em;
 }
@@ -1461,24 +1488,26 @@ plan-travail {
 	overflow: scroll;
 	scrollbar-width: 10;
 	scrollbar-color: var(--fgColor) transparent;
+	margin: 34px 0 0 0;
 }
 
 #espacePrincipal_wrapper {
-	width: 100%;
-	height: 100%;
-	border: 0.1vw solid var(--borderColor);
-	position: relative;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	align-content: center;
+	align-self: center;
 	background-color: var(--bgColorSecondary);
-	border-radius: 0.8em;
-	padding: 34px 0 0 0;
+	border-radius: 0.6em;
+	overflow: hidden;
+	z-index: 1;
 }
 
 sous-plan-travail {
-	width: calc(100% - 40px);
-	height: calc(100% - 120px);
+	width: calc(100% - 4px);
+	height: calc(100% - 36px);
 	position: absolute;
-	top: 100px;
-	left: 19px;
+	top: 34px;
+	left: 2px;
 	overflow: scroll;
 	scale: 0;
 	background-color: var(--bgColorSecondary);
@@ -1773,6 +1802,7 @@ procedure-element > div.containerDPR > div.nom::before {
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: none;
 	background-color: var(--bgColor);
+	z-index: -1;
 }
 
 procedure-element > div.containerDPR > div.nom::after {
@@ -1784,6 +1814,7 @@ procedure-element > div.containerDPR > div.nom::after {
 	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: none;
 	background-color: var(--bgColor);
+	z-index: -1;
 }
 
 procedure-element > div.containerDPR > div.resultat {
@@ -1885,10 +1916,9 @@ structure-si-element > div.triangleGauche {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: -45deg;
 	grid-column: 1;
 	background-color: var(--bgColor);
-	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(-2%, 2%) rotate(-45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-si-element > div.triangleGauche > span {
@@ -1899,14 +1929,14 @@ structure-si-element > div.triangleGauche > span {
 structure-si-element > div.conditionContainer {
 	display: flex;
 	width: fit-content;
-	height: 100%;
+	height: inherit;
 	grid-column: 2;
 	flex-direction: row;
 }
 
 structure-si-element > div.conditionContainer > condition-element {
 	width: calc(var(--sizeModifier) * 10vw);
-	height: 100%;
+	height: inherit;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1924,10 +1954,9 @@ structure-si-element > div.triangleDroit {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: 45deg;
 	grid-column: 3;
 	background-color: var(--bgColor);
-	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(2%, 2%) rotate(45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-si-element > div.triangleDroit > span {
@@ -1974,11 +2003,10 @@ structure-switch-element > div.triangleGauche {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: -45deg;
 	grid-column: 1;
 	grid-row: 1/3;
 	background-color: var(--bgColor);
-	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(-2%, 2%) rotate(-45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-switch-element > div.triangleGauche > span {
@@ -2053,11 +2081,10 @@ structure-switch-element > div.triangleDroit {
 	height: calc(var(--sizeModifier) * 2.8284271247vw);
 	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
 	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
-	rotate: 45deg;
 	grid-column: 3;
 	grid-row: 1/3;
 	background-color: var(--bgColor);
-	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+	transform: translate(2%, 2%) rotate(45deg); /* Compenser l'imprecision du rotate */
 }
 
 structure-switch-element > div.triangleDroit > span {
@@ -2851,21 +2878,28 @@ button,
 	transition: all 0.5s ease;
 }
 
-/* Glow specific styles */
+/* === GLOW EFFECT === */
+
+.glow-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	background-color: var(--borderColor);
+	border-radius: 0.8em;
+	overflow: hidden;
+}
 
 [data-glow].active {
-	--border-size: calc(var(--border, 2) * 1px);
-	--spotlight-size: calc(var(--size, 150) * 1px);
+	--spread: 20;
+	--border-size: 2px;
+	--spotlight-size: 30dvw;
+	--border-light-opacity: 1;
+	--border-spot-opacity: 1;
+	--lightness: 50;
 	--hue: calc(var(--baseGlowColor) + (var(--xp, 0) * var(--spread, 0)));
-	background-image: radial-gradient(
-		var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px)
-			calc(var(--y, 0) * 1px),
-		hsl(
-			var(--hue, 210) calc(var(--saturation, 100) * 1%)
-				calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)
-		),
-		transparent
-	);
 }
 
 [data-glow].active::before,
@@ -2876,18 +2910,26 @@ button,
 	inset: calc(var(--border-size) * -1);
 	border: var(--border-size) solid transparent;
 	border-radius: 0.8em;
+
 	background-attachment: fixed;
 	background-size: calc(100% + (2 * var(--border-size)))
 		calc(100% + (2 * var(--border-size)));
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-	mask: linear-gradient(transparent, transparent),
-		linear-gradient(white, white);
-	mask-clip: padding-box, border-box;
-	mask-composite: intersect;
+	z-index: 0;
+	opacity: 0;
+	animation: fadeIn 1.5s forwards;
 }
 
-/* This is the emphasis light */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 [data-glow].active::before {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
@@ -2900,7 +2942,7 @@ button,
 	);
 	filter: brightness(1.5);
 }
-/* This is the spotlight */
+
 [data-glow].active::after {
 	background-image: radial-gradient(
 		calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
@@ -2909,13 +2951,15 @@ button,
 		transparent 100%
 	);
 }
+
 menu-deroulant {
 	background-color: rgba(28, 39, 51, 0.35);
 	border: 1px solid var(--borderColor);
 	font-size: var(--font-size1);
 }
 
-/* Dock animation style */
+/* === DOCK EFFECT === */
+
 .dock-item {
 	cursor: pointer;
 	transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s;
@@ -2969,82 +3013,344 @@ menu-compte-element > div.img {
 
 menu-compte-element > #MenuCompte {
 	display: block;
+}
+
+.menu-compte {
+	position: absolute;
+	top: calc(100% + 10px);
+	right: 0;
+	background-color: var(--bgColor);
+	border-radius: 8px;
+	width: 360px;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	z-index: 999;
+	border: 1px solid var(--borderColor);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	overflow: hidden;
+}
+
+.menu-header {
+	padding: 20px;
+	display: flex;
+	position: relative;
+	border-bottom: 1px solid var(--borderColor2);
+}
+
+.user-avatar {
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-right: 15px;
+	background-color: var(--bgColorSecondary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.user-avatar svg {
+	width: 100%;
+	height: 100%;
+	fill: var(--fgColor);
+}
+
+.avatar-circle {
 	width: 40px;
 	height: 40px;
-}
-
-menu-compte-element > div.menu-compte {
-	position: absolute;
-	top: calc(100% + 0.2vw); /* Place la div juste en dessous du bouton */
-	left: 0;
-	transform: translateX(
-		-84%
-	); /* Décale la div vers la gauche pour aligner la bordure droite */
-	background-color: var(--bgColor);
-	padding: 0.2vw;
-	border-radius: 0.6em;
-	z-index: 999;
-	width: 15vw;
-	min-width: 150px;
-	font-size: 1vw;
-	padding-bottom: 1vw;
-	flex-direction: column;
-	align-items: stretch;
-	justify-content: center;
-	animation: 0.2s ease-in-out zoomFromAbove;
-	border: 1px solid #1f2b38;
+	border-radius: 50%;
+	overflow: hidden;
 	display: flex;
-	gap: 0.5vw;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bgColorSecondary);
+	border: 2px solid var(--borderColor);
+	cursor: pointer;
 }
 
-.elementMenuCompte {
-	padding-left: 5%;
-	width: 95%;
-	padding-top: 0.5vw;
-	padding-bottom: 0.5vw;
-	text-align: left;
+.avatar-circle img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	max-width: 235px;
+}
+
+.greeting {
+	font-size: 24px;
+	font-weight: 500;
+	margin: 0 0 5px 0;
+	color: var(--fgColor);
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.email {
+	font-size: 14.4px;
+	margin: 0;
+	color: var(--fgColorForward);
+}
+
+.close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+}
+
+.menu-header-simple {
+	display: flex;
+	justify-content: flex-end;
 	position: relative;
+}
+
+#closeMenuBtn2 {
+	position: relative;
+}
+
+.close-button:hover {
+	background-color: var(--fgColorTransparent);
+}
+
+.close-button svg {
+	width: 24px;
+	height: 24px;
+	fill: var(--fgColor);
+}
+
+.menu-action {
+	padding: 15px 20px;
+	border-bottom: 1px solid var(--borderColor2);
+}
+
+.menu-items {
+	/* padding: 10px 0; */
+	border-bottom: 1px solid var(--borderColor2);
+}
+
+.menu-item {
+	display: flex;
+	align-items: center;
+	padding: 12px 20px;
+	width: 100%;
+	background: none;
+	border: none;
 	cursor: pointer;
 	color: var(--fgColor);
-	font-size: var(--font-size2);
+	text-align: left;
 }
 
-.element-compte-switch {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-evenly;
-	height: fit-content;
+.menu-item:hover {
+	background-color: var(--fgColorTransparent);
 }
 
-.element-compte-switch-container {
-	width: 3vw;
-	height: 1.5vw;
-	min-width: 30px;
-	min-height: 15px;
-	border: 1px solid var(--fgColorHover);
-	border-radius: 999em;
+.menu-item svg {
+	width: 24px;
+	height: 24px;
+	margin-right: 15px;
+	fill: var(--fgColor);
+}
+
+.elementIsOpen {
+	fill: var(--titleColor) !important;
+}
+
+.theme-section {
+	padding: 15px;
+	border-bottom: 1px solid var(--borderColor2);
 	position: relative;
-	transition: all 0.2s ease;
-}
-
-.element-compte-switch-displayer {
-	width: 1.3vw;
-	height: 1.3vw;
-	min-width: 13px;
-	min-height: 13px;
-	border-radius: 999em;
-	background-color: var(--bgColor);
-	position: absolute;
-	top: 0.1vw;
-	transition: all 0.2s ease;
-	border: 1px solid var(--fgColor);
 	box-sizing: border-box;
 }
 
-#boutonDeconnexion {
+.theme-section,
+.indicators-option {
+	position: relative;
+}
+
+.theme-section select {
+	width: 100%;
+	padding: 10px;
+	border-radius: 20px;
+	border: 1px solid var(--borderColor);
+	background-color: transparent;
+	color: var(--fgColor);
+	font-size: 14px;
+}
+
+.menu-actions {
+	padding: 0;
+	border-bottom: 1px solid var(--borderColor2);
+}
+
+.menu-separator {
+	height: 1px;
+	background-color: var(--borderColor2);
+	margin: 0;
+}
+
+.editor-options {
+	padding: 10px 0;
+}
+
+.effect-option {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+	cursor: pointer;
+}
+
+.switch-container {
+	width: 40px;
+	height: 20px;
+	border-radius: 10px;
+	position: relative;
+	transition: background-color 0.3s;
+}
+
+.switch-displayer {
+	width: 16px;
+	height: 16px;
+	background-color: var(--bgColor);
+	border-radius: 50%;
+	position: absolute;
+	top: 2px;
+	transition: left 0.3s, right 0.3s;
+}
+
+.effect-option span {
+	color: var(--fgColor);
+}
+
+.indicators-option {
+	padding: 12px 20px;
+	margin-bottom: 10px;
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.indicators-option select {
+	width: 100%;
+	padding: 8px;
+	border-radius: 5px;
+	border: 1px solid var(--borderColor);
+	background-color: transparent;
+	color: var(--fgColor);
+	font-size: 14px;
+}
+
+.indicators-option::after,
+.theme-section::after {
 	display: none;
+}
+
+.select-arrow {
+	position: absolute;
+	top: 50%;
+	right: 30px;
+	transform: translateY(-50%);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.select-arrow svg {
+	width: 20px;
+	height: 20px;
+	fill: var(--fgColor);
+}
+
+#indicateursPage {
+	width: 100%;
+	padding: 8px 12px;
+	border-radius: 5px;
+	background-color: transparent;
+	border: 1px solid var(--fgColor);
+	color: var(--fgColor);
+	font-size: 14px;
+}
+
+#indicateursPage:focus {
+	outline: none;
+}
+
+/* Une bordure en pointillés pour afficher la taille d'une feuille A4/A3 */
+div.page-size-indicator {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	border: 2px dashed var(--fgColor);
+	border-radius: 15px;
+	display: none;
+	pointer-events: none;
+	opacity: 0.2;
+}
+
+div.page-size-indicator::after {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	font-size: 2vw;
+	color: var(--fgColor);
+}
+
+:root[data-page-size="a4-portrait"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 96vw);
+	height: calc(var(--sizeModifier) * 135.7vw);
+	display: block;
+}
+
+:root[data-page-size="a4-portrait"] div.page-size-indicator::after {
+	content: "A4 (Portrait)";
+}
+
+:root[data-page-size="a4-landscape"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 96vw);
+	height: calc(var(--sizeModifier) * 65.8vw);
+	display: block;
+}
+
+:root[data-page-size="a4-landscape"] div.page-size-indicator::after {
+	content: "A4 (Paysage)";
+}
+
+:root[data-page-size="a3-portrait"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 135.7vw);
+	height: calc(var(--sizeModifier) * 191.8vw);
+	display: block;
+}
+
+:root[data-page-size="a3-portrait"] div.page-size-indicator::after {
+	content: "A3 (Portrait)";
+}
+
+:root[data-page-size="a3-landscape"] div.page-size-indicator {
+	width: calc(var(--sizeModifier) * 135.7vw);
+	height: calc(var(--sizeModifier) * 94vw);
+	display: block;
+}
+
+:root[data-page-size="a3-landscape"] div.page-size-indicator::after {
+	content: "A3 (Paysage)";
+}
+
+.previewPlanTravail div.page-size-indicator {
+	display: none !important;
 }
 
 /* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */
@@ -3087,17 +3393,41 @@ sous-plan-travail > selection-editeur {
 		--bgColorSecondary: #ffffff !important;
 	}
 
+	div.page-size-indicator {
+		display: none !important;
+	}
+
 	#espacePrincipal_wrapper {
 		border: none;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper {
+		border: none;
+		position: relative !important;
+		background: transparent !important;
+		overflow: visible !important;
+		height: fit-content !important;
+	}
+
+	.glow-wrapper.active::after,
+	.glow-wrapper.active::before {
+		opacity: 0 !important;
 	}
 
 	header,
+	#dico_wrapper,
+	#biblio_wrapper,
 	div.barreOutilsHorizontale,
 	indicateur-zoom,
 	selection-simple,
 	selection-editeur,
 	div.img,
-	span.fermeture {
+	span.fermeture,
+	#titreAlgo_wrapper,
+	.ouvrir {
 		display: none !important;
 	}
 
@@ -3110,17 +3440,23 @@ sous-plan-travail > selection-editeur {
 	}
 
 	sous-plan-travail {
+		display: block !important;
+		border-radius: 0 !important;
 		position: relative !important;
 		scale: 1 !important;
 		page-break-inside: avoid !important;
-		border-top: 1px solid #000000 !important;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100dvw !important;
 	}
 
 	plan-travail {
+		display: block !important;
 		position: relative !important;
 		border: none !important;
 		page-break-inside: avoid !important;
-		width: 100%;
-		padding-bottom: 150px;
+		overflow: visible !important;
+		height: 90dvh !important;
+		width: 100dvw !important;
 	}
 }

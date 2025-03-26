@@ -49,6 +49,9 @@ class DictionnaireDonnee extends HTMLElement {
 		this._template = document.getElementById("dico-row");
 		this.#createHtmlTable();
 		this.#launchListeners();
+
+		this._matchSignification = {};
+		this._matchType = {};
 	}
 
 	/**
@@ -392,9 +395,8 @@ class DictionnaireDonnee extends HTMLElement {
 		this.querySelector("datalist").innerHTML = "";
 
 		Type.allTypes.forEach((type) => {
-			this.querySelector(
-				"datalist",
-			).innerHTML += `<option value="${type}"></option>`;
+			this.querySelector("datalist").innerHTML +=
+				`<option value="${type}"></option>`;
 		});
 	}
 
@@ -574,9 +576,12 @@ class DictionnaireDonnee extends HTMLElement {
 		if (this._estOuvert) {
 			this.fermer();
 		} else {
-			this.style.transform = "scale(1)";
 			document.querySelector("bibliotheque-algorithmique").fermer();
 			document.getElementById("dico_wrapper").style.zIndex = 200;
+			document.getElementById("dico_wrapper").style.display = "initial";
+			document
+				.getElementById("boutonDico")
+				.classList.add("elementIsOpen");
 			document
 				.querySelector("editeur-interface")
 				._planActif.effectuerDictionnaireDesDonnee();
@@ -592,9 +597,10 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet de fermer le dictionnaire.
 	 */
 	fermer() {
-		this.style.transform = "scale(0)";
 		document.getElementById("dico_wrapper").style.zIndex = -200;
+		document.getElementById("dico_wrapper").style.display = "none";
 		document.getElementById("biblio_btn").removeAttribute("disabled");
+		document.getElementById("boutonDico").classList.remove("elementIsOpen");
 		this.classList.remove("ouvert");
 		this._estOuvert = false;
 		this.#resetInputsText();
@@ -609,6 +615,9 @@ class DictionnaireDonnee extends HTMLElement {
 	 * et stockées dans this._mesInformations.
 	 */
 	genererDictionnaire() {
+		if (!this._matchType) this._matchType = {};
+		if (!this._matchSignification) this._matchSignification = {};
+
 		let index = 0;
 		this._mesInformations.sort((a, b) => a._nom.localeCompare(b._nom));
 
@@ -659,7 +668,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet d'ajouter une nouvelle information, en
 	 * s'assurant que son nom et son type sont correct.
 	 * @param {Information} uneInformation
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	AjouterUneVariable(uneInformation) {
 		if (uneInformation._nom == this.VARIABLE_SUPPR) {
@@ -704,7 +713,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet avec le nom d'une information de la retirer
 	 * du tableau this._mesInformations.
 	 * @param {String} nameVariable
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	retirerUneInformation(nameVariable) {
 		this._mesInformations = this._mesInformations.filter(
@@ -718,7 +727,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * sont compatibles avec les types acceptés par l'application.
 	 * @param {String} type1
 	 * @param {String} type2
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	TypeCompatible(type1, type2) {
 		if (type1 == undefined || type2 == undefined) {
@@ -754,7 +763,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * avec les types définis dans l'objet Type.
 	 * @param {Information} informationUne
 	 * @param {Information} InformationDeux
-	 * @returns
+	 * @returns {String}
 	 */
 	convertionVariable(informationUne, InformationDeux) {
 		// undefined
@@ -787,7 +796,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 *
 	 * @param {String} type1
 	 * @param {String} type2
-	 * @returns
+	 * @returns {String}
 	 */
 	getTypeLePlusBasEnCommun(type1, type2) {
 		let courant = type1;
@@ -817,7 +826,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Vérifie si le nom de l'information est déjà présent
 	 * dans le tableau des informations.
 	 * @param {String} nameInformation
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	containInformation(nameInformation) {
 		let trouver = false;
@@ -833,7 +842,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet de chercher et si trouvé,
 	 * récupérer l'objet Information en fonction de son nom.
 	 * @param {String} nameInformation
-	 * @returns Information
+	 * @returns {Information}
 	 */
 	getInformation(nameInformation) {
 		const foundElement = this._mesInformations.find(
@@ -846,7 +855,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet de renommer une Information
 	 * @param {String} nameVariable
 	 * @param {String} newName
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	renameInformation(nameVariable, newName) {
 		let resultat = false;
@@ -870,7 +879,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * trouvée à partir de son nom.
 	 * @param {String} nameVariable
 	 * @param {String} nouvelleSignification
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	changeSignification(nameVariable, nouvelleSignification) {
 		let resultat = false;
@@ -888,7 +897,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * trouvée à partir de son nom.
 	 * @param {String} nameVariable
 	 * @param {String} newType
-	 * @returns
+	 * @returns {Boolean}
 	 */
 	changeType(nameVariable, newType) {
 		let resultat = false;
@@ -905,7 +914,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet de vérifier si le nom de l'information
 	 * est correct et conforme aux éxigences du regex.
 	 * @param {String} nameVariable
-	 * @returns Boolean
+	 * @returns {Boolean}
 	 */
 	nomCorrecte(nameVariable) {
 		let regex = /^[a-zA-ZÀ-ÿ\(\)\[\]][a-zA-ZÀ-ÿ0-9\s\(\)\[\]]*$/g;
@@ -934,7 +943,7 @@ class DictionnaireDonnee extends HTMLElement {
 
 	/**
 	 * @description Permet de convertir le dictionnaire en Objet Json.
-	 * @returns Object Json
+	 * @returns {{typeElement: "DictionnaireDonnee", types: Object, signification: Object}}
 	 */
 	toJSON() {
 		return {
@@ -952,42 +961,6 @@ class DictionnaireDonnee extends HTMLElement {
 	 */
 	exporter(format) {
 		switch (format.toLowerCase()) {
-			case "xls":
-				this.ouvrir();
-				// Code snippet de la doc de SheetJS
-				let aoa = [["Nom", "Type", "Signification"]];
-
-				this._mesInformations.forEach((info) => {
-					aoa.push([
-						info._nom,
-						`${
-							this._matchType[info._nom]
-								? this._matchType[info._nom]
-								: info._type
-						}`,
-						this._matchSignification[info._nom]
-							? this._matchSignification[info._nom]
-							: "",
-					]);
-				});
-				/* Create worksheet from Array of arrays */
-				var ws = XLSX.utils.aoa_to_sheet(aoa);
-
-				// Create a new workbook
-				var wb = XLSX.utils.book_new();
-
-				// Append the worksheet to the workbook
-				XLSX.utils.book_append_sheet(wb, ws, "Dictionnaire"); // "Dictionnaire" is the worksheet name
-
-				/* Export to file (start a download) */
-				XLSX.writeFile(
-					wb,
-					`${
-						document.querySelector("#titreAlgo").innerText
-					}Dictionnaire.xls`,
-				);
-				this.fermer();
-				break;
 			case "csv":
 				// On crée le contenu du fichier
 				var contenuTexte = "Nom;Type;Signification\n";
@@ -995,10 +968,14 @@ class DictionnaireDonnee extends HTMLElement {
 				this.fermer();
 
 				this._mesInformations.forEach((info) => {
-					contenuTexte += `${info._nom};${info._type};${
+					contenuTexte += `${info._nom};${
+						this._matchType[info._nom]
+							? this._matchType[info._nom]
+							: "Non défini"
+					};${
 						this._matchSignification[info._nom]
 							? this._matchSignification[info._nom]
-							: ""
+							: "Non défini"
 					}\n`;
 				});
 
@@ -1032,10 +1009,14 @@ class DictionnaireDonnee extends HTMLElement {
 				this.fermer();
 
 				this._mesInformations.forEach((info) => {
-					contenuTexte += `${info._nom};${info._type};${
+					contenuTexte += `${info._nom};${
+						this._matchType[info._nom]
+							? this._matchType[info._nom]
+							: "Non défini"
+					};${
 						this._matchSignification[info._nom]
 							? this._matchSignification[info._nom]
-							: ""
+							: "Non défini"
 					}\n`;
 				});
 
@@ -1084,7 +1065,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @description Permet de convertir le dictionnaire au format CSV vers le
 	 * format MARKDOWN.
 	 * @param {String} csvString
-	 * @returns
+	 * @returns {String}
 	 */
 	csvToMarkdown(csvString) {
 		const rows = csvString.split("\n").filter((row) => row); // On sépare les lignes et ne gardons pas les lignes vides
