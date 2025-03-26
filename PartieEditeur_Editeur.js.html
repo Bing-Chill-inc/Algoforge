@@ -64,6 +64,10 @@ class Editeur extends HTMLElement {
 	_barreOutilHorizontale = null;
 	_clickSound = new Audio("Audio/Anvil_use.ogg");
 	_clickSoundActivated = false;
+	_boutonSauvegardeCloud = document.querySelector("#sauvegardeCloud");
+	_pingSauvegardeCloud = document.querySelector("#pingSauvegardeCloud");
+	_derniereVersionSauvegardee = null;
+	_dernierTitreSauvegarde = "";
 
 	_curMousePos = { x: 0, y: 0 };
 
@@ -210,7 +214,7 @@ class Editeur extends HTMLElement {
 
 		this.querySelector("#titreAlgo").addEventListener(
 			"keydown",
-			(event) => {
+			async (event) => {
 				// On vérifie si la touche appuyée est "Entrée"
 				if (event.key === "Enter") {
 					// On l'empêche pour éviter le saut de ligne, qui casse le design
@@ -218,6 +222,9 @@ class Editeur extends HTMLElement {
 
 					// On enlève le focus de l'élément pour que le titre soit bien enregistré
 					event.target.blur();
+
+					// On sauvegarde l'algorithme
+					if (isCloud()) await handdleSave();
 
 					// Petite animation sur le crayon
 					event.target.nextElementSibling.classList.add("rotate");
@@ -357,12 +364,188 @@ class Editeur extends HTMLElement {
 			this._themeSelect.options[0].appliquer();
 		}
 
+		const isCloud = () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			return hash.startsWith("#/");
+		};
+
+		// Logo AlgoForge
+		this._logoAlgoForge.addEventListener("click", () => {
+			// Rediriger vers la page de connexion
+			const cloudUrl = new URL(window.location.origin);
+			cloudUrl.pathname = "/cloud/";
+			window.open(cloudUrl.toString(), "_self");
+		});
+
+		const handdleSave = async () => {
+			try {
+				await saveAlgoToCloud();
+				if (verbose) console.log("Algorithme sauvegardé avec succès !");
+				this._derniereVersionSauvegardee =
+					this._espacePrincipal.exporterEnJSON();
+				this._dernierTitreSauvegarde =
+					this.querySelector("#titreAlgo").innerText;
+				this._pingSauvegardeCloud.style.display = "none";
+			} catch (error) {
+				console.error(
+					"Erreur lors de la sauvegarde de l'algorithme :",
+					error,
+				);
+				alert("Erreur lors de la sauvegarde de l'algorithme.");
+			}
+		};
+
+		/**
+		 * Charge l'algorithme à partir de l'URL.
+		 * Fonctionne avec le cloud, il faut donc que l'utilisateur soit connecté.
+		 * @returns {Promise&lt;void>}
+		 */
+		const loadAlgoFromURL = async () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			if (hash.startsWith("#/")) {
+				const id = hash.substring(2);
+
+				const API_BASE_URL = "/api/algos/";
+				const authToken = this.getCookie("authToken");
+				if (!authToken) {
+					window.location.href = "/cloud/";
+					return;
+				}
+				const response = await fetch(`${API_BASE_URL}/${id}`, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${authToken}`,
+						"Content-Type": "application/json",
+					},
+				});
+
+				const isresponseOk = response.ok;
+				const responseData = await response.json();
+
+				if (!isresponseOk)
+					throw new Error(
+						`Impossible de créer l'algorithme: ${responseData.message}`,
+					);
+
+				const sourceCode = JSON.stringify(responseData.data.sourceCode);
+
+				this._espacePrincipal.chargerFichier(sourceCode);
+
+				this.querySelector("#titreAlgo").innerText =
+					responseData.data.nom;
+
+				this._derniereVersionSauvegardee =
+					this._espacePrincipal.exporterEnJSON();
+
+				this._dernierTitreSauvegarde =
+					this.querySelector("#titreAlgo").innerText;
+			}
+		};
+
+		/**
+		 * Sauvegarde l'algorithme dans le cloud.
+		 * Fonctionne avec le cloud, il faut donc que l'utilisateur soit connecté.
+		 * L'utilisateur doit aussi être sur un algorithme du cloud donc avec un hash.
+		 * @returns {Promise&lt;void>}
+		 */
+		const saveAlgoToCloud = async () => {
+			const url = new URL(window.location.href);
+			const hash = url.hash;
+			if (!hash.startsWith("#/")) return;
+
+			const id = hash.substring(2);
+
+			const newAlgo = {
+				id: id,
+				nom: this.querySelector("#titreAlgo").innerText,
+				permsAlgorithme: [],
+				sourceCode: this._espacePrincipal.exporterEnJSON(),
+			};
+
+			const API_BASE_URL = "/api/algos/";
+			const authToken = this.getCookie("authToken");
+			if (!authToken) {
+				console.error(
+					"Vous devez être connecté pour accéder à cette page.",
+				);
+				return;
+			}
+			const response = await fetch(`${API_BASE_URL}/${id}`, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newAlgo),
+			});
+
+			const isresponseOk = response.ok;
+
+			if (!isresponseOk)
+				throw new Error(
+					`Impossible de modifier l'algorithme: ${responseData.message}`,
+				);
+		};
+
+		// Observer les modifications de l'algorithme
+		const observer = new MutationObserver(() => {
+			if (!isCloud()) return;
+			const versionActuelle = this._espacePrincipal.exporterEnJSON();
+			const titreActuel = this.querySelector("#titreAlgo").innerText;
+			if (
+				JSON.stringify(versionActuelle) !==
+					JSON.stringify(this._derniereVersionSauvegardee) ||
+				titreActuel !== this._dernierTitreSauvegarde
+			) {
+				this._pingSauvegardeCloud.style.display = "block";
+			} else {
+				this._pingSauvegardeCloud.style.display = "none";
+			}
+		});
+
+		observer.observe(this._espacePrincipal, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			characterData: true,
+		});
+
+		// Détection du chargement de la page
+		window.addEventListener("load", async () => {
+			if (isCloud()) {
+				this._boutonSauvegardeCloud.style.display = "flex";
+				this._pingSauvegardeCloud.style.display = "block";
+
+				// Bouton de sauvegarde
+				this._boutonSauvegardeCloud.addEventListener(
+					"click",
+					async () => {
+						await handdleSave();
+					},
+				);
+			}
+			await loadAlgoFromURL();
+		});
+
+		// Détection de la modification de l'URL
+		window.addEventListener("popstate", async () => {
+			location.reload();
+		});
+
 		// Ajout des éléments de menu
 		// Fichier
 		this._menuDeroulantFichier.ajouterElementMenu(
 			new ElementMenu("Nouveau", () => {
 				if (verbose) console.log("Nouveau");
+				const url = new URL(window.location.href);
+				const hash = url.hash;
 				// On ouvre un nouvel onglet avec un éditeur vide
+				if (hash.startsWith("#/")) {
+					window.open(window.location.href.split("#")[0], "_blank");
+					return;
+				}
 				window.open(window.location.href, "_blank");
 			}),
 		);
@@ -403,7 +586,6 @@ class Editeur extends HTMLElement {
 								reader.result,
 							);
 							this._transferNomFichier.value = nomFichier;
-							this._transferForm.submit();
 						} catch (error) {
 							alert(
 								"Le fichier n'a pas été chargé correctement.",
@@ -674,7 +856,7 @@ class Editeur extends HTMLElement {
 				if (verbose) console.log("Tutoriels");
 				// Open a new tab with the tutorials (wiki.&lt;current_domain>)
 				window.open(
-					`https://wiki.${window.location.hostname}`,
+					`https://bing-chill-inc.github.io/wikiforge`,
 					"_blank",
 				);
 			}),
@@ -714,7 +896,7 @@ class Editeur extends HTMLElement {
 		});
 
 		// Gestion des raccourcis clavier
-		document.body.addEventListener("keydown", (e) => {
+		document.body.addEventListener("keydown", async (e) => {
 			if (verbose) console.log(e);
 			if (e.key === "Delete") {
 				// Suppr
@@ -819,6 +1001,10 @@ class Editeur extends HTMLElement {
 					// Ctrl + X
 					e.preventDefault();
 					this.cut();
+				}
+				if (e.key.toLowerCase() === "s") {
+					e.preventDefault();
+					if (isCloud()) await handdleSave();
 				}
 				if (e.key.toLowerCase() === "c") {
 					// Ctrl + C
@@ -2848,7 +3034,7 @@ window.customElements.define("editeur-interface", Editeur);
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Mar 26 2025 09:40:23 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Mar 26 2025 18:03:52 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
