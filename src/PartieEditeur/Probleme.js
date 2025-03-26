@@ -658,15 +658,11 @@ class Probleme extends ElementGraphique {
 		}
 		if (contenue.includes("<-")) {
 			let nomDeVariable = contenue.split("<-")[0].trim();
-			let contenueVariable = contenue.split("<-")[1].trim();
 			i._nom = nomDeVariable;
-			i._type = Type.DetecterLeType(contenueVariable);
 		}
 		if (contenue.includes("←")) {
 			let nomDeVariable = contenue.split("←")[0].trim();
-			let contenueVariable = contenue.split("←")[1].trim();
 			i._nom = nomDeVariable;
-			i._type = Type.DetecterLeType(contenueVariable);
 		}
 		return i._nom == "" ? null : i;
 	}
