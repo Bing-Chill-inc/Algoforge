@@ -351,6 +351,7 @@ class Bibliotheque extends HTMLElement {
 
 		try {
 			const planTravail = new PlanTravail();
+			planTravail.classList.add("previewPlanTravail");
 			planTravail.chargerDepuisJSON(JSON.parse(algorithme.algo), false);
 			const tailles = planTravail.getCoordMinEtMax();
 			if (verbose) console.log(tailles);

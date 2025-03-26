@@ -3239,6 +3239,10 @@ div.page-size-indicator::after {
 	content: "A3 (Paysage)";
 }
 
+.previewPlanTravail div.page-size-indicator {
+	display: none !important;
+}
+
 /* FIX DES DÉCALAGES DE SÉLECTION DANS LES SOUS-PLANS */
 sous-plan-travail > selection-editeur {
 	translate: 3.5px -6.5px;
