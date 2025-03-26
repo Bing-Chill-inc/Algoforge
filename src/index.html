@@ -41,8 +41,32 @@
 						</button>
 					</div>
 				</div>
-				<div class="zonePartage">
-					<button class="partage">Partager</button>
+				<div class="zoneActionsCloud">
+					<button id="sauvegardeCloud">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							xmlns:xlink="http://www.w3.org/1999/xlink"
+							version="1.1"
+							id="bouttonSauvehardeCloud"
+							x="0px"
+							y="0px"
+							viewBox="0 0 512 512"
+							style="enable-background: new 0 0 512 512"
+							xml:space="preserve"
+						>
+							<g>
+								<circle cx="256" cy="298.667" r="42.667" />
+								<path
+									d="M480.768,87.936l-56.704-56.704c-5.674-5.585-11.957-10.515-18.731-14.699V64   c-0.071,58.881-47.786,106.596-106.667,106.667h-85.333C154.452,170.596,106.737,122.881,106.667,64V0   C47.786,0.071,0.071,47.786,0,106.667v298.667C0.071,464.215,47.786,511.93,106.667,512h298.667   C464.214,511.93,511.93,464.215,512,405.334V163.35C512.08,135.049,500.833,107.893,480.768,87.936z M256,384   c-47.128,0-85.333-38.205-85.333-85.333s38.205-85.333,85.333-85.333s85.333,38.205,85.333,85.333S303.128,384,256,384z"
+								/>
+								<path
+									d="M213.333,128h85.333c35.346,0,64-28.654,64-64V1.366c-4.638-0.756-9.32-1.212-14.016-1.365H149.333v64   C149.333,99.346,177.987,128,213.333,128z"
+								/>
+							</g>
+						</svg>
+						<label>Sauvegarder</label>
+					</button>
+					<div id="pingSauvegardeCloud"></div>
 				</div>
 				<menu-compte-element> </menu-compte-element>
 				<select id="theme"></select>
@@ -299,7 +323,8 @@
 			};
 
 			const updateGlowState = () => {
-				if (!preferences.glow) dataGlowElement.classList.remove("active");
+				if (!preferences.glow)
+					dataGlowElement.classList.remove("active");
 			};
 
 			const loadPreferences = async () => {
@@ -352,10 +377,11 @@
 
 				const rect = dataGlowElement.getBoundingClientRect();
 				if (
-					(x >= rect.left &&
-						x <= rect.right &&
-						y >= rect.top &&
-						y <= rect.bottom) && preferences.glow
+					x >= rect.left &&
+					x <= rect.right &&
+					y >= rect.top &&
+					y <= rect.bottom &&
+					preferences.glow
 				) {
 					dataGlowElement.classList.add("active");
 				} else {

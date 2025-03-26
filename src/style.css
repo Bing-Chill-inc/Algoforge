@@ -286,26 +286,89 @@ editeur-interface
 	z-index: 1;
 }
 
-editeur-interface > header > div.zonePartage {
-	width: 100%;
-	height: 90%;
+editeur-interface > header > div.zoneActionsCloud {
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	flex-direction: row;
+	justify-content: flex-end;
 	align-items: center;
-	opacity: 0;
-	cursor: default;
+	width: 100%;
+	height: 100%;
 }
 
-editeur-interface > header > div.zonePartage > button {
-	width: 50%;
-	height: 50%;
+@keyframes ping {
+	0% {
+		transform: scale(1);
+		opacity: 0.5;
+	}
+	100% {
+		transform: scale(2);
+		opacity: 0;
+	}
+}
+
+#pingSauvegardeCloud {
+	position: fixed;
+	display: none;
+}
+
+#pingSauvegardeCloud::before,
+#pingSauvegardeCloud::after {
+	content: "";
+	position: absolute;
+	background-color: var(--errorColor);
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	top: -23px;
+	right: 37px;
+}
+
+#pingSauvegardeCloud::before {
+	animation: ping 1.7s ease infinite;
+}
+
+editeur-interface > header > div.zoneActionsCloud > button {
+	display: flex;
+	border: none;
+	width: fit-content;
+	height: fit-content;
 	background: none;
-	border: var(--fgColor) solid 0.1vw;
-	border-radius: 1vw;
-	font-size: var(--font-size1);
+	fill: var(--fgColor);
+	cursor: pointer;
+	margin-right: 20px;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	font-size: var(--font-size3);
+	gap: 5px;
 	color: var(--fgColor);
-	cursor: default;
+	margin-top: 4px;
+	display: none;
+}
+
+editeur-interface > header > div.zoneActionsCloud > button:hover {
+	scale: none;
+	fill: var(--fgColorHover);
+	color: var(--fgColorHover);
+}
+
+editeur-interface > header > div.zoneActionsCloud > button:active {
+	scale: 0.9;
+	fill: var(--titleColor);
+	color: var(--titleColor);
+}
+
+editeur-interface > header > div.zoneActionsCloud > button > label {
+	cursor: pointer;
+	color: inherit;
+	font-size: inherit;
+}
+
+editeur-interface > header > div.zoneActionsCloud > button > svg {
+	fill: inherit;
+	width: 20px;
+	height: 20px;
+	background: none;
 }
 
 select#theme,
@@ -1002,22 +1065,21 @@ bibliotheque-algorithmique
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
+	overflow-y: scroll;
 	width: 40vw;
-	height: fit-content;
 	position: absolute;
 	top: 0;
 	right: -42vw;
 	padding: 0.5vw;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: start;
-	overflow: hidden;
+	overflow-x: hidden;
 	border-radius: 0.8em;
-	background: var(--bgColorTertiary);
+	background: var(--bgColor);
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
 	outline: 1px solid var(--borderColor2);
+	height: fit-content;
+	min-height: 100px;
+	max-height: calc(100vh - 230px);
 }
 
 bibliotheque-algorithmique > div.previewAlgo > h4 {
@@ -1027,10 +1089,12 @@ bibliotheque-algorithmique > div.previewAlgo > h4,
 bibliotheque-algorithmique > div.previewAlgo > p {
 	white-space: wrap;
 	word-wrap: break-word;
-	width: 100%;
+	width: calc(100% - 40px);
+	margin: auto;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > p {
+	display: block;
 	font-size: var(--font-size2);
 }
 
@@ -1040,6 +1104,7 @@ bibliotheque-algorithmique > div.previewAlgo > plan-travail {
 	border: none;
 	position: relative;
 	overflow: hidden;
+	margin: 34px auto 0 auto;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element {

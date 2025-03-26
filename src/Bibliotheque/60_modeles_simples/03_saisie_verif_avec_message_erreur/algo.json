@@ -1,0 +1,56 @@
+[
+	{
+		"typeElement": "Probleme",
+		"abscisse": "45.82725060827249vw",
+		"ordonnee": "8.84808784078857vw",
+		"libelle": "Saisie - Vérif avec message d'erreur",
+		"listeDonnes": [""],
+		"listeResultats": ["valeur vérifiant la propriété P\n\n"],
+		"enfants": [
+			{
+				"typeElement": "StructureIterativeNonBornee",
+				"abscisse": "58.82016678300693vw",
+				"ordonnee": "14.3338692937233vw",
+				"enfants": [
+					{
+						"typeElement": "Probleme",
+						"abscisse": "27.133001555695643vw",
+						"ordonnee": "20.55381188891475vw",
+						"libelle": "Saisir valeur",
+						"listeDonnes": [""],
+						"listeResultats": ["valeur"],
+						"enfants": []
+					},
+					{
+						"typeElement": "StructureSi",
+						"abscisse": "55.80618599862132vw",
+						"ordonnee": "20.75529745635916vw",
+						"conditions": [
+							{
+								"typeElement": "Condition",
+								"libelle": "valeur vérifie P",
+								"enfants": [
+									{
+										"typeElement": "ConditionSortie",
+										"abscisse": "58.81681173651979vw",
+										"ordonnee": "26.297210089180908vw"
+									}
+								]
+							}
+						]
+					},
+					{
+						"typeElement": "Probleme",
+						"abscisse": "61.32107993753658vw",
+						"ordonnee": "20.848971274983192vw",
+						"libelle": "Afficher un message d'erreur",
+						"listeDonnes": [""],
+						"listeResultats": [""],
+						"enfants": []
+					}
+				]
+			}
+		]
+	},
+	{ "typeElement": "DictionnaireDonnee" }
+]

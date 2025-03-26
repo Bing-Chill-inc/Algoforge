@@ -1,0 +1,1 @@
+Structure itérative répétant la résolution de deux sous-problèmes jusqu'à ce qu'une condition d'arrêt soit vérifiée

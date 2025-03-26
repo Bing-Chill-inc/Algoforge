@@ -1,0 +1,1 @@
+Parcours complet avec traitement conditionnel sur structure à accès séquentiel
