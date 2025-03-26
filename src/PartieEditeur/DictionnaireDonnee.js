@@ -620,13 +620,19 @@ class DictionnaireDonnee extends HTMLElement {
 			let td = clone.querySelectorAll("td");
 
 			td[0].textContent = `${info._nom}`;
-			if (this._matchType[info._nom] != undefined) {
+			if (
+				this._matchType != undefined &&
+				this._matchType[info._nom] != undefined
+			) {
 				td[1].textContent = this._matchType[info._nom];
 			} else {
 				td[1].textContent = "Non défini";
 			}
 
-			if (this._matchSignification[info._nom] != undefined) {
+			if (
+				this._matchSignification != undefined &&
+				this._matchSignification[info._nom] != undefined
+			) {
 				td[2].textContent = this._matchSignification[info._nom];
 			} else {
 				td[2].textContent = "Non défini";
