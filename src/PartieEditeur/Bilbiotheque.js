@@ -356,6 +356,11 @@ class Bibliotheque extends HTMLElement {
 			const tailles = planTravail.getCoordMinEtMax();
 			if (verbose) console.log(tailles);
 
+			tailles.coordMax.x += 2;
+			tailles.coordMax.y += 2;
+			tailles.coordMin.x -= 2;
+			tailles.coordMin.y -= 2;
+
 			const largeur = tailles.coordMax.x - tailles.coordMin.x;
 			const hauteur = tailles.coordMax.y - tailles.coordMin.y;
 			if (verbose)
