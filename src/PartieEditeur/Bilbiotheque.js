@@ -440,6 +440,8 @@ class Bibliotheque extends HTMLElement {
 	 * @private
 	 */
 	_ajouterEvenementsAlgorithme(algorithmeElement, algoElements) {
+		let previewTimeout;
+
 		algorithmeElement.addEventListener("dragstart", (event) => {
 			if (verbose) console.log(event);
 			event.dataTransfer.setData(
@@ -457,16 +459,37 @@ class Bibliotheque extends HTMLElement {
 
 		algorithmeElement.addEventListener("mouseenter", (event) => {
 			if (verbose) console.log(event);
+			clearTimeout(previewTimeout);
 			this.appendChild(algorithmeElement.preview);
 		});
 
 		algorithmeElement.addEventListener("mouseleave", (event) => {
 			if (verbose) console.log(event);
-			if (algorithmeElement.preview.parentNode) {
-				algorithmeElement.preview.parentNode.removeChild(
-					algorithmeElement.preview,
-				);
-			}
+			previewTimeout = setTimeout(() => {
+				if (!algorithmeElement.preview.matches(":hover")) {
+					if (algorithmeElement.preview.parentNode) {
+						algorithmeElement.preview.parentNode.removeChild(
+							algorithmeElement.preview,
+						);
+					}
+				}
+			}, 300);
+		});
+
+		algorithmeElement.preview.addEventListener("mouseenter", () => {
+			clearTimeout(previewTimeout);
+		});
+
+		algorithmeElement.preview.addEventListener("mouseleave", () => {
+			previewTimeout = setTimeout(() => {
+				if (!algorithmeElement.matches(":hover")) {
+					if (algorithmeElement.preview.parentNode) {
+						algorithmeElement.preview.parentNode.removeChild(
+							algorithmeElement.preview,
+						);
+					}
+				}
+			}, 300);
 		});
 	}
 

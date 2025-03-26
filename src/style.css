@@ -1073,22 +1073,21 @@ bibliotheque-algorithmique
 }
 
 bibliotheque-algorithmique > div.previewAlgo {
+	overflow-y: scroll;
 	width: 40vw;
-	height: fit-content;
 	position: absolute;
 	top: 0;
 	right: -42vw;
 	padding: 0.5vw;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: start;
-	overflow: hidden;
+	overflow-x: hidden;
 	border-radius: 0.8em;
-	background: var(--bgColorTertiary);
+	background: var(--bgColor);
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
 	outline: 1px solid var(--borderColor2);
+	height: fit-content;
+	min-height: 100px;
+	max-height: calc(100vh - 230px);
 }
 
 bibliotheque-algorithmique > div.previewAlgo > h4 {
@@ -1098,10 +1097,12 @@ bibliotheque-algorithmique > div.previewAlgo > h4,
 bibliotheque-algorithmique > div.previewAlgo > p {
 	white-space: wrap;
 	word-wrap: break-word;
-	width: 100%;
+	width: calc(100% - 40px);
+	margin: auto;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > p {
+	display: block;
 	font-size: var(--font-size2);
 }
 
@@ -1111,6 +1112,7 @@ bibliotheque-algorithmique > div.previewAlgo > plan-travail {
 	border: none;
 	position: relative;
 	overflow: hidden;
+	margin: 34px auto 0 auto;
 }
 
 bibliotheque-algorithmique > div.previewAlgo > plan-travail > ligne-element {
