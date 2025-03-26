@@ -56,6 +56,34 @@ class StructureSi extends StructureAlternative {
 	}
 
 	/**
+	 * @description Extrait les informations de la StructureSwitch
+	 * @returns {Array<Information>} Une liste de classe Informations.
+	 */
+	extraireInformation() {
+		return [];
+	}
+
+	/**
+	 * @description Renomme une information dans la structure switch.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
+	renameInformation(ancienNom, nouveauNom) {
+		for (let i = 0; i < this._listeConditions.children.length; i++) {
+			if (
+				this._listeConditions.children[
+					i
+				].divLibelle.textContent.includes(ancienNom)
+			) {
+				this._listeConditions.children[i].divLibelle.textContent =
+					this._listeConditions.children[
+						i
+					].divLibelle.textContent.replaceAll(ancienNom, nouveauNom);
+			}
+		}
+	}
+
+	/**
 	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi
 	 * @returns {JSON} Le corps JSON de la StructureSi
 	 */

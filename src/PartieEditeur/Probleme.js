@@ -668,7 +668,7 @@ class Probleme extends ElementGraphique {
 			i._nom = nomDeVariable;
 			i._type = Type.DetecterLeType(contenueVariable);
 		}
-		return i;
+		return i._nom == "" ? null : i;
 	}
 
 	/**
@@ -713,6 +713,8 @@ class Probleme extends ElementGraphique {
 			...listeInformation,
 			...this.getInformationResultat(),
 		];
+		console.log(listeInformation);
+
 		return listeInformation;
 	}
 

@@ -223,12 +223,7 @@ class StructureSwitch extends StructureAlternative {
 	 * @returns {Array<Information>} Une liste de classe Informations.
 	 */
 	extraireInformation() {
-		if (this.expressionATester.trim() == "") {
-			console.log(this._expressionATester);
-
-			return [new Information(this._expressionATester, Type.undefined)];
-		}
-		return [new Information(this.expressionATester.trim(), Type.undefined)];
+		return [];
 	}
 }
 window.customElements.define("structure-switch-element", StructureSwitch);
