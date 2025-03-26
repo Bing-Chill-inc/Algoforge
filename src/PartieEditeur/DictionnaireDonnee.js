@@ -329,7 +329,8 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @param {String} name
 	 */
 	#checkNameInput(name) {
-		let regex = /^[a-zA-Z][a-zA-Z0-9\_]{2,60}$/g;
+		let regex = /^[a-zA-ZÀ-ÿ\(\)\[\]][a-zA-ZÀ-ÿ0-9\s\(\)\[\]]*$/g;
+
 		if (regex.test(name)) {
 			this._inputsValid[0] = true;
 			this._errorNameMsg = "";
@@ -651,18 +652,6 @@ class DictionnaireDonnee extends HTMLElement {
 			this._tableBody.appendChild(clone);
 			index++;
 		}
-
-		// for (const [key, value] of Object.entries(this._matchType)) {
-		// 	console.log(key, info._nom);
-		// 	if (
-		// 		this._mesInformations.find((elm) => elm._nom.trim() == key) ==
-		// 		undefined
-		// 	) {
-		// 		delete this._matchType[key];
-		// 		delete this._matchSignification[key];
-		// 	}
-		// }
-
 		this.#populateTypeChoice();
 	}
 
@@ -919,7 +908,7 @@ class DictionnaireDonnee extends HTMLElement {
 	 * @returns Boolean
 	 */
 	nomCorrecte(nameVariable) {
-		let regex = /^[a-zA-Z][a-zA-Z0-9\-\_]{2,60}$/g;
+		let regex = /^[a-zA-ZÀ-ÿ\(\)\[\]][a-zA-ZÀ-ÿ0-9\s\(\)\[\]]*$/g;
 		return regex.test(nameVariable.trim());
 	}
 
