@@ -8,7 +8,6 @@ class Condition extends HTMLElement {
 	_structure; // StructureAlternative qui contient cette condition
 	_editeur = document.querySelector("editeur-interface"); // Editeur
 	_ancienLib;
-	_maxLines = 4;
 
 	// CONSTRUCTEUR
 	/**
@@ -148,14 +147,8 @@ class Condition extends HTMLElement {
 			}
 		});
 
-		this.divLibelle.addEventListener("keydown", function (e) {
-			if (e.key === "Enter") {
-				const lines = this.innerText.split("\n");
-				if (lines.length >= this._maxLines) {
-					// Le nombre max de lignes est atteint
-					e.preventDefault(); // Empêche le retour à la ligne
-				}
-			}
+		this.divLibelle.addEventListener("input", (e) => {
+			editeur.adjustFontSize(this.divLibelle);
 		});
 
 		let divArrowsWrapper = document.createElement("div");

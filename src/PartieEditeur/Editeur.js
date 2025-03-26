@@ -34,6 +34,8 @@ class Editeur extends HTMLElement {
 	_ancienPlusProche = null;
 	MAX_CHAR_TITRE = 64;
 	_barreOutilHorizontale = null;
+	_clickSound = new Audio("Audio/Anvil_use.ogg");
+	_clickSoundActivated = false;
 	_boutonSauvegardeCloud = document.querySelector("#sauvegardeCloud");
 	_pingSauvegardeCloud = document.querySelector("#pingSauvegardeCloud");
 	_derniereVersionSauvegardee = null;
@@ -876,7 +878,11 @@ class Editeur extends HTMLElement {
 
 			// Contrôle de la sélection avec les flèches
 			// vérifier si le curseur de l'utilisateur est dans un champ de texte
-			if (!document.activeElement.isContentEditable) {
+			if (
+				!document.activeElement.isContentEditable &&
+				e.target.nodeName !== "INPUT" &&
+				e.target.nodeName !== "TEXTAREA"
+			) {
 				switch (e.key) {
 					case "ArrowUp":
 						this._selection.moveAllSelectedElements(0, -1);
@@ -1189,6 +1195,13 @@ class Editeur extends HTMLElement {
 		// Gestion des clics sur l'éditeur
 		this.addEventListener("click", (e) => {
 			e.stopPropagation();
+
+			if (this._clickSoundActivated) {
+				const clickSound = this._clickSound.cloneNode();
+				clickSound.playbackRate = Math.random() * 0.2 + 0.9;
+				clickSound.keep;
+				clickSound.play();
+			}
 
 			// On supprime un éventuel menu contextuel
 			let menuContextuel = document.querySelectorAll("menu-contextuel");
@@ -2957,6 +2970,23 @@ class Editeur extends HTMLElement {
 	 */
 	exporterPNG(nodeToCopy, download = true, isJSON = false) {
 		this.createBitmapImageFromSvg("png", nodeToCopy, download, isJSON);
+	}
+
+	adjustFontSize(el, minFontSize = 0.45, maxFontSize = 1) {
+		// Set the font size to the maximum
+		let fontSize = maxFontSize;
+		el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+
+		// Check for overflow
+		const isOverflowing = () =>
+			el.scrollWidth > el.clientWidth ||
+			el.scrollHeight > el.clientHeight;
+
+		// Reduce font size gradually until there's no overflow or until the minimum font size is reached
+		while (isOverflowing() && fontSize > minFontSize) {
+			fontSize -= 0.05; // decrement step
+			el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
+		}
 	}
 }
 window.customElements.define("editeur-interface", Editeur);

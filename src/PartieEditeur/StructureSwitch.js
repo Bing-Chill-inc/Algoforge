@@ -46,6 +46,15 @@ class StructureSwitch extends StructureAlternative {
 		this.querySelector(".expressionATester").innerText = value;
 	}
 
+	/**
+	 * @description Renomme une information dans la structure switch.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
+	renameInformation(ancienNom, nouveauNom) {
+		this.querySelector(".expressionATester").textContent = nouveauNom;
+	}
+
 	// METHODES
 	/**
 	 * @description afficher la StructureSwitch sur le plan de travail
@@ -224,9 +233,6 @@ class StructureSwitch extends StructureAlternative {
 	 * @returns {Array<Information>} Une liste de classe Informations.
 	 */
 	extraireInformation() {
-		if (this._expressionATester.trim() == "") {
-			return [new Information(this._expressionATester, Type.undefined)];
-		}
 		return [];
 	}
 }
