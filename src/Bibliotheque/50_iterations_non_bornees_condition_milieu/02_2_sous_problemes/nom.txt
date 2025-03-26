@@ -1,0 +1,1 @@
+Structure itérative répétant la résolution d'un à deux sous-problèmes.

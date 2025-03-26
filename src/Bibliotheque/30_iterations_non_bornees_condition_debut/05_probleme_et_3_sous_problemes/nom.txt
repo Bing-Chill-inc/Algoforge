@@ -1,0 +1,1 @@
+Problème décomposé par une itération répétant la résolution de trois sous-problèmes tant qu'une condition d'arrêt n'est pas vérifiée

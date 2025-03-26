@@ -1,0 +1,1 @@
+Recherche de première occurrence, sans position et en regroupant les conditions d'arrêt

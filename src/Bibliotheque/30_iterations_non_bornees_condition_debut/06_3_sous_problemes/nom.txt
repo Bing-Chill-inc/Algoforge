@@ -1,0 +1,1 @@
+Structure itérative répétant la résolution de 3 sous-problèmes tant qu'une condition d'arrêt n'est pas vérifiée

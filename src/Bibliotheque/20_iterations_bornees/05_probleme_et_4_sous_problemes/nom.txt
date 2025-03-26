@@ -1,0 +1,1 @@
+Problème décomposé par une itération bornée répétant la résolution de quatre sous-problèmes
