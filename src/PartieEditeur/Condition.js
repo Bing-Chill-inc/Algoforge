@@ -120,7 +120,7 @@ class Condition extends HTMLElement {
 		this.appendChild(buttonSupprimer);
 
 		this.divLibelle = document.createElement("div");
-		this.divLibelle.className = "libelle";
+		this.divLibelle.className = "libelle auto-size-text";
 		this.divLibelle.innerText = this._libelle;
 		this.divLibelle.contentEditable = "true";
 		this.appendChild(this.divLibelle);

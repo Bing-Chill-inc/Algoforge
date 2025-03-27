@@ -457,6 +457,9 @@ class PlanTravail extends HTMLElement {
 			}
 		}
 		this.updateAllLines();
+		this.querySelectorAll(".auto-size-text").forEach((elem) => {
+			editeur.adjustFontSize(elem);
+		});
 		return listeElems;
 	}
 

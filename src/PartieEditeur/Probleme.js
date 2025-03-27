@@ -257,7 +257,7 @@ class Probleme extends ElementGraphique {
 		divDonnees.appendChild(labelAccoladesGDonnes);
 
 		this.divDonneesEditable = document.createElement("div");
-		this.divDonneesEditable.className = "donneesEditable";
+		this.divDonneesEditable.className = "donneesEditable auto-size-text";
 		this.divDonneesEditable.contentEditable = "true";
 		let donneesAAjouter = "";
 		this._listeDonnes.forEach((donnee) => {
@@ -324,7 +324,7 @@ class Probleme extends ElementGraphique {
 		}
 
 		this.divNom = document.createElement("div");
-		this.divNom.className = "nom";
+		this.divNom.className = "nom auto-size-text";
 		this.divNom.contentEditable = "true";
 		this.divNom.innerText = this._libelle;
 		divContainerDPR.appendChild(this.divNom);
@@ -413,7 +413,7 @@ class Probleme extends ElementGraphique {
 		divResultat.appendChild(labelAccoladesGResultats);
 
 		this.divResultatsEditable = document.createElement("div");
-		this.divResultatsEditable.className = "resultatEditable";
+		this.divResultatsEditable.className = "resultatEditable auto-size-text";
 		this.divResultatsEditable.contentEditable = "true";
 		let resultatsAAjouter = "";
 		this._listeResultats.forEach((resultat) => {
