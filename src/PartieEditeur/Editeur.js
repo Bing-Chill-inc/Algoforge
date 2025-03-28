@@ -44,6 +44,7 @@ class Editeur extends HTMLElement {
 	_curMousePos = { x: 0, y: 0 };
 
 	_toucheMeta;
+	_toucheMetaAlt;
 
 	_dictionnaireDesDonnees = new DictionnaireDonnee();
 	_bibliotheque = new Bibliotheque();
@@ -71,14 +72,19 @@ class Editeur extends HTMLElement {
 			window.navigator.userAgent.match(/(Mac|Windows|Linux)/)[0] === "Mac"
 		) {
 			this._toucheMeta = "⌘";
+			this._toucheMetaAlt = "⌥";
 		} else {
 			this._toucheMeta = "Ctrl + ";
+			this._toucheMetaAlt = "Alt + ";
 		}
 
 		fetch("modales/shortcuts.html").then((response) => {
 			response.text().then((text) => {
 				// Formater le texte pour remplacer les instances de '{metakey}' par la touche Meta
 				text = text.replaceAll("{metakey}", this._toucheMeta);
+
+				// remplacer les instances de '{altkey}' par la touche Alt
+				text = text.replaceAll("{altkey}", this._toucheMetaAlt);
 				this._modaleRaccourcisClavier = new FenetreModale(text);
 				this.appendChild(this._modaleRaccourcisClavier);
 			});
