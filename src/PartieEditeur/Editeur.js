@@ -716,6 +716,29 @@ class Editeur extends HTMLElement {
 						break;
 				}
 			}
+
+			if (e.altKey && !e.shiftKey && !e.ctrlKey) {
+				console.log(e);
+				switch (e.code) {
+					case "KeyB":
+						e.preventDefault();
+						if (!this._bibliotheque._estOuvert) {
+							this._bibliotheque.ouvrir();
+						} else {
+							this._bibliotheque.fermer();
+						}
+						break;
+					case "KeyD":
+						e.preventDefault();
+						if (!this._dictionnaireDesDonnees._estOuvert) {
+							this._dictionnaireDesDonnees.ouvrir();
+						} else {
+							this._dictionnaireDesDonnees.fermer();
+						}
+						break;
+				}
+			}
+
 			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
 				// Raccourcis clavier en Ctrl + ... pour les outils
 				switch (e.key) {
