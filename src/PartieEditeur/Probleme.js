@@ -134,10 +134,7 @@ class Probleme extends ElementGraphique {
 	replaceTexte(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".nom").textContent = this.querySelector(
 			".nom",
-		).textContent.replace(
-			new RegExp("\\b" + chaineAChercher + "\\b", "g"),
-			chaineARemplacer,
-		);
+		).textContent.replace(chaineAChercher, chaineARemplacer);
 	}
 
 	/**
@@ -164,10 +161,16 @@ class Probleme extends ElementGraphique {
 	replaceTexteDonnee(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".donneesEditable").textContent = this.querySelector(
 			".donneesEditable",
-		).textContent.replace(
-			new RegExp("\\b" + chaineAChercher + "\\b", "g"),
-			chaineARemplacer,
-		);
+		).textContent.replace(chaineAChercher, chaineARemplacer);
+	}
+
+	/**
+	 * @description Echappe les caractères spéciaux dans une chaîne pour une utilisation dans une regex
+	 * @param {String} string
+	 * @returns String
+	 */
+	escapeRegExp(string) {
+		return string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
 	}
 
 	/**
@@ -194,7 +197,7 @@ class Probleme extends ElementGraphique {
 	replaceTexteResultat(chaineAChercher, chaineARemplacer) {
 		this.querySelector(".resultatEditable").textContent =
 			this.querySelector(".resultatEditable").textContent.replace(
-				new RegExp("\\b" + chaineAChercher + "\\b", "g"),
+				chaineAChercher,
 				chaineARemplacer,
 			);
 	}
@@ -666,17 +669,13 @@ class Probleme extends ElementGraphique {
 		}
 		if (contenue.includes("<-")) {
 			let nomDeVariable = contenue.split("<-")[0].trim();
-			let contenueVariable = contenue.split("<-")[1].trim();
 			i._nom = nomDeVariable;
-			i._type = Type.DetecterLeType(contenueVariable);
 		}
 		if (contenue.includes("←")) {
 			let nomDeVariable = contenue.split("←")[0].trim();
-			let contenueVariable = contenue.split("←")[1].trim();
 			i._nom = nomDeVariable;
-			i._type = Type.DetecterLeType(contenueVariable);
 		}
-		return i;
+		return i._nom == "" ? null : i;
 	}
 
 	/**
@@ -721,6 +720,8 @@ class Probleme extends ElementGraphique {
 			...listeInformation,
 			...this.getInformationResultat(),
 		];
+		console.log(listeInformation);
+
 		return listeInformation;
 	}
 

@@ -1,0 +1,1 @@
+Décomposition Switch (2 cas) avec sous-problèmes

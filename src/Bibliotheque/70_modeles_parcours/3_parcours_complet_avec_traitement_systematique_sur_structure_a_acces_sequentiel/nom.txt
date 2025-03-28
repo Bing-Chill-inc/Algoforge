@@ -1,0 +1,1 @@
+Parcours complet avec traitement systématique sur structure à accès séquentiel
