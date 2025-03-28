@@ -2782,7 +2782,7 @@ class Editeur extends HTMLElement {
 		this.createBitmapImageFromSvg("png", nodeToCopy, download, isJSON);
 	}
 
-	adjustFontSize(el, minFontSize = 0.45, maxFontSize = 1) {
+	adjustFontSize(el, minFontSize = 0.45, maxFontSize = 1.2) {
 		// Set the font size to the maximum
 		let fontSize = maxFontSize;
 		el.style.fontSize = `calc(var(--sizeModifier)* ${fontSize}vw)`;
