@@ -869,8 +869,15 @@ class Editeur extends HTMLElement {
 
 		// Gestion des raccourcis clavier
 		document.body.addEventListener("keydown", async (e) => {
-			if (verbose) console.log(e);
-			if (e.key === "Delete") {
+			console.log(e);
+			if (
+				((!document.activeElement.isContentEditable &&
+					e.target.nodeName !== "INPUT" &&
+					e.target.nodeName !== "TEXTAREA") ||
+					e.ctrlKey ||
+					e.metaKey) &&
+				e.key === "Delete"
+			) {
 				// Suppr
 				e.preventDefault();
 				this.delete();
