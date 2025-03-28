@@ -948,44 +948,49 @@ class Editeur extends HTMLElement {
 						this.selectTool(-1);
 						break;
 					case "1":
+					case "&":
 						// Ctrl + 1
 						e.preventDefault();
 						this.selectTool(0);
 						break;
 					case "2":
+					case "é":
 						// Ctrl + 2
 						e.preventDefault();
 						this.selectTool(1);
 						break;
 					case "3":
+					case '"':
 						// Ctrl + 3
 						e.preventDefault();
 						this.selectTool(2);
 						break;
 					case "4":
+					case "'":
 						// Ctrl + 4
 						e.preventDefault();
 						this.selectTool(3);
 						break;
 					case "5":
+					case "(":
 						// Ctrl + 5
 						e.preventDefault();
-						console.warn("TEST5");
 						this.selectTool(4);
 						break;
 					case "6":
 					case "§":
 						// Ctrl + 6 / §
 						e.preventDefault();
-						console.warn("TEST");
 						this.selectTool(5);
 						break;
 					case "7":
+					case "è":
 						// Ctrl + 7
 						e.preventDefault();
 						this.selectTool(6);
 						break;
 					case "8":
+					case "!":
 						// Ctrl + 8
 						e.preventDefault();
 						this.selectTool(7);
