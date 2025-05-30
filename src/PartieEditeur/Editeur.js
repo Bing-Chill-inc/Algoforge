@@ -385,7 +385,7 @@ class Editeur extends HTMLElement {
 			if (hash.startsWith("#/")) {
 				const id = hash.substring(2);
 
-				const API_BASE_URL = "/api/algos/";
+				const API_BASE_URL = "/api/algos";
 				const authToken = this.getCookie("authToken");
 				if (!authToken) {
 					window.location.href = "/cloud/";
@@ -442,7 +442,7 @@ class Editeur extends HTMLElement {
 				sourceCode: this._espacePrincipal.exporterEnJSON(),
 			};
 
-			const API_BASE_URL = "/api/algos/";
+			const API_BASE_URL = "/api/algos";
 			const authToken = this.getCookie("authToken");
 			if (!authToken) {
 				console.error(
