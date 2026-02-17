@@ -562,6 +562,22 @@ class Editeur extends HTMLElement {
 								0,
 								nomFichier.length - 5,
 							);
+
+							const estPlanVide = !Array.from(
+								this._espacePrincipal.children,
+							).some((element) => element instanceof ElementGraphique);
+
+							if (estPlanVide) {
+								let parsedData = JSON.parse(reader.result);
+								if (typeof parsedData === "string") {
+									parsedData = JSON.parse(parsedData);
+								}
+								this._espacePrincipal.chargerDepuisJSON(parsedData);
+								this.querySelector("#titreAlgo").innerText = nomFichier;
+								document.title = "Algoforge - " + nomFichier;
+								return;
+							}
+
 							this._transferInput.value = JSON.stringify(
 								reader.result,
 							);
