@@ -537,12 +537,14 @@ class Editeur extends HTMLElement {
 				fileInput.accept = ".json";
 				fileInput.style.display = "none";
 				fileInput.addEventListener("change", () => {
+					if (!fileInput.files || fileInput.files.length === 0) return;
+					const selectedFile = fileInput.files[0];
 					var reader = new FileReader();
 					reader.onload = () => {
 						try {
-							let nomFichier = fileInput.files[0].name;
-							if (verbose) console.log(fileInput.files[0].size);
-							if (fileInput.files[0].size > 5000000) {
+							let nomFichier = selectedFile.name;
+							if (verbose) console.log(selectedFile.size);
+							if (selectedFile.size > 5000000) {
 								alert(
 									"Le fichier est trop volumineux (maximum 5 MégaOctets).",
 								);
@@ -564,6 +566,7 @@ class Editeur extends HTMLElement {
 								reader.result,
 							);
 							this._transferNomFichier.value = nomFichier;
+							this._transferForm.submit();
 						} catch (error) {
 							alert(
 								"Le fichier n'a pas été chargé correctement.",
@@ -571,7 +574,7 @@ class Editeur extends HTMLElement {
 							console.error(error);
 						}
 					};
-					reader.readAsText(fileInput.files[0]);
+					reader.readAsText(selectedFile);
 				});
 				fileInput.click();
 			}),
