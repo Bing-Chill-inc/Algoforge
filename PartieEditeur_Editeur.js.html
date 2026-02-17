@@ -87,6 +87,7 @@ class Editeur extends HTMLElement {
 	_transferForm = document.getElementById("transferForm");
 	_transferInput = document.getElementById("corpAlgo");
 	_transferNomFichier = document.getElementById("nomFichier");
+	_transferSourceImport = document.getElementById("sourceImport");
 
 	/**
 	 * @constructor
@@ -562,7 +563,7 @@ class Editeur extends HTMLElement {
 				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 				var fileInput = document.createElement("input");
 				fileInput.type = "file";
-				fileInput.accept = ".json";
+				fileInput.accept = ".json,.tbr,.xml";
 				fileInput.style.display = "none";
 				fileInput.addEventListener("change", () => {
 					if (!fileInput.files || fileInput.files.length === 0) return;
@@ -578,38 +579,42 @@ class Editeur extends HTMLElement {
 								);
 								return;
 							}
-							if (
-								nomFichier.substring(nomFichier.length - 5) !==
-								".json"
-							) {
-								alert("Le fichier doit être au format .json.");
-								return;
-							}
-							// On retire l'extension
-							nomFichier = nomFichier.substring(
-								0,
-								nomFichier.length - 5,
+							const algoInterprete = this.interpreterFichierAlgorithme(
+								selectedFile.name,
+								reader.result,
 							);
+							let nomAlgo = this.retirerExtensionNomFichier(nomFichier);
+							if (algoInterprete.nomAlgo) {
+								nomAlgo = algoInterprete.nomAlgo;
+							}
 
 							const estPlanVide = !Array.from(
 								this._espacePrincipal.children,
 							).some((element) => element instanceof ElementGraphique);
 
 							if (estPlanVide) {
-								let parsedData = JSON.parse(reader.result);
-								if (typeof parsedData === "string") {
-									parsedData = JSON.parse(parsedData);
+								this._espacePrincipal.chargerDepuisJSON(
+									algoInterprete.algo,
+								);
+								this.querySelector("#titreAlgo").innerText = nomAlgo;
+								document.title = "Algoforge - " + nomAlgo;
+								if (algoInterprete.estTabulaRasa) {
+									requestAnimationFrame(() => {
+										this.prettifyPlanActif({
+											enregistrerEvenement: false,
+										});
+									});
 								}
-								this._espacePrincipal.chargerDepuisJSON(parsedData);
-								this.querySelector("#titreAlgo").innerText = nomFichier;
-								document.title = "Algoforge - " + nomFichier;
 								return;
 							}
 
 							this._transferInput.value = JSON.stringify(
-								reader.result,
+								algoInterprete.algo,
 							);
-							this._transferNomFichier.value = nomFichier;
+							this._transferNomFichier.value = nomAlgo;
+							this._transferSourceImport.value = algoInterprete.estTabulaRasa
+								? "tbr"
+								: "";
 							this._transferForm.submit();
 						} catch (error) {
 							alert(
@@ -632,6 +637,7 @@ class Editeur extends HTMLElement {
 				);
 				this._transferNomFichier.value =
 					this.querySelector("#titreAlgo").innerText + " - copie";
+				this._transferSourceImport.value = "";
 				this._transferForm.submit();
 			}),
 		);
@@ -782,6 +788,13 @@ class Editeur extends HTMLElement {
 			new ElementMenu("Importer", () => {
 				if (verbose) console.log("Importer");
 				this.importerJSON();
+			}),
+		);
+
+		this._menuDeroulantEdition.ajouterElementMenu(
+			new ElementMenu("Prettify", () => {
+				if (verbose) console.log("Prettify");
+				this.prettifyPlanActif();
 			}),
 		);
 
@@ -2193,6 +2206,1869 @@ class Editeur extends HTMLElement {
 		}
 	}
 
+	retirerExtensionNomFichier(nomFichier) {
+		const dernierPoint = nomFichier.lastIndexOf(".");
+		if (dernierPoint &lt;= 0) return nomFichier;
+		return nomFichier.substring(0, dernierPoint);
+	}
+
+	nettoyerTexteImporte(texte) {
+		if (typeof texte !== "string") return "";
+		return texte.replace(/\r\n/g, "\n").trim();
+	}
+
+	nettoyerAssertionTbr(texte) {
+		const texteNettoye = this.nettoyerTexteImporte(texte);
+		return texteNettoye === "?" ? "" : texteNettoye;
+	}
+
+	estFichierTabulaRasa(nomFichier, contenu) {
+		const nom = (nomFichier || "").toLowerCase();
+		if (nom.endsWith(".tbr")) return true;
+		if (typeof contenu !== "string") return false;
+
+		const contenuTrim = contenu.trimStart();
+		if (!contenuTrim.startsWith("&lt;")) return false;
+		return (
+			/&lt;\s*Algorithme[\s>]/i.test(contenu) &amp;&amp;
+			/&lt;\s*Elements[\s>]/i.test(contenu)
+		);
+	}
+
+	interpreterFichierAlgorithme(nomFichier, contenu) {
+		if (this.estFichierTabulaRasa(nomFichier, contenu)) {
+			return this.convertirTabulaRasaEnAlgoForge(contenu);
+		}
+
+		let parsedData = JSON.parse(contenu);
+		if (typeof parsedData === "string") {
+			parsedData = JSON.parse(parsedData);
+		}
+		return { algo: parsedData, nomAlgo: "", estTabulaRasa: false };
+	}
+
+	convertirPxTbrEnVw(positionPx) {
+		const largeurReference = Math.max(window.innerWidth || 1, 1);
+		return `${(positionPx / largeurReference) * 100}vw`;
+	}
+
+	extrairePositionTbr(noeud) {
+		const brut = this.nettoyerTexteImporte(
+			this.getTexteEnfantDirect(noeud, "Position", "0;0"),
+		);
+		const [xTexte = "0", yTexte = "0"] = brut.split(";");
+		const x = parseFloat(xTexte.replace(",", "."));
+		const y = parseFloat(yTexte.replace(",", "."));
+
+		return {
+			abscisse: this.convertirPxTbrEnVw(isNaN(x) ? 0 : x),
+			ordonnee: this.convertirPxTbrEnVw(isNaN(y) ? 0 : y),
+		};
+	}
+
+	trouverEnfantDirect(noeud, nomBalise) {
+		if (!noeud) return null;
+		for (const enfant of noeud.children) {
+			if (enfant.tagName === nomBalise) return enfant;
+		}
+		return null;
+	}
+
+	getTexteEnfantDirect(noeud, nomBalise, valeurDefaut = "") {
+		const enfant = this.trouverEnfantDirect(noeud, nomBalise);
+		if (!enfant) return valeurDefaut;
+		return enfant.textContent ?? valeurDefaut;
+	}
+
+	interpreterTitreIterationBornee(titreBrut) {
+		const titre = this.nettoyerTexteImporte(titreBrut).replace(/\s+/g, " ");
+		const valeurParDefaut = {
+			variableAIterer: "i",
+			borneInferieure: "BORNE_INF",
+			borneSuperieure: "BORNE_SUP",
+			pas: "1",
+			croissant: true,
+		};
+
+		if (!titre) return valeurParDefaut;
+
+		let correspondance = titre.match(
+			/^pour\s+(.+?)\s+allant\s+de\s+(.+?)\s+[aà]\s+(.+)$/i,
+		);
+		if (!correspondance) {
+			correspondance = titre.match(
+				/^pour\s+(.+?)\s+de\s+(.+?)\s+[aà]\s+(.+)$/i,
+			);
+		}
+
+		if (correspondance) {
+			const variableAIterer = correspondance[1].trim();
+			const borneInferieure = correspondance[2].trim();
+			const borneSuperieure = correspondance[3].trim();
+			const borneInfNum = parseFloat(borneInferieure);
+			const borneSupNum = parseFloat(borneSuperieure);
+			const croissant =
+				isNaN(borneInfNum) || isNaN(borneSupNum)
+					? true
+					: borneSupNum >= borneInfNum;
+
+			return {
+				variableAIterer:
+					variableAIterer || valeurParDefaut.variableAIterer,
+				borneInferieure:
+					borneInferieure || valeurParDefaut.borneInferieure,
+				borneSuperieure:
+					borneSuperieure || valeurParDefaut.borneSuperieure,
+				pas: "1",
+				croissant,
+			};
+		}
+
+		const tailleCorrespondance = titre.match(
+			/^pour\s+(.+?)\s+[aà]\s+la\s+taille\s+de\s+(.+)$/i,
+		);
+		if (tailleCorrespondance) {
+			return {
+				variableAIterer: tailleCorrespondance[1].trim() || "i",
+				borneInferieure: "0",
+				borneSuperieure: `taille(${tailleCorrespondance[2].trim()})`,
+				pas: "1",
+				croissant: true,
+			};
+		}
+
+		const variableSeule = titre.match(/^pour\s+([^\s]+)/i);
+		if (variableSeule) {
+			valeurParDefaut.variableAIterer = variableSeule[1].trim() || "i";
+		}
+
+		return valeurParDefaut;
+	}
+
+	convertirOperationsTbr(noeud) {
+		const operations = [];
+		const operationsLogiques = this.trouverEnfantDirect(
+			noeud,
+			"operationsLogiques",
+		);
+		if (!operationsLogiques) return operations;
+
+		for (const operation of operationsLogiques.children) {
+			if (operation.tagName !== "operation") continue;
+			operations.push({
+				typeElement: "Condition",
+				libelle: this.nettoyerTexteImporte(
+					this.getTexteEnfantDirect(operation, "Titre", ""),
+				),
+				enfants: this.convertirEnfantsTbr(
+					this.trouverEnfantDirect(operation, "Enfants"),
+				),
+			});
+		}
+		return operations;
+	}
+
+	convertirNoeudTbr(noeud) {
+		const position = this.extrairePositionTbr(noeud);
+		switch (noeud.tagName) {
+			case "Action":
+				return {
+					typeElement: "Probleme",
+					abscisse: position.abscisse,
+					ordonnee: position.ordonnee,
+					libelle: this.nettoyerTexteImporte(
+						this.getTexteEnfantDirect(noeud, "Titre", ""),
+					),
+					listeDonnes: [
+						this.nettoyerAssertionTbr(
+							this.getTexteEnfantDirect(noeud, "PreAssertion", ""),
+						),
+					],
+					listeResultats: [
+						this.nettoyerAssertionTbr(
+							this.getTexteEnfantDirect(noeud, "PostAssertion", ""),
+						),
+					],
+					enfants: this.convertirEnfantsTbr(
+						this.trouverEnfantDirect(noeud, "Enfants"),
+					),
+				};
+			case "Condition":
+				return {
+					typeElement: "StructureSi",
+					abscisse: position.abscisse,
+					ordonnee: position.ordonnee,
+					conditions: this.convertirOperationsTbr(noeud),
+				};
+			case "ConditionMultiple":
+				return {
+					typeElement: "StructureSwitch",
+					abscisse: position.abscisse,
+					ordonnee: position.ordonnee,
+					expressionATester: this.nettoyerTexteImporte(
+						this.getTexteEnfantDirect(noeud, "Titre", ""),
+					),
+					conditions: this.convertirOperationsTbr(noeud),
+				};
+			case "Iteration": {
+				const iterationFixe =
+					this.nettoyerTexteImporte(
+						this.getTexteEnfantDirect(noeud, "IterationFixe", "0"),
+					) === "1";
+				const enfants = this.convertirEnfantsTbr(
+					this.trouverEnfantDirect(noeud, "Enfants"),
+				);
+
+				if (!iterationFixe) {
+					return {
+						typeElement: "StructureIterativeNonBornee",
+						abscisse: position.abscisse,
+						ordonnee: position.ordonnee,
+						enfants,
+					};
+				}
+
+				const boucleBornee = this.interpreterTitreIterationBornee(
+					this.getTexteEnfantDirect(noeud, "Titre", ""),
+				);
+				return {
+					typeElement: "StructureIterativeBornee",
+					abscisse: position.abscisse,
+					ordonnee: position.ordonnee,
+					variableAIterer: boucleBornee.variableAIterer,
+					borneInferieure: boucleBornee.borneInferieure,
+					borneSuperieure: boucleBornee.borneSuperieure,
+					pas: boucleBornee.pas,
+					croissant: boucleBornee.croissant,
+					enfants,
+				};
+			}
+			case "Sortie":
+				return {
+					typeElement: "ConditionSortie",
+					abscisse: position.abscisse,
+					ordonnee: position.ordonnee,
+				};
+			default:
+				return null;
+		}
+	}
+
+	convertirEnfantsTbr(noeudEnfants) {
+		if (!noeudEnfants) return [];
+		const enfants = [];
+		for (const enfant of noeudEnfants.children) {
+			const noeudConverti = this.convertirNoeudTbr(enfant);
+			if (noeudConverti) enfants.push(noeudConverti);
+		}
+		return enfants;
+	}
+
+	obtenirEnfantsElementParentDansOrdre(elementParent) {
+		if (!elementParent || !Array.isArray(elementParent._listeElementsEnfants)) {
+			return [];
+		}
+		return elementParent._listeElementsEnfants
+			.map((lien) => lien.element)
+			.filter((element) => element instanceof ElementGraphique);
+	}
+
+	creerNoeudMiseEnPageDepuisElement(element) {
+		const noeud = {
+			typeElement: element.constructor.name,
+			abscisse: element._abscisse,
+			ordonnee: element._ordonnee,
+			__elementReference: element,
+		};
+		if (element instanceof Probleme) {
+			noeud.listeDonnes = Array.isArray(element.listeDonnes)
+				? [...element.listeDonnes]
+				: [];
+			noeud.listeResultats = Array.isArray(element.listeResultats)
+				? [...element.listeResultats]
+				: [];
+		}
+
+		if (element instanceof StructureAlternative) {
+			noeud.conditions = [];
+			for (const condition of Array.from(element._listeConditions.children)) {
+				noeud.conditions.push({
+					__conditionElementReference: condition,
+					enfants: this.creerForetMiseEnPageDepuisElements(
+						this.obtenirEnfantsElementParentDansOrdre(
+							condition._elemParent,
+						),
+					),
+				});
+			}
+			return noeud;
+		}
+
+		if (element._elemParent) {
+			noeud.enfants = this.creerForetMiseEnPageDepuisElements(
+				this.obtenirEnfantsElementParentDansOrdre(element._elemParent),
+			);
+		}
+
+		return noeud;
+	}
+
+	creerForetMiseEnPageDepuisElements(elements) {
+		const foret = [];
+		for (const element of elements) {
+			foret.push(this.creerNoeudMiseEnPageDepuisElement(element));
+		}
+		return foret;
+	}
+
+	creerForetMiseEnPageDepuisPlan(planTravail) {
+		if (!planTravail) return [];
+		const racines = Array.from(planTravail.children).filter(
+			(element) => element instanceof ElementGraphique &amp;&amp; element._parent == null,
+		);
+		return this.creerForetMiseEnPageDepuisElements(racines);
+	}
+
+	collecterDeplacementsNoeudMiseEnPage(noeud, deplacements) {
+		if (noeud?.__elementReference instanceof ElementGraphique) {
+			deplacements.push({
+				element: noeud.__elementReference,
+				anciennePos: [
+					noeud.__elementReference._abscisse,
+					noeud.__elementReference._ordonnee,
+				],
+				nouvellePos: [noeud.abscisse, noeud.ordonnee],
+			});
+		}
+
+		if (Array.isArray(noeud?.enfants)) {
+			this.collecterDeplacementsForetMiseEnPage(noeud.enfants, deplacements);
+		}
+		if (Array.isArray(noeud?.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (Array.isArray(condition?.enfants)) {
+					this.collecterDeplacementsForetMiseEnPage(
+						condition.enfants,
+						deplacements,
+					);
+				}
+			}
+		}
+	}
+
+	collecterDeplacementsForetMiseEnPage(foret, deplacements) {
+		for (const noeud of foret) {
+			this.collecterDeplacementsNoeudMiseEnPage(noeud, deplacements);
+		}
+	}
+
+	prettifyPlanActif(options = {}) {
+		const enregistrerEvenement = options.enregistrerEvenement ?? true;
+		const foret = this.creerForetMiseEnPageDepuisPlan(this._planActif);
+		if (foret.length === 0) return;
+
+		this.reorganiserDispositionAlgoV2(foret);
+
+		const deplacements = [];
+		this.collecterDeplacementsForetMiseEnPage(foret, deplacements);
+
+		const evenementPrettify = new EvenementDispositionAutomatique(deplacements);
+		if (!evenementPrettify.estDecale()) return;
+
+		evenementPrettify.retablir();
+		if (enregistrerEvenement) {
+			this.ajouterEvenement(evenementPrettify);
+		}
+	}
+
+	obtenirHauteurReferenceNoeudMiseEnPage(typeElement) {
+		switch (typeElement) {
+			case "Probleme":
+			case "Procedure":
+				return 4.75;
+			case "StructureSi":
+			case "StructureSwitch":
+				return 4;
+			case "StructureIterativeBornee":
+			case "StructureIterativeNonBornee":
+				return 4;
+			case "ConditionSortie":
+				return 4;
+			default:
+				return 4;
+		}
+	}
+
+	obtenirLargeurReferenceNoeudMiseEnPage(typeElement) {
+		switch (typeElement) {
+			case "Probleme":
+			case "Procedure":
+				return 30;
+			case "StructureSi":
+				return 12;
+			case "StructureSwitch":
+				return 14;
+			case "StructureIterativeBornee":
+				return 10;
+			case "StructureIterativeNonBornee":
+				return 8;
+			case "ConditionSortie":
+				return 6;
+			default:
+				return 12;
+		}
+	}
+
+	obtenirLargeurElementEnVw(element) {
+		if (!(element instanceof HTMLElement)) return 0;
+		const rect = element.getBoundingClientRect();
+		if (!rect || !isFinite(rect.width) || rect.width &lt;= 0) return 0;
+		const largeurEnVwZoomee =
+			(rect.width / Math.max(window.innerWidth || 1, 1)) * 100;
+		const facteurZoom =
+			parseFloat(document.body.style.getPropertyValue("--sizeModifier")) || 1;
+		return largeurEnVwZoomee / Math.max(facteurZoom, 0.001);
+	}
+
+	obtenirHauteurElementEnVw(element) {
+		if (!(element instanceof HTMLElement)) return 0;
+		const rect = element.getBoundingClientRect();
+		if (!rect || !isFinite(rect.height) || rect.height &lt;= 0) return 0;
+		const hauteurEnVwZoomee =
+			(rect.height / Math.max(window.innerWidth || 1, 1)) * 100;
+		const facteurZoom =
+			parseFloat(document.body.style.getPropertyValue("--sizeModifier")) || 1;
+		return hauteurEnVwZoomee / Math.max(facteurZoom, 0.001);
+	}
+
+	obtenirLargeurEnteteConditionV2(condition, config) {
+		const conditionReference = condition?.__conditionElementReference;
+		const largeurMesuree = this.obtenirLargeurElementEnVw(conditionReference);
+		if (largeurMesuree > 0) {
+			return Math.max(
+				config.largeurMinBrancheCondition,
+				largeurMesuree * config.facteurLargeurEnteteCondition +
+					config.margeEnteteCondition,
+			);
+		}
+		return config.largeurMinBrancheCondition;
+	}
+
+	obtenirCoefficientLargeurProblemeV2(noeud) {
+		const donnesVides = this.listeProblemeEstVide(noeud?.listeDonnes);
+		const resultatsVides = this.listeProblemeEstVide(noeud?.listeResultats);
+		if (donnesVides &amp;&amp; resultatsVides) return 0.5;
+		if (donnesVides || resultatsVides) return 0.75;
+		return 1;
+	}
+
+	obtenirDimensionsNoeudMiseEnPageV2(noeud, config) {
+		const largeurReference = this.obtenirLargeurReferenceNoeudMiseEnPage(
+			noeud.typeElement,
+		);
+		const hauteurReference = this.obtenirHauteurReferenceNoeudMiseEnPage(
+			noeud.typeElement,
+		);
+		const elementReference = noeud?.__elementReference;
+		const largeurMesuree = this.obtenirLargeurElementEnVw(elementReference);
+		const hauteurMesuree = this.obtenirHauteurElementEnVw(elementReference);
+		const largeurBase = largeurMesuree > 0 ? largeurMesuree : largeurReference;
+		const hauteurBase = hauteurMesuree > 0 ? hauteurMesuree : hauteurReference;
+
+		let facteurLargeur = config.facteurLargeurGeneral;
+		if (noeud.typeElement === "ConditionSortie") {
+			return {
+				largeur: config.largeurConstanteSortie,
+				hauteur: Math.max(config.hauteurMinNoeud, hauteurBase),
+			};
+		} else if (
+			noeud.typeElement === "Probleme" ||
+			noeud.typeElement === "Procedure"
+		) {
+			facteurLargeur =
+				config.facteurLargeurProbleme *
+				this.obtenirCoefficientLargeurProblemeV2(noeud);
+		}
+
+		const largeur = Math.max(
+			config.largeurMinNoeud,
+			largeurBase * facteurLargeur + config.margeNoeud,
+		);
+		const hauteur = Math.max(config.hauteurMinNoeud, hauteurBase);
+		return { largeur, hauteur };
+	}
+
+	calculerMiseEnPageForetV2(foret, config) {
+		if (!Array.isArray(foret) || foret.length === 0) return 0;
+		let largeurForet = 0;
+		for (let i = 0; i &lt; foret.length; i++) {
+			const layoutNoeud = this.calculerMiseEnPageNoeudV2(foret[i], config);
+			largeurForet += layoutNoeud.largeurSousArbre;
+			if (i &lt; foret.length - 1) {
+				largeurForet += config.ecartHorizontal;
+			}
+		}
+		return largeurForet;
+	}
+
+	calculerMiseEnPageNoeudV2(noeud, config) {
+		if (noeud?.__layoutV2) return noeud.__layoutV2;
+		const dimensionsNoeud = this.obtenirDimensionsNoeudMiseEnPageV2(
+			noeud,
+			config,
+		);
+
+		if (
+			noeud.typeElement === "StructureSi" ||
+			noeud.typeElement === "StructureSwitch"
+		) {
+			const conditions = Array.isArray(noeud.conditions) ? noeud.conditions : [];
+			let largeurConditions = 0;
+			for (let i = 0; i &lt; conditions.length; i++) {
+				const condition = conditions[i];
+				condition.__largeurForetEnfantsV2 = this.calculerMiseEnPageForetV2(
+					condition.enfants,
+					config,
+				);
+				const largeurEnteteCondition =
+					this.obtenirLargeurEnteteConditionV2(condition, config);
+				condition.__largeurBrancheV2 = Math.max(
+					config.largeurMinBrancheCondition,
+					largeurEnteteCondition,
+					condition.__largeurForetEnfantsV2,
+				);
+				largeurConditions += condition.__largeurBrancheV2;
+				if (i &lt; conditions.length - 1) {
+					largeurConditions += config.ecartHorizontalConditions;
+				}
+			}
+
+			noeud.__layoutV2 = {
+				type: "conditions",
+				largeurNoeud: dimensionsNoeud.largeur,
+				hauteurNoeud: dimensionsNoeud.hauteur,
+				largeurSousArbre: Math.max(dimensionsNoeud.largeur, largeurConditions),
+				largeurConditions,
+			};
+			return noeud.__layoutV2;
+		}
+
+		const largeurEnfants = this.calculerMiseEnPageForetV2(noeud.enfants, config);
+		noeud.__layoutV2 = {
+			type: "enfants",
+			largeurNoeud: dimensionsNoeud.largeur,
+			hauteurNoeud: dimensionsNoeud.hauteur,
+			largeurSousArbre: Math.max(dimensionsNoeud.largeur, largeurEnfants),
+			largeurEnfants,
+		};
+		return noeud.__layoutV2;
+	}
+
+	appliquerMiseEnPageForetV2(foret, gauche, haut, config) {
+		if (!Array.isArray(foret) || foret.length === 0) return;
+		let curseur = gauche;
+		for (let i = 0; i &lt; foret.length; i++) {
+			const noeud = foret[i];
+			const layoutNoeud = this.calculerMiseEnPageNoeudV2(noeud, config);
+			this.appliquerMiseEnPageNoeudV2(noeud, curseur, haut, config);
+			curseur += layoutNoeud.largeurSousArbre + config.ecartHorizontal;
+		}
+	}
+
+	appliquerMiseEnPageNoeudV2(noeud, gauche, haut, config) {
+		const layoutNoeud = this.calculerMiseEnPageNoeudV2(noeud, config);
+		const positionX =
+			gauche + (layoutNoeud.largeurSousArbre - layoutNoeud.largeurNoeud) / 2;
+		noeud.abscisse = `${positionX}vw`;
+		noeud.ordonnee = `${haut}vw`;
+
+		const hautSuivant = haut + config.ecartVertical;
+
+		if (layoutNoeud.type === "enfants") {
+			if (layoutNoeud.largeurEnfants &lt;= 0) return;
+			const enfants = Array.isArray(noeud.enfants) ? noeud.enfants : [];
+			if (enfants.length === 1) {
+				const enfantUnique = enfants[0];
+				const layoutEnfantUnique = this.calculerMiseEnPageNoeudV2(
+					enfantUnique,
+					config,
+				);
+				const gaucheEnfantUnique =
+					gauche +
+					(layoutNoeud.largeurSousArbre - layoutEnfantUnique.largeurSousArbre) /
+						2;
+				this.appliquerMiseEnPageNoeudV2(
+					enfantUnique,
+					gaucheEnfantUnique,
+					hautSuivant,
+					config,
+				);
+				return;
+			}
+
+			const gaucheEnfants =
+				gauche + (layoutNoeud.largeurSousArbre - layoutNoeud.largeurEnfants) / 2;
+			this.appliquerMiseEnPageForetV2(
+				enfants,
+				gaucheEnfants,
+				hautSuivant,
+				config,
+			);
+			return;
+		}
+
+		if (layoutNoeud.type === "conditions") {
+			if (layoutNoeud.largeurConditions &lt;= 0) return;
+			let curseurBranche =
+				gauche +
+				(layoutNoeud.largeurSousArbre - layoutNoeud.largeurConditions) / 2;
+			const conditions = Array.isArray(noeud.conditions) ? noeud.conditions : [];
+
+			for (const condition of conditions) {
+				const largeurBranche = condition.__largeurBrancheV2 || 0;
+				const largeurForetCondition = condition.__largeurForetEnfantsV2 || 0;
+				condition.__centreBrancheV2 = curseurBranche + largeurBranche / 2;
+				const enfantsCondition = Array.isArray(condition.enfants)
+					? condition.enfants
+					: [];
+
+				if (largeurForetCondition > 0 &amp;&amp; enfantsCondition.length > 0) {
+					if (enfantsCondition.length === 1) {
+						const enfantUnique = enfantsCondition[0];
+						const layoutEnfantUnique = this.calculerMiseEnPageNoeudV2(
+							enfantUnique,
+							config,
+						);
+						const gaucheEnfantUnique =
+							curseurBranche +
+							(largeurBranche - layoutEnfantUnique.largeurSousArbre) / 2;
+						this.appliquerMiseEnPageNoeudV2(
+							enfantUnique,
+							gaucheEnfantUnique,
+							hautSuivant,
+							config,
+						);
+					} else {
+						const gaucheForetCondition =
+							curseurBranche + (largeurBranche - largeurForetCondition) / 2;
+						this.appliquerMiseEnPageForetV2(
+							enfantsCondition,
+							gaucheForetCondition,
+							hautSuivant,
+							config,
+						);
+					}
+				}
+
+				curseurBranche += largeurBranche + config.ecartHorizontalConditions;
+			}
+		}
+	}
+
+	obtenirLargeurEmpreinteNoeudV2(noeud, config, bornesStrictes = false) {
+		if (noeud?.typeElement === "ConditionSortie") {
+			if (bornesStrictes) {
+				return Math.max(
+					config.largeurMinEmpreinteNoeud,
+					config.largeurConstanteSortie,
+				);
+			}
+			return Math.max(
+				config.largeurMinEmpreinteNoeud,
+				config.largeurEmpreinteSortieConstante,
+			);
+		}
+
+		const largeurMesuree = this.obtenirLargeurElementEnVw(
+			noeud?.__elementReference,
+		);
+		if (largeurMesuree > 0) {
+			if (bornesStrictes) {
+				return Math.max(config.largeurMinEmpreinteNoeud, largeurMesuree);
+			}
+			if (
+				noeud?.typeElement === "Probleme" ||
+				noeud?.typeElement === "Procedure"
+			) {
+				const coefficientProbleme =
+					this.obtenirCoefficientLargeurProblemeV2(noeud);
+				const facteurEmpreinteProbleme =
+					coefficientProbleme &lt;= 0.5
+						? config.facteurEmpreinteProblemeSansDR
+						: coefficientProbleme &lt; 1
+							? config.facteurEmpreinteProblemePartiel
+							: config.facteurEmpreinteProbleme;
+				return Math.max(
+					config.largeurMinEmpreinteNoeud,
+					largeurMesuree * facteurEmpreinteProbleme,
+				);
+			}
+			return Math.max(
+				config.largeurMinEmpreinteNoeud,
+				largeurMesuree * config.facteurEmpreinteGeneral,
+			);
+		}
+
+		const layoutNoeud = noeud?.__layoutV2;
+		if (layoutNoeud?.largeurNoeud) {
+			if (bornesStrictes) {
+				return Math.max(
+					config.largeurMinEmpreinteNoeud,
+					layoutNoeud.largeurNoeud,
+				);
+			}
+			return Math.max(
+				config.largeurMinEmpreinteNoeud,
+				layoutNoeud.largeurNoeud,
+			);
+		}
+		return config.largeurMinEmpreinteNoeud;
+	}
+
+	calculerBornesNoeudV2(noeud, config, bornesStrictes = false) {
+		if (!noeud) return { minX: Infinity, maxX: -Infinity };
+		const layoutNoeud = this.calculerMiseEnPageNoeudV2(noeud, config);
+		const gaucheNoeud = parseFloat(noeud.abscisse);
+		const centreNoeud = gaucheNoeud + layoutNoeud.largeurNoeud / 2;
+		const largeurEmpreinte = this.obtenirLargeurEmpreinteNoeudV2(
+			noeud,
+			config,
+			bornesStrictes,
+		);
+		return {
+			minX: centreNoeud - largeurEmpreinte / 2,
+			maxX: centreNoeud + largeurEmpreinte / 2,
+		};
+	}
+
+	calculerBornesSousArbreV2(noeud, config, bornesStrictes = false) {
+		if (!noeud) return { minX: Infinity, maxX: -Infinity };
+		const bornesNoeud = this.calculerBornesNoeudV2(
+			noeud,
+			config,
+			bornesStrictes,
+		);
+
+		let minX = bornesNoeud.minX;
+		let maxX = bornesNoeud.maxX;
+
+		if (Array.isArray(noeud?.enfants)) {
+			for (const enfant of noeud.enfants) {
+				const bornesEnfant = this.calculerBornesSousArbreV2(
+					enfant,
+					config,
+					bornesStrictes,
+				);
+				minX = Math.min(minX, bornesEnfant.minX);
+				maxX = Math.max(maxX, bornesEnfant.maxX);
+			}
+		}
+
+		if (Array.isArray(noeud?.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (Array.isArray(condition?.enfants)) {
+					for (const enfant of condition.enfants) {
+						const bornesEnfant = this.calculerBornesSousArbreV2(
+							enfant,
+							config,
+							bornesStrictes,
+						);
+						minX = Math.min(minX, bornesEnfant.minX);
+						maxX = Math.max(maxX, bornesEnfant.maxX);
+					}
+				}
+				const centreCondition = condition?.__centreBrancheV2;
+				if (isFinite(centreCondition)) {
+					const largeurEntete = this.obtenirLargeurEnteteConditionV2(
+						condition,
+						config,
+					);
+					minX = Math.min(minX, centreCondition - largeurEntete / 2);
+					maxX = Math.max(maxX, centreCondition + largeurEntete / 2);
+				}
+			}
+		}
+
+		return { minX, maxX };
+	}
+
+	calculerBornesForetV2(foret, config, bornesStrictes = false) {
+		if (!Array.isArray(foret) || foret.length === 0) {
+			return { minX: Infinity, maxX: -Infinity };
+		}
+		let minX = Infinity;
+		let maxX = -Infinity;
+		for (const noeud of foret) {
+			const bornes = this.calculerBornesSousArbreV2(
+				noeud,
+				config,
+				bornesStrictes,
+			);
+			minX = Math.min(minX, bornes.minX);
+			maxX = Math.max(maxX, bornes.maxX);
+		}
+		return { minX, maxX };
+	}
+
+	decalerSousArbreMiseEnPageV2(noeud, decalageX) {
+		if (!noeud || !isFinite(decalageX) || Math.abs(decalageX) &lt; 0.0001) return;
+		noeud.abscisse = `${parseFloat(noeud.abscisse) + decalageX}vw`;
+
+		if (Array.isArray(noeud.enfants)) {
+			for (const enfant of noeud.enfants) {
+				this.decalerSousArbreMiseEnPageV2(enfant, decalageX);
+			}
+		}
+		if (Array.isArray(noeud.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (isFinite(condition?.__centreBrancheV2)) {
+					condition.__centreBrancheV2 += decalageX;
+				}
+				if (Array.isArray(condition?.enfants)) {
+					for (const enfant of condition.enfants) {
+						this.decalerSousArbreMiseEnPageV2(enfant, decalageX);
+					}
+				}
+			}
+		}
+	}
+
+	decalerForetMiseEnPageV2(foret, decalageX) {
+		if (!Array.isArray(foret) || !isFinite(decalageX) || Math.abs(decalageX) &lt; 0.0001) {
+			return;
+		}
+		for (const noeud of foret) {
+			this.decalerSousArbreMiseEnPageV2(noeud, decalageX);
+		}
+	}
+
+	decalerConditionV2(condition, decalageX) {
+		if (!condition || !isFinite(decalageX) || Math.abs(decalageX) &lt; 0.0001) return;
+		if (isFinite(condition?.__centreBrancheV2)) {
+			condition.__centreBrancheV2 += decalageX;
+		}
+		if (Array.isArray(condition?.enfants)) {
+			for (const enfant of condition.enfants) {
+				this.decalerSousArbreMiseEnPageV2(enfant, decalageX);
+			}
+		}
+	}
+
+	obtenirCentreNoeudV2(noeud, config) {
+		const layoutNoeud = this.calculerMiseEnPageNoeudV2(noeud, config);
+		return parseFloat(noeud.abscisse) + layoutNoeud.largeurNoeud / 2;
+	}
+
+	alignerEnfantUniqueV2(parent, enfant, config, centreCible = null) {
+		if (!parent || !enfant) return;
+		const centreParent =
+			centreCible ?? this.obtenirCentreNoeudV2(parent, config);
+		const centreEnfant = this.obtenirCentreNoeudV2(enfant, config);
+		this.decalerSousArbreMiseEnPageV2(enfant, centreParent - centreEnfant);
+	}
+
+	compacterFratrieV2(noeudsFreres, config, ecartMinimal) {
+		if (!Array.isArray(noeudsFreres) || noeudsFreres.length &lt; 2) return;
+		const ecart = ecartMinimal ?? config.ecartHorizontalCompact;
+		for (let i = 1; i &lt; noeudsFreres.length; i++) {
+			const bornesPrecedentes = this.calculerBornesSousArbreV2(
+				noeudsFreres[i - 1],
+				config,
+			);
+			const bornesCourantes = this.calculerBornesSousArbreV2(
+				noeudsFreres[i],
+				config,
+			);
+			const decalage = bornesPrecedentes.maxX + ecart - bornesCourantes.minX;
+			this.decalerSousArbreMiseEnPageV2(noeudsFreres[i], decalage);
+		}
+	}
+
+	appliquerAntiChevauchementConditionSortieFratrieV2(noeudsFreres, config) {
+		if (!Array.isArray(noeudsFreres) || noeudsFreres.length &lt; 2) return;
+		for (let i = 1; i &lt; noeudsFreres.length; i++) {
+			const precedent = noeudsFreres[i - 1];
+			const courant = noeudsFreres[i];
+			const paireAvecConditionSortie =
+				precedent?.typeElement === "ConditionSortie" ||
+				courant?.typeElement === "ConditionSortie";
+			if (!paireAvecConditionSortie) continue;
+
+			const bornesPrecedentes = this.calculerBornesNoeudV2(
+				precedent,
+				config,
+				true,
+			);
+			const bornesCourantes = this.calculerBornesNoeudV2(
+				courant,
+				config,
+				true,
+			);
+			const correction =
+				bornesPrecedentes.maxX +
+				config.ecartSecuriteConditionSortie -
+				bornesCourantes.minX;
+			if (correction > 0) {
+				this.decalerSousArbreMiseEnPageV2(courant, correction);
+			}
+		}
+	}
+
+	appliquerAntiChevauchementConditionSortieNoeudV2(noeud, config) {
+		if (!noeud) return;
+
+		const enfants = Array.isArray(noeud?.enfants) ? noeud.enfants : [];
+		this.appliquerAntiChevauchementConditionSortieFratrieV2(enfants, config);
+		for (const enfant of enfants) {
+			this.appliquerAntiChevauchementConditionSortieNoeudV2(enfant, config);
+		}
+
+		if (Array.isArray(noeud?.conditions)) {
+			for (const condition of noeud.conditions) {
+				const enfantsCondition = Array.isArray(condition?.enfants)
+					? condition.enfants
+					: [];
+				this.appliquerAntiChevauchementConditionSortieFratrieV2(
+					enfantsCondition,
+					config,
+				);
+				for (const enfant of enfantsCondition) {
+					this.appliquerAntiChevauchementConditionSortieNoeudV2(
+						enfant,
+						config,
+					);
+				}
+			}
+		}
+	}
+
+	appliquerAntiChevauchementConditionSortieV2(racines, config) {
+		if (!Array.isArray(racines) || racines.length === 0) return;
+		this.appliquerAntiChevauchementConditionSortieFratrieV2(racines, config);
+		for (const racine of racines) {
+			this.appliquerAntiChevauchementConditionSortieNoeudV2(racine, config);
+		}
+	}
+
+	obtenirBornesConditionV2(condition, config, bornesStrictes = false) {
+		const enfants = Array.isArray(condition?.enfants) ? condition.enfants : [];
+		if (enfants.length > 0) {
+			return this.calculerBornesForetV2(enfants, config, bornesStrictes);
+		}
+		const centreCondition = condition?.__centreBrancheV2;
+		if (isFinite(centreCondition)) {
+			const largeurEntete = this.obtenirLargeurEnteteConditionV2(
+				condition,
+				config,
+			);
+			return {
+				minX: centreCondition - largeurEntete / 2,
+				maxX: centreCondition + largeurEntete / 2,
+			};
+		}
+		return { minX: Infinity, maxX: -Infinity };
+	}
+
+	compacterConditionsV2(noeud, config) {
+		const conditions = Array.isArray(noeud?.conditions) ? noeud.conditions : [];
+		if (conditions.length === 0) return;
+
+		for (const condition of conditions) {
+			const enfants = Array.isArray(condition?.enfants) ? condition.enfants : [];
+			if (enfants.length > 1) {
+				this.compacterFratrieV2(enfants, config, config.ecartHorizontalCompact);
+			} else if (enfants.length === 1 &amp;&amp; isFinite(condition.__centreBrancheV2)) {
+				this.alignerEnfantUniqueV2(
+					noeud,
+					enfants[0],
+					config,
+					condition.__centreBrancheV2,
+				);
+			}
+		}
+
+		for (let i = 1; i &lt; conditions.length; i++) {
+			const bornesPrecedentes = this.obtenirBornesConditionV2(
+				conditions[i - 1],
+				config,
+			);
+			const bornesCourantes = this.obtenirBornesConditionV2(
+				conditions[i],
+				config,
+			);
+			const decalage =
+				bornesPrecedentes.maxX +
+				config.ecartHorizontalConditionsCompact -
+				bornesCourantes.minX;
+			this.decalerConditionV2(conditions[i], decalage);
+		}
+	}
+
+	recentrerEnfantsSousParentV2(noeud, config) {
+		const enfants = Array.isArray(noeud?.enfants) ? noeud.enfants : [];
+		if (enfants.length === 0) return;
+		const bornesEnfants = this.calculerBornesForetV2(enfants, config);
+		if (!isFinite(bornesEnfants.minX) || !isFinite(bornesEnfants.maxX)) return;
+		const centreParent = this.obtenirCentreNoeudV2(noeud, config);
+		const centreEnfants = (bornesEnfants.minX + bornesEnfants.maxX) / 2;
+		this.decalerForetMiseEnPageV2(enfants, centreParent - centreEnfants);
+	}
+
+	recentrerConditionsSousParentV2(noeud, config) {
+		const conditions = Array.isArray(noeud?.conditions) ? noeud.conditions : [];
+		if (conditions.length === 0) return;
+		let minX = Infinity;
+		let maxX = -Infinity;
+		for (const condition of conditions) {
+			const bornesCondition = this.obtenirBornesConditionV2(condition, config);
+			minX = Math.min(minX, bornesCondition.minX);
+			maxX = Math.max(maxX, bornesCondition.maxX);
+		}
+		if (!isFinite(minX) || !isFinite(maxX)) return;
+		const centreParent = this.obtenirCentreNoeudV2(noeud, config);
+		const centreConditions = (minX + maxX) / 2;
+		const decalage = centreParent - centreConditions;
+		for (const condition of conditions) {
+			this.decalerConditionV2(condition, decalage);
+		}
+	}
+
+	compacterNoeudV2(noeud, config) {
+		if (!noeud) return;
+		if (Array.isArray(noeud.enfants)) {
+			for (const enfant of noeud.enfants) {
+				this.compacterNoeudV2(enfant, config);
+			}
+		}
+		if (Array.isArray(noeud.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (Array.isArray(condition?.enfants)) {
+					for (const enfant of condition.enfants) {
+						this.compacterNoeudV2(enfant, config);
+					}
+				}
+			}
+		}
+
+		const enfants = Array.isArray(noeud.enfants) ? noeud.enfants : [];
+		if (enfants.length > 1) {
+			this.compacterFratrieV2(enfants, config, config.ecartHorizontalCompact);
+		} else if (enfants.length === 1) {
+			this.alignerEnfantUniqueV2(noeud, enfants[0], config);
+		}
+
+		if (
+			noeud.typeElement === "StructureSi" ||
+			noeud.typeElement === "StructureSwitch"
+		) {
+			this.compacterConditionsV2(noeud, config);
+			this.recentrerConditionsSousParentV2(noeud, config);
+		}
+		this.recentrerEnfantsSousParentV2(noeud, config);
+	}
+
+	compacterDispositionV2(racines, config) {
+		if (!Array.isArray(racines) || racines.length === 0) return;
+		for (const racine of racines) {
+			this.compacterNoeudV2(racine, config);
+		}
+		this.compacterFratrieV2(racines, config, config.ecartHorizontalCompact);
+	}
+
+	recentrerDispositionV2(racines, config) {
+		const bornes = this.calculerBornesForetV2(racines, config);
+		if (!isFinite(bornes.minX) || !isFinite(bornes.maxX)) return;
+		const largeurTotale = bornes.maxX - bornes.minX;
+		let gaucheCible = config.margeGauche;
+		if (largeurTotale &lt; config.largeurDisponible) {
+			gaucheCible += (config.largeurDisponible - largeurTotale) / 2;
+		}
+		const decalage = gaucheCible - bornes.minX;
+		this.decalerForetMiseEnPageV2(racines, decalage);
+	}
+
+	nettoyerMetaMiseEnPageV2(foret) {
+		if (!Array.isArray(foret)) return;
+		for (const noeud of foret) {
+			if (noeud &amp;&amp; noeud.__layoutV2) {
+				delete noeud.__layoutV2;
+			}
+			if (Array.isArray(noeud?.enfants)) {
+				this.nettoyerMetaMiseEnPageV2(noeud.enfants);
+			}
+			if (Array.isArray(noeud?.conditions)) {
+				for (const condition of noeud.conditions) {
+					if (condition &amp;&amp; condition.__largeurForetEnfantsV2 !== undefined) {
+						delete condition.__largeurForetEnfantsV2;
+					}
+					if (condition &amp;&amp; condition.__largeurBrancheV2 !== undefined) {
+						delete condition.__largeurBrancheV2;
+					}
+					if (condition &amp;&amp; condition.__centreBrancheV2 !== undefined) {
+						delete condition.__centreBrancheV2;
+					}
+					if (Array.isArray(condition?.enfants)) {
+						this.nettoyerMetaMiseEnPageV2(condition.enfants);
+					}
+				}
+			}
+		}
+	}
+
+	reorganiserDispositionAlgoV2(algo, options = {}) {
+		const config = {
+			ecartHorizontal: options.ecartHorizontal ?? 0.7,
+			ecartHorizontalConditions: options.ecartHorizontalConditions ?? 0.55,
+			ecartVertical: options.ecartVertical ?? 9,
+			largeurMinNoeud: options.largeurMinNoeud ?? 2.2,
+			hauteurMinNoeud: options.hauteurMinNoeud ?? 3,
+			largeurConstanteSortie: options.largeurConstanteSortie ?? 4,
+			largeurMinBrancheCondition: options.largeurMinBrancheCondition ?? 2.8,
+			facteurLargeurGeneral: options.facteurLargeurGeneral ?? 0.56,
+			facteurLargeurProbleme: options.facteurLargeurProbleme ?? 0.52,
+			facteurLargeurEnteteCondition:
+				options.facteurLargeurEnteteCondition ?? 0.5,
+			margeNoeud: options.margeNoeud ?? 0.2,
+			margeEnteteCondition: options.margeEnteteCondition ?? 0.2,
+			margeGauche: options.margeGauche ?? 2,
+			largeurDisponible: options.largeurDisponible ?? 92,
+			positionHaute: options.positionHaute ?? 3,
+			ecartHorizontalCompact: options.ecartHorizontalCompact ?? 0.25,
+			ecartHorizontalConditionsCompact:
+				options.ecartHorizontalConditionsCompact ?? 0.2,
+			largeurMinEmpreinteNoeud: options.largeurMinEmpreinteNoeud ?? 1.6,
+			facteurEmpreinteGeneral: options.facteurEmpreinteGeneral ?? 0.7,
+			facteurEmpreinteProbleme: options.facteurEmpreinteProbleme ?? 0.7,
+			facteurEmpreinteProblemePartiel:
+				options.facteurEmpreinteProblemePartiel ?? 0.58,
+			facteurEmpreinteProblemeSansDR:
+				options.facteurEmpreinteProblemeSansDR ?? 0.5,
+			largeurEmpreinteSortieConstante:
+				options.largeurEmpreinteSortieConstante ?? 4,
+			ecartSecuriteConditionSortie:
+				options.ecartSecuriteConditionSortie ?? 0.08,
+		};
+
+		const racines = Array.isArray(algo)
+			? algo.filter(
+					(noeud) => noeud &amp;&amp; noeud.typeElement !== "DictionnaireDonnee",
+				)
+			: [];
+		if (racines.length === 0) return;
+
+		const largeurForet = this.calculerMiseEnPageForetV2(racines, config);
+		let gauche = config.margeGauche;
+		if (largeurForet &lt; config.largeurDisponible) {
+			gauche += (config.largeurDisponible - largeurForet) / 2;
+		}
+
+		this.appliquerMiseEnPageForetV2(
+			racines,
+			gauche,
+			config.positionHaute,
+			config,
+		);
+		this.compacterDispositionV2(racines, config);
+		this.appliquerAntiChevauchementConditionSortieV2(racines, config);
+		this.recentrerDispositionV2(racines, config);
+		this.nettoyerMetaMiseEnPageV2(racines);
+	}
+
+	obtenirLargeurNoeudMiseEnPage(noeud, config) {
+		const largeurReference = this.obtenirLargeurReferenceNoeudMiseEnPage(
+			noeud.typeElement,
+		);
+		if (noeud.typeElement === "ConditionSortie") {
+			if (
+				config.utiliserDimensionsReelles &amp;&amp;
+				noeud?.__elementReference instanceof ElementGraphique
+			) {
+				const largeurReelleSortie = this.obtenirLargeurElementEnVw(
+					noeud.__elementReference,
+				);
+				if (largeurReelleSortie > 0) {
+					return Math.max(
+						config.largeurNoeudMinSortie,
+						largeurReelleSortie * config.facteurLargeurReelleSortie +
+							config.margeSortie,
+					);
+				}
+			}
+			return Math.max(
+				config.largeurNoeudMinSortie,
+				largeurReference * config.facteurLargeurNoeud,
+			);
+		}
+
+		if (
+			config.utiliserDimensionsReelles &amp;&amp;
+			noeud?.__elementReference instanceof ElementGraphique
+		) {
+			const largeurReelle = this.obtenirLargeurElementEnVw(
+				noeud.__elementReference,
+			);
+			if (largeurReelle > 0) {
+				const largeurCalculee = Math.max(
+					config.largeurNoeudMin,
+					largeurReelle * config.facteurLargeurReelleNoeud +
+						config.margeNoeud,
+				);
+				return this.problemeSansEntreesSorties(noeud)
+					? Math.max(config.largeurNoeudMin, largeurCalculee * 0.5)
+					: largeurCalculee;
+			}
+		}
+
+		const largeurFallback = Math.max(
+			config.largeurNoeudMin,
+			largeurReference * config.facteurLargeurNoeud,
+		);
+		return this.problemeSansEntreesSorties(noeud)
+			? Math.max(config.largeurNoeudMin, largeurFallback * 0.5)
+			: largeurFallback;
+	}
+
+	texteProblemeEstVide(texte) {
+		return this.nettoyerTexteImporte(
+			String(texte ?? "")
+				.replace(/&amp;nbsp;/g, " ")
+				.replace(/\u00A0/g, " "),
+		) === "";
+	}
+
+	listeProblemeEstVide(liste) {
+		if (!Array.isArray(liste)) {
+			return this.texteProblemeEstVide(liste);
+		}
+		return liste.every((entree) => this.texteProblemeEstVide(entree));
+	}
+
+	problemeSansEntreesSorties(noeud) {
+		if (
+			noeud?.typeElement !== "Probleme" &amp;&amp;
+			noeud?.typeElement !== "Procedure"
+		) {
+			return false;
+		}
+
+		const elementRef = noeud?.__elementReference;
+		if (elementRef instanceof Probleme) {
+			return (
+				this.texteProblemeEstVide(elementRef.getDonnee?.()) &amp;&amp;
+				this.texteProblemeEstVide(elementRef.getResultat?.())
+			);
+		}
+
+		return (
+			this.listeProblemeEstVide(noeud?.listeDonnes) &amp;&amp;
+			this.listeProblemeEstVide(noeud?.listeResultats)
+		);
+	}
+
+	calculerMiseEnPageForet(foret, config) {
+		if (!Array.isArray(foret) || foret.length === 0) {
+			return { largeurForet: 0 };
+		}
+
+		let largeurForet = 0;
+		for (let i = 0; i &lt; foret.length; i++) {
+			const infosNoeud = this.calculerMiseEnPageNoeud(foret[i], config);
+			largeurForet += infosNoeud.largeurSousArbre;
+			if (i &lt; foret.length - 1) {
+				largeurForet += config.ecartHorizontal;
+			}
+		}
+
+		return { largeurForet };
+	}
+
+	calculerMiseEnPageNoeud(noeud, config) {
+		const largeurNoeud = this.obtenirLargeurNoeudMiseEnPage(noeud, config);
+
+		if (
+			noeud.typeElement === "StructureSi" ||
+			noeud.typeElement === "StructureSwitch"
+		) {
+			let largeurConditions = 0;
+			const conditions = Array.isArray(noeud.conditions)
+				? noeud.conditions
+				: [];
+
+			for (let i = 0; i &lt; conditions.length; i++) {
+				const condition = conditions[i];
+				const miseEnPageEnfantsCondition = this.calculerMiseEnPageForet(
+					condition.enfants,
+					config,
+				);
+				let largeurMinBranche = config.largeurMinBrancheCondition;
+				if (noeud.__elementReference instanceof StructureAlternative) {
+					const conditionElement =
+						noeud.__elementReference._listeConditions?.children?.[i];
+					const largeurCondition =
+						this.obtenirLargeurElementEnVw(conditionElement);
+					if (largeurCondition > 0) {
+						largeurMinBranche = Math.max(
+							largeurMinBranche,
+							largeurCondition * config.facteurLargeurReelleCondition +
+								config.margeNoeud,
+						);
+					}
+				}
+				condition.__layout = {
+					largeurBranche: Math.max(
+						largeurMinBranche,
+						miseEnPageEnfantsCondition.largeurForet,
+					),
+					miseEnPageEnfantsCondition,
+				};
+				largeurConditions += condition.__layout.largeurBranche;
+				if (i &lt; conditions.length - 1) {
+					largeurConditions += config.ecartHorizontalConditions;
+				}
+			}
+
+			const largeurSousArbre = Math.max(largeurNoeud, largeurConditions);
+			noeud.__layout = {
+				type: "conditions",
+				largeurNoeud,
+				largeurSousArbre,
+				largeurConditions,
+			};
+			return noeud.__layout;
+		}
+
+		const miseEnPageEnfants = this.calculerMiseEnPageForet(
+			noeud.enfants,
+			config,
+		);
+		const largeurSousArbre = Math.max(
+			largeurNoeud,
+			miseEnPageEnfants.largeurForet,
+		);
+		noeud.__layout = {
+			type: "enfants",
+			largeurNoeud,
+			largeurSousArbre,
+			miseEnPageEnfants,
+		};
+		return noeud.__layout;
+	}
+
+	obtenirLargeurVisibleNoeudMiseEnPage(noeud, infosNoeud) {
+		if (noeud?.__elementReference instanceof ElementGraphique) {
+			const largeurReelle = this.obtenirLargeurElementEnVw(
+				noeud.__elementReference,
+			);
+			if (largeurReelle > 0) return largeurReelle;
+		}
+		return infosNoeud?.largeurNoeud ?? 0;
+	}
+
+	decalerSousArbreMiseEnPage(noeud, decalageX) {
+		if (!noeud || !isFinite(decalageX) || decalageX === 0) return;
+		noeud.abscisse = `${parseFloat(noeud.abscisse) + decalageX}vw`;
+
+		if (Array.isArray(noeud.enfants)) {
+			for (const enfant of noeud.enfants) {
+				this.decalerSousArbreMiseEnPage(enfant, decalageX);
+			}
+		}
+		if (Array.isArray(noeud.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (Array.isArray(condition?.enfants)) {
+					for (const enfant of condition.enfants) {
+						this.decalerSousArbreMiseEnPage(enfant, decalageX);
+					}
+				}
+			}
+		}
+	}
+
+	obtenirLargeurVisibleNoeudDepuisModele(noeud) {
+		return this.obtenirLargeurVisibleNoeudMiseEnPage(noeud, noeud?.__layout);
+	}
+
+	obtenirCentreVisibleNoeudDepuisModele(noeud) {
+		return (
+			parseFloat(noeud.abscisse) +
+			this.obtenirLargeurVisibleNoeudDepuisModele(noeud) / 2
+		);
+	}
+
+	calculerBornesSousArbreMiseEnPage(noeud) {
+		const largeurNoeud = this.obtenirLargeurVisibleNoeudDepuisModele(noeud);
+		let minX = parseFloat(noeud.abscisse);
+		let maxX = minX + largeurNoeud;
+
+		if (Array.isArray(noeud?.enfants)) {
+			for (const enfant of noeud.enfants) {
+				const bornesEnfant = this.calculerBornesSousArbreMiseEnPage(enfant);
+				minX = Math.min(minX, bornesEnfant.minX);
+				maxX = Math.max(maxX, bornesEnfant.maxX);
+			}
+		}
+		if (Array.isArray(noeud?.conditions)) {
+			for (const condition of noeud.conditions) {
+				if (Array.isArray(condition?.enfants)) {
+					for (const enfant of condition.enfants) {
+						const bornesEnfant =
+							this.calculerBornesSousArbreMiseEnPage(enfant);
+						minX = Math.min(minX, bornesEnfant.minX);
+						maxX = Math.max(maxX, bornesEnfant.maxX);
+					}
+				}
+			}
+		}
+
+		return { minX, maxX };
+	}
+
+	alignerEnfantUniqueDepuisModele(parentNoeud, enfantUnique) {
+		const centreParent = this.obtenirCentreVisibleNoeudDepuisModele(parentNoeud);
+		const centreEnfant =
+			this.obtenirCentreVisibleNoeudDepuisModele(enfantUnique);
+		this.decalerSousArbreMiseEnPage(enfantUnique, centreParent - centreEnfant);
+	}
+
+	appliquerNonChevauchementFratrieMiseEnPage(noeudsFreres, ecartMinimal = 0.35) {
+		if (!Array.isArray(noeudsFreres) || noeudsFreres.length &lt; 2) return;
+
+		for (let i = 1; i &lt; noeudsFreres.length; i++) {
+			const bornesPrecedent = this.calculerBornesSousArbreMiseEnPage(
+				noeudsFreres[i - 1],
+			);
+			const bornesCourant = this.calculerBornesSousArbreMiseEnPage(
+				noeudsFreres[i],
+			);
+			const minGaucheAutorisee = bornesPrecedent.maxX + ecartMinimal;
+			if (bornesCourant.minX &lt; minGaucheAutorisee) {
+				this.decalerSousArbreMiseEnPage(
+					noeudsFreres[i],
+					minGaucheAutorisee - bornesCourant.minX,
+				);
+			}
+		}
+	}
+
+	calculerBornesForetMiseEnPage(foret, inclureDescendants = true) {
+		if (!Array.isArray(foret) || foret.length === 0) {
+			return { minX: Infinity, maxX: -Infinity };
+		}
+
+		let minX = Infinity;
+		let maxX = -Infinity;
+		for (const noeud of foret) {
+			const bornesNoeud = inclureDescendants
+				? this.calculerBornesSousArbreMiseEnPage(noeud)
+				: {
+						minX: (() => {
+							const gauche = parseFloat(noeud.abscisse);
+							const largeur = this.obtenirLargeurVisibleNoeudDepuisModele(
+								noeud,
+							);
+							const centre = gauche + largeur / 2;
+							const facteurEmpreinte =
+								noeud?.typeElement === "ConditionSortie" ? 0.95 : 0.68;
+							const largeurEmpreinte = largeur * facteurEmpreinte;
+							return centre - largeurEmpreinte / 2;
+						})(),
+						maxX: (() => {
+							const gauche = parseFloat(noeud.abscisse);
+							const largeur = this.obtenirLargeurVisibleNoeudDepuisModele(
+								noeud,
+							);
+							const centre = gauche + largeur / 2;
+							const facteurEmpreinte =
+								noeud?.typeElement === "ConditionSortie" ? 0.95 : 0.68;
+							const largeurEmpreinte = largeur * facteurEmpreinte;
+							return centre + largeurEmpreinte / 2;
+						})(),
+					};
+			minX = Math.min(minX, bornesNoeud.minX);
+			maxX = Math.max(maxX, bornesNoeud.maxX);
+		}
+		return { minX, maxX };
+	}
+
+	decalerForetMiseEnPage(foret, decalageX) {
+		if (!Array.isArray(foret) || !isFinite(decalageX) || decalageX === 0) return;
+		for (const noeud of foret) {
+			this.decalerSousArbreMiseEnPage(noeud, decalageX);
+		}
+	}
+
+	appliquerNonChevauchementForetsMiseEnPage(
+		forets,
+		ecartMinimal = 0.35,
+		inclureDescendants = true,
+	) {
+		if (!Array.isArray(forets) || forets.length &lt; 2) return;
+
+		let maxXDerniereForet = -Infinity;
+		for (let i = 0; i &lt; forets.length; i++) {
+			const foretCourante = forets[i];
+			const bornesCourantes = this.calculerBornesForetMiseEnPage(
+				foretCourante,
+				inclureDescendants,
+			);
+			if (!isFinite(bornesCourantes.minX) || !isFinite(bornesCourantes.maxX)) {
+				continue;
+			}
+
+			if (isFinite(maxXDerniereForet)) {
+				const minGaucheAutorisee = maxXDerniereForet + ecartMinimal;
+				if (bornesCourantes.minX &lt; minGaucheAutorisee) {
+					this.decalerForetMiseEnPage(
+						foretCourante,
+						minGaucheAutorisee - bornesCourantes.minX,
+					);
+				}
+			}
+
+			const bornesApresDecalage = this.calculerBornesForetMiseEnPage(
+				foretCourante,
+				inclureDescendants,
+			);
+			if (isFinite(bornesApresDecalage.maxX)) {
+				maxXDerniereForet = bornesApresDecalage.maxX;
+			}
+		}
+	}
+
+	foretContientConditionSortie(noeuds) {
+		if (!Array.isArray(noeuds)) return false;
+		return noeuds.some((noeud) => noeud?.typeElement === "ConditionSortie");
+	}
+
+	postAjusterDispositionAvecDimensionsReelles(foret, options = {}) {
+		const ecartMinimal = options.ecartMinimal ?? 0.03;
+		const appliquerAntiChevauchementGlobal =
+			options.appliquerAntiChevauchementGlobal ?? false;
+
+		const ajusterNoeudRec = (noeud) => {
+			if (Array.isArray(noeud?.enfants) &amp;&amp; noeud.enfants.length > 0) {
+				for (const enfant of noeud.enfants) {
+					ajusterNoeudRec(enfant);
+				}
+					if (noeud.enfants.length === 1) {
+						this.alignerEnfantUniqueDepuisModele(noeud, noeud.enfants[0]);
+					} else if (
+						appliquerAntiChevauchementGlobal ||
+						this.foretContientConditionSortie(noeud.enfants)
+					) {
+						this.appliquerNonChevauchementFratrieMiseEnPage(
+							noeud.enfants,
+							ecartMinimal,
+						);
+				}
+			}
+
+			if (Array.isArray(noeud?.conditions)) {
+				const foretsDesConditions = [];
+				for (const condition of noeud.conditions) {
+					const enfantsCondition = Array.isArray(condition?.enfants)
+						? condition.enfants
+						: [];
+					foretsDesConditions.push(enfantsCondition);
+					for (const enfant of enfantsCondition) {
+						ajusterNoeudRec(enfant);
+					}
+					if (enfantsCondition.length > 1) {
+						this.appliquerNonChevauchementFratrieMiseEnPage(
+							enfantsCondition,
+							ecartMinimal,
+						);
+					}
+				}
+					this.appliquerNonChevauchementForetsMiseEnPage(
+						foretsDesConditions,
+						ecartMinimal,
+						false,
+					);
+			}
+		};
+
+		for (const noeud of foret) {
+			ajusterNoeudRec(noeud);
+		}
+		if (
+			appliquerAntiChevauchementGlobal ||
+			this.foretContientConditionSortie(foret)
+		) {
+			this.appliquerNonChevauchementFratrieMiseEnPage(foret, ecartMinimal);
+		}
+	}
+
+	appliquerMiseEnPageForet(foret, gauche, haut, config) {
+		if (!Array.isArray(foret) || foret.length === 0) return;
+		let curseur = gauche;
+		for (let i = 0; i &lt; foret.length; i++) {
+			const noeud = foret[i];
+			const infosNoeud =
+				noeud.__layout || this.calculerMiseEnPageNoeud(noeud, config);
+			this.appliquerMiseEnPageNoeud(noeud, curseur, haut, config);
+			curseur += infosNoeud.largeurSousArbre + config.ecartHorizontal;
+		}
+	}
+
+	appliquerMiseEnPageNoeud(noeud, gauche, haut, config) {
+		const infosNoeud =
+			noeud.__layout || this.calculerMiseEnPageNoeud(noeud, config);
+		const positionX =
+			gauche + (infosNoeud.largeurSousArbre - infosNoeud.largeurNoeud) / 2;
+
+		noeud.abscisse = `${positionX}vw`;
+		noeud.ordonnee = `${haut}vw`;
+
+		if (infosNoeud.type === "enfants") {
+			const largeurEnfants = infosNoeud.miseEnPageEnfants.largeurForet;
+			if (largeurEnfants > 0) {
+				const enfants = Array.isArray(noeud.enfants) ? noeud.enfants : [];
+				if (enfants.length === 1) {
+					const enfantUnique = enfants[0];
+						const infosEnfantUnique =
+							enfantUnique.__layout ||
+							this.calculerMiseEnPageNoeud(enfantUnique, config);
+						const centreParent =
+							parseFloat(noeud.abscisse) +
+							this.obtenirLargeurVisibleNoeudMiseEnPage(
+								noeud,
+								infosNoeud,
+							) /
+								2;
+					const gaucheEnfantUniqueInitial =
+						positionX -
+						(infosEnfantUnique.largeurSousArbre -
+							infosEnfantUnique.largeurNoeud) /
+							2;
+					this.appliquerMiseEnPageNoeud(
+						enfantUnique,
+						gaucheEnfantUniqueInitial,
+						haut + config.ecartVertical,
+						config,
+					);
+
+					const centreEnfantUnique =
+						parseFloat(enfantUnique.abscisse) +
+						this.obtenirLargeurVisibleNoeudMiseEnPage(
+							enfantUnique,
+							infosEnfantUnique,
+						) /
+							2;
+					const decalageAlignement = centreParent - centreEnfantUnique;
+					this.decalerSousArbreMiseEnPage(
+						enfantUnique,
+						decalageAlignement,
+					);
+					return;
+				}
+
+				const gaucheEnfants =
+					gauche + (infosNoeud.largeurSousArbre - largeurEnfants) / 2;
+				this.appliquerMiseEnPageForet(
+					noeud.enfants,
+					gaucheEnfants,
+					haut + config.ecartVertical,
+					config,
+				);
+			}
+			return;
+		}
+
+		if (infosNoeud.type === "conditions") {
+			if (infosNoeud.largeurConditions &lt;= 0) return;
+			let curseurConditions =
+				gauche +
+				(infosNoeud.largeurSousArbre - infosNoeud.largeurConditions) / 2;
+
+			const conditions = Array.isArray(noeud.conditions)
+				? noeud.conditions
+				: [];
+			for (const condition of conditions) {
+				const infosCondition = condition.__layout;
+				if (
+					infosCondition &amp;&amp;
+					infosCondition.miseEnPageEnfantsCondition.largeurForet > 0
+				) {
+					const enfantsCondition = Array.isArray(condition.enfants)
+						? condition.enfants
+						: [];
+					if (enfantsCondition.length === 1) {
+						const enfantUniqueCondition = enfantsCondition[0];
+						const infosEnfantUniqueCondition =
+							enfantUniqueCondition.__layout ||
+							this.calculerMiseEnPageNoeud(
+								enfantUniqueCondition,
+								config,
+							);
+						const centreBranche =
+							curseurConditions + infosCondition.largeurBranche / 2;
+						const gaucheEnfantUniqueConditionInitial =
+							curseurConditions +
+							(infosCondition.largeurBranche -
+								infosEnfantUniqueCondition.largeurSousArbre) /
+								2;
+						this.appliquerMiseEnPageNoeud(
+							enfantUniqueCondition,
+							gaucheEnfantUniqueConditionInitial,
+							haut + config.ecartVertical,
+							config,
+						);
+						const centreEnfantUniqueCondition =
+							parseFloat(enfantUniqueCondition.abscisse) +
+							this.obtenirLargeurVisibleNoeudMiseEnPage(
+								enfantUniqueCondition,
+								infosEnfantUniqueCondition,
+							) /
+								2;
+						const decalageAlignementCondition =
+							centreBranche - centreEnfantUniqueCondition;
+						this.decalerSousArbreMiseEnPage(
+							enfantUniqueCondition,
+							decalageAlignementCondition,
+						);
+					} else {
+						const gaucheCondition =
+							curseurConditions +
+							(infosCondition.largeurBranche -
+								infosCondition.miseEnPageEnfantsCondition.largeurForet) /
+								2;
+						this.appliquerMiseEnPageForet(
+							condition.enfants,
+							gaucheCondition,
+							haut + config.ecartVertical,
+							config,
+						);
+					}
+				}
+				curseurConditions +=
+					infosCondition.largeurBranche + config.ecartHorizontalConditions;
+			}
+		}
+	}
+
+	nettoyerMetaMiseEnPage(foret) {
+		if (!Array.isArray(foret)) return;
+		for (const noeud of foret) {
+			if (noeud &amp;&amp; noeud.__layout) {
+				delete noeud.__layout;
+			}
+			if (Array.isArray(noeud?.enfants)) {
+				this.nettoyerMetaMiseEnPage(noeud.enfants);
+			}
+			if (Array.isArray(noeud?.conditions)) {
+				for (const condition of noeud.conditions) {
+					if (condition &amp;&amp; condition.__layout) {
+						delete condition.__layout;
+					}
+					if (Array.isArray(condition?.enfants)) {
+						this.nettoyerMetaMiseEnPage(condition.enfants);
+					}
+				}
+			}
+		}
+	}
+
+	reorganiserDispositionAlgo(algo, options = {}) {
+		const facteurEspacementHorizontal =
+			options.facteurEspacementHorizontal ?? 0.16;
+		const facteurEspacementVertical =
+			options.facteurEspacementVertical ?? 1;
+		const config = {
+			ecartHorizontal:
+				options.ecartHorizontal ?? 6 * facteurEspacementHorizontal,
+			ecartHorizontalConditions:
+				options.ecartHorizontalConditions ??
+				5 * facteurEspacementHorizontal,
+			ecartVertical:
+				options.ecartVertical ?? Math.max(7, 9 * facteurEspacementVertical),
+			largeurMinBrancheCondition:
+				options.largeurMinBrancheCondition ??
+				Math.max(5, 14 * facteurEspacementHorizontal),
+			utiliserDimensionsReelles: options.utiliserDimensionsReelles ?? true,
+			facteurLargeurReelleNoeud:
+				options.facteurLargeurReelleNoeud ?? 0.46,
+			facteurLargeurReelleSortie:
+				options.facteurLargeurReelleSortie ?? 1,
+			facteurLargeurReelleCondition:
+				options.facteurLargeurReelleCondition ?? 0.55,
+			margeNoeud: options.margeNoeud ?? 0.6,
+			margeSortie: options.margeSortie ?? 0.9,
+			largeurNoeudMin: options.largeurNoeudMin ?? 3,
+			largeurNoeudMinSortie: options.largeurNoeudMinSortie ?? 5.4,
+			facteurLargeurNoeud: options.facteurLargeurNoeud ?? 0.28,
+			margeGauche: options.margeGauche ?? 2,
+			largeurDisponible: options.largeurDisponible ?? 92,
+			positionHaute: options.positionHaute ?? 3,
+		};
+
+		const racines = Array.isArray(algo)
+			? algo.filter(
+					(noeud) => noeud &amp;&amp; noeud.typeElement !== "DictionnaireDonnee",
+				)
+			: [];
+		if (racines.length === 0) return;
+
+		const infosForet = this.calculerMiseEnPageForet(racines, config);
+		const largeurForet = infosForet.largeurForet;
+		let gauche = config.margeGauche;
+		if (largeurForet &lt; config.largeurDisponible) {
+			gauche += (config.largeurDisponible - largeurForet) / 2;
+		}
+
+		this.appliquerMiseEnPageForet(
+			racines,
+			gauche,
+			config.positionHaute,
+			config,
+		);
+		this.nettoyerMetaMiseEnPage(racines);
+	}
+
+	preparerXmlTabulaRasa(contenuXml) {
+		if (typeof contenuXml !== "string") return "";
+		let contenu = contenuXml.replace(/^\uFEFF/, "").trimStart();
+
+		// Certains exports TBR sont en XML 1.1 ; on normalise pour DOMParser navigateur.
+		contenu = contenu.replace(
+			/^&lt;\?xml[^>]*\?>/i,
+			(xmlDeclaration) =>
+				xmlDeclaration.replace(
+					/version\s*=\s*["']1\.1["']/i,
+					'version="1.0"',
+				),
+		);
+
+		return contenu;
+	}
+
+	convertirTabulaRasaEnAlgoForge(contenuXml) {
+		const parser = new DOMParser();
+		const xmlNormalise = this.preparerXmlTabulaRasa(contenuXml);
+		const documentXml = parser.parseFromString(xmlNormalise, "text/xml");
+		if (documentXml.querySelector("parsererror")) {
+			throw new Error("Le XML Tabula Rasa est invalide.");
+		}
+
+		const algorithme = documentXml.querySelector("Algorithme");
+		if (!algorithme) {
+			throw new Error("Le fichier Tabula Rasa ne contient pas d'algorithme.");
+		}
+
+		const elements = this.trouverEnfantDirect(algorithme, "Elements");
+		const corpsAlgo = this.convertirEnfantsTbr(elements);
+		this.reorganiserDispositionAlgoV2(corpsAlgo);
+		corpsAlgo.push({ typeElement: "DictionnaireDonnee" });
+
+		return {
+			algo: corpsAlgo,
+			nomAlgo: this.nettoyerTexteImporte(
+				this.getTexteEnfantDirect(algorithme, "nom", ""),
+			),
+			estTabulaRasa: true,
+		};
+	}
+
 	// Imports
 	/**
 	 * Importe des données JSON dans l'éditeur.
@@ -2201,20 +4077,39 @@ class Editeur extends HTMLElement {
 		// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 		var fileInput = document.createElement("input");
 		fileInput.type = "file";
-		fileInput.accept = ".json";
+		fileInput.accept = ".json,.tbr,.xml";
 		fileInput.style.display = "none";
 		fileInput.addEventListener("change", () => {
+			if (!fileInput.files || fileInput.files.length === 0) return;
+			const selectedFile = fileInput.files[0];
 			var reader = new FileReader();
 			reader.onload = () => {
 				try {
-					var parsedData = JSON.parse(reader.result);
-					this._espacePrincipal.chargerDepuisJSON(parsedData);
+					if (selectedFile.size > 5000000) {
+						alert(
+							"Le fichier est trop volumineux (maximum 5 MégaOctets).",
+						);
+						return;
+					}
+					const algoInterprete = this.interpreterFichierAlgorithme(
+						selectedFile.name,
+						reader.result,
+					);
+					const estPlanVideAvantImport = !Array.from(
+						this._espacePrincipal.children,
+					).some((element) => element instanceof ElementGraphique);
+					this._espacePrincipal.chargerDepuisJSON(algoInterprete.algo);
+					if (algoInterprete.estTabulaRasa &amp;&amp; estPlanVideAvantImport) {
+						requestAnimationFrame(() => {
+							this.prettifyPlanActif({ enregistrerEvenement: false });
+						});
+					}
 				} catch (error) {
 					alert("Le fichier n'a pas été chargé correctement.");
 					console.error(error);
 				}
 			};
-			reader.readAsText(fileInput.files[0]);
+			reader.readAsText(selectedFile);
 		});
 		fileInput.click();
 	}
@@ -3088,13 +4983,13 @@ window.customElements.define("editeur-interface", Editeur);
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementComposite.html">EvenementComposite</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementPlaceholder.html">EvenementPlaceholder</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeHTML">sanitizeHTML</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AnomalieConceptuelle.html">AnomalieConceptuelle</a></li><li><a href="AvertissementConceptuel.html">AvertissementConceptuel</a></li><li><a href="AvertissementDonneeDynamiquementTypee.html">AvertissementDonneeDynamiquementTypee</a></li><li><a href="AvertissementInformationsInconsistantesSi.html">AvertissementInformationsInconsistantesSi</a></li><li><a href="AvertissementPlanTropGrand.html">AvertissementPlanTropGrand</a></li><li><a href="AvertissementSProblemeJamaisExecute.html">AvertissementSProblemeJamaisExecute</a></li><li><a href="AvertissementStructureInoptimale.html">AvertissementStructureInoptimale</a></li><li><a href="AvertissementTropDeSousElements.html">AvertissementTropDeSousElements</a></li><li><a href="Bibliotheque.html">Bibliotheque</a></li><li><a href="Condition.html">Condition</a></li><li><a href="ConditionSortie.html">ConditionSortie</a></li><li><a href="Editeur.html">Editeur</a></li><li><a href="ElementGraphique.html">ElementGraphique</a></li><li><a href="ElementMenu.html">ElementMenu</a></li><li><a href="ElementMenuCompose.html">ElementMenuCompose</a></li><li><a href="ElementMenuKeyboardTip.html">ElementMenuKeyboardTip</a></li><li><a href="ElementParent.html">ElementParent</a></li><li><a href="ErreurArretHorsIteratif.html">ErreurArretHorsIteratif</a></li><li><a href="ErreurArretIteratifBornee.html">ErreurArretIteratifBornee</a></li><li><a href="ErreurBoucleBorneeSansFin.html">ErreurBoucleBorneeSansFin</a></li><li><a href="ErreurBoucleSansSortie.html">ErreurBoucleSansSortie</a></li><li><a href="ErreurComparaisonSwitch.html">ErreurComparaisonSwitch</a></li><li><a href="ErreurConceptuelle.html">ErreurConceptuelle</a></li><li><a href="ErreurDonneeInutilisee.html">ErreurDonneeInutilisee</a></li><li><a href="ErreurDonneeMagique.html">ErreurDonneeMagique</a></li><li><a href="ErreurResultatInutilisee.html">ErreurResultatInutilisee</a></li><li><a href="ErreurSyntaxeAssignation.html">ErreurSyntaxeAssignation</a></li><li><a href="ErreurSyntaxeComparaison.html">ErreurSyntaxeComparaison</a></li><li><a href="ErreurTypesInconsistantsAlternatif.html">ErreurTypesInconsistantsAlternatif</a></li><li><a href="EvenementComposite.html">EvenementComposite</a></li><li><a href="EvenementCreationElement.html">EvenementCreationElement</a></li><li><a href="EvenementDeplacementCondition.html">EvenementDeplacementCondition</a></li><li><a href="EvenementDeplacementElement.html">EvenementDeplacementElement</a></li><li><a href="EvenementDeplacementElementMultiples.html">EvenementDeplacementElementMultiples</a></li><li><a href="EvenementDispositionAutomatique.html">EvenementDispositionAutomatique</a></li><li><a href="EvenementEdition.html">EvenementEdition</a></li><li><a href="EvenementEditionDonneesProbleme.html">EvenementEditionDonneesProbleme</a></li><li><a href="EvenementEditionExpressionSwitch.html">EvenementEditionExpressionSwitch</a></li><li><a href="EvenementEditionLibelleCondition.html">EvenementEditionLibelleCondition</a></li><li><a href="EvenementEditionLibelleProbleme.html">EvenementEditionLibelleProbleme</a></li><li><a href="EvenementEditionResultatsProbleme.html">EvenementEditionResultatsProbleme</a></li><li><a href="EvenementEditionStructureIterative.html">EvenementEditionStructureIterative</a></li><li><a href="EvenementEditionTexte.html">EvenementEditionTexte</a></li><li><a href="EvenementLiaison.html">EvenementLiaison</a></li><li><a href="EvenementPlaceholder.html">EvenementPlaceholder</a></li><li><a href="EvenementSuppressionElement.html">EvenementSuppressionElement</a></li><li><a href="EvenementSuppressionLiaison.html">EvenementSuppressionLiaison</a></li><li><a href="FenetreModale.html">FenetreModale</a></li><li><a href="IndicateurZoom.html">IndicateurZoom</a></li><li><a href="Information.html">Information</a></li><li><a href="Initialise%252520l_indicateur%252520de%252520zoom%252520et%252520configure%252520les%252520boutons%252520de%252520zoom..html">Initialise l'indicateur de zoom et configure les boutons de zoom.</a></li><li><a href="Initialise%252520l_%2525C3%2525A9diteur%252520et%252520configure%252520les%252520%2525C3%2525A9v%2525C3%2525A9nements%252520et%252520les%252520%2525C3%2525A9l%2525C3%2525A9ments%252520de%252520l_interface%252520utilisateur..html">Initialise l'éditeur et configure les événements et les éléments de l'interface utilisateur.</a></li><li><a href="InviteBornesPourSI.html">InviteBornesPourSI</a></li><li><a href="InviteNouvelleBibliotheque.html">InviteNouvelleBibliotheque</a></li><li><a href="Lien.html">Lien</a></li><li><a href="LienCompositionProbleme.html">LienCompositionProbleme</a></li><li><a href="LienDroit.html">LienDroit</a></li><li><a href="LienTriple.html">LienTriple</a></li><li><a href="Ligne.html">Ligne</a></li><li><a href="MenuCompte.html">MenuCompte</a></li><li><a href="MenuContextuel.html">MenuContextuel</a></li><li><a href="MenuDeroulant.html">MenuDeroulant</a></li><li><a href="PlanTravail.html">PlanTravail</a></li><li><a href="Probleme.html">Probleme</a></li><li><a href="Procedure.html">Procedure</a></li><li><a href="RepresentationSelectionSimple.html">RepresentationSelectionSimple</a></li><li><a href="Selection.html">Selection</a></li><li><a href="SelectionRectangle.html">SelectionRectangle</a></li><li><a href="SousPlanTravail.html">SousPlanTravail</a></li><li><a href="StructureAlternative.html">StructureAlternative</a></li><li><a href="StructureIterative.html">StructureIterative</a></li><li><a href="StructureIterativeBornee.html">StructureIterativeBornee</a></li><li><a href="StructureIterativeNonBornee.html">StructureIterativeNonBornee</a></li><li><a href="StructureSi.html">StructureSi</a></li><li><a href="StructureSwitch.html">StructureSwitch</a></li><li><a href="SymboleDecomposition.html">SymboleDecomposition</a></li><li><a href="ThemeEditeur.html">ThemeEditeur</a></li><li><a href="Type.html">Type</a></li></ul><h3>Global</h3><ul><li><a href="global.html#sanitizeHTML">sanitizeHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Feb 17 2026 11:15:47 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Feb 17 2026 17:04:55 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
