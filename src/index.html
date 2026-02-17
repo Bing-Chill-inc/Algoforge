@@ -289,10 +289,11 @@
 				</div>
 			</div>
 		</editeur-interface>
-		<form id="transferForm" method="post" target="_blank">
-			<input type="hidden" name="corpAlgo" id="corpAlgo" />
-			<input type="hidden" name="nomFichier" id="nomFichier" />
-		</form>
+			<form id="transferForm" method="post" target="_blank">
+				<input type="hidden" name="corpAlgo" id="corpAlgo" />
+				<input type="hidden" name="nomFichier" id="nomFichier" />
+				<input type="hidden" name="sourceImport" id="sourceImport" />
+			</form>
 
 		<script>
 			const isElectron = false;
@@ -524,6 +525,7 @@
 		<script src="PartieEditeur/EvenementEdition/EvenementEditionLibelleCondition.js"></script>
 		<script src="PartieEditeur/EvenementEdition/EvenementEditionExpressionSwitch.js"></script>
 		<script src="PartieEditeur/EvenementEdition/EvenementEditionStructureIterative.js"></script>
+		<script src="PartieEditeur/EvenementEdition/EvenementDispositionAutomatique.js"></script>
 		<script src="PartieEditeur/EvenementEdition/EvenementComposite.js"></script>
 		<script src="PartieEditeur/EvenementEdition/EvenementPlaceholder.js"></script>
 
