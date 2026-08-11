@@ -30,6 +30,7 @@ beforeAll(async () => {
 							title: "Exam test",
 							isElectron: false,
 							isExam: true,
+						prettifyInitialAlgorithm: false,
 						})
 					: standaloneHtml;
 			return new Response(html, {
@@ -95,6 +96,67 @@ describe("standalone editor", () => {
 		expect(await page.locator("probleme-element").count()).toBe(0);
 		await page.locator("#boutonRedo").click();
 		expect(await page.locator("probleme-element").count()).toBe(1);
+		expect(pageErrors).toEqual([]);
+		await page.close();
+	});
+
+	test("imports TBR content and prettifies the active plan", async () => {
+		const page = await browser.newPage();
+		const pageErrors: string[] = [];
+		page.on("pageerror", (error) => pageErrors.push(error.message));
+		await page.route("https://plausible.feror.fr/**", (route) => route.abort());
+		await page.goto(`http://127.0.0.1:${server.port}/`);
+		await page.waitForFunction(
+			() => customElements.get("editeur-interface") !== undefined,
+		);
+
+		const result = await page.evaluate(() => {
+			const editor = document.querySelector("editeur-interface") as HTMLElement & {
+				interpreterFichierAlgorithme(
+					name: string,
+					content: string,
+				): {
+					algo: Array<Record<string, unknown>>;
+					nomAlgo: string;
+					estTabulaRasa: boolean;
+				};
+				prettifyPlanActif(): void;
+			};
+			const workspace = document.querySelector("plan-travail") as HTMLElement & {
+				chargerDepuisJSON(value: unknown): void;
+			};
+			const imported = editor.interpreterFichierAlgorithme(
+				"sample.tbr",
+				`<?xml version="1.0"?>
+				<Algorithme>
+					<nom>Imported TBR</nom>
+					<Elements>
+						<Action>
+							<Position>100;200</Position>
+							<Titre>Compute</Titre>
+							<PreAssertion>?</PreAssertion>
+							<PostAssertion>done</PostAssertion>
+							<Enfants />
+						</Action>
+					</Elements>
+				</Algorithme>`,
+			);
+			workspace.chargerDepuisJSON(imported.algo);
+			editor.prettifyPlanActif();
+			return {
+				name: imported.nomAlgo,
+				isTbr: imported.estTabulaRasa,
+				type: imported.algo[0]?.typeElement,
+				problemCount: document.querySelectorAll("probleme-element").length,
+			};
+		});
+
+		expect(result).toEqual({
+			name: "Imported TBR",
+			isTbr: true,
+			type: "Probleme",
+			problemCount: 1,
+		});
 		expect(pageErrors).toEqual([]);
 		await page.close();
 	});
@@ -183,10 +245,11 @@ function withRuntimeConfig(
 		title: string | null;
 		isElectron: boolean;
 		isExam: boolean;
+		prettifyInitialAlgorithm: boolean;
 	},
 ): string {
 	return html.replace(
-		/{"initialAlgorithm":null,"title":null,"isElectron":false,"isExam":false}/,
+		/{"initialAlgorithm":null,"title":null,"isElectron":false,"isExam":false,"prettifyInitialAlgorithm":false}/,
 		JSON.stringify(config).replaceAll("<", "\\u003c"),
 	);
 }

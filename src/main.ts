@@ -78,6 +78,7 @@ import { EvenementEditionResultatsProbleme } from "./PartieEditeur/EvenementEdit
 import { EvenementEditionLibelleCondition } from "./PartieEditeur/EvenementEdition/EvenementEditionLibelleCondition";
 import { EvenementEditionExpressionSwitch } from "./PartieEditeur/EvenementEdition/EvenementEditionExpressionSwitch";
 import { EvenementEditionStructureIterative } from "./PartieEditeur/EvenementEdition/EvenementEditionStructureIterative";
+import { EvenementDispositionAutomatique } from "./PartieEditeur/EvenementEdition/EvenementDispositionAutomatique";
 import { EvenementComposite } from "./PartieEditeur/EvenementEdition/EvenementComposite";
 import { EvenementPlaceholder } from "./PartieEditeur/EvenementEdition/EvenementPlaceholder";
 import { Editeur } from "./PartieEditeur/Editeur";
@@ -160,6 +161,7 @@ registerClasses({
 	EvenementEditionLibelleCondition,
 	EvenementEditionExpressionSwitch,
 	EvenementEditionStructureIterative,
+	EvenementDispositionAutomatique,
 	EvenementComposite,
 	EvenementPlaceholder,
 	Editeur,
@@ -209,6 +211,9 @@ if (config.initialAlgorithm !== null) {
 		chargerDepuisJSON(value: unknown): void;
 	};
 	workspace.chargerDepuisJSON(config.initialAlgorithm);
+	if (config.prettifyInitialAlgorithm) {
+		requestAnimationFrame(() => editeur.prettifyPlanActif({ enregistrerEvenement: false }));
+	}
 }
 
 const pointerButton = requiredElement<SVGElement & { src: string }>("#boutonPointeur");

@@ -31,6 +31,7 @@ export interface ClassRegistry {
 	ErreurSyntaxeComparaison: typeof import("../PartieErreur/ErreurSyntaxeComparaison").ErreurSyntaxeComparaison;
 	ErreurTypesInconsistantsAlternatif: typeof import("../PartieErreur/ErreurTypesInconsistantsAlternatif").ErreurTypesInconsistantsAlternatif;
 	ErreurVariableMagique: typeof import("../PartieErreur/ErreurVariableMagique").ErreurVariableMagique;
+	EvenementDispositionAutomatique: typeof import("../PartieEditeur/EvenementEdition/EvenementDispositionAutomatique").EvenementDispositionAutomatique;
 	EvenementComposite: typeof import("../PartieEditeur/EvenementEdition/EvenementComposite").EvenementComposite;
 	EvenementCreationElement: typeof import("../PartieEditeur/EvenementEdition/EvenementCreationElement").EvenementCreationElement;
 	EvenementDeplacementCondition: typeof import("../PartieEditeur/EvenementEdition/EvenementDeplacementCondition").EvenementDeplacementCondition;

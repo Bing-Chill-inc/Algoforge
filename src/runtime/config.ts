@@ -3,6 +3,7 @@ export interface EditorRuntimeConfig {
 	title: string | null;
 	isElectron: boolean;
 	isExam: boolean;
+	prettifyInitialAlgorithm: boolean;
 }
 
 const defaultConfig: EditorRuntimeConfig = {
@@ -10,6 +11,7 @@ const defaultConfig: EditorRuntimeConfig = {
 	title: null,
 	isElectron: false,
 	isExam: false,
+	prettifyInitialAlgorithm: false,
 };
 
 export function readRuntimeConfig(): EditorRuntimeConfig {
@@ -38,6 +40,7 @@ function isRuntimeConfig(value: unknown): value is EditorRuntimeConfig {
 		(config.title === null || typeof config.title === "string") &&
 		typeof config.isElectron === "boolean" &&
 		typeof config.isExam === "boolean" &&
+		typeof config.prettifyInitialAlgorithm === "boolean" &&
 		"initialAlgorithm" in config
 	);
 }
