@@ -1,0 +1,303 @@
+import { StructureAlternative } from "./StructureAlternative";
+import { classes } from "../runtime/classRegistry";
+import { editeur, verbose } from "../runtime/runtime";
+
+/**
+ * @class StructureSi
+ * @classdesc La StructureSi qui permet de vérifier une ou plusieurs conditions données
+ * @description Crée une instance de StructureSi
+ * @extends {StructureAlternative}
+ */
+export class StructureSi extends StructureAlternative {
+	static readonly typeElement = "StructureSi";
+	// ATTRIBUTS -non-
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {string|number} abscisse - L'abscisse de la structure
+	 * @param {string|number} ordonnee - L'ordonnée de la structure
+	 * @param {Array<Condition>} listeConditions - La liste des conditions de la structure
+	 */
+	constructor(abscisse: number|undefined, ordonnee: number|undefined, listeConditions = []) {
+		super(abscisse, ordonnee, listeConditions);
+	}
+
+	// ENCAPSULATION -non-
+
+	// METHODES
+	/**
+	 * @description Affiche la StructureSi sur le plan de travail
+	 */
+	afficher() {
+		let divTriangleGauche = document.createElement("div");
+		divTriangleGauche.className = "triangleGauche";
+		divTriangleGauche.classList.add("triangle");
+		divTriangleGauche.innerHTML = "<span>-<span>";
+		divTriangleGauche.addEventListener("mousedown", (e) => {
+			this._mouseDownTime = new Date().getTime();
+		});
+		divTriangleGauche.addEventListener("mouseup", (e) => {
+			if (new Date().getTime() - this._mouseDownTime < 200) {
+				this.supprimerCondition();
+			}
+		});
+		this.appendChild(divTriangleGauche);
+
+		let divConditionContainer = document.createElement("div");
+		divConditionContainer.className = "conditionContainer";
+		this.appendChild(divConditionContainer);
+
+		for (let i = 0; i < this._listeConditions.length; i++) {
+			this._listeConditions[i]._structure = this;
+			divConditionContainer.appendChild(this._listeConditions[i]);
+		}
+
+		this._listeConditions = divConditionContainer;
+
+		let divTriangleDroit = document.createElement("div");
+		divTriangleDroit.className = "triangleDroit";
+		divTriangleDroit.classList.add("triangle");
+		divTriangleDroit.innerHTML = "<span>+<span>";
+		divTriangleDroit.addEventListener("mousedown", (e) => {
+			this._mouseDownTime = new Date().getTime();
+		});
+		divTriangleDroit.addEventListener("mouseup", (e) => {
+			if (new Date().getTime() - this._mouseDownTime < 200) {
+				this.ajouterCondition();
+			}
+		});
+		this.appendChild(divTriangleDroit);
+	}
+
+	/**
+	 * @description Extrait les informations de la StructureSwitch
+	 * @returns {Array<Information>} Une liste de classe Informations.
+	 */
+	extraireInformation() {
+		return [];
+	}
+
+	/**
+	 * @description Renomme une information dans la structure switch.
+	 * @param {string} ancienNom - L'ancien nom de l'information.
+	 * @param {string} nouveauNom - Le nouveau nom de l'information.
+	 */
+	renameInformation(ancienNom: any, nouveauNom: any) {
+		for (let i = 0; i < this._listeConditions.children.length; i++) {
+			if (
+				this._listeConditions.children[
+					i
+				].divLibelle.textContent.includes(ancienNom)
+			) {
+				this._listeConditions.children[i].divLibelle.textContent =
+					this._listeConditions.children[
+						i
+					].divLibelle.textContent.replaceAll(ancienNom, nouveauNom);
+			}
+		}
+	}
+
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi
+	 * @returns {JSON} Le corps JSON de la StructureSi
+	 */
+	toJSON() {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(condition.toJSON());
+		}
+		return {
+			typeElement: this.constructor.typeElement,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			conditions: conditions,
+		};
+	}
+
+	/**
+	 * @description Renvoie le corps JSON des informations contenues dans la StructureSi en spécifiant les éléments enfants à conserver
+	 * @param {Array<ElementGraphique>} listeElemEnfantsAConcerver - La liste des éléments enfants à conserver
+	 * @returns {JSON} Le corps JSON de la StructureSi
+	 */
+	toJSONspecifier(listeElemEnfantsAConcerver: any) {
+		let conditions = [];
+		for (let condition of this._listeConditions.children) {
+			conditions.push(
+				condition.toJSONspecifier(listeElemEnfantsAConcerver),
+			);
+		}
+		return {
+			typeElement: this.constructor.typeElement,
+			abscisse: this._abscisse,
+			ordonnee: this._ordonnee,
+			conditions: conditions,
+		};
+	}
+	/**
+	 * @deprecated
+	 * @returns {}
+	 */
+	extraireInformation() {
+		// A faire condition doit pouvoir dire la variable ou le type
+		return [];
+	}
+
+	/**
+	 * @description Génère les options contextuelles pour la StructureSi
+	 * @param {Editeur} editeur - L'éditeur d'algorithmes
+	 * @returns {Array<ElementMenu>} La liste des options contextuelles
+	 */
+	genererOptionsContextuelles(editeur: any) {
+		let listeOptions = super.genererOptionsContextuelles(editeur);
+
+		// Si la transformation en switch est possible (et pertinente)
+		const potentielTransformationSwitch =
+			this.detecterPotentielTransformationSwitch();
+		if (potentielTransformationSwitch.result) {
+			listeOptions.push(
+				new classes.ElementMenu("Transformer en Switch", () => {
+					if (verbose) console.log("Transformer en Switch");
+					// On crée la nouvelle structure Switch
+					const newSwitch = this.parentNode!.ajouterElement(
+						classes.StructureSwitch,
+						this._abscisse,
+						this._ordonnee,
+						true,
+					);
+
+					potentielTransformationSwitch.valeurs!.forEach((cond) => {
+						cond._libelle = cond._libelle.split("=")[1].trim();
+						newSwitch.ajouterCondition(cond);
+					});
+
+					Array.from(
+						newSwitch.querySelectorAll("condition-element"),
+					).forEach((cond) => {
+						if (cond._libelle.length == 0) {
+							newSwitch.supprimerCondition(cond);
+						}
+					});
+
+					newSwitch.expressionATester =
+						potentielTransformationSwitch.variable;
+
+					// On lie le parent de la structure Si à la structure Switch
+					this._parent.lierEnfant(newSwitch);
+					this._parent.delierEnfant(this);
+
+					this.supprimer();
+				}),
+			);
+		}
+		return listeOptions;
+	}
+
+	/**
+	 * @description Détecte si la transformation en switch est possible et pertinente
+	 * @returns {Object} Un objet contenant le résultat de la détection et les valeurs pertinentes
+	 */
+	detecterPotentielTransformationSwitch() {
+		/* 
+        Si a = 0 | a = 1 | a = 2 | Sinon Structure Switch plus adapter 
+        */
+		try {
+			const conditions = this._listeConditions.children;
+			if (conditions.length < 3) {
+				return { result: false };
+			}
+			let libelle = conditions[0].querySelector(".libelle").textContent;
+			let caracteresAvantEgal;
+			let valeurs = [];
+
+			if (libelle.includes("=")) {
+				caracteresAvantEgal = libelle.split("=")[0].trim();
+			}
+			// Vérifier si tout les conditions contient un = et que la variable traiter est constante
+			for (let condition of conditions) {
+				if (verbose) console.log(condition);
+				libelle = condition.querySelector(".libelle").textContent;
+				if (libelle.toLowerCase().includes("sinon")) {
+					// default statement structure switch
+					continue;
+				}
+				if (
+					!libelle.includes("=") ||
+					libelle.toLowerCase().includes("ou") ||
+					libelle.toLowerCase().includes("et")
+				) {
+					return { result: false };
+				}
+				if (caracteresAvantEgal != libelle.split("=")[0].trim()) {
+					return { result: false };
+				}
+				valeurs.push(condition);
+			}
+
+			return { result: true, variable: caracteresAvantEgal, valeurs };
+		} catch (e) {
+			console.error(e);
+			return { result: false };
+		}
+	}
+
+	/**
+	 * @description Récupère la liste actuelle des anomalies détectées et ajoute ses propres anomalies détectées à celle-ci
+	 * @returns {Array<AnomalieConceptuelle>} La liste des anomalies déjà présentes + celles ajoutées par la StructureSi
+	 */
+	rechercherAnomalies() {
+		let mesAnomalies = [];
+		//8
+		if (classes.ErreurSyntaxeComparaison.detecterAnomalie(this)) {
+			mesAnomalies.push(new classes.ErreurSyntaxeComparaison(this));
+		}
+		//12
+		let tropDeSousElements =
+			classes.AvertissementTropDeSousElements.detecterAnomalie(this);
+		if (tropDeSousElements[0]) {
+			mesAnomalies.push(
+				new classes.AvertissementTropDeSousElements(
+					this,
+					tropDeSousElements[1],
+				),
+			);
+		}
+		//15
+		let informationsInconsistantesSi =
+			classes.AvertissementInformationsInconsistantesSi.detecterAnomalie(this);
+		if (informationsInconsistantesSi[0]) {
+			mesAnomalies.push(
+				new classes.AvertissementInformationsInconsistantesSi(
+					this,
+					informationsInconsistantesSi[1],
+				),
+			);
+		}
+		//17
+		let structureInoptimale =
+			classes.AvertissementStructureInoptimale.detecterAnomalie(this);
+		if (structureInoptimale[0]) {
+			mesAnomalies.push(
+				new classes.AvertissementStructureInoptimale(
+					this,
+					structureInoptimale[1],
+					structureInoptimale[2],
+				),
+			);
+		}
+		if (!informationsInconsistantesSi[0]) {
+			let typesInconsistantsAlternatif =
+				classes.ErreurTypesInconsistantsAlternatif.detecterAnomalie(this);
+			if (typesInconsistantsAlternatif[0]) {
+				mesAnomalies.push(
+					new classes.ErreurTypesInconsistantsAlternatif(
+						this,
+						typesInconsistantsAlternatif[1],
+						typesInconsistantsAlternatif[2],
+					),
+				);
+			}
+		}
+		return super.rechercherAnomalies(mesAnomalies);
+	}
+}

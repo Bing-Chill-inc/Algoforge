@@ -1,0 +1,47 @@
+import { EvenementEdition } from "./EvenementEdition";
+import { verbose } from "../../runtime/runtime";
+
+/**
+ * @classdesc Classe représentant un événement de modification de texte dans l'éditeur.
+ * @description Crée une instance de EvenementEditionTexte.
+ * @class EvenementEditionTexte
+ * @extends EvenementEdition
+ */
+export class EvenementEditionTexte extends EvenementEdition {
+	// ATTRIBUTS
+	// _elementConcerne; // ElementGraphique || Condition. Déclaré dans la classe parente.
+	_ancienTexte; // Texte antérieur à l'événement
+	_nouveauTexte; // Texte postérieur
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {ElementGraphique} elementConcerne L'élément graphique concerné par l'événement
+	 * @param {String} ancienTexte Le texte antérieur à l'événement
+	 * @param {String} nouveauTexte Le texte postérieur
+	 */
+	constructor(elementConcerne: any, ancienTexte: any, nouveauTexte: any) {
+		super(elementConcerne);
+		this._ancienTexte = ancienTexte;
+		this._nouveauTexte = nouveauTexte;
+	}
+
+	// METHODES
+	/**
+	 * @description Annule l'événement
+	 */
+	annuler() {
+		if (verbose)
+			console.log("Annulation de l'événement de modification de texte");
+	}
+
+	/**
+	 * @description Rétablit l'événement
+	 */
+	retablir() {
+		if (verbose)
+			console.log(
+				"Rétablissement de l'événement de modification de texte",
+			);
+	}
+}

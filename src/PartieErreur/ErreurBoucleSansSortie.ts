@@ -1,0 +1,55 @@
+import { ErreurConceptuelle } from "./ErreurConceptuelle";
+import { classes } from "../runtime/classRegistry";
+
+/**
+ * @class ErreurBoucleSansSortie
+ * @extends {ErreurConceptuelle}
+ * @classdesc La classe ErreurBoucleSansSortie vérifie qu'une boucle non bornée possède une condition de sortie.
+ * @description Crée une instance de ErreurBoucleSansSortie.
+ */
+export class ErreurBoucleSansSortie extends ErreurConceptuelle {
+	// ATTRIBUTS  -- Non --
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {StructureIterativeNonBornee} elementEmetteur - La boucle non bornée émettrice de l'erreur.
+	 * @type {StructureIterativeNonBornee}
+	 */
+	constructor(elementEmetteur: any) {
+		super(elementEmetteur);
+	}
+
+	// ENCAPSULATION  -- Non --
+
+	// METHODES
+	/**
+	 * @returns {string} - Renvoie une chaine de caractères.
+	 * @description Cette méthode renvoie un message indiquant qu'une boucle non bornée en surbrillance n'a pas de condition de sortie.
+	 */
+	toString() {
+		return "La boucle en surbrillance n'a pas de sortie.";
+	}
+
+	// Vérifie si la boucle non bornée a une sortie
+	/**
+	 * @static
+	 * @param {StructureIterativeNonBornee} uneBoucleNonBornee - Instance de la classe StructureIterativeNonBornee.
+	 * @type {StructureIterativeNonBornee}
+	 * @returns {boolean} - Renvoie true ou false.
+	 * @description Cette méthode vérifie que dans les descendants d'une boucle non bornée, il y a une condition de sortie.
+	 */
+	static detecterAnomalie(uneBoucleNonBornee: this) {
+		let listeDescendants =
+			uneBoucleNonBornee.getDescendants(classes.ConditionSortie);
+		for (let descendant of listeDescendants) {
+			if (
+				descendant.getAntescedants(classes.StructureIterativeNonBornee)[0] ==
+				uneBoucleNonBornee
+			) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

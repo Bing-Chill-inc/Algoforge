@@ -2,36 +2,35 @@
 
 This document is a deep, editor-focused companion to the root `AGENTS.md`. It explains the **front-editeur** runtime, data model, and build pipeline in detail, with concrete file references. It is intentionally exhaustive so you can reason about behavior before touching code.
 
-If you only read one file, start with `src/front-editeur/src/PartieEditeur/Editeur.js` because it wires almost every subsystem.
+If you only read one file, start with `src/front-editeur/src/PartieEditeur/Editeur.ts` because it wires almost every subsystem.
 
 **Where The Editor Lives**
 - Entry HTML: `src/front-editeur/src/index.html`
-- Core editor class: `src/front-editeur/src/PartieEditeur/Editeur.js`
-- Workspace model: `src/front-editeur/src/PartieEditeur/PlanTravail.js`
-- Element base + links: `src/front-editeur/src/PartieEditeur/ElementGraphique.js`, `src/front-editeur/src/PartieEditeur/ElementParent.js`
-- Specialized elements: `src/front-editeur/src/PartieEditeur/Probleme.js`, `src/front-editeur/src/PartieEditeur/Procedure.js`, `src/front-editeur/src/PartieEditeur/StructureSi.js`, `src/front-editeur/src/PartieEditeur/StructureSwitch.js`, `src/front-editeur/src/PartieEditeur/StructureIterative*.js`, `src/front-editeur/src/PartieEditeur/ConditionSortie.js`, `src/front-editeur/src/PartieEditeur/Condition.js`
-- Selection + drag: `src/front-editeur/src/PartieEditeur/Selection.js`, `src/front-editeur/src/PartieEditeur/SelectionRectangle.js`, `src/front-editeur/src/PartieEditeur/RepresentationSelectionSimple.js`
-- Linking visuals: `src/front-editeur/src/PartieEditeur/Lien*.js`, `src/front-editeur/src/PartieEditeur/Ligne.js`, `src/front-editeur/src/PartieEditeur/SymboleDecomposition.js`
+- Core editor class: `src/front-editeur/src/PartieEditeur/Editeur.ts`
+- Workspace model: `src/front-editeur/src/PartieEditeur/PlanTravail.ts`
+- Element base + links: `src/front-editeur/src/PartieEditeur/ElementGraphique.ts`, `src/front-editeur/src/PartieEditeur/ElementParent.ts`
+- Specialized elements: `src/front-editeur/src/PartieEditeur/Probleme.ts`, `src/front-editeur/src/PartieEditeur/Procedure.ts`, `src/front-editeur/src/PartieEditeur/StructureSi.ts`, `src/front-editeur/src/PartieEditeur/StructureSwitch.ts`, `src/front-editeur/src/PartieEditeur/StructureIterative*.ts`, `src/front-editeur/src/PartieEditeur/ConditionSortie.ts`, `src/front-editeur/src/PartieEditeur/Condition.ts`
+- Selection + drag: `src/front-editeur/src/PartieEditeur/Selection.ts`, `src/front-editeur/src/PartieEditeur/SelectionRectangle.ts`, `src/front-editeur/src/PartieEditeur/RepresentationSelectionSimple.ts`
+- Linking visuals: `src/front-editeur/src/PartieEditeur/Lien*.ts`, `src/front-editeur/src/PartieEditeur/Ligne.ts`, `src/front-editeur/src/PartieEditeur/SymboleDecomposition.ts`
 - Undo/redo events: `src/front-editeur/src/PartieEditeur/EvenementEdition/*`
-- Dictionary UI: `src/front-editeur/src/PartieEditeur/DictionnaireDonnee.js`
-- Library UI: `src/front-editeur/src/PartieEditeur/Bilbiotheque.js`, `src/front-editeur/src/PartieEditeur/InviteNouvelleBibliotheque.js`
-- Menus + context menus: `src/front-editeur/src/PartieEditeur/MenuContextuel.js`, `src/front-editeur/src/PartieEditeur/MenuDeroulant.js`, `src/front-editeur/src/PartieEditeur/ElementMenu*.js`
-- Zoom + theme: `src/front-editeur/src/PartieEditeur/IndicateurZoom.js`, `src/front-editeur/src/PartieEditeur/ThemeEditeur.js`, `src/front-editeur/src/PartieEditeur/MenuCompte.js`
+- Dictionary UI: `src/front-editeur/src/PartieEditeur/DictionnaireDonnee.ts`
+- Library UI: `src/front-editeur/src/PartieEditeur/Bilbiotheque.ts`, `src/front-editeur/src/PartieEditeur/InviteNouvelleBibliotheque.ts`
+- Menus + context menus: `src/front-editeur/src/PartieEditeur/MenuContextuel.ts`, `src/front-editeur/src/PartieEditeur/MenuDeroulant.ts`, `src/front-editeur/src/PartieEditeur/ElementMenu*.ts`
+- Zoom + theme: `src/front-editeur/src/PartieEditeur/IndicateurZoom.ts`, `src/front-editeur/src/PartieEditeur/ThemeEditeur.ts`, `src/front-editeur/src/PartieEditeur/MenuCompte.ts`
 - Error detection: `src/front-editeur/src/PartieErreur/*`
-- Build script: `src/front-editeur/SmeltJS.ts`
+- Build script: `src/front-editeur/build.ts`
 
 **Build And Output**
-- Source HTML is `src/front-editeur/src/index.html` and references many local scripts via `<script src="…">`.
-- The build step is `src/front-editeur/SmeltJS.ts`.
-- Build behavior:
-- It parses `index.html`, collects all **local** script tags in order, concatenates them, removes the original script tags, and inlines the combined JS at the end of `<body>`.
-- It inlines CSS by replacing `<link rel="stylesheet" href="style.css">` with a `<style>` tag containing minified CSS.
-- It copies `src/front-editeur/src/modales/*` and `src/front-editeur/src/Audio/*` to `src/front-editeur/out/`.
-- Output target is `src/front-editeur/out/index.html` plus the copied directories and minified CSS.
-- Because scripts are concatenated **in DOM order**, the order in `index.html` matters for class definitions and globals. Keep the polyfill and base classes early.
+- Source HTML is `src/front-editeur/src/index.html` with one module entry, `src/main.ts`.
+- `bun run build` invokes `src/front-editeur/build.ts`, which calls `Bun.build` with the HTML entry point and `compile: true`.
+- Bun embeds the TypeScript module graph, CSS, modal HTML, and audio into one standalone `src/front-editeur/out/index.html`.
+- `bun run build:watch` rebuilds development output after source changes.
+- `bun run check` runs the incremental TypeScript checks, production build, and Chromium smoke suite.
+- Class registration order is centralized in `src/main.ts`; the HTML no longer contains an ordered list of class scripts.
+- See `src/front-editeur/MIGRATION.md` for the strict-typing rollout boundary and follow-up sequence.
 
 **Runtime Globals And Flags**
-Defined in `src/front-editeur/src/index.html`:
+Initialized from `src/runtime/runtime.ts` and the JSON marker in `src/index.html`:
 - `isElectron`: disables `beforeunload` confirm if true.
 - `isExam`: disables library, glow/dock effects, and error UI; can also load `exam-style.css`.
 - `verbose`: console debug switch used throughout the editor.
@@ -47,24 +46,24 @@ Defined in `src/front-editeur/src/index.html`:
 - A hidden `<canvas id="canvasExport">` used for bitmap exports.
 
 **Script Load Order And Why It Matters**
-The script list at the bottom of `index.html` is intentionally ordered. A few critical notes:
+Module import and custom-element registration order is centralized in `src/main.ts`. A few critical notes:
 - `modules/safari-pollyfill.js` must be loaded early for Custom Elements in Safari.
 - `Type`, `Information`, `DictionnaireDonnee` come before elements because many elements rely on them for dictionary extraction.
 - `PartieErreur/*` is loaded early so `rechercherAnomalies` can instantiate classes.
 - Base element classes (`ElementGraphique`, `ElementParent`, `Lien`, `Ligne`) are loaded before specific elements.
-- `Editeur.js` must be last, because it references almost everything else.
-- The build script uses these tags to generate the bundled output; reordering will affect runtime.
+- `Editeur.ts` is imported and registered last because it wires almost every subsystem.
+- Cross-module runtime references use the class registry to avoid inheritance cycles.
 
 **Coordinate System And Zoom**
 The editor **stores positions in `vw` units** and uses a global scale factor via CSS:
 - All element positions are stored in `_abscisse` and `_ordonnee` (strings like `"12vw"`).
 - All position calculations use **width-based scaling** (both X and Y are derived from `window.innerWidth`).
 - Zoom is implemented by the CSS variable `--sizeModifier` set on `<body>`.
-- `IndicateurZoom` (`src/front-editeur/src/PartieEditeur/IndicateurZoom.js`) updates `--sizeModifier` and stores the zoom in a cookie.
+- `IndicateurZoom` (`src/front-editeur/src/PartieEditeur/IndicateurZoom.ts`) updates `--sizeModifier` and stores the zoom in a cookie.
 - If you add new UI that depends on coordinates, convert px to vw using the same `window.innerWidth` pattern to remain consistent with existing logic.
 
 **Core Editor Lifecycle**
-`Editeur` (`src/front-editeur/src/PartieEditeur/Editeur.js`) performs the following on construction:
+`Editeur` (`src/front-editeur/src/PartieEditeur/Editeur.ts`) performs the following on construction:
 - Installs modals by loading HTML from `src/front-editeur/src/modales/*.html` and wrapping them in `FenetreModale`.
 - Sets up event listeners for title editing, menu actions, toolbar buttons, keyboard shortcuts, and mouse interactions.
 - Initializes tools and supported element types in `_typesElements`.
@@ -90,7 +89,7 @@ The link type depends on parent element type (`ElementParent.creerLienAdequat`):
 - All others → `Lien` fallback (no concrete drawing).
 
 **PlanTravail (Workspace)**
-`PlanTravail` (`src/front-editeur/src/PartieEditeur/PlanTravail.js`) is the canvas for elements.
+`PlanTravail` (`src/front-editeur/src/PartieEditeur/PlanTravail.ts`) is the canvas for elements.
 Key behaviors:
 - `ajouterElement(elementClass, x, y, estEnVW)` converts px → vw, adjusts for scroll and zoom, then centers the element on the click point.
 - `chargerDepuisJSON(corpsJSON)` creates elements by `typeElement` string and reconnects their children via `ElementParent.lierEnfant`.
@@ -99,7 +98,7 @@ Key behaviors:
 - `getCoordMinEtMax()` computes bounding coordinates for export sizing and scroll reference.
 
 **SousPlanTravail (Decomposition View)**
-`SousPlanTravail` (`src/front-editeur/src/PartieEditeur/SousPlanTravail.js`) is a sub-workspace tied to a `Probleme`:
+`SousPlanTravail` (`src/front-editeur/src/PartieEditeur/SousPlanTravail.ts`) is a sub-workspace tied to a `Probleme`:
 - Open/close toggles a separate overlay plan.
 - On open, selection overlays are moved into the subplan, and a breadcrumb subtitle is appended to the main title.
 - `getRelativeChildrenToTop()` converts subplan coordinates back to the parent’s coordinate space for JSON export.
@@ -179,7 +178,7 @@ Enabled when URL hash looks like `#/id`:
 - The save button (`#sauvegardeCloud`) is only shown in cloud mode.
 
 **Dictionary Of Data**
-`DictionnaireDonnee` (`src/front-editeur/src/PartieEditeur/DictionnaireDonnee.js`):
+`DictionnaireDonnee` (`src/front-editeur/src/PartieEditeur/DictionnaireDonnee.ts`):
 - Builds a full UI table for variables, types, and meanings.
 - Maintains `_mesInformations` plus `types` and `signification` maps for export.
 - `PlanTravail.effectuerDictionnaireDesDonnee()` scans all elements and rebuilds the dictionary.
@@ -187,7 +186,7 @@ Enabled when URL hash looks like `#/id`:
 - Export to CSV or Markdown is handled directly within the class.
 
 **Algorithm Library**
-`Bibliotheque` (`src/front-editeur/src/PartieEditeur/Bilbiotheque.js`):
+`Bibliotheque` (`src/front-editeur/src/PartieEditeur/Bilbiotheque.ts`):
 - Fetches structured categories from `Bibliotheque/getStructure`.
 - Stores custom algorithms in the `elementsPersonnalises` cookie.
 - Search filters categories and highlights matches.
@@ -198,7 +197,7 @@ Enabled when URL hash looks like `#/id`:
 - Adds custom entries via `Bibliotheque.ajouterAlgorithmeCustom()`.
 
 **Theme System**
-`ThemeEditeur` (`src/front-editeur/src/PartieEditeur/ThemeEditeur.js`):
+`ThemeEditeur` (`src/front-editeur/src/PartieEditeur/ThemeEditeur.ts`):
 - Each theme is a custom `<option>` element.
 - Applies a large set of CSS variables (colors, fonts, glow).
 - Rewrites SVG asset URLs in CSS rules to colorize icons (`assetsDynamiques`).
@@ -239,7 +238,7 @@ When you add a new visual element class, you must update multiple places:
 - Clipboard paste relies on `readFromClipboard()` which is not defined in this repo.
 - All coordinate conversions are width-based (`window.innerWidth`), even for Y. This is consistent but non-intuitive.
 - Exports rely on hardcoded CSS strings in `Editeur.exporterSVG()`.
-- The library file name is `Bilbiotheque.js` (misspelled), but referenced consistently.
+- The library file name is `Bilbiotheque.ts` (misspelled), but referenced consistently.
 
 **If You Need To Trace Behavior**
 Start from these functions:

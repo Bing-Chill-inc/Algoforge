@@ -1,0 +1,106 @@
+import { ErreurConceptuelle } from "./ErreurConceptuelle";
+
+/**
+ * @class ErreurDonneeInutilisee
+ * @extends {ErreurConceptuelle}
+ * @classdesc La Classe ErreurDonneeInutilisee stocke si des données sont déclarées mais ne sont pas utilisées.
+ * @description Crée une instance de ErreurDonneeInutilisee.
+ */
+export class ErreurDonneeInutilisee extends ErreurConceptuelle {
+	// ATTRIBUTS
+	__nomsDonnees!: any[]; // Array<String>
+
+	// CONSTRUCTEUR
+	/**
+	 * @constructor
+	 * @param {ElementGraphique} elementEmetteur - L'élément graphique émetteur de l'erreur.
+	 * @type {ElementGraphique}
+	 * @param {Array<String>} [nomsDonnees=[]] - Liste des noms de données associées à l'erreur (par défaut, la liste est vide).
+	 */
+	constructor(elementEmetteur: any, nomsDonnees = new Array()) {
+		super(elementEmetteur);
+		this._nomsDonnees = nomsDonnees;
+	}
+
+	// ENCAPSULATION
+	/**
+	 * @param {Array<String>} value - Nouvelle liste de noms de données associées à l'erreur.
+	 * @description Définit la valeur de _nomsDonnees de ErreurDonneeInutilisee.
+	 */
+	set _nomsDonnees(value: any[]) {
+		this.__nomsDonnees = value;
+	}
+	/**
+	 * @returns {Array<String>} - Renvoie une liste de noms de données.
+	 * @description Renvoie la liste des noms de données associées à l'erreur.
+	 */
+	get _nomsDonnees() {
+		return this.__nomsDonnees;
+	}
+
+	// METHODES
+	/**
+	 * @returns {string} - Renvoie une chaine de caractères contenant les données inutilisées.
+	 * @description Renvoie un message indiquant les données inutilisées dans l'algorithme.
+	 */
+	toString() {
+		if (this._nomsDonnees.length == 1) {
+			return "La donnée " + this._nomsDonnees[0] + " n'est pas utilisée.";
+		} else {
+			let chaine = "";
+			for (let i = 0; i < this._nomsDonnees.length; i++) {
+				if (i == this._nomsDonnees.length - 1) {
+					chaine += this._nomsDonnees[i];
+				} else {
+					chaine += this._nomsDonnees[i] + ", ";
+				}
+			}
+			return "Les donnée " + chaine + " ne sont pas utilisées.";
+		}
+	}
+
+	/**
+	 * @static
+	 * @param {Probleme} unProbleme - Instance de la classe Probleme.
+	 * @type {Probleme}
+	 * @returns {Array} - Renvoie une liste dont le premier élément est true ou false si true le deuxième élément est une liste de données inutilisées.
+	 * @description La méthode detecterAnomalie cherche les données inutilisées dans l'algorithme et retourne une liste contenant les noms des données inutilisées trouvées.
+	 */
+	static detecterAnomalie(unProbleme: this) {
+		try {
+			// A changer reperer juste si il y'a le texte
+			const listeDentree = unProbleme.getInformationDonnee();
+			let listeEntree = listeDentree;
+
+			for (let InformationARegarder of listeDentree) {
+				if (unProbleme.getTexte().includes(InformationARegarder._nom)) {
+					listeEntree = listeEntree.filter(
+						(uneEntree: { _nom: any; }) =>
+							uneEntree._nom != InformationARegarder._nom,
+					);
+					continue;
+				}
+				for (let children of unProbleme.getDescendants()) {
+					if (children.include(InformationARegarder._nom)) {
+						listeEntree = listeEntree.filter(
+							(uneEntree: { _nom: any; }) =>
+								uneEntree._nom != InformationARegarder._nom,
+						);
+						continue;
+					}
+				}
+			}
+			if (listeEntree.length > 0) {
+				let donneesInutilisees = [];
+				for (let donnee of listeEntree) {
+					donneesInutilisees.push(donnee._nom);
+				}
+				return [true, donneesInutilisees];
+			} else {
+				return [false];
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+}
