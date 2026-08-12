@@ -1,3 +1,4 @@
+import { resolveDynamicAssetUrl } from "../runtime/dynamicAssets";
 import { editeur, isExam } from "../runtime/runtime";
 
 /**
@@ -106,6 +107,7 @@ fgColorDisabled: any;
 	 * Applique le thème à l'éditeur.
 	 */
 	appliquer() {
+		if (this.nom === "VS Code") this.#resolveVsCodePalette();
 		document.body.style.setProperty("--bgColor", this.bgColor);
 		document.body.style.setProperty(
 			"--bgColorSecondary",
@@ -147,140 +149,54 @@ fgColorDisabled: any;
 		);
 		document.body.style.fontFamily = this.fontFamily;
 
-		const sheet = document.styleSheets[0];
+		const asset = resolveDynamicAssetUrl;
+		const cssAsset = (value: string) => "url(\"" + asset(value) + "\")";
+		const fg = this.fgColor.substring(1);
+		const bg = this.bgColor.substring(1);
+		const rootStyle = document.body.style;
+		rootStyle.setProperty(
+			"--assetBibliotheque",
+			cssAsset(`assetsDynamiques/BibliothequeAlgo.svg?fgColor=${fg}`),
+		);
+		rootStyle.setProperty(
+			"--assetBoucle",
+			cssAsset(`assetsDynamiques/boucle.svg?fgColor=${fg}&bgColor=${bg}`),
+		);
+		rootStyle.setProperty(
+			"--assetConditionSortie",
+			cssAsset(`assetsDynamiques/conditionSortie.svg?fgColor=${fg}`),
+		);
+		rootStyle.setProperty(
+			"--assetDictionnaire",
+			cssAsset(`assetsDynamiques/DictionnaireDonnees.svg?fgColor=${fg}`),
+		);
+		rootStyle.setProperty(
+			"--assetErreurs",
+			cssAsset(`assetsDynamiques/erreurs.svg?fgColor=${fg}`),
+		);
 
-		let ruleToEdit;
-		const ruleSelectorBibliotheque = "bibliotheque-algorithmique > div.img";
-		const ruleSelectorBoucle =
-			"structure-iterative-non-bornee-element > div.boucleSVG";
-		const ruleSelectorBoucle2 =
-			"structure-iterative-bornee-element > div.boucleSVG";
-		const ruleSelectorSortie = "condition-sortie-element";
-		const ruleSelectorDico = "dictionnaire-donnee > div.img";
-		const ruleSelectorErreur = "affichage-erreur-element > div.img";
-
-		for (let i = 0; i < sheet.cssRules.length; i++) {
-			if (sheet.cssRules[i].selectorText === ruleSelectorBibliotheque) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
-					1,
-				)})`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorBoucle) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.svg?fgColor=${this.fgColor.substring(
-					1,
-				)}&bgColor=${this.bgColor.substring(1)}`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorBoucle2) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/boucle.svg?fgColor=${this.fgColor.substring(
-					1,
-				)}&bgColor=${this.bgColor.substring(1)}`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorSortie) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/conditionSortie.svg?fgColor=${this.fgColor.substring(
-					1,
-				)})`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorDico) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/DictionnaireDonnees.svg?fgColor=${this.fgColor.substring(
-					1,
-				)})`;
-			}
-			if (sheet.cssRules[i].selectorText === ruleSelectorErreur) {
-				ruleToEdit = sheet.cssRules[i];
-				ruleToEdit.style.backgroundImage = `url(assetsDynamiques/erreurs.svg?fgColor=${this.fgColor.substring(
-					1,
-				)})`;
-			}
-		}
-
-		document.querySelector(
-			"#dico_btn > svg",
-		)!.src = `assetsDynamiques/DictionnaireDonnees.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
+		const setSvgSource = (selector: string, value: string) => {
+			const element = document.querySelector<SVGElement>(selector);
+			if (element) element.dataset.assetUrl = value;
+		};
+		setSvgSource("#dico_btn > svg", `assetsDynamiques/DictionnaireDonnees.svg?fgColor=${fg}`);
 		if (!isExam) {
-			document.querySelector(
-				"#biblio_btn > svg",
-			)!.src = `assetsDynamiques/BibliothequeAlgo.svg?fgColor=${this.fgColor.substring(
-				1,
-			)}`;
+			setSvgSource("#biblio_btn > svg", `assetsDynamiques/BibliothequeAlgo.svg?fgColor=${fg}`);
 		}
-
-		document.querySelector(
-			"#boutonPointeur",
-		)!.src = `assetsDynamiques/mini/pointeur.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
-
-		document.querySelector(
-			"#boutonProbleme",
-		)!.src = `assetsDynamiques/mini/probleme.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonProcedure",
-		)!.src = `assetsDynamiques/mini/procedure.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonStructureSi",
-		)!.src = `assetsDynamiques/mini/structureSi.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonStructureSwitch",
-		)!.src = `assetsDynamiques/mini/structureSwitch.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonStructureIterative",
-		)!.src = `assetsDynamiques/mini/structureIterative.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
-
-		document.querySelector(
-			"#boutonConditionSortie",
-		)!.src = `assetsDynamiques/mini/conditionSortie.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonLien",
-		)!.src = `assetsDynamiques/mini/lien.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonStructureIterativeBornee",
-		)!.src = `assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}&bgColor=${this.bgColor.substring(1)}`;
-
-		document.querySelector(
-			"#boutonUndo",
-		)!.src = `assetsDynamiques/mini/undo.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		document.querySelector(
-			"#boutonRedo",
-		)!.src = `assetsDynamiques/mini/redo.svg?fgColor=${this.fgColor.substring(
-			1,
-		)}`;
-
-		this._logoAlgoForge!.src = `assetsDynamiques/${
-			isExam ? "AlgoForgeExamEdition" : "AlgoForge"
-		}.svg?fgColor=${this.fgColor.substring(1)}`;
+		setSvgSource("#boutonPointeur", `assetsDynamiques/mini/pointeur.svg?fgColor=${fg}&bgColor=${bg}`);
+		setSvgSource("#boutonProbleme", `assetsDynamiques/mini/probleme.svg?fgColor=${fg}`);
+		setSvgSource("#boutonProcedure", `assetsDynamiques/mini/procedure.svg?fgColor=${fg}`);
+		setSvgSource("#boutonStructureSi", `assetsDynamiques/mini/structureSi.svg?fgColor=${fg}`);
+		setSvgSource("#boutonStructureSwitch", `assetsDynamiques/mini/structureSwitch.svg?fgColor=${fg}`);
+		setSvgSource("#boutonStructureIterative", `assetsDynamiques/mini/structureIterative.svg?fgColor=${fg}&bgColor=${bg}`);
+		setSvgSource("#boutonConditionSortie", `assetsDynamiques/mini/conditionSortie.svg?fgColor=${fg}`);
+		setSvgSource("#boutonLien", `assetsDynamiques/mini/lien.svg?fgColor=${fg}`);
+		setSvgSource("#boutonStructureIterativeBornee", `assetsDynamiques/mini/structureIterativeBornee.svg?fgColor=${fg}&bgColor=${bg}`);
+		setSvgSource("#boutonUndo", `assetsDynamiques/mini/undo.svg?fgColor=${fg}`);
+		setSvgSource("#boutonRedo", `assetsDynamiques/mini/redo.svg?fgColor=${fg}`);
+		this._logoAlgoForge!.src = asset(
+			`assetsDynamiques/${isExam ? "AlgoForgeExamEdition" : "AlgoForge"}.svg?fgColor=${fg}`,
+		);
 
 		this._editeur._bibliotheque.update();
 
@@ -288,4 +204,59 @@ fgColorDisabled: any;
 
 		this._editeur.selectTool(this._editeur._currentTool);
 	}
+
+	#resolveVsCodePalette() {
+		const color = (name: string, fallback: string) =>
+			normalizeColor(
+				getComputedStyle(document.documentElement).getPropertyValue(name),
+				fallback,
+			);
+		this.bgColor = color("--vscode-editor-background", "#1e1e1e");
+		this.bgColorSecondary = color("--vscode-sideBar-background", this.bgColor);
+		this.borderColor = color("--vscode-panel-border", "#3c3c3c");
+		this.fgColor = color("--vscode-editor-foreground", "#cccccc");
+		this.fgColorSemiTransparent = `${this.fgColor}55`;
+		this.fgColorTransparent = `${this.fgColor}11`;
+		this.fgColorForward = color(
+			"--vscode-descriptionForeground",
+			this.fgColor,
+		);
+		this.goodColor = color("--vscode-testing-iconPassed", "#89d185");
+		this.goodColorTransparent = `${this.goodColor}99`;
+		this.errorColor = color("--vscode-editorError-foreground", "#f48771");
+		this.warningColor = color(
+			"--vscode-editorWarning-foreground",
+			"#cca700",
+		);
+		this.titleColor = color("--vscode-textLink-foreground", "#3794ff");
+		this.borderColor2 = color("--vscode-focusBorder", this.borderColor);
+		this.bgColorTertiary = color(
+			"--vscode-editorWidget-background",
+			this.bgColorSecondary,
+		);
+		this.fgColorHover = color(
+			"--vscode-list-hoverForeground",
+			this.fgColor,
+		);
+		this.fgColorDisabled = color(
+			"--vscode-disabledForeground",
+			this.fgColorForward,
+		);
+		this.fontFamily = "var(--vscode-font-family, sans-serif)";
+	}
+}
+
+function normalizeColor(value: string, fallback: string): string {
+	const trimmed = value.trim();
+	const shortHex = /^#([0-9a-f]{3})$/i.exec(trimmed);
+	if (shortHex) {
+		return `#${[...shortHex[1]].map((digit) => digit + digit).join("")}`;
+	}
+	if (/^#[0-9a-f]{6}$/i.test(trimmed)) return trimmed;
+	const rgb = /^rgba?\(\s*(\d+)\s*[, ]\s*(\d+)\s*[, ]\s*(\d+)/i.exec(trimmed);
+	if (!rgb) return fallback;
+	return `#${rgb
+		.slice(1, 4)
+		.map((part) => Math.min(255, Number(part)).toString(16).padStart(2, "0"))
+		.join("")}`;
 }

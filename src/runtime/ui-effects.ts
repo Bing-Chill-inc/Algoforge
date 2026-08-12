@@ -5,6 +5,7 @@ import {
 	preferences,
 	requiredElement,
 } from "./runtime";
+import { isVsCodeHost } from "./host";
 
 type DockItem = Element & ElementCSSInlineStyle & {
 	isHover?: boolean;
@@ -38,7 +39,7 @@ export function initializeInterfaceEffects(): void {
 				: defaultValue;
 	};
 
-	preferences.glow = getCookieBool("glow", true);
+	preferences.glow = getCookieBool("glow", !isVsCodeHost());
 	preferences.dockEffect = getCookieBool("dockEffect", true);
 
 	if (isExam) {

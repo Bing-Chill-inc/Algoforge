@@ -1,4 +1,6 @@
 import { classes } from "../runtime/classRegistry";
+import { commitDocumentChange } from "../runtime/host";
+import { saveHostFile } from "../runtime/host";
 
 export class DictionnaireDonnee extends HTMLElement {
 	// ATTRIBUTS
@@ -233,6 +235,7 @@ private _cancelRemove!: HTMLElement|null;
 
 		this.fermer();
 		this.ouvrir();
+		commitDocumentChange();
 	}
 
 	/**
@@ -287,6 +290,7 @@ private _cancelRemove!: HTMLElement|null;
 		this._inputName.classList.remove("wrong-input");
 		this._inputName.classList.add("correct-input");
 		this._inputType.classList.remove("wrong-input");
+		commitDocumentChange();
 		this._inputType.classList.add("correct-input");
 		this._inputSignification.classList.remove("wrong-input");
 		this._inputSignification.classList.add("correct-input");
@@ -996,6 +1000,12 @@ private _cancelRemove!: HTMLElement|null;
 					}\n`;
 				});
 
+				if (saveHostFile(
+					document.querySelector("#titreAlgo")!.innerText + "Dictionnaire.csv",
+					"text/csv",
+					contenuTexte,
+				)) break;
+
 				// On crée un Blob avec le contenu JSON
 				var blob = new Blob([contenuTexte], {
 					type: "application/json",
@@ -1039,6 +1049,12 @@ private _cancelRemove!: HTMLElement|null;
 
 				// On convertit le CSV en Markdown
 				contenuTexte = this.csvToMarkdown(contenuTexte);
+
+				if (saveHostFile(
+					document.querySelector("#titreAlgo")!.innerText + "Dictionnaire.md",
+					"text/markdown",
+					contenuTexte,
+				)) break;
 
 				// On crée un Blob avec le contenu Markdown
 				var blob = new Blob([contenuTexte], {

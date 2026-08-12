@@ -778,10 +778,10 @@ divResultatsEditable: any;
 	/**
 	 * @description Décompose le problème sur un autre plan.
 	 */
-	decomposerAutrePlan() {
+	decomposerAutrePlan(openAfterCreation = true) {
 		if (verbose) console.log("Décomposer sur un autre plan");
 		if (this._sousPlan != null) {
-			this._sousPlan.ouvrir();
+			if (openAfterCreation) this._sousPlan.ouvrir();
 		} else {
 			let buttonOuvrir = document.createElement("span");
 			buttonOuvrir.innerText = "+";
@@ -842,7 +842,7 @@ divResultatsEditable: any;
 			}
 
 			this._editeur.selectTool(this._editeur._currentTool);
-			this._sousPlan!.ouvrir();
+			if (openAfterCreation) this._sousPlan!.ouvrir();
 		}
 	}
 

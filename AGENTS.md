@@ -22,8 +22,8 @@ If you only read one file, start with `src/front-editeur/src/PartieEditeur/Edite
 
 **Build And Output**
 - Source HTML is `src/front-editeur/src/index.html` with one module entry, `src/main.ts`.
-- `bun run build` invokes `src/front-editeur/build.ts`, which calls `Bun.build` with the HTML entry point and `compile: true`.
-- Bun embeds the TypeScript module graph, CSS, modal HTML, and audio into one standalone `src/front-editeur/out/index.html`.
+- `bun run build` invokes `src/front-editeur/build.ts` with the `standalone` target. Bun embeds the TypeScript module graph, CSS, modal HTML, and audio into one `src/front-editeur/out/index.html`.
+- The exported `buildEditor` API also supports the `webview` target, which emits CSP-compatible assets for the VS Code extension and strips analytics.
 - `bun run build:watch` rebuilds development output after source changes.
 - `bun run check` runs the incremental TypeScript checks, production build, and Chromium smoke suite.
 - Class registration order is centralized in `src/main.ts`; the HTML no longer contains an ordered list of class scripts.
@@ -31,7 +31,7 @@ If you only read one file, start with `src/front-editeur/src/PartieEditeur/Edite
 
 **Runtime Globals And Flags**
 Initialized from `src/runtime/runtime.ts` and the JSON marker in `src/index.html`:
-- `isElectron`: disables `beforeunload` confirm if true.
+- `hostKind`: `"web" | "electron" | "vscode"`; selects host adapters and persistence/command behavior.
 - `isExam`: disables library, glow/dock effects, and error UI; can also load `exam-style.css`.
 - `verbose`: console debug switch used throughout the editor.
 - `preferences`: `{ glow, dockEffect, renderScale }`.

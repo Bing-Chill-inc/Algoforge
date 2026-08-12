@@ -7,7 +7,7 @@
 		"build:dev": "bun run build.ts --development",
 		"build:watch": "bun run watch.ts",
 		"check": "bun run typecheck && bun run build && bun run test",
-		"test": "bun test tests/editor.smoke.test.ts",
+		"test": "bun test tests/editor.smoke.test.ts tests/documentController.test.ts",
 		"typecheck": "tsc --project tsconfig.json && tsc --project tsconfig.build.json"
 	},
 	"devDependencies": {

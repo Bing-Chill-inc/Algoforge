@@ -1,3 +1,4 @@
+import { isVsCodeHost } from "../runtime/host";
 import { editeur, preferences } from "../runtime/runtime";
 
 /**
@@ -22,8 +23,9 @@ private _init!: boolean;
 	constructor() {
 		super();
 
-		// Récupérer le user
-		this.loadUserInfo();
+		// Récupérer le user uniquement dans les hôtes qui proposent le cloud.
+		if (isVsCodeHost()) this._user = null;
+		else this.loadUserInfo();
 
 		this.MenuIcone = document.createElement("div");
 		this.MenuIcone.classList.add("img");
@@ -49,8 +51,8 @@ private _init!: boolean;
 			true,
 		);
 
-		// Écouter les changements de localStorage entre les onglets
-		window.addEventListener("storage", (event) => {
+		// Écouter les changements de localStorage entre les onglets.
+		if (!isVsCodeHost()) window.addEventListener("storage", (event) => {
 			if (event.key === "auth_status") {
 				if (event.newValue === "logged_out") {
 					this.clearLocalAuth();
@@ -188,6 +190,10 @@ private _init!: boolean;
 				</div>
 			</div>
 		`;
+
+		if (isVsCodeHost()) {
+			this._menuDiv.querySelector(".menu-actions")?.remove();
+		}
 
 		this.appendChild(this._menuDiv);
 

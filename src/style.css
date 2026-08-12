@@ -2365,6 +2365,7 @@ structure-iterative-non-bornee-element {
 	z-index: 2;
 }
 structure-iterative-non-bornee-element > div.boucleSVG {
+	background-image: var(--assetBoucle);
 	width: calc(var(--sizeModifier) * 4vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	background-position: center;
@@ -2385,6 +2386,7 @@ structure-iterative-bornee-element {
 	gap: calc(var(--sizeModifier) * 0.5vw);
 }
 structure-iterative-bornee-element > div.boucleSVG {
+	background-image: var(--assetBoucle);
 	width: calc(var(--sizeModifier) * 4vw);
 	height: calc(var(--sizeModifier) * 4vw);
 	background-repeat: no-repeat;
@@ -2399,6 +2401,10 @@ structure-iterative-bornee-element > div.informationsBornes {
 }
 
 condition-sortie-element {
+	background-image: var(--assetConditionSortie);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
 	position: absolute;
 	height: calc(var(--sizeModifier) * 4vw);
 	width: calc(var(--sizeModifier) * 4vw);
@@ -2862,6 +2868,10 @@ affichage-erreur-element {
 }
 
 affichage-erreur-element > div.img {
+	background-image: var(--assetErreurs);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
 	width: 100%;
 }
 affichage-erreur-element button {

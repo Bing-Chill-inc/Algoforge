@@ -1,8 +1,10 @@
 import "./modules/safari-pollyfill.js";
 import { readRuntimeConfig } from "./runtime/config";
 import { registerClasses } from "./runtime/classRegistry";
+import { initializeHost } from "./runtime/host";
 import { editeur, initializeRuntime, requiredElement, titreAlgo } from "./runtime/runtime";
 import { initializeInterfaceEffects } from "./runtime/ui-effects";
+import { initializeVsCodeIntegration } from "./runtime/vscodeIntegration";
 import { Type } from "./PartieEditeur/Type";
 import { Information } from "./PartieEditeur/Information";
 import { DictionnaireDonnee } from "./PartieEditeur/DictionnaireDonnee";
@@ -85,6 +87,7 @@ import { Editeur } from "./PartieEditeur/Editeur";
 
 const config = readRuntimeConfig();
 initializeRuntime(config);
+initializeHost();
 registerClasses({
 	Type,
 	Information,
@@ -201,6 +204,7 @@ defineCustomElement("menu-compte-element", MenuCompte);
 defineCustomElement("editeur-interface", Editeur);
 
 initializeInterfaceEffects();
+initializeVsCodeIntegration();
 
 if (config.title !== null) {
 	titreAlgo.innerText = config.title;
@@ -215,9 +219,6 @@ if (config.initialAlgorithm !== null) {
 		requestAnimationFrame(() => editeur.prettifyPlanActif({ enregistrerEvenement: false }));
 	}
 }
-
-const pointerButton = requiredElement<SVGElement & { src: string }>("#boutonPointeur");
-requiredElement<HTMLElement>("#espacePrincipal").style.cursor = `url(${pointerButton.src}), auto`;
 
 function defineCustomElement(
 	name: string,

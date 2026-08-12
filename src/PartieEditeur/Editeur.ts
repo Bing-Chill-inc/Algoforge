@@ -1,5 +1,19 @@
 import { classes } from "../runtime/classRegistry";
-import { editeur, isElectron, preferences, readFromClipboard, titreAlgo, verbose } from "../runtime/runtime";
+import { resolveDynamicAssetUrl } from "../runtime/dynamicAssets";
+import {
+	commitDocumentChange,
+	executeHostCommand,
+	getCustomLibrary,
+	isVsCodeHost,
+	openExternal,
+	readHostClipboard,
+	reportHostError,
+	saveHostFile,
+	updateCustomLibrary,
+	updateHostPreference,
+	writeHostClipboard,
+} from "../runtime/host";
+import { editeur, hostKind, preferences, titreAlgo, verbose } from "../runtime/runtime";
 import clickSoundUrl from "../Audio/Anvil_use.ogg";
 import aboutHtml from "../modales/about.html" with { type: "text" };
 import noPasteHtml from "../modales/nopaste.html" with { type: "text" };
@@ -65,6 +79,7 @@ export class Editeur extends HTMLElement {
 
 	_pileAnnuler = []; // Pile pour les annulations de type Array<EvenementEditeur>
 	_pileRétablir = []; // Pile pour les rétablissements de type Array<EvenementEditeur>
+	_suspendDocumentEvents = false;
 
 	_transferForm = document.getElementById("transferForm");
 	_transferInput = document.getElementById("corpAlgo");
@@ -110,7 +125,7 @@ export class Editeur extends HTMLElement {
 			if (
 				(this._pileAnnuler.length > 0 ||
 					this._pileRétablir.length > 0) &&
-				!isElectron
+				hostKind === "web"
 			) {
 				// Cancel the event
 				e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
@@ -239,6 +254,32 @@ export class Editeur extends HTMLElement {
 		);
 
 		// Ajouter les options de thème
+		if (isVsCodeHost()) {
+			this._themeSelect!.appendChild(
+				new classes.ThemeEditeur(
+					"VS Code",
+					"#1e1e1e",
+					"#252526",
+					"#3c3c3c",
+					"#cccccc",
+					"#cccccc55",
+					"#cccccc11",
+					"#9d9d9d",
+					"#89d185",
+					"#89d18599",
+					"#f48771",
+					"#cca700",
+					"#3794ff",
+					"var(--vscode-font-family, sans-serif)",
+					"",
+					"#3c3c3c",
+					"#252526",
+					"#ffffff",
+					"#6f6f6f",
+					0,
+				),
+			);
+		}
 		this._themeSelect!.appendChild(
 			new classes.ThemeEditeur(
 				"Thème Pacifique", // nom
@@ -324,6 +365,8 @@ export class Editeur extends HTMLElement {
 		let theme = this.getCookie("theme");
 		if (theme) {
 			this._themeSelect!.value = theme;
+		} else if (isVsCodeHost()) {
+			this._themeSelect!.value = "VS Code";
 		} else {
 			this._themeSelect!.selectedIndex = 0;
 		}
@@ -344,6 +387,10 @@ export class Editeur extends HTMLElement {
 
 		// Logo AlgoForge
 		this._logoAlgoForge!.addEventListener("click", () => {
+			if (isVsCodeHost()) {
+				openExternal("https://algoforge.fr/");
+				return;
+			}
 			// Rediriger vers la page de connexion
 			const cloudUrl = new URL(window.location.origin);
 			cloudUrl.pathname = "/cloud/";
@@ -510,6 +557,10 @@ export class Editeur extends HTMLElement {
 		// Fichier
 		this._menuDeroulantFichier!.ajouterElementMenu(
 			new classes.ElementMenu("Nouveau", () => {
+				if (isVsCodeHost()) {
+					executeHostCommand("new");
+					return;
+				}
 				if (verbose) console.log("Nouveau");
 				const url = new URL(window.location.href);
 				const hash = url.hash;
@@ -523,6 +574,10 @@ export class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier!.ajouterElementMenu(
 			new classes.ElementMenu("Ouvrir", () => {
+				if (isVsCodeHost()) {
+					executeHostCommand("open");
+					return;
+				}
 				if (verbose) console.log("Ouvrir");
 				// On importe
 				// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
@@ -595,6 +650,10 @@ export class Editeur extends HTMLElement {
 		);
 		this._menuDeroulantFichier!.ajouterElementMenu(
 			new classes.ElementMenu("Créer une copie", () => {
+				if (isVsCodeHost()) {
+					executeHostCommand("saveAs");
+					return;
+				}
 				if (verbose) console.log("Créer une copie");
 				// On post le contenu de l'éditeur actuel dans un nouvel onglet
 				this._transferInput!.value = JSON.stringify(
@@ -606,38 +665,34 @@ export class Editeur extends HTMLElement {
 				this._transferForm!.submit();
 			}),
 		);
-		this._menuDeroulantFichier!.ajouterElementMenu(
-			new classes.ElementMenu(
-				"Partager",
-				() => {
-					if (verbose) console.log("Partager");
-					this._modaleNonImp.ouvrir();
-				},
-				false,
-			),
-		);
-		this._menuDeroulantFichier!.ajouterElementMenu(
-			new classes.ElementMenu("Renommer", () => {
-				if (verbose) console.log("Renommer");
-				let titre = this.querySelector("#titreAlgo");
-				// On met le focus sur le titre
-				titre!.focus();
-
-				// On referme le menu en persuadant le navigateur que l'utilisateur n'a plus la souris dessus
-				this._menuDeroulantFichier!.style.display = "none";
-				setTimeout(() => {
-					this._menuDeroulantFichier!.style.display = "";
-				}, 2);
-
-				// Et on sélectionne tout le texte sans execCommand car il est déprécié
-				let range = document.createRange();
-				range.selectNodeContents(titre);
-				let selection = window.getSelection();
-				selection!.removeAllRanges();
-
-				selection!.addRange(range);
-			}),
-		);
+		if (!isVsCodeHost()) {
+			this._menuDeroulantFichier!.ajouterElementMenu(
+				new classes.ElementMenu(
+					"Partager",
+					() => {
+						if (verbose) console.log("Partager");
+						this._modaleNonImp.ouvrir();
+					},
+					false,
+				),
+			);
+			this._menuDeroulantFichier!.ajouterElementMenu(
+				new classes.ElementMenu("Renommer", () => {
+					if (verbose) console.log("Renommer");
+					const titre = this.querySelector("#titreAlgo")!;
+					titre.focus();
+					this._menuDeroulantFichier!.style.display = "none";
+					setTimeout(() => {
+						this._menuDeroulantFichier!.style.display = "";
+					}, 2);
+					const range = document.createRange();
+					range.selectNodeContents(titre);
+					const selection = window.getSelection()!;
+					selection.removeAllRanges();
+					selection.addRange(range);
+				}),
+			);
+		}
 		let exporter = new classes.ElementMenuCompose("Exporter", () => {
 			if (verbose) console.log("Exporter");
 		});
@@ -715,6 +770,10 @@ export class Editeur extends HTMLElement {
 
 		exporter.ajouterElementMenu(
 			new classes.ElementMenu(".pdf", () => {
+				if (isVsCodeHost()) {
+					reportHostError("PDF export is not available in VS Code yet.");
+					return;
+				}
 				window.print();
 			}),
 		);
@@ -858,10 +917,7 @@ export class Editeur extends HTMLElement {
 			new classes.ElementMenu("Tutoriels", () => {
 				if (verbose) console.log("Tutoriels");
 				// Open a new tab with the tutorials (wiki.<current_domain>)
-				window.open(
-					`https://bing-chill-inc.github.io/wikiforge`,
-					"_blank",
-				);
+				openExternal("https://bing-chill-inc.github.io/wikiforge");
 			}),
 		);
 
@@ -1025,12 +1081,12 @@ export class Editeur extends HTMLElement {
 				}
 
 				// Raccourcis clavier en Ctrl + ... pour l'édition
-				if (e.key.toLowerCase() === "z") {
+				if (!isVsCodeHost() && e.key.toLowerCase() === "z") {
 					// Ctrl + Z
 					e.preventDefault();
 					this.undo();
 				}
-				if (e.key.toLowerCase() === "y") {
+				if (!isVsCodeHost() && e.key.toLowerCase() === "y") {
 					// Ctrl + Y
 					e.preventDefault();
 					this.redo();
@@ -1040,7 +1096,7 @@ export class Editeur extends HTMLElement {
 					e.preventDefault();
 					this.cut();
 				}
-				if (e.key.toLowerCase() === "s") {
+				if (!isVsCodeHost() && e.key.toLowerCase() === "s") {
 					e.preventDefault();
 					if (isCloud()) await handdleSave();
 				}
@@ -1729,7 +1785,66 @@ export class Editeur extends HTMLElement {
 	 * @param {string} cvalue - La valeur du cookie.
 	 * @param {number} exdays - Le nombre de jours avant l'expiration du cookie.
 	 */
+
+	serializeDocument(): unknown[] {
+		return this._espacePrincipal?.exporterEnJSON() ?? [];
+	}
+
+	replaceDocument(algorithm: unknown[]): void {
+		const previousAlgorithm = this.serializeDocument();
+		this._suspendDocumentEvents = true;
+		try {
+			this.resetDocumentForHydration();
+			this._espacePrincipal!.chargerDepuisJSON(algorithm as never, false);
+			this._pileAnnuler = [];
+			this._pileRétablir = [];
+		} catch (error) {
+			this.resetDocumentForHydration();
+			this._espacePrincipal!.chargerDepuisJSON(previousAlgorithm as never, false);
+			this._pileAnnuler = [];
+			this._pileRétablir = [];
+			throw error;
+		} finally {
+			this._suspendDocumentEvents = false;
+		}
+	}
+
+	resetDocumentForHydration(): void {
+		this._selection.deselectionnerTout();
+		this.querySelectorAll("sous-plan-travail").forEach((element: any) => {
+			if (typeof element.fermer === "function") element.fermer();
+			element.remove();
+		});
+		this.querySelectorAll(".sous-titre").forEach((element) => element.remove());
+		this._espacePrincipal!.append(this._selection, this._selectionRectangle);
+		this._planActif = this._espacePrincipal;
+		for (const child of Array.from(this._espacePrincipal!.children).reverse()) {
+			if (child instanceof classes.ElementGraphique) child.supprimer();
+		}
+		this._espacePrincipal!
+			.querySelectorAll(
+				"ligne-element, symbole-decomposition-element, invite-bornes-pour-si",
+			)
+			.forEach((element) => element.remove());
+		this._dictionnaireDesDonnees.suppressionTout();
+		this._dictionnaireDesDonnees.chargerDepuisJSON({
+			types: {},
+			signification: {},
+		});
+	}
+
 	setCookie(cname: string, cvalue: string, exdays: number) {
+		if (isVsCodeHost() && cname === "elementsPersonnalises") {
+			updateCustomLibrary(JSON.parse(cvalue));
+			return;
+		}
+		if (isVsCodeHost() && (cname === "theme" || cname === "glow")) {
+			updateHostPreference(
+				cname,
+				cname === "glow" ? cvalue === "true" : cvalue,
+			);
+			return;
+		}
 		const d = new Date();
 		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
 		let expires = "expires=" + d.toUTCString();
@@ -1744,6 +1859,10 @@ export class Editeur extends HTMLElement {
 	 * @returns {string} La valeur du cookie si trouvé, sinon une chaîne vide.
 	 */
 	getCookie(cname: string) {
+		if (isVsCodeHost() && cname === "elementsPersonnalises") {
+			const value = getCustomLibrary();
+			return value.length > 0 ? JSON.stringify(value) : "";
+		}
 		let name = cname + "=";
 		let decodedCookie = decodeURIComponent(document.cookie);
 		let ca = decodedCookie.split(";");
@@ -1832,9 +1951,13 @@ export class Editeur extends HTMLElement {
 		const sousPlanTravail = document.querySelectorAll("sous-plan-travail");
 		if (idTool != -1) {
 			this._listeTools[idTool].classList.add("selected");
-			const cursor =
-				this._listeTools[idTool].src.split(".svg")[0] + "Cursor.svg";
-			const urlColor = this._listeTools[idTool].src.split(".svg")[1];
+			const toolAsset =
+				this._listeTools[idTool].dataset.assetUrl ??
+				this._listeTools[idTool].src;
+			const cursor = resolveDynamicAssetUrl(
+				toolAsset.replace(".svg", "Cursor.svg"),
+			);
+			const urlColor = "";
 			let goodCursor;
 			switch (idTool) {
 				// Lien
@@ -1874,9 +1997,13 @@ export class Editeur extends HTMLElement {
 		} else {
 			// Pointeur
 			this._boutonPointeur!.classList.add("selected");
-			planPrincipal!.style.cursor = `url(${this._boutonPointeur!.src}), auto`;
+			const pointerAsset = this._boutonPointeur!.dataset.assetUrl;
+			const pointerCursor = pointerAsset
+				? `url(${resolveDynamicAssetUrl(pointerAsset)}), auto`
+				: "auto";
+			planPrincipal!.style.cursor = pointerCursor;
 			sousPlanTravail.forEach((sousPlan) => {
-				sousPlan.style.cursor = `url(${this._boutonPointeur!.src}), auto`;
+				sousPlan.style.cursor = pointerCursor;
 			});
 		}
 
@@ -1893,6 +2020,10 @@ export class Editeur extends HTMLElement {
 	 * Appelle la méthode `annuler` pour effectuer l'annulation.
 	 */
 	undo() {
+		if (isVsCodeHost()) {
+			executeHostCommand("undo");
+			return;
+		}
 		this.annuler();
 	}
 
@@ -1901,6 +2032,10 @@ export class Editeur extends HTMLElement {
 	 * Appelle la méthode `retablir` pour rétablir l'état précédent.
 	 */
 	redo() {
+		if (isVsCodeHost()) {
+			executeHostCommand("redo");
+			return;
+		}
 		this.retablir();
 	}
 
@@ -2004,7 +2139,7 @@ export class Editeur extends HTMLElement {
 
 		if (verbose) console.log(elementsACopier);
 		if (toClipboard)
-			navigator.clipboard.writeText(JSON.stringify(elementsACopier));
+			void writeHostClipboard(JSON.stringify(elementsACopier));
 		return JSON.stringify(elementsACopier);
 	}
 
@@ -2025,10 +2160,10 @@ export class Editeur extends HTMLElement {
 	 * // Exemple d'utilisation
 	 * editeur.paste();
 	 */
-	paste() {
+	async paste() {
 		if (verbose) console.log("paste");
 		try {
-			var parsedData = JSON.parse(readFromClipboard());
+			var parsedData = JSON.parse(await readHostClipboard());
 
 			// Ajouter les coordonnées de la souris
 			const appliquerDecalage = (elem: { abscisse: string; ordonnee: string; enfants: any[]; typeElement: string; conditions: any; }) => {
@@ -2116,6 +2251,14 @@ export class Editeur extends HTMLElement {
 	 * @param {string} jsonString - La chaîne JSON à exporter.
 	 */
 	exporterJSON(jsonString: BlobPart) {
+		if (
+			typeof jsonString === "string" &&
+			saveHostFile(
+				this.querySelector("#titreAlgo")!.innerText + ".json",
+				"application/json",
+				jsonString,
+			)
+		) return;
 		// On crée un Blob avec le contenu JSON
 		var blob = new Blob([jsonString], { type: "application/json" });
 
@@ -2147,6 +2290,7 @@ export class Editeur extends HTMLElement {
 	ajouterEvenement(evenement: EvenementPlaceholder|EvenementComposite) {
 		this._pileAnnuler.push(evenement);
 		this._pileRétablir = [];
+		if (!this._suspendDocumentEvents) commitDocumentChange();
 	}
 
 	/**
@@ -2157,6 +2301,7 @@ export class Editeur extends HTMLElement {
 			let evenement = this._pileAnnuler.pop();
 			evenement!.annuler();
 			this._pileRétablir.push(evenement);
+			if (!this._suspendDocumentEvents) commitDocumentChange();
 		}
 	}
 
@@ -2168,6 +2313,7 @@ export class Editeur extends HTMLElement {
 			let evenement = this._pileRétablir.pop();
 			evenement!.retablir();
 			this._pileAnnuler.push(evenement);
+			if (!this._suspendDocumentEvents) commitDocumentChange();
 		}
 	}
 
@@ -4039,6 +4185,10 @@ export class Editeur extends HTMLElement {
 	 * Importe des données JSON dans l'éditeur.
 	 */
 	importerJSON() {
+		if (isVsCodeHost()) {
+			executeHostCommand("import");
+			return;
+		}
 		// On crée un input de type file pour que l'utilisateur puisse choisir un fichier
 		var fileInput = document.createElement("input");
 		fileInput.type = "file";
@@ -4801,6 +4951,12 @@ export class Editeur extends HTMLElement {
 		let templateHeader = `<svg xmlns="http://www.w3.org/2000/svg">
 		<foreignObject x="0" y="0" width="100%" height="100%">${svgString}</foreignObject></svg>`;
 
+		if (download && saveHostFile(
+			this.querySelector("#titreAlgo")!.innerText + ".svg",
+			"image/svg+xml",
+			templateHeader,
+		)) return templateHeader;
+
 		var blob = new Blob([templateHeader], { type: "image/svg+xml" });
 		var url = URL.createObjectURL(blob);
 		if (download) {
@@ -4877,7 +5033,7 @@ export class Editeur extends HTMLElement {
 		img.src = testSvg;
 
 		const titreAlgo = this.querySelector("#titreAlgo")!.innerText;
-		img.onload = function () {
+		img.onload = () => {
 			ctxExport.clearRect(0, 0, canvasExport!.width, canvasExport!.height);
 
 			if (mimeType == "jpeg" || mimeType == "jpg") {
@@ -4898,8 +5054,13 @@ export class Editeur extends HTMLElement {
 				canvasExport!.width,
 				canvasExport!.height,
 			);
+			const dataUrl = canvasExport!.toDataURL(`image/${mimeType}`, 1);
+			if (saveHostFile(`${titreAlgo}.${mimeType}`, `image/${mimeType}`, dataUrl, "data-url")) {
+				editeur.isCreatingBitmapImageFromSvg = false;
+				return;
+			}
 			let downloadLink = document.createElement("a");
-			downloadLink.href = canvasExport!.toDataURL(`image/${mimeType}`, 1);
+			downloadLink.href = dataUrl;
 			downloadLink.download = `${titreAlgo}.${mimeType}`;
 
 			document.body.appendChild(downloadLink);

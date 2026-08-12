@@ -1,15 +1,17 @@
 export interface EditorRuntimeConfig {
 	initialAlgorithm: unknown | null;
 	title: string | null;
-	isElectron: boolean;
+	hostKind: EditorHostKind;
 	isExam: boolean;
 	prettifyInitialAlgorithm: boolean;
 }
 
+export type EditorHostKind = "web" | "electron" | "vscode";
+
 const defaultConfig: EditorRuntimeConfig = {
 	initialAlgorithm: null,
 	title: null,
-	isElectron: false,
+	hostKind: "web",
 	isExam: false,
 	prettifyInitialAlgorithm: false,
 };
@@ -38,7 +40,9 @@ function isRuntimeConfig(value: unknown): value is EditorRuntimeConfig {
 	const config = value as Record<string, unknown>;
 	return (
 		(config.title === null || typeof config.title === "string") &&
-		typeof config.isElectron === "boolean" &&
+		(config.hostKind === "web" ||
+			config.hostKind === "electron" ||
+			config.hostKind === "vscode") &&
 		typeof config.isExam === "boolean" &&
 		typeof config.prettifyInitialAlgorithm === "boolean" &&
 		"initialAlgorithm" in config

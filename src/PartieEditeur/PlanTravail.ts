@@ -269,7 +269,7 @@ export class PlanTravail extends HTMLElement {
 					probleme.setPosition();
 					listeElems.push(probleme);
 					if (element.estDecomposeAilleurs) {
-						probleme.decomposerAutrePlan();
+						probleme.decomposerAutrePlan(false);
 					}
 					break;
 				case "Procedure":

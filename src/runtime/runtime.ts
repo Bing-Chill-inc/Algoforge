@@ -1,5 +1,5 @@
 import type { Editeur } from "../PartieEditeur/Editeur";
-import type { EditorRuntimeConfig } from "./config";
+import type { EditorHostKind, EditorRuntimeConfig } from "./config";
 
 export interface EditorPreferences {
 	glow: boolean;
@@ -14,13 +14,13 @@ export const preferences: EditorPreferences = {
 	renderScale: 4,
 };
 
-export let isElectron = false;
+export let hostKind: EditorHostKind = "web";
 export let isExam = false;
 export let editeur: Editeur;
 export let titreAlgo: HTMLElement;
 
 export function initializeRuntime(config: EditorRuntimeConfig): void {
-	isElectron = config.isElectron;
+	hostKind = config.hostKind;
 	isExam = config.isExam;
 	editeur = requiredElement<Editeur>("editeur-interface");
 	titreAlgo = requiredElement<HTMLElement>("#titreAlgo");
